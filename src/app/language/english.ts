@@ -6,6 +6,7 @@ export class English {
   public static readonly confirmLabel = "Confim";
   public static readonly cancelLabel = "Cancel";
   public static readonly applyChangesLabel = "Apply changes";
+  public static readonly search = "search";
 
   // Auth
   public static readonly logOutLabel = "Log Out";
@@ -68,8 +69,18 @@ export class English {
   public static readonly pollDescriptionError = "Error in the description";
   public static readonly markAsVotedInfo = "Add someone that voted physicaly";
   public static readonly votedButtonLabel = "Voted";
-  
+
   // Cafet
+  public static readonly troll = "T'ES EN NEGATIF !!<br><small>(*non contractuel, t'as pas encore de compte)</small>";
   public static readonly creditLabel = "Credit";
-  public static readonly negativeCreditError = "T'ES EN NEGATIF !!<br><small>(*non contractuel, pas encore implémenté)</small>";
+  public static readonly addButtonLabel = "Add";
+  public static readonly substractButtonLabel = "Substract";
+  public static readonly accountRequestInfo = "To notify the cafet masters that you want to activate your online account, please press the button below then go find the master";
+  public static readonly accountRequestButtonLabel = "Account request";
+  public static readonly weekIngredientLabel = "Week ingredient";
+  public static readonly negativeCreditError = "T'ES EN NEGATIF !!<br><small>You should credit your account</small>";
+  public static readonly usersWithAccountLabel = "Users";
+  public static readonly usersWithNoAccountLabel = "Requests";
+  public static readonly ActivateAccountButtonLabel = "Activate account";
+
 }

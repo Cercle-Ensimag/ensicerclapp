@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+
+import { CafetService } from '../cafet-service/cafet.service';
 import { DicoService } from '../../language/dico.service';
 
 @Component({
@@ -9,6 +11,7 @@ import { DicoService } from '../../language/dico.service';
 export class CafetInfoComponent implements OnInit {
 
   constructor(
+    public cafet: CafetService,
     public d: DicoService
   ) { }
 

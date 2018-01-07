@@ -1,3 +1,73 @@
-<p>
-  cafet-admin works!
-</p>
+<div class="width">
+  <mat-card *ngIf="users" class="group">
+    <mat-form-field class="search">
+      <input matInput placeholder="{{ d.l.search }}" [formControl]="search">
+      <button mat-icon-button matSuffix><mat-icon>search</mat-icon></button>
+    </mat-form-field>
+  </mat-card>
+
+  <div class="group">
+    <mat-accordion *ngFor="let user of usersWithNoAccount">
+      <mat-expansion-panel expanded="false">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ titleCase(user.emailId.split('|').join(' ')) }}
+          </mat-panel-title>
+          <mat-panel-description>
+            {{ d.l.accountRequestButtonLabel }}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <form (ngSubmit)="activateAccount(user)">
+          <mat-form-field>
+            <input type='number' matInput placeholder="{{ d.l.creditLabel }}" [formControl]="controls[user.emailId].add">
+            <label matSuffix>€</label>
+          </mat-form-field>
+          <button mat-button
+            type="submit"
+            [disabled]="controls[user.emailId].add.invalid"
+            color="primary"
+          >{{ d.l.ActivateAccountButtonLabel }}</button>
+        </form>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+  <mat-accordion>
+    <!-- <mat-expansion-panel *ngFor="let user of displayedUsers" [expanded]="expanded[user.emailId]" (opened)="expanded[user.emailId]=true" hideToggle="true"> -->
+    <mat-expansion-panel *ngFor="let user of displayedUsers">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{ titleCase(user.emailId.split('|').join(' ')) }}
+        </mat-panel-title>
+        <mat-panel-description>
+          {{ user.credit }}€
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <form (ngSubmit)="transaction(user, false)">
+        <span>
+          <mat-form-field>
+            <input type='number' matInput placeholder="{{ d.l.substractButtonLabel }}" [formControl]="controls[user.emailId].sub">
+          </mat-form-field>
+          <button mat-button
+            type="submit"
+            [disabled]="controls[user.emailId].sub.invalid"
+            color="primary"
+          >{{ d.l.substractButtonLabel }}</button>
+        </span>
+      </form>
+      <form (ngSubmit)="transaction(user, true)">
+        <span>
+          <mat-form-field>
+            <input type='number' matInput placeholder="{{ d.l.addButtonLabel }}" [formControl]="controls[user.emailId].add">
+          </mat-form-field>
+          <button mat-button
+            type="submit"
+            [disabled]="controls[user.emailId].add.invalid"
+            color="primary"
+          >{{ d.l.addButtonLabel }}</button>
+        </span>
+      </form>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

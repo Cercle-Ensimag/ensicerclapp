@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { CafetService } from '../cafet-service/cafet.service';
 import { DicoService } from '../../language/dico.service';
@@ -8,7 +8,7 @@ import { DicoService } from '../../language/dico.service';
   templateUrl: './cafet.component.html',
   styleUrls: ['./cafet.component.css']
 })
-export class CafetComponent implements OnInit {
+export class CafetComponent implements OnInit, OnDestroy {
 
   creditError: string;
 
@@ -18,10 +18,15 @@ export class CafetComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.cafet.start();
+  }
+
+  ngOnDestroy() {
+    this.cafet.stop();
   }
 
   isCreditError(): boolean {
-    if (this.cafet.credit < 0) {
+    if (this.cafet.user.credit < 0) {
       this.creditError = this.d.l.negativeCreditError;
       return true;
     } else {

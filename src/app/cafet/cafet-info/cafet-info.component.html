@@ -1,6 +1,13 @@
-<div>
-  <mat-card>
-    <h2>{{ d.l.creditLabel }}: -1.30€</h2>
-    <mat-error [innerHTML]="d.l.negativeCreditError"></mat-error>
-  </mat-card>
-</div>
+<mat-card style="margin-bottom: 4px">
+  <h2>{{ d.l.creditLabel }}: -1.30€</h2>
+  <mat-error [innerHTML]="d.l.troll"></mat-error>
+</mat-card>
+
+<mat-card>
+  <p [innerHTML]="d.l.accountRequestInfo"></p>
+  <button mat-raised-button
+    (click)="cafet.sendAccountRequest()"
+    [disabled]="cafet.user.emailId"
+    color="primary"
+  >{{ d.l.accountRequestButtonLabel }}</button>
+</mat-card>

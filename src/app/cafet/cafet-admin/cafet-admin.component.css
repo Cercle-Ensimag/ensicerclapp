@@ -1,0 +1,17 @@
+button {
+  margin-left: 16px;
+  margin-right: 16px;
+}
+
+.width {
+  max-width: 600px;
+  margin: auto
+}
+
+.group {
+  margin-bottom: 4px;
+}
+
+.search {
+  width: 100%;
+}

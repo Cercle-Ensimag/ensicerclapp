@@ -49,7 +49,6 @@ import { DeviceSizeService } from './providers/device-size.service';
 import { CanActivateHome } from './home/home-guard/home.service';
 import { CanActivateVoteAdmin } from './vote/vote-guard/vote-admin.service';
 import { CanActivateAdmin } from './admin/guard/admin-guard.service';
-import { CanActivateCafetUser } from './cafet/cafet-guard/cafet-user.service';
 import { CanActivateCafetAdmin } from './cafet/cafet-guard/cafet-admin.service';
 import { EmailVerifGuard } from './auth/email-verif/email-verif-guard/email-verif.guard';
 import { AccountGuard } from './account/account-guard/account.guard';
@@ -57,17 +56,18 @@ import { AccountGuard } from './account/account-guard/account.guard';
 import { DicoService } from './language/dico.service';
 
 // angular materials
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
-import {MatIconModule} from '@angular/material/icon';
-import {MatButtonModule} from '@angular/material/button';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatListModule} from '@angular/material/list';
-import {MatCardModule} from '@angular/material/card';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
-
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { MatCardModule } from '@angular/material/card';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { environment } from '../environments/environment';
 
 
@@ -88,13 +88,13 @@ import { environment } from '../environments/environment';
     AppRoutingModule,
     FormsModule, ReactiveFormsModule,
     AngularFireModule.initializeApp(environment.firebase), AngularFireAuthModule, AngularFireDatabaseModule,
-    MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule, MatToolbarModule, MatSidenavModule, MatListModule, MatCardModule, MatSnackBarModule, MatSlideToggleModule,
+    MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule, MatToolbarModule, MatSidenavModule, MatListModule, MatCardModule, MatSnackBarModule, MatSlideToggleModule, MatTabsModule, MatExpansionModule,
     FlexLayoutModule
   ],
   providers: [
     AuthService, VoteService, AdminService, CafetService,
     AppModulesService, DeviceSizeService,
-    CanActivateHome, CanActivateVoteAdmin, CanActivateAdmin, CanActivateCafetUser, CanActivateCafetAdmin, EmailVerifGuard, AccountGuard,
+    CanActivateHome, CanActivateVoteAdmin, CanActivateAdmin, CanActivateCafetAdmin, EmailVerifGuard, AccountGuard,
     DicoService
   ],
   entryComponents: [

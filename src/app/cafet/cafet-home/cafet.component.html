@@ -1,7 +1,21 @@
-<div>
+<div *ngIf="cafet.user && cafet.user.activated">
   <!-- Credit -->
   <mat-card>
-    <h2>{{ d.l.creditLabel }}: {{ cafet.credit.toFixed(2) }}€</h2>
+    <h2>{{ d.l.creditLabel }}: {{ cafet.user.credit.toFixed(2) }}€</h2>
+    <mat-error *ngIf="isCreditError()" [innerHTML]="getCreditError()"></mat-error>
+  </mat-card>
+  <!-- Week ingredient -->
+  <mat-card>
+    <h3>{{ d.l.weekIngredientLabel }}:</h3>
+    <h2>{{ cafet.weekIngredient }}</h2>
+    <mat-error *ngIf="isCreditError()" [innerHTML]="getCreditError()"></mat-error>
+  </mat-card>
+  <!-- Order -->
+  <mat-card>
+    <h3>{{ d.l.weekIngredientLabel }}:</h3>
+    <h2>{{ cafet.weekIngredient }}</h2>
     <mat-error *ngIf="isCreditError()" [innerHTML]="getCreditError()"></mat-error>
   </mat-card>
 </div>
+
+<app-cafet-info *ngIf="cafet.user && !cafet.user.activated"></app-cafet-info>

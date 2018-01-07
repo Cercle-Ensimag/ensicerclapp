@@ -88,9 +88,74 @@
       "$other": { ".validate": false }
     },
     "cafet": {
+      ".read": "root.child('users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/'+auth.uid+'/admin/cafet-admin').val() == true",
+      ".write": "root.child('users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/'+auth.uid+'/admin/cafet-admin').val() == true",
 
+      "users": {
+        "$emailId": {
+          ".read": "auth.token.email_verified == true &&
+                    auth.token.email.endsWith('@ensimag.fr') &&
+                    $emailId === auth.token.email.replace('@ensimag.fr', '').replace('.', '|')",
+
+          "emailId": {
+            ".write": "auth.token.email_verified == true &&
+                       auth.token.email.endsWith('@ensimag.fr') &&
+                       $emailId === auth.token.email.replace('@ensimag.fr', '').replace('.', '|')",
+            ".validate": "newData.val() === $emailId"
+          },
+          "activated": { ".validate": "newData.isBoolean()" },
+          "credit": { ".validate": "newData.isNumber()" },
+
+          "$other": { ".validate": false }
+        },
+      },
+      "history": {
+        "$emailId": {
+          ".read": "auth.token.email_verified == true &&
+                    auth.token.email.endsWith('@ensimag.fr') &&
+                    $emailId === auth.token.email.replace('@ensimag.fr', '').replace('.', '|')",
+
+          "$transaction": {
+            "value": { ".validate": "newData.isNumber()" },
+            "newCredit": { ".validate": "newData.isNumber()" },
+            "oldCredit": { ".validate": "newData.isNumber()" }
+          }
+        }
+      },
+      "public": {
+        ".read": "auth.token.email_verified == true &&
+                  auth.token.email.endsWith('@ensimag.fr')",
+
+        "ingredients": {
+          "groups": {
+            "$group": { ".validate": "newData.isString()" }
+          },
+          "individual": {
+            "$ingredient" : {
+              "name": { ".validate": "newData.isString()" },
+              "group": { ".validate": "newData.isString()" },
+              "alias": { ".validate": "newData.isString()" },
+              "image": { ".validate": "newData.isString()" },
+
+              "$other": { ".validate": false }
+            }
+          }
+        },
+        "info": {
+          "service-opened": { ".validate": "newData.isBoolean()" },
+          "service-canceled": { ".validate": "newData.isBoolean()" },
+          "cancel-message": { ".validate": "newData.isString()" },
+          "day": { ".validate": "newData.isString()" },
+
+          "$other": { ".validate": false }
+        },
+
+        "$other": { ".validate": false }
+      },
+
+      "$other": { ".validate": false }
     },
-    "caledar": {
+    "calendar": {
 
     },
     "vote": {

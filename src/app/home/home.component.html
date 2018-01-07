@@ -31,7 +31,7 @@
             *ngIf="auth.isCafetAdmin"
             routerLink="/cafet-admin"
           >{{ d.l.cafetAdminLabel }}</a>
-          <a mat-list-item (click)="auth.logout()">{{ d.l.logOutLabel }}</a>
+          <a mat-list-item (click)="snav.toggle(); auth.logout()">{{ d.l.logOutLabel }}</a>
         </mat-nav-list>
       </div>
     </mat-sidenav>

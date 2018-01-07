@@ -55,7 +55,10 @@ exports.onCreateAccount = functions.auth.user().onCreate(event => {
   refs[user.uid+"/admin/email"] = user.email;
 
   return db.ref("/users/"+emailId).once("value").then(function(snapshot) {
-    if (snapshot.exists() && snapshot.child('uid') !== user.uid){
+    if (snapshot.child('uid').exists() &&
+      snapshot.child('uid').val() != null &&
+      snapshot.child('uid').val() != user.uid
+    ){
       return db.ref("/errors/account").push().set('User '+emailId+' created a new account')
       .then(() => {
         return db.ref("/users/"+emailId).update(refs);

@@ -40,6 +40,7 @@ export class AuthService {
   isAdmin: boolean = false;
   isVoteAdmin: boolean = false;
   isCafetAdmin: boolean = false;
+  cafetActivated: boolean = false;
 
   userWatcher: any;
   profileWatcher: any;
@@ -273,9 +274,11 @@ export class AuthService {
       if (data) {
         this.isVoteAdmin = data["vote-admin"] || false;
         this.isCafetAdmin = data["cafet-admin"] || false;
+        this.cafetActivated = data["cafet-activated"] || false;
       } else {
         this.isVoteAdmin = false;
         this.isCafetAdmin = false;
+        this.cafetActivated = false;
       }
     });
   }

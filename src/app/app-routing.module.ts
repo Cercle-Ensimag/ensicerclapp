@@ -12,7 +12,6 @@ import { AdminUsersComponent } from './admin/users/users.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 import { CafetComponent } from './cafet/cafet-home/cafet.component';
-import { CafetInfoComponent } from './cafet/cafet-info/cafet-info.component';
 import { CafetAdminComponent } from './cafet/cafet-admin/cafet-admin.component';
 
 import { VoteComponent } from './vote/vote-all/vote.component';
@@ -28,7 +27,6 @@ import { AccountComponent } from './account/account.component';
 import { CanActivateHome } from './home/home-guard/home.service';
 import { CanActivateVoteAdmin } from './vote/vote-guard/vote-admin.service';
 import { CanActivateAdmin } from './admin/guard/admin-guard.service';
-import { CanActivateCafetUser } from './cafet/cafet-guard/cafet-user.service';
 import { CanActivateCafetAdmin } from './cafet/cafet-guard/cafet-admin.service';
 import { EmailVerifGuard } from './auth/email-verif/email-verif-guard/email-verif.guard';
 import { AccountGuard } from './account/account-guard/account.guard';
@@ -39,13 +37,12 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignUpComponent },
   { path: 'password_reset', component: PasswordResetComponent },
-  
+
   { path: 'email_verif', component: EmailVerifComponent, canActivate: [EmailVerifGuard] },
   { path: 'account', component: AccountComponent, canActivate: [AccountGuard] },
 
   { path: 'home', component: DashboardComponent, canActivate: [CanActivateHome] },
-  { path: 'cafet', component: CafetComponent, canActivate: [CanActivateHome, CanActivateCafetUser] },
-  { path: 'cafet-info', component: CafetInfoComponent, canActivate: [CanActivateHome] },
+  { path: 'cafet', component: CafetComponent, canActivate: [CanActivateHome] },
   { path: 'cafet-admin', component: CafetAdminComponent, canActivate: [CanActivateHome, CanActivateCafetAdmin]},
   { path: 'vote', component: VoteComponent, canActivate: [CanActivateHome] },
   { path: 'vote/poll/:id', component: PollComponent, canActivate: [CanActivateHome] },
