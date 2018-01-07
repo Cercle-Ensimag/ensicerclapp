@@ -1,18 +1,20 @@
 <mat-card>
   <mat-nav-list>
-    <a mat-list-item *ngFor="let user of admin.users">
-      <div *ngIf="user[user.uid]" class="item">
-        <label *ngIf="!media.mobileSize">
-          {{ (user[user.uid].account || { name: {firstName: ndef} }).name.firstName }}
-          {{ (user[user.uid].account || { name: {lastName: ndef} }).name.lastName }}
-          &emsp;
-        </label>
-        {{ user[user.uid].admin.email }}
-        <span>
-          <mat-slide-toggle [checked]="voteChecked(user)" (change)="setVoteAdmin(user[user.uid].admin.email, user.uid, $event.checked)" color="primary">{{ d.l.voteAdminLabel }}</mat-slide-toggle>
-          <mat-slide-toggle [checked]="cafetChecked(user)" (change)="setCafetAdmim(user[user.uid].admin.email, user.uid, $event.checked)" color="primary">{{ d.l.cafetAdminLabel }}</mat-slide-toggle>
-        </span>
-      </div>
-    </a>
+    <div *ngFor="let user of admin.users">
+      <a mat-list-item *ngIf="user[user.uid]">
+        <div *ngIf="user[user.uid]" class="item">
+          <label *ngIf="!media.mobileSize">
+            {{ (user[user.uid].account || { name: {firstName: ndef} }).name.firstName }}
+            {{ (user[user.uid].account || { name: {lastName: ndef} }).name.lastName }}
+            &emsp;
+          </label>
+          {{ user[user.uid].admin.email }}
+          <span>
+            <mat-slide-toggle [checked]="voteChecked(user)" (change)="setVoteAdmin(user[user.uid].admin.email, user.uid, $event.checked)" color="primary">{{ d.l.voteAdminLabel }}</mat-slide-toggle>
+            <mat-slide-toggle [checked]="cafetChecked(user)" (change)="setCafetAdmim(user[user.uid].admin.email, user.uid, $event.checked)" color="primary">{{ d.l.cafetAdminLabel }}</mat-slide-toggle>
+          </span>
+        </div>
+      </a>
+    </div>
   </mat-nav-list>
 </mat-card>
