@@ -5,7 +5,7 @@ import { CanActivateHome } from './home.service';
 describe('CanActivateHome', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [GuardHomeService]
+      providers: [CanActivateHome]
     });
   });
 
