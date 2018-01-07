@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DicoService } from '../../language/dico.service';
 
 @Component({
   selector: 'app-cafet-info',
@@ -7,7 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CafetInfoComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    public d: DicoService
+  ) { }
 
   ngOnInit() {
   }
