@@ -3,7 +3,11 @@ button {
   margin-right: 8px;
 }
 
-input {
+mat-form-field {
+  width: 100%;
+}
+
+.large {
   width: 400px;
 }
 

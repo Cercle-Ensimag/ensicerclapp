@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
+import { DeviceSizeService } from '../../providers/device-size.service';
 import { AuthService } from '../../auth/auth-service/auth.service';
 import { VoteService } from '../vote-service/vote.service';
 import { Poll, Choice } from '../poll/poll.component';
@@ -31,6 +32,7 @@ export class VoteUsersComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private location: Location,
     private auth: AuthService,
+    public media: DeviceSizeService,
     public d: DicoService
   ) {}
 
