@@ -1,34 +1,34 @@
 <div class="container">
   <div>
     <mat-card>
-      <form (ngSubmit)="onSubmit()" class="container">
+      <form [formGroup]="signUpCtrl" (ngSubmit)="onSubmit()" class="container">
         <h2>{{ d.l.signUpPageTitle }}</h2>
 
         <span *ngIf="auth.error" class="error">{{ auth.error }}</span>
 
         <mat-form-field>
-          <input matInput placeholder="{{ d.l.firstNameLabel }}" [formControl]="first_ctrl" required>
-          <mat-error *ngIf="first_ctrl.invalid">{{ d.l.firstNameError }}</mat-error>
+          <input matInput placeholder="{{ d.l.firstNameLabel }}" formControlName="firstName">
+          <mat-error *ngIf="signUpCtrl.get('firstName').invalid">{{ d.l.firstNameError }}</mat-error>
         </mat-form-field>
 
         <mat-form-field>
-          <input matInput placeholder="{{ d.l.lastNameLabel }}" [formControl]="last_ctrl">
-          <mat-error *ngIf="last_ctrl.invalid">{{ d.l.lastNameError }}</mat-error>
+          <input matInput placeholder="{{ d.l.lastNameLabel }}" formControlName="lastName">
+          <mat-error *ngIf="signUpCtrl.get('lastName').invalid">{{ d.l.lastNameError }}</mat-error>
         </mat-form-field>
 
         <mat-form-field>
-          <input matInput placeholder="{{ d.l.emailLabel }}" [formControl]="email_ctrl">
-          <mat-error *ngIf="email_ctrl.invalid">{{ auth.getEmailErrorMessage(email_ctrl) }}</mat-error>
+          <input matInput placeholder="{{ d.l.emailLabel }}" formControlName="email">
+          <mat-error *ngIf="signUpCtrl.get('email').invalid">{{ auth.getEmailErrorMessage(signUpCtrl.get('email')) }}</mat-error>
         </mat-form-field>
 
         <mat-form-field>
-          <input matInput #password placeholder="{{ d.l.passwordlLabel }}" [formControl]="password_ctrl" [type]="hide ? 'password' : 'text'">
+          <input matInput placeholder="{{ d.l.passwordlLabel }}" formControlName="password" [type]="hide ? 'password' : 'text'">
           <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
-          <mat-error *ngIf="password_ctrl.invalid">{{ d.l.passwordTooShortError}}</mat-error>
+          <mat-error *ngIf="signUpCtrl.get('password').invalid">{{ d.l.passwordTooShortError }}</mat-error>
         </mat-form-field>
 
         <button mat-raised-button type="submit" color="primary"
-          [disabled]="email_ctrl.invalid || password_ctrl.invalid || first_ctrl.invalid || last_ctrl.invalid"
+          [disabled]="signUpCtrl.invalid"
         >{{ d.l.signUpButtonLabel }}</button>
       </form>
     </mat-card>

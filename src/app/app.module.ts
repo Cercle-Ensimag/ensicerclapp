@@ -51,6 +51,8 @@ import { CanActivateVoteAdmin } from './vote/vote-guard/vote-admin.service';
 import { CanActivateAdmin } from './admin/guard/admin-guard.service';
 import { CanActivateCafetUser } from './cafet/cafet-guard/cafet-user.service';
 import { CanActivateCafetAdmin } from './cafet/cafet-guard/cafet-admin.service';
+import { EmailVerifGuard } from './auth/email-verif/email-verif-guard/email-verif.guard';
+import { AccountGuard } from './account/account-guard/account.guard';
 
 import { DicoService } from './language/dico.service';
 
@@ -92,7 +94,7 @@ import { environment } from '../environments/environment';
   providers: [
     AuthService, VoteService, AdminService, CafetService,
     AppModulesService, DeviceSizeService,
-    CanActivateHome, CanActivateVoteAdmin, CanActivateAdmin, CanActivateCafetUser, CanActivateCafetAdmin,
+    CanActivateHome, CanActivateVoteAdmin, CanActivateAdmin, CanActivateCafetUser, CanActivateCafetAdmin, EmailVerifGuard, AccountGuard,
     DicoService
   ],
   entryComponents: [

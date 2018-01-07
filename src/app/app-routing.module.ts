@@ -30,14 +30,18 @@ import { CanActivateVoteAdmin } from './vote/vote-guard/vote-admin.service';
 import { CanActivateAdmin } from './admin/guard/admin-guard.service';
 import { CanActivateCafetUser } from './cafet/cafet-guard/cafet-user.service';
 import { CanActivateCafetAdmin } from './cafet/cafet-guard/cafet-admin.service';
+import { EmailVerifGuard } from './auth/email-verif/email-verif-guard/email-verif.guard';
+import { AccountGuard } from './account/account-guard/account.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
 
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignUpComponent },
-  { path: 'email_verif', component: EmailVerifComponent },
   { path: 'password_reset', component: PasswordResetComponent },
+  
+  { path: 'email_verif', component: EmailVerifComponent, canActivate: [EmailVerifGuard] },
+  { path: 'account', component: AccountComponent, canActivate: [AccountGuard] },
 
   { path: 'home', component: DashboardComponent, canActivate: [CanActivateHome] },
   { path: 'cafet', component: CafetComponent, canActivate: [CanActivateHome, CanActivateCafetUser] },
@@ -50,7 +54,6 @@ const routes: Routes = [
   { path: 'vote-admin/results/:id', component: ResultsComponent, canActivate: [CanActivateHome, CanActivateVoteAdmin] },
   { path: 'vote-admin/users/:id', component: VoteUsersComponent, canActivate: [CanActivateHome, CanActivateVoteAdmin] },
   { path: 'calendar', component: CalendarComponent, canActivate: [CanActivateHome] },
-  { path: 'account', component: AccountComponent, canActivate: [CanActivateHome] },
   { path: 'admin', component: AdminUsersComponent, canActivate: [CanActivateHome, CanActivateAdmin] }
 
 ];
