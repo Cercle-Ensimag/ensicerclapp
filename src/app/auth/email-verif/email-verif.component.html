@@ -1,0 +1,11 @@
+<div class="container">
+  <div>
+    <mat-card>
+      <div class="container">
+        <p [innerHTML]="d.l.verificationEmailSentInfo"></p>
+        <button mat-raised-button (click)="sendEmail()" color='primary'>{{ d.l.sendEmailAgainLabel }}</button>
+        <button mat-raised-button (click)="back()">{{ d.l.backLabel }}</button>
+      </div>
+    </mat-card>
+  </div>
+</div>

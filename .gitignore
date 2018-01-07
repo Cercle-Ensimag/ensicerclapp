@@ -7,6 +7,10 @@
 
 # dependencies
 /node_modules
+/functions/node_modules
+
+# admin ID
+ensicerclapp-firebase-adminsdk-87izp-f7073412f3.json
 
 # IDEs and editors
 /.idea

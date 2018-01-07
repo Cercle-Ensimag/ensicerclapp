@@ -1,0 +1,26 @@
+<div *ngIf="poll">
+  <h1>{{ poll.title }}</h1>
+  <h3>{{ poll.description }}</h3>
+</div>
+
+<div *ngIf='poll && !selectedChoice' class="grid-container">
+  <div *ngFor="let choice of choices">
+    <mat-card class="wraper">
+      <mat-card-title>{{ choice.label }}</mat-card-title>
+      <img mat-card-image src="{{ choice.image }}" alt="{{ choice.label }} - image" class="image">
+      <mat-card-actions>
+        <button mat-raised-button (click)="onVote(choice);" color="primary">{{ d.l.voteForLabel }} {{ choice.short || choice.label }}</button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>
+
+<div *ngIf='selectedChoice'>
+  <h2>{{ d.l.choiceSelectionInfo }}</h2>
+  <mat-card class="final">
+    <mat-card-title>{{ selectedChoice.label }}</mat-card-title>
+    <img mat-card-image src="{{ selectedChoice.image }}" alt="{{ selectedChoice.label }} logo">
+  </mat-card>
+  <button mat-raised-button color="primary" class="confirm-btn" (click)='onConfirm(selectedChoice)'>{{ d.l.confirmLabel }}</button>
+  <button mat-raised-button color="warn" class="confirm-btn" (click)='onCancel()'>{{ d.l.cancelLabel }}</button>
+</div>

@@ -1,0 +1,15 @@
+button {
+    margin-top: 2em;
+    max-width: 200px;
+}
+
+.border {
+  border-width: 1px;
+  border-color: #333;
+  border-style: dashed;
+  padding: 1em;
+}
+
+mat-icon {
+  cursor: pointer;
+}

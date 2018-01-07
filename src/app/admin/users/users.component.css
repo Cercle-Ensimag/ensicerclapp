@@ -1,0 +1,12 @@
+mat-slide-toggle {
+  margin-left: 12px;
+}
+
+span {
+  float: right;
+}
+
+.item {
+  text-align: left;
+  width: 100%;
+}

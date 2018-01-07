@@ -1,0 +1,15 @@
+h1 {
+  text-align: center;
+}
+
+.final {
+  max-width: 500px;
+  margin: auto;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.confirm-btn {
+  max-width: 150px;
+  margin: 8px;
+}

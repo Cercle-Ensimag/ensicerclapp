@@ -1,0 +1,11 @@
+.container {
+  text-align: center;
+}
+
+.container > * {
+  width: 100%;
+}
+
+.a-vote {
+  font-size: 25px;
+}

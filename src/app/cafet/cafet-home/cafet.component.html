@@ -1,0 +1,7 @@
+<div>
+  <!-- Credit -->
+  <mat-card>
+    <h2>{{ d.l.creditLabel }}: {{ cafet.credit.toFixed(2) }}€</h2>
+    <mat-error *ngIf="isCreditError()" [innerHTML]="getCreditError()"></mat-error>
+  </mat-card>
+</div>

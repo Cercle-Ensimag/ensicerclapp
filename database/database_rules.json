@@ -1,0 +1,189 @@
+{
+  "rules": {
+    "users": {
+      ".read": "(auth.token.email === root.child('admin/public/admins/admin1').val() ||
+                 auth.token.email === root.child('admin/public/admins/admin2').val() ||
+                 auth.token.email === root.child('admin/public/admins/admin3').val()) &&
+                auth.token.email_verified == true",
+
+      "$emailId": {
+        "votes": {
+          ".read": "auth.token.email.endsWith('@ensimag.fr') &&
+                    $emailId === auth.token.email.replace('@ensimag.fr', '').replace('.', '|')",
+          ".write": "(auth.token.email.endsWith('@ensimag.fr') &&
+                     $emailId === auth.token.email.replace('@ensimag.fr', '').replace('.', '|')) ||
+                     root.child('users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/'+auth.uid+'/admin/vote-admin').val() == true",
+
+          "$poll_id": {
+            ".validate": "root.child('vote/polls/'+$poll_id).exists() &&
+            newData.isBoolean() && newData.val() == true &&
+            (root.child('vote/users/'+$poll_id+'/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/voted').exists() &&
+            root.child('vote/users/'+$poll_id+'/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/voted').val() == true)"
+          }
+        },
+        "uid": { ".validate": "newData.val() === auth.uid" },
+        "$user": {
+          ".read": "$user === auth.uid",
+
+          "admin": {
+            ".write": "(auth.token.email === root.child('admin/public/admins/admin1').val() ||
+                        auth.token.email === root.child('admin/public/admins/admin2').val() ||
+                        auth.token.email === root.child('admin/public/admins/admin3').val()) &&
+                       auth.token.email_verified == true",
+
+            "email": {
+              ".validate": "newData.isString() && newData.val().contains('@ensimag.fr') &&
+                            auth.token.email === newData.val() &&
+                            !data.exists()"
+            },
+            "vote-admin": { ".validate": "newData.isBoolean()" },
+            "cafet-admin": { ".validate": "newData.isBoolean()" },
+
+            "$other": { ".validate": false }
+          },
+          "account": {
+            ".write": "$user === auth.uid",
+
+            "name": {
+              ".validate": "newData.hasChildren(['firstName', 'lastName'])",
+
+              "firstName": { ".validate": "newData.isString()" },
+              "lastName": { ".validate": "newData.isString()" },
+              "login": { ".validate": "newData.isString()" },
+
+              "$other": { ".validate": false }
+            },
+            "photoURL": { ".validate": "newData.isString()" },
+
+            "$other": { ".validate": false }
+          },
+
+          "$other": { ".validate": false }
+        }
+      }
+    },
+    "admin": {
+      "public": {
+        ".read": "auth != null",
+
+        "admins": {
+          "$email": { ".validate": "newData.isString() && newData.val().endsWith('@ensimag.fr')" },
+        },
+
+        "modules": {
+          "$module": {
+            "name": { ".validate": "newData.isString()" },
+            "disabled": {".validate": "newData.isBoolean()" },
+
+            "$other": { ".validate": false }
+          }
+        },
+
+        "$other": { ".validate": false }
+      },
+      "private": {
+        "$other": { ".validate": false }
+      },
+
+      "$other": { ".validate": false }
+    },
+    "cafet": {
+
+    },
+    "caledar": {
+
+    },
+    "vote": {
+      "polls": {
+        ".read": "auth !== null",
+        ".write": "root.child('users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/'+auth.uid+'/admin/vote-admin').val() == true",
+
+        "$poll_id": {
+          ".validate": "newData.hasChildren(['title', 'description'])",
+
+          "id": { ".validate": "newData.val() === $poll_id" },
+          "title": { ".validate": "newData.isString()" },
+          "description": { ".validate": "newData.isString()" },
+          "started": { ".validate": "newData.isBoolean()" },
+          "choices": {
+            "$choice_id": {
+              ".validate": "newData.hasChildren(['id', 'label'])",
+
+              "id": { ".validate": "newData.val() === $choice_id" },
+              "label": { ".validate": "newData.isString()" },
+              "short": { ".validate": "newData.isString()" },
+              "image": { ".validate": "newData.isString()" },
+
+              "$other": { ".validate": false }
+            }
+          },
+
+          "$other": { ".validate": false }
+        },
+      },
+      "users": {
+        "$poll_id": {
+          ".read": "root.child('users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/'+auth.uid+'/admin/vote-admin').val() == true",
+          ".write": "root.child('users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/'+auth.uid+'/admin/vote-admin').val() == true",
+          ".validate": "root.child('vote/polls/'+$poll_id).exists()",
+
+          "$emailId": {
+            ".validate": "newData.hasChildren(['emailId', 'voted'])",
+
+            "emailId": {
+              ".write": "auth.token.email_verified == true &&
+                         auth.token.email.endsWith('@ensimag.fr') &&
+                         $emailId === auth.token.email.replace('@ensimag.fr', '').replace('.', '|')",
+              ".validate": "newData.val() === $emailId"
+            },
+            "voted": {
+              ".write": "auth.token.email_verified == true &&
+                         auth.token.email.endsWith('@ensimag.fr') &&
+                         $emailId === auth.token.email.replace('@ensimag.fr', '').replace('.', '|') &&
+                         (!data.exists() || data.val() != true) &&
+                         newData.val() == true",
+              ".validate": "newData.isBoolean()"
+
+            },
+
+            "$other": { ".validate": false }
+          }
+        },
+      },
+      "results": {
+        "$poll_id": {
+          ".write": "root.child('users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/'+auth.uid+'/admin/vote-admin').val() == true &&
+                     !newData.exists()",
+          ".validate": "root.child('vote/polls/'+$poll_id).exists()",
+
+          "buffer": {
+            "$emailId": {
+              ".write": "auth.token.email_verified == true &&
+                         auth.token.email.endsWith('@ensimag.fr') &&
+                         $emailId === auth.token.email.replace('@ensimag.fr', '').replace('.', '|') &&
+                         root.child('users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/'+auth.uid).exists() &&
+                         (!root.child('vote/users/'+$poll_id+'/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/voted').exists() ||
+                          (root.child('vote/users/'+$poll_id+'/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/voted').val() != true)) &&
+                         root.child('vote/polls/'+$poll_id+'/started').val() == true",
+              ".validate": "root.child('vote/polls/'+$poll_id+'/choices/'+newData.val()).exists()"
+            }
+          },
+          "ballot_box": {
+            ".read": "root.child('users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/'+auth.uid+'/admin/vote-admin').val() == true &&
+                      root.child('vote/polls/'+$poll_id+'/started').val() == false",
+            "$choice_id": {
+              ".validate": "root.child('vote/polls/'+$poll_id+'/choices/'+$choice_id).exists()",
+              "$paper": { ".validate": "!data.exists() && (newData.val() == true)"}
+            }
+          },
+
+          "$other": { ".validate": false }
+        }
+      },
+
+      "$other": { ".validate": false }
+    },
+
+    "$other": { ".validate": false }
+  }
+}

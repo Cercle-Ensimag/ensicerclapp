@@ -1,0 +1,22 @@
+<div *ngIf="!deletePollId">
+    <mat-card *ngFor="let poll of vote.polls">
+      <h2>{{ poll.title }}</h2>
+      <mat-slide-toggle [checked]="poll.started" (change)="setStarted(poll.id, $event.checked)" color="primary">Start</mat-slide-toggle>
+      <button mat-icon-button [disabled]="poll.started" routerLink="/vote-admin/edit/{{ poll.id }}"><mat-icon>edit</mat-icon></button>
+      <button mat-icon-button [disabled]="poll.started" routerLink="/vote-admin/results/{{ poll.id }}"><mat-icon>poll</mat-icon></button>
+      <button mat-icon-button routerLink="/vote-admin/users/{{ poll.id }}"><mat-icon>face</mat-icon></button>
+      <button mat-icon-button [disabled]="poll.started" (click)="delete(poll.id)"><mat-icon>delete</mat-icon></button>
+    </mat-card>
+    <mat-card>
+      <h2>{{ d.l.addPollLabel }}</h2>
+      <button mat-icon-button routerLink="/vote-admin/edit/-"><mat-icon>add</mat-icon></button>
+    </mat-card>
+</div>
+
+<div *ngIf="deletePollId">
+  <mat-card class="message">
+    <h2 [innerHTML]="d.l.confirmPollDeleteInfo"></h2>
+    <button mat-raised-button (click)="confirmDelete()" color="warn">{{ d.l.confirmPollDeleteLabel }}</button>
+    <button mat-raised-button (click)="back()" color="primary">{{ d.l.backLabel }}</button>
+  </mat-card>
+</div>

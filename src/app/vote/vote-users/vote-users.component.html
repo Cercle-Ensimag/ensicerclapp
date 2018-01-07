@@ -1,0 +1,19 @@
+<mat-card>
+  <mat-form-field>
+    <input matInput placeholder="{{ d.l.markAsVoted }}" [formControl]="emailCtrl">
+    <button mat-icon-button matSuffix><mat-icon>search</mat-icon></button>
+  </mat-form-field>
+  <button mat-raised-button
+    (click)="markAsVoted()"
+    [disabled]="emailCtrl.invalid || displayedUsers.length != 0"
+    color="primary"
+  >{{ d.l.votedButtonLabel }}</button>
+</mat-card>
+
+<mat-card *ngIf="displayedUsers.length != 0">
+  <mat-nav-list>
+    <a mat-list-item *ngFor="let user of displayedUsers">
+      {{ titleCase(user.emailId.split('|').join(' ')) }}
+    </a>
+  </mat-nav-list>
+</mat-card>

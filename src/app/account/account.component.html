@@ -1,0 +1,48 @@
+<mat-card>
+  <!-- Profile form -->
+  <form (ngSubmit)="updateProfile()" *ngIf="!deleteAccountDiv && !changePasswordDiv" class="container">
+    <h2>{{ d.l.accountPageTitle }}</h2>
+
+    <mat-form-field>
+      <input matInput placeholder="{{ d.l.firstNameLabel }}" [formControl]="first_ctrl">
+      <mat-error *ngIf="first_ctrl.invalid">{{ d.l.firstNameError }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="{{ d.l.lastNameLabel }}" [formControl]="last_ctrl">
+      <mat-error *ngIf="last_ctrl.invalid">{{ d.l.lastNameError }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="{{ d.l.nicknameLabel }}" [formControl]="login_ctrl">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="{{ d.l.emailLabel }}" [formControl]="email_ctrl">
+    </mat-form-field>
+
+    <button mat-raised-button type="submit" color="primary" [disabled]="first_ctrl.invalid || last_ctrl.invalid">{{ d.l.applyChangesLabel }}</button>
+    <button mat-raised-button (click)="auth.logout()" color="primary">{{ d.l.logOutLabel }}</button>
+    <button mat-raised-button (click)="deleteAccount()" color="primary">{{ d.l.deleteAccountButtonLabel }}</button>
+    <button mat-raised-button (click)="newPassword()" color="primary">{{ d.l.changePasswordButtonLabel }}</button>
+  </form>
+
+  <!-- Delete account form -->
+  <form (ngSubmit)="back()" *ngIf="deleteAccountDiv" class="container">
+    <h2>{{ d.l.deleteAccountInfo }}</h2>
+    <button mat-raised-button (click)="confirmDeleteAccount()" color="warn">{{ d.l.confimDeleteAccountButtonLabel }}</button>
+    <button mat-raised-button type="submit" color="primary">{{ d.l.backLabel }}</button>
+  </form>
+
+  <!-- New password form -->
+  <form (ngSubmit)="back()" *ngIf="changePasswordDiv" class="container">
+    <h2>{{ d.l.changePasswordInfo }}</h2>
+    <mat-form-field>
+      <input matInput placeholder="Password" [formControl]="password_ctrl" [type]="hide ? 'password' : 'text'">
+      <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+      <mat-error *ngIf="password_ctrl.invalid">{{ d.l.passwordTooShortError }}</mat-error>
+    </mat-form-field>
+    <button mat-raised-button (click)="confirmNewPassword()" color="warn">{{ d.l.changePasswordButtonLabel }}</button>
+    <button mat-raised-button type="submit" color="primary">{{ d.l.backLabel }}</button>
+  </form>
+</mat-card>

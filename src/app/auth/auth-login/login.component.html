@@ -1,0 +1,27 @@
+<div class="container">
+  <div>
+    <mat-card>
+      <form [formGroup]="loginCtrl" (ngSubmit)="onSubmit()" class="container">
+        <h2>{{ d.l.signInPageTitle }}</h2>
+
+        <span *ngIf="auth.error" class="error">{{ auth.error }}</span>
+
+        <mat-form-field>
+          <input matInput placeholder="{{ d.l.askForExistingEmailLabel }}" formControlName="email">
+          <mat-error *ngIf="loginCtrl.get('email').invalid">{{ auth.getEmailErrorMessage(loginCtrl.get('email')) }}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="{{ d.l.askForExistingPwdLabel }}" formControlName="password" [type]="hide ? 'password' : 'text'">
+          <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+          <mat-error *ngIf="loginCtrl.get('password').invalid">{{ d.l.passwordTooShortError }}</mat-error>
+        </mat-form-field>
+
+        <button mat-raised-button type="submit" [disabled]="loginCtrl.invalid" color="primary">{{ d.l.signInButtonLabel }}</button>
+
+        <a routerLink="/signup" class="alc">{{ d.l.toSignInLabel }}</a>
+        <a routerLink="/password_reset" class="alc">{{ d.l.passwordForgottenLabel }}</a>
+      </form>
+    </mat-card>
+  </div>
+</div>

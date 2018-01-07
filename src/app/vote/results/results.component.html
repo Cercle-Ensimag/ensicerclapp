@@ -1,0 +1,9 @@
+<mat-card *ngIf="results">
+  <div *ngFor="let choice of choices">
+    <h2>
+      {{ choice.label }}: {{ results[choice.id] }} vote{{ results[choice.id]>1 ? "s" : ""}}
+      ({{ percent(choice.id).toFixed(2) }}%)
+    </h2>
+  </div>
+  <button mat-raised-button (click)="back()">{{ d.l.backLabel }}</button>
+</mat-card>

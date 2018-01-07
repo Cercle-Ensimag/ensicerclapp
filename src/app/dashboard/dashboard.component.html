@@ -1,0 +1,12 @@
+<div *ngIf="modules.appModules" class="grid-container">
+  <div *ngFor="let module of modules.appModules">
+    <div class="wraper">
+      <button mat-raised-button
+        [disabled]="module.disabled"
+        routerLink="/{{ module.name }}"
+      >
+        <h2>{{ module.displayName }}</h2>
+      </button>
+    </div>
+  </div>
+</div>

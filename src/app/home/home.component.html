@@ -1,0 +1,50 @@
+<div class="home-container" [class.is-mobile]="media.mobileSize">
+
+  <mat-toolbar color="primary" class="toolbar">
+    <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
+    <button mat-icon-button routerLink='/home' class="homebtn"><mat-icon>home</mat-icon></button>
+    <h1 class="app-name">{{ d.l.appName }}</h1>
+    <button mat-icon-button routerLink='/account' class="accountbtn"><mat-icon>account_circle</mat-icon></button>
+  </mat-toolbar>
+
+  <!-- Side navigation bar & content -->
+  <mat-sidenav-container class="sidenav-container" [style.marginTop.px]="media.mobileSize ? 56 : 0">
+
+    <!-- Side bar -->
+    <mat-sidenav #snav [mode]="media.mobileSize ? 'over' : 'side'" [fixedInViewport]="media.mobileSize" fixedTopGap="56">
+      <div *ngIf="modules.appModules">
+        <mat-nav-list>
+          <div *ngFor="let module of modules.appModules">
+            <a mat-list-item
+              *ngIf="!module.disabled"
+              routerLink="/{{ module.name }}">{{ module.displayName }}</a>
+          </div>
+          <a mat-list-item
+            *ngIf="auth.isAdmin"
+            routerLink="/admin"
+          >{{ d.l.adminLabel }}</a>
+          <a mat-list-item
+            *ngIf="auth.isVoteAdmin"
+            routerLink="/vote-admin"
+          >{{ d.l.voteAdminLabel }}</a>
+          <a mat-list-item
+            *ngIf="auth.isCafetAdmin"
+            routerLink="/cafet-admin"
+          >{{ d.l.cafetAdminLabel }}</a>
+          <a mat-list-item (click)="auth.logout()">{{ d.l.logOutLabel }}</a>
+        </mat-nav-list>
+      </div>
+    </mat-sidenav>
+
+    <!-- Content -->
+    <mat-sidenav-content>
+      <div class="container">
+        <div>
+          <!-- Navigate from the different modules of the app (cafet, vote, calendar, ...) -->
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+    </mat-sidenav-content>
+
+  </mat-sidenav-container>
+</div>
