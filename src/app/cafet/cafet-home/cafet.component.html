@@ -5,16 +5,12 @@
     <mat-error *ngIf="isCreditError()" [innerHTML]="getCreditError()"></mat-error>
   </mat-card>
   <!-- Week ingredient -->
-  <mat-card>
-    <h3>{{ d.l.weekIngredientLabel }}:</h3>
-    <h2>{{ cafet.weekIngredient }}</h2>
-    <mat-error *ngIf="isCreditError()" [innerHTML]="getCreditError()"></mat-error>
+  <mat-card *ngIf="ingredients">
+    <small>{{ d.l.weekIngredientLabel }}:</small>
+    <h2 *ngFor="let ingredient of weekIngredients">{{ ingredient.name }}</h2>
   </mat-card>
   <!-- Order -->
   <mat-card>
-    <h3>{{ d.l.weekIngredientLabel }}:</h3>
-    <h2>{{ cafet.weekIngredient }}</h2>
-    <mat-error *ngIf="isCreditError()" [innerHTML]="getCreditError()"></mat-error>
   </mat-card>
 </div>
 

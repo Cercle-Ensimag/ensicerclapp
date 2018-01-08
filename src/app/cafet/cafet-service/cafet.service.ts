@@ -21,14 +21,17 @@ export class Ingredient {
   group: string;
   alias: string;
   image: string;
+  ofTheWeek: boolean;
 }
 
 @Injectable()
 export class CafetService {
 
   user: CafetUser;
+  ingrGroups: string[];
 
   userWatcher: any;
+  ingrGroupsWatcher: any;
 
   constructor(
     private db: AngularFireDatabase,
@@ -37,10 +40,12 @@ export class CafetService {
 
   start() {
     this.userWatcher = this.watchUser();
+    this.ingrGroupsWatcher = this.watchIngrGroups();
   }
 
   stop() {
     this.userWatcher.unsubscribe();
+    this.ingrGroupsWatcher = this.watchIngrGroups();
   }
 
   watchUser() {
@@ -48,6 +53,27 @@ export class CafetService {
     .valueChanges().subscribe(user => {
       this.user = user || new CafetUser();
     })
+  }
+
+  getIngredients(): Observable<Ingredient[]> {
+    return this.db.list<Ingredient>("cafet/public/ingredients/individual").valueChanges();
+  }
+
+  setIngredient(ingredient: Ingredient, key: string) {
+    if (key === null) {
+      return this.db.list<Ingredient>("cafet/public/ingredients/individual")
+      .push(ingredient);
+    } else {
+      return this.db.list<Ingredient>("cafet/public/ingredients/individual")
+      .update(key, ingredient);
+    }
+  }
+
+  watchIngrGroups() {
+    return this.db.list<string>("cafet/public/ingredients/groups").valueChanges()
+    .subscribe(groups => {
+      this.ingrGroups = groups;
+    });
   }
 
   getUser(emailId): Observable<CafetUser> {
