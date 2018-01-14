@@ -1,12 +1,18 @@
 mat-slide-toggle {
   margin-left: 12px;
+  margin-right: 12px;
+  margin-bottom: 8px;
 }
 
-span {
-  float: right;
+.width {
+  max-width: 800px;
+  margin: auto
 }
 
-.item {
-  text-align: left;
+.group {
+  margin-bottom: 4px;
+}
+
+.search {
   width: 100%;
 }

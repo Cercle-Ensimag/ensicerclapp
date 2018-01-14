@@ -13,35 +13,56 @@ admin.initializeApp({
 
 const db = admin.database();
 
+var usersNames = require("./users_names.json");
+
+/**
+ * Local function that verifies that the email used corresponds to a name
+ */
+function verifyName(emailId) {
+  if (usersNames[formatEmailId(emailId)]) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+/**
+ * Format the emailId to match the users list format (to be removed eventually)
+ */
+function formatEmailId(emailId) {
+  return emailId.toLowerCase().replace('-', '|')
+  .replace('1', '').replace('2', '').replace('3', '');
+}
+
 /**
  * On vote asserted, move a named enveloppe from "buffer" to an anonimous bollot
  * in "bollot_box"
  */
 exports.onVote = functions.database.ref('/vote/users/{pollId}/{emailId}/voted')
-    .onWrite(event => {
-      if (!event.data.exists()) {
-        return null;
-      }
-      const voted = event.data.val();
-      const pollId = event.params.pollId;
-      const emailId = event.params.emailId;
+.onWrite(event => {
+  if (!event.data.exists()) {
+    return null;
+  }
+  const voted = event.data.val();
+  const pollId = event.params.pollId;
+  const emailId = event.params.emailId;
 
-      if (voted == true && event.data.changed()) {
-        return db.ref("/vote/results/"+pollId+"/buffer/"+emailId)
-        .once("value").then(function(snapshot) {
-          if (snapshot.exists()) {
-            return db.ref("/vote/results/"+pollId+"/ballot_box/"+snapshot.val()).push(true)
-            .then(function() {
-              return db.ref("vote/results/"+pollId+"/buffer/"+emailId).remove();
-            });
-          } else {
-            return db.ref('/physical-vote').push().set('User '+emailId+' did not vote online');
-          }
+  if (voted == true && event.data.changed()) {
+    return db.ref("/vote/results/"+pollId+"/buffer/"+emailId)
+    .once("value").then(function(snapshot) {
+      if (snapshot.exists()) {
+        return db.ref("/vote/results/"+pollId+"/ballot_box/"+snapshot.val()).push(true)
+        .then(function() {
+          return db.ref("vote/results/"+pollId+"/buffer/"+emailId).remove();
         });
       } else {
-        return db.ref('/errors/vote').push().set('Error on user '+emailId);
+        return db.ref('/physical-vote/'+pollId).push().set('User '+emailId+' did not vote online');
       }
     });
+  } else {
+    return db.ref('/errors/vote/'+pollId).push().set('Error on user '+emailId);
+  }
+});
 
 /**
  * Save the original user email for later verifications,
@@ -54,19 +75,25 @@ exports.onCreateAccount = functions.auth.user().onCreate(event => {
   var refs = {uid: user.uid};
   refs[user.uid+"/admin/email"] = user.email;
 
-  return db.ref("/users/"+emailId).once("value").then(function(snapshot) {
-    if (snapshot.child('uid').exists() &&
-      snapshot.child('uid').val() != null &&
-      snapshot.child('uid').val() != user.uid
-    ){
-      return db.ref("/errors/account").push().set('User '+emailId+' created a new account')
-      .then(() => {
+  if (!user.email.includes('@ensimag.fr') || !verifyName(emailId)) {
+    return admin.auth().deleteUser(user.uid).then(() => {
+      return db.ref("/errors/account").push().set(user.email+' pushed back');
+    });
+  } else {
+    return db.ref("/users/"+emailId).once("value").then(function(snapshot) {
+        if (snapshot.child('uid').exists() &&
+        snapshot.child('uid').val() != null &&
+        snapshot.child('uid').val() != user.uid
+      ){
+        return db.ref("/errors/account").push().set('User '+emailId+' created a new account')
+        .then(() => {
+          return db.ref("/users/"+emailId).update(refs);
+        });
+      } else {
         return db.ref("/users/"+emailId).update(refs);
-      });
-    } else {
-      return db.ref("/users/"+emailId).update(refs);
-    }
-  });
+      }
+    });
+  }
 });
 
 /**
@@ -76,4 +103,12 @@ exports.onDeleteAccount = functions.auth.user().onDelete(event => {
   const user = event.data;
   const emailId = user.email.replace('@ensimag.fr', '').replace('.', '|');
   return db.ref("/users/"+emailId+"/"+user.uid).remove();
+});
+
+/**
+ * Load or update the list of authorised users
+ */
+exports.updateList = functions.database.ref('/list/update')
+.onWrite(event => {
+  return db.ref("/list/users").set(usersNames);
 });

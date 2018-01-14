@@ -7,7 +7,7 @@ import { DeviceSizeService } from '../../providers/device-size.service';
 import { AuthService } from '../../auth/auth-service/auth.service';
 import { VoteService } from '../vote-service/vote.service';
 import { Poll, Choice } from '../poll/poll.component';
-
+import { ListService } from '../../providers/list.service';
 import { DicoService } from '../../language/dico.service';
 
 export class VoteUser {
@@ -24,8 +24,10 @@ export class VoteUsersComponent implements OnInit, OnDestroy {
   emailCtrl: FormControl;
   displayedUsers: VoteUser[] = [];
   users: VoteUser[];
-  usersWatcher: any;
   pollId: string;
+
+  usersWatcher: any;
+  error: string;
 
   constructor(
     private vote: VoteService,
@@ -33,6 +35,7 @@ export class VoteUsersComponent implements OnInit, OnDestroy {
     private location: Location,
     private auth: AuthService,
     public media: DeviceSizeService,
+    private list: ListService,
     public d: DicoService
   ) {}
 
@@ -40,16 +43,19 @@ export class VoteUsersComponent implements OnInit, OnDestroy {
     this.pollId = this.route.snapshot.paramMap.get('id');
     this.createSearchForm();
     this.usersWatcher = this.watchUsers(this.pollId);
+    this.list.start();
   }
 
   ngOnDestroy() {
     this.usersWatcher.unsubscribe();
+    this.list.stop();
   }
 
   createSearchForm() {
     this.emailCtrl = new FormControl('', [this.auth.emailDomainValidator, Validators.email]);
     this.emailCtrl.valueChanges.subscribe((email) => {
       this.sortUsers(email);
+      this.error = null;
     })
   }
 
@@ -76,7 +82,12 @@ export class VoteUsersComponent implements OnInit, OnDestroy {
 
   markAsVoted() {
     if (!this.emailCtrl.invalid && this.displayedUsers.length == 0) {
-      this.vote.markAsVoted(this.pollId, this.emailCtrl.value);
+      let name = this.list.format(this.emailCtrl.value);
+      if (!this.list.authUsers[name]) {
+        this.error = this.titleCase(name.replace('|', ' ').replace('  ', ' ')) + " " + this.d.l.notOnTheList;
+      } else {
+        this.vote.markAsVoted(this.pollId, this.emailCtrl.value);
+      }
     }
   }
 

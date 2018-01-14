@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 
 import { DeviceSizeService } from '../../providers/device-size.service'
 import { AdminService } from '../admin-service/admin.service';
@@ -14,6 +15,9 @@ export class AdminUsersComponent implements OnInit {
   voteAdmin: {[uid: string]: boolean};
   cafetAdmin: {[uid: string]: boolean};
 
+  displayedUsers: any[];
+  search: FormControl;
+
   constructor(
     public admin: AdminService,
     public d: DicoService,
@@ -24,11 +28,38 @@ export class AdminUsersComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.createSearchForm();
     this.admin.start();
   }
 
   ngOnDestroy() {
     this.admin.stop();
+  }
+
+  createSearchForm() {
+    this.search = new FormControl();
+    this.search.valueChanges.subscribe(name => {
+      this.sortUsers(name);
+    })
+  }
+
+  sortUsers(name: string) {
+    let emailId = name.replace(' ', '|').toLowerCase();
+    if (name.length > 0) {
+      this.displayedUsers = this.admin.users.filter(
+        user => (this.testEmailIds(emailId, user))
+      );
+    } else {
+      this.displayedUsers = this.admin.users;
+    }
+  }
+
+  testEmailIds(emailId, user) {
+      if (user[user.uid]){
+        let emailId2 = user[user.uid].admin.email.split('@')[0].replace('.', '|')
+        return emailId2.includes(emailId);
+      }
+      return false;
   }
 
   setVoteAdmin(email: string, uid: string, checked: boolean) {
@@ -54,5 +85,21 @@ export class AdminUsersComponent implements OnInit {
     } else {
       return this.cafetAdmin[user.uid];
     }
+  }
+
+  titleCase(str) {
+    str = str.toLowerCase().split(' ');
+    for (var i = 0; i < str.length; i++) {
+      str[i] = str[i].charAt(0).toUpperCase() + str[i].slice(1);
+    }
+    return str.join(' ');
+  }
+
+  getName(user: any): string {
+    return this.titleCase(
+      user[user.uid].admin.email
+      .split('@')[0].split('.').join(' ')
+      .replace('1', '').replace('2', '').replace('3', '')
+    );
   }
 }

@@ -69,6 +69,7 @@ export class English {
   public static readonly pollDescriptionError = "Error in the description";
   public static readonly markAsVotedInfo = "Add someone that voted physicaly";
   public static readonly votedButtonLabel = "Voted";
+  public static readonly notOnTheList = "is not on the list";
 
   // Cafet
   public static readonly troll = "T'ES EN NEGATIF !!<br><small>(*non contractuel, t'as pas encore de compte)</small>";

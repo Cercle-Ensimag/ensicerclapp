@@ -1,20 +1,28 @@
-<mat-card>
-  <mat-nav-list>
-    <div *ngFor="let user of admin.users">
-      <a mat-list-item *ngIf="user[user.uid]">
-        <div *ngIf="user[user.uid]" class="item">
-          <label *ngIf="!media.mobileSize">
-            {{ (user[user.uid].account || { name: {firstName: ndef} }).name.firstName }}
-            {{ (user[user.uid].account || { name: {lastName: ndef} }).name.lastName }}
-            &emsp;
-          </label>
-          {{ user[user.uid].admin.email }}
-          <span>
-            <mat-slide-toggle [checked]="voteChecked(user)" (change)="setVoteAdmin(user[user.uid].admin.email, user.uid, $event.checked)" color="primary">{{ d.l.voteAdminLabel }}</mat-slide-toggle>
-            <mat-slide-toggle [checked]="cafetChecked(user)" (change)="setCafetAdmim(user[user.uid].admin.email, user.uid, $event.checked)" color="primary">{{ d.l.cafetAdminLabel }}</mat-slide-toggle>
-          </span>
+<div class="width">
+  <mat-card *ngIf="admin.users" class="group">
+    <mat-form-field class="search">
+      <input matInput placeholder="{{ d.l.search }}" [formControl]="search">
+      <button mat-icon-button matSuffix><mat-icon>search</mat-icon></button>
+    </mat-form-field>
+  </mat-card>
+
+  <mat-accordion>
+    <div *ngFor="let user of displayedUsers">
+      <mat-expansion-panel *ngIf="user[user.uid]">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ getName(user) }}
+          </mat-panel-title>
+          <mat-panel-description *ngIf="!media.mobileSize">
+            {{ user[user.uid].admin.email }}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <div style="text-align=right">
+          <mat-slide-toggle [checked]="voteChecked(user)" (change)="setVoteAdmin(user[user.uid].admin.email, user.uid, $event.checked)" color="primary">{{ d.l.voteAdminLabel }}</mat-slide-toggle>
+          <mat-slide-toggle [checked]="cafetChecked(user)" (change)="setCafetAdmim(user[user.uid].admin.email, user.uid, $event.checked)" color="primary">{{ d.l.cafetAdminLabel }}</mat-slide-toggle>
         </div>
-      </a>
+      </mat-expansion-panel>
     </div>
-  </mat-nav-list>
-</mat-card>
+  </mat-accordion>
+</div>

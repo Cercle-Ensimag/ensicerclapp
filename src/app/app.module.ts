@@ -45,6 +45,7 @@ import { CafetService } from './cafet/cafet-service/cafet.service';
 
 import { AppModulesService } from './providers/app-modules.service';
 import { DeviceSizeService } from './providers/device-size.service';
+import { ListService } from './providers/list.service';
 
 import { CanActivateHome } from './home/home-guard/home.service';
 import { CanActivateVoteAdmin } from './vote/vote-guard/vote-admin.service';
@@ -93,7 +94,7 @@ import { environment } from '../environments/environment';
   ],
   providers: [
     AuthService, VoteService, AdminService, CafetService,
-    AppModulesService, DeviceSizeService,
+    AppModulesService, DeviceSizeService, ListService,
     CanActivateHome, CanActivateVoteAdmin, CanActivateAdmin, CanActivateCafetAdmin, EmailVerifGuard, AccountGuard,
     DicoService
   ],
