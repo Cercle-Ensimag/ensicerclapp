@@ -9,8 +9,10 @@
 /node_modules
 /functions/node_modules
 
-# admin ID
+# admin
 ensicerclapp-firebase-adminsdk-87izp-f7073412f3.json
+users_names.json
+users_ensimag/
 
 # IDEs and editors
 /.idea

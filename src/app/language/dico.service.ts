@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { English } from './english';
+import { French } from './french';
 
 @Injectable()
 export class DicoService {
@@ -8,7 +9,7 @@ export class DicoService {
   l: any;
 
   constructor() {
-    this.l = English;
+    this.l = French;
   }
 
 }
