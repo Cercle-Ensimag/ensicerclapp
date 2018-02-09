@@ -23,6 +23,7 @@ import { VoteUsersComponent } from './vote/vote-users/vote-users.component';
 
 import { CalendarComponent } from './calendar/calendar.component';
 import { AccountComponent } from './account/account.component';
+import { ReadmeComponent } from './info/readme/readme.component';
 
 import { CanActivateHome } from './home/home-guard/home.service';
 import { CanActivateVoteAdmin } from './vote/vote-guard/vote-admin.service';
@@ -51,6 +52,7 @@ const routes: Routes = [
   { path: 'vote-admin/results/:id', component: ResultsComponent, canActivate: [CanActivateHome, CanActivateVoteAdmin] },
   { path: 'vote-admin/users/:id', component: VoteUsersComponent, canActivate: [CanActivateHome, CanActivateVoteAdmin] },
   { path: 'calendar', component: CalendarComponent, canActivate: [CanActivateHome] },
+  { path: 'z-moi', component: ReadmeComponent, canActivate: [CanActivateHome] },
   { path: 'admin', component: AdminUsersComponent, canActivate: [CanActivateHome, CanActivateAdmin] }
 
 ];

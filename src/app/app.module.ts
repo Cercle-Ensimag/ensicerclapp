@@ -37,6 +37,8 @@ import { VoteUsersComponent } from './vote/vote-users/vote-users.component';
 import { CalendarComponent } from './calendar/calendar.component';
 import { AccountComponent } from './account/account.component';
 
+import { ReadmeComponent } from './info/readme/readme.component';
+
 // services
 import { AuthService } from './auth/auth-service/auth.service';
 import { VoteService } from './vote/vote-service/vote.service';
@@ -81,6 +83,7 @@ import { environment } from '../environments/environment';
     CafetComponent, CafetInfoComponent, CafetAdminComponent,
     VoteComponent, PollComponent, VoteSnackbarComponent, VoteAdminComponent, EditPollComponent, ResultsComponent, VoteUsersComponent,
     CalendarComponent,
+    ReadmeComponent,
     AccountComponent
   ],
   imports: [

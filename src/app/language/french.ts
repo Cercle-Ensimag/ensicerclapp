@@ -10,7 +10,7 @@ export class French {
 
   // Auth
   public static readonly logOutLabel = "Déconnexion";
-  public static readonly signInPageTitle = "Identifie-toi";
+  public static readonly signInPageTitle = "Identifie-toi<br><small>ou crée un compte si tu n'en a pas encore !</small>";
   public static readonly signInButtonLabel = "Connexion";
   public static readonly signUpPageTitle = "Crée-toi un compte";
   public static readonly signUpButtonLabel = "Créer le compte";
@@ -25,23 +25,23 @@ export class French {
   public static readonly askForExistingEmailLabel = "Entre ton e-mail";
   public static readonly emailDomainError = "L'e-mail doit appartenir au domaine '@ensimag.fr'";
   public static readonly noEmailError = "L'e-mail est exigé";
-  public static readonly emailFormatError = "E-mail incorrect";
+  public static readonly emailFormatError = "L'e-mail est incorrect";
   public static readonly beforePwdRstEmailInfo = "Un e-mail de réinitialisation de mot de passe va être envoyé à l'adresse donnée";
   public static readonly sendPwdResetEmailLabel = "Envoyer l'e-mail";
   public static readonly afterPwdRstEmailInfo = "Un e-mail a été envoyé à {{ email }}<br>Ouvre le lien qu'il contient";
-  public static readonly verificationEmailSentInfo = "Un e-mail de confirmation a été envoyé.<br>Consulte tes e-mails<br>Pour recevoir un nouvel e-mail ou être redirigé sur la page de connexion, choisis ci-dessous:";
+  public static readonly verificationEmailSentInfo = "Un e-mail de confirmation a été envoyé.<br>Consulte tes e-mails<br>Pour recevoir un nouvel e-mail ou être redirigé sur la page de connexion, choisis ci-dessous :";
   public static readonly sendEmailAgainLabel = "Renvoyer l'email";
   public static readonly passwordTooShortError = "Mot de passe trop court";
   public static readonly toSignInLabel = "Crée-toi un compte !";
   public static readonly passwordForgottenLabel = "Mot de passe oublié ?";
   public static readonly accountPageTitle = "Informations personnelles";
   public static readonly deleteAccountButtonLabel = "Supprimer le compte";
-  public static readonly deleteAccountInfo = "Tu es sur le point de Supprimer ton compte !";
+  public static readonly deleteAccountInfo = "Tu es sur le point de supprimer ton compte !";
   public static readonly refreshTokenInfo = "Cette opréation nécéssite de s'être identifié recemment";
   public static readonly confimDeleteAccountButtonLabel = "Supprimer le compte";
   public static readonly accountDeletedInfo = "Ton compte a été correctement supprimé";
   public static readonly passwordChangedInfo = "Ton mot de passe a été modifié avec succès";
-  public static readonly changePasswordButtonLabel = "Changer de mot de passe";
+  public static readonly changePasswordButtonLabel = "Changer mot de passe";
   public static readonly changePasswordInfo = "Tu es sur le point de changer de mot de passe";
 
   // Admin
