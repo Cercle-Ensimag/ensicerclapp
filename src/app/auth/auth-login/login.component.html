@@ -2,7 +2,7 @@
   <div>
     <mat-card>
       <form [formGroup]="loginCtrl" (ngSubmit)="onSubmit()" class="container">
-        <h2>{{ d.l.signInPageTitle }}</h2>
+        <h2 [innerHTML]="d.l.signInPageTitle"></h2>
 
         <span *ngIf="auth.error" class="error">{{ auth.error }}</span>
 
