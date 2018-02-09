@@ -13,13 +13,18 @@ admin.initializeApp({
 
 const db = admin.database();
 
-var usersNames = require("./users_names.json");
+const usersNames = require("./users_names.json");
+const usersEmailIds = require("./users_emails.json");
+const emailFilter = true;
 
 /**
  * Local function that verifies that the email used corresponds to a name
  */
 function verifyName(emailId) {
-  if (usersNames[formatEmailId(emailId)]) {
+  if (
+      (!emailFilter && usersNames[formatEmailId(emailId)])
+      || (emailFilter && usersEmailIds[emailId])
+  ) {
     return true;
   } else {
     return false;
@@ -30,8 +35,10 @@ function verifyName(emailId) {
  * Format the emailId to match the users list format (to be removed eventually)
  */
 function formatEmailId(emailId) {
-  return emailId.toLowerCase().replace('-', '|')
-  .replace('1', '').replace('2', '').replace('3', '');
+  emailId = emailId.toLowerCase().replace('-', '|');
+  for (var i=0; i<10; i++) {
+    emailId = emailId.replace(i.toString(), "");
+  }
 }
 
 /**
