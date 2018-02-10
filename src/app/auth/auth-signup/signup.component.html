@@ -17,7 +17,7 @@
         </mat-form-field>
 
         <mat-form-field>
-          <input matInput placeholder="{{ d.l.emailLabel }}" formControlName="email">
+          <input matInput type="email" placeholder="{{ d.l.emailLabel }}" formControlName="email">
           <mat-error *ngIf="signUpCtrl.get('email').invalid">{{ auth.getEmailErrorMessage(signUpCtrl.get('email')) }}</mat-error>
         </mat-form-field>
 

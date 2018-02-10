@@ -7,7 +7,7 @@
         <span *ngIf="auth.error" class="error">{{ auth.error }}</span>
 
         <mat-form-field>
-          <input matInput placeholder="{{ d.l.askForExistingEmailLabel }}" formControlName="email">
+          <input matInput type="email" placeholder="{{ d.l.askForExistingEmailLabel }}" formControlName="email">
           <mat-error *ngIf="loginCtrl.get('email').invalid">{{ auth.getEmailErrorMessage(loginCtrl.get('email')) }}</mat-error>
         </mat-form-field>
 

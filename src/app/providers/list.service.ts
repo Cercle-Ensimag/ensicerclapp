@@ -27,10 +27,4 @@ export class ListService {
     });
   }
 
-  format(email: string): string {
-    return email.split('@')[0].replace('.', '|')
-    .toLowerCase().replace('-', '|')
-    .replace('1', '').replace('2', '').replace('3', '');
-  }
-
 }

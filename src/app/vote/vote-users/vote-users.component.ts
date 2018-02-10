@@ -82,11 +82,11 @@ export class VoteUsersComponent implements OnInit, OnDestroy {
 
   markAsVoted() {
     if (!this.emailCtrl.invalid && this.displayedUsers.length == 0) {
-      let name = this.list.format(this.emailCtrl.value);
-      if (!this.list.authUsers[name]) {
-        this.error = this.titleCase(name.replace('|', ' ').replace('  ', ' ')) + " " + this.d.l.notOnTheList;
+      let emailId = this.auth.getEmailIdFromEmail(this.emailCtrl.value);
+      if (!this.list.authUsers[emailId]) {
+        this.error = this.titleCase(emailId.replace('|', ' ').replace('  ', ' ')) + " " + this.d.l.notOnTheList;
       } else {
-        this.vote.markAsVoted(this.pollId, this.emailCtrl.value);
+        this.vote.markAsVoted(this.pollId, this.emailCtrl.value.toLowerCase());
       }
     }
   }

@@ -117,5 +117,5 @@ exports.onDeleteAccount = functions.auth.user().onDelete(event => {
  */
 exports.updateList = functions.database.ref('/list/update')
 .onWrite(event => {
-  return db.ref("/list/users").set(usersNames);
+  return db.ref("/list/users").set(usersEmailIds);
 });
