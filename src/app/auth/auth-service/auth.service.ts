@@ -202,7 +202,7 @@ export class AuthService {
   }
 
   getEmailIdFromEmail(email: string) {
-    return email.replace('@ensimag.fr', '').replace('.', '|');
+    return email.toLowerCase().replace('@ensimag.fr', '').replace('.', '|');
   }
 
   getUserAccountPath(): string {
