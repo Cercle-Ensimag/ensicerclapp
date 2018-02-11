@@ -105,7 +105,7 @@ export class AuthService {
 
   login(email: string, password: string) {
     this.afAuth.auth.signInWithEmailAndPassword(email, password)
-    .catch((error) => { console.log(error); })
+    .catch((err) => { this.onLoginError(err); })
   }
 
   createAccount(
