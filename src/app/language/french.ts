@@ -28,7 +28,7 @@ export class French {
   public static readonly emailFormatError = "L'e-mail est incorrect";
   public static readonly beforePwdRstEmailInfo = "Un e-mail de réinitialisation de mot de passe va être envoyé à l'adresse donnée";
   public static readonly sendPwdResetEmailLabel = "Envoyer l'e-mail";
-  public static readonly afterPwdRstEmailInfo = "Un e-mail a été envoyé à {{ email }}<br>Ouvre le lien qu'il contient";
+  public static readonly afterPwdRstEmailInfo = "Ouvre le lien contenu dans l'email envoyé à";
   public static readonly verificationEmailSentInfo = "Un e-mail de confirmation a été envoyé.<br>Consulte tes e-mails<br>Pour recevoir un nouvel e-mail ou être redirigé sur la page de connexion, choisis ci-dessous :";
   public static readonly sendEmailAgainLabel = "Renvoyer l'email";
   public static readonly passwordTooShortError = "Mot de passe trop court";
@@ -55,7 +55,7 @@ export class French {
   public static readonly confirmPollDeleteLabel = "Supprimer quand même";
   public static readonly confirmPollDeleteInfo = "Tu es sur le point de supprimer ce scrutin et ses résultats<br>En es-tu sûr ?";
   public static readonly choiceSelectionInfo = "Tu es sur le point de voter pour";
-  public static readonly voteForLabel = "Voter pour";
+  public static readonly voteForLabel = "Voter";
   public static readonly pollIdLabel = "ID";
   public static readonly pollTitleLabel = "Titre";
   public static readonly pollDescriptionLabel = "Description";
@@ -66,7 +66,7 @@ export class French {
   public static readonly addChoiceLabel = "Ajouter un choix";
   public static readonly invalidIdError = "ID trop court ou déjà existant";
   public static readonly pollTitleTooShortError = "Titre trop court";
-  public static readonly pollDescriptionError = "Erreeur dans la description";
+  public static readonly pollDescriptionError = "Erreur dans la description";
   public static readonly markAsVotedInfo = "Ajouter un votant en face-à-face";
   public static readonly votedButtonLabel = "A voté !";
   public static readonly notOnTheList = "n'est pas dans la liste";
