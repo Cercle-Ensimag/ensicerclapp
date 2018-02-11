@@ -173,8 +173,10 @@
       "polls": {
         ".read": "auth.token.email_verified == true &&
                   auth.token.email.endsWith('@ensimag.fr')",
-        ".write": "auth.token.email_verified == true &&
-                   root.child('users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/'+auth.uid+'/admin/vote-admin').val() == true",
+        ".write": "(auth.token.email === root.child('admin/public/admins/admin1').val() ||
+                    auth.token.email === root.child('admin/public/admins/admin2').val() ||
+                    auth.token.email === root.child('admin/public/admins/admin3').val()) &&
+                   auth.token.email_verified == true",
 
         "$poll_id": {
           ".validate": "newData.hasChildren(['title', 'description'])",
