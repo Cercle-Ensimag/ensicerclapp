@@ -1,5 +1,4 @@
 const functions = require('firebase-functions');
-
 const admin = require('firebase-admin');
 
 // Fetch the service account key JSON file contents
@@ -13,37 +12,26 @@ admin.initializeApp({
 
 const db = admin.database();
 
-const usersNames = require("./users_names.json");
+// List of authorised email IDs
 const usersEmailIds = require("./users_emails.json");
-const emailFilter = true;
 
 /**
- * Local function that verifies that the email used corresponds to a name
+ * Local function that generates an ID from the email
  */
-function verifyName(emailId) {
-  if (
-      (!emailFilter && usersNames[formatEmailId(emailId)])
-      || (emailFilter && usersEmailIds[emailId])
-  ) {
-    return true;
-  } else {
-    return false;
-  }
+function getEmailId(email) {
+  return email.replace('@ensimag.fr', '').replace('.', '|');
 }
 
 /**
- * Format the emailId to match the users list format (to be removed eventually)
+ * Local function that verifies that the email used is correct
  */
-function formatEmailId(emailId) {
-  emailId = emailId.toLowerCase().replace('-', '|');
-  for (var i=0; i<10; i++) {
-    emailId = emailId.replace(i.toString(), "");
-  }
+function verifyEmail(email) {
+  return email.includes('@ensimag.fr') && usersEmailIds[getEmailId(email)];
 }
 
 /**
- * On vote asserted, move a named enveloppe from "buffer" to an anonimous bollot
- * in "bollot_box"
+ * On vote asserted, move a named enveloppe from "buffer" to an anonimous ballot
+ * in "ballot_box"
  */
 exports.onVote = functions.database.ref('/vote/users/{pollId}/{emailId}/voted')
 .onWrite(event => {
@@ -63,7 +51,7 @@ exports.onVote = functions.database.ref('/vote/users/{pollId}/{emailId}/voted')
           return db.ref("vote/results/"+pollId+"/buffer/"+emailId).remove();
         });
       } else {
-        return db.ref('/physical-vote/'+pollId).push().set('User '+emailId+' did not vote online');
+        return db.ref('/logs/vote/'+pollId+"/physical-vote").push().set('Paper ballot for user '+emailId);
       }
     });
   } else {
@@ -72,17 +60,17 @@ exports.onVote = functions.database.ref('/vote/users/{pollId}/{emailId}/voted')
 });
 
 /**
- * Save the original user email for later verifications,
- * to make sure a user has on 1 account, based on "@ensimag.fr" account unicity
+ * Verifies that the user is authorised to create a new account,
+ * if not, removes it
  */
 exports.onCreateAccount = functions.auth.user().onCreate(event => {
   const user = event.data;
-  const emailId = user.email.replace('@ensimag.fr', '').replace('.', '|');
+  const emailId = getEmailId(user.email);
 
   var refs = {uid: user.uid};
   refs[user.uid+"/admin/email"] = user.email;
 
-  if (!user.email.includes('@ensimag.fr') || !verifyName(emailId)) {
+  if (verifyEmail(user.email)) {
     return admin.auth().deleteUser(user.uid).then(() => {
       return db.ref("/errors/account").push().set(user.email+' pushed back');
     });
@@ -97,7 +85,10 @@ exports.onCreateAccount = functions.auth.user().onCreate(event => {
           return db.ref("/users/"+emailId).update(refs);
         });
       } else {
-        return db.ref("/users/"+emailId).update(refs);
+        return db.ref("/logs/account").push().set('User '+emailId+' created a first account')
+        .then(() => {
+          return db.ref("/users/"+emailId).update(refs);
+        });
       }
     });
   }
@@ -108,8 +99,11 @@ exports.onCreateAccount = functions.auth.user().onCreate(event => {
  */
 exports.onDeleteAccount = functions.auth.user().onDelete(event => {
   const user = event.data;
-  const emailId = user.email.replace('@ensimag.fr', '').replace('.', '|');
-  return db.ref("/users/"+emailId+"/"+user.uid).remove();
+  const emailId = getEmailId(user.email);
+  return db.ref("/logs/account").push().set('User '+emailId+' deleted his account')
+  .then(() => {
+    return db.ref("/users/"+emailId+"/"+user.uid).remove();
+  });
 });
 
 /**
