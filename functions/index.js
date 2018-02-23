@@ -55,7 +55,7 @@ exports.onVote = functions.database.ref('/vote/users/{pollId}/{emailId}/voted')
       }
     });
   } else {
-    return db.ref('/errors/vote/'+pollId).push().set('Error on user '+emailId);
+    return db.ref('/logs/errors/vote/'+pollId).push().set('Error on user '+emailId);
   }
 });
 
@@ -72,7 +72,7 @@ exports.onCreateAccount = functions.auth.user().onCreate(event => {
 
   if (!verifyEmail(user.email)) {
     return admin.auth().deleteUser(user.uid).then(() => {
-      return db.ref("/errors/account").push().set(user.email+' pushed back');
+      return db.ref("/logs/errors/account").push().set(user.email+' pushed back');
     });
   } else {
     return db.ref("/users/"+emailId).once("value").then(function(snapshot) {
@@ -80,7 +80,7 @@ exports.onCreateAccount = functions.auth.user().onCreate(event => {
         snapshot.child('uid').val() != null &&
         snapshot.child('uid').val() != user.uid
       ){
-        return db.ref("/errors/account").push().set('User '+emailId+' created a new account')
+        return db.ref("/logs/errors/account").push().set('User '+emailId+' created a new account')
         .then(() => {
           return db.ref("/users/"+emailId).update(refs);
         });
