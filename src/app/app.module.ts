@@ -71,6 +71,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+
 import { environment } from '../environments/environment';
 
 
@@ -92,7 +94,7 @@ import { environment } from '../environments/environment';
     AppRoutingModule,
     FormsModule, ReactiveFormsModule,
     AngularFireModule.initializeApp(environment.firebase), AngularFireAuthModule, AngularFireDatabaseModule,
-    MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule, MatToolbarModule, MatSidenavModule, MatListModule, MatCardModule, MatSnackBarModule, MatSlideToggleModule, MatTabsModule, MatExpansionModule,
+    MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule, MatToolbarModule, MatSidenavModule, MatListModule, MatCardModule, MatSnackBarModule, MatSlideToggleModule, MatTabsModule, MatExpansionModule, MatCheckboxModule,
     FlexLayoutModule
   ],
   providers: [

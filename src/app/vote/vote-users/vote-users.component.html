@@ -1,6 +1,7 @@
 <mat-card>
   <span *ngIf="error" class="error">{{ error }}</span>
 
+  <h3 *ngIf="users">{{ users.length }} {{ d.l.voteUsers }}</h3>
   <mat-form-field [class.large]="!media.mobileSize">
     <input matInput placeholder="{{ d.l.markAsVotedInfo }}" [formControl]="emailCtrl">
     <button mat-icon-button matSuffix><mat-icon>search</mat-icon></button>

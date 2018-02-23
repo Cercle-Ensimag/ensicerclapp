@@ -48,6 +48,7 @@ export class French {
   public static readonly adminLabel = "Admin";
   public static readonly voteAdminLabel = "Admin vote";
   public static readonly cafetAdminLabel = "Master cafet";
+  public static readonly membersLabel = "membres";
 
   // Vote
   public static readonly noPoll = "Il n'y a pour l'instant aucun nouveau scrutin !";
@@ -70,6 +71,7 @@ export class French {
   public static readonly markAsVotedInfo = "Ajouter un votant en face-à-face";
   public static readonly votedButtonLabel = "A voté !";
   public static readonly notOnTheList = "n'est pas dans la liste";
+  public static readonly voteUsers = "votants";
 
   // Cafet
   public static readonly troll = "T'ES EN NEGATIF !!<br><small>(*non contractuel, t'as pas encore de compte)</small>";

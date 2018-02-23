@@ -17,6 +17,10 @@ export class AdminUsersComponent implements OnInit {
 
   displayedUsers: any[];
   search: FormControl;
+  voteAdminCtrl: FormControl;
+  cafetAdminCtrl: FormControl;
+  voteAdminChecked: boolean;
+  cafetAdminChecked: boolean;
 
   constructor(
     public admin: AdminService,
@@ -38,28 +42,41 @@ export class AdminUsersComponent implements OnInit {
 
   createSearchForm() {
     this.search = new FormControl();
+    this.voteAdminCtrl = new FormControl();
+    this.cafetAdminCtrl = new FormControl();
     this.search.valueChanges.subscribe(name => {
+      this.sortUsers(name);
+    })
+    this.voteAdminCtrl.valueChanges.subscribe(checked => {
+      this.voteAdminChecked = checked;
+      this.sortUsers(name);
+    })
+    this.cafetAdminCtrl.valueChanges.subscribe(checked => {
+      this.cafetAdminChecked = checked;
       this.sortUsers(name);
     })
   }
 
   sortUsers(name: string) {
     let emailId = name.replace(' ', '|').toLowerCase();
-    if (name.length > 0) {
-      this.displayedUsers = this.admin.users.filter(
-        user => (this.testEmailIds(emailId, user))
-      );
-    } else {
-      this.displayedUsers = this.admin.users;
-    }
+    this.displayedUsers = this.admin.users.filter(
+      user => (this.testEmailIds(emailId, user))
+    );
   }
 
   testEmailIds(emailId, user) {
-      if (user[user.uid]){
-        let emailId2 = user[user.uid].admin.email.split('@')[0].replace('.', '|')
-        return emailId2.includes(emailId);
+    let userData = user[user.uid];
+    if (userData){
+      let emailId2 = userData.admin.email.split('@')[0].replace('.', '|')
+      if (userData.admin["vote-admin"] != true && this.voteAdminChecked == true) {
+        return false;
       }
-      return false;
+      if (userData.admin["cafet-admin"] != true && this.cafetAdminChecked == true) {
+        return false;
+      }
+      return emailId2.includes(emailId);
+    }
+    return false;
   }
 
   setVoteAdmin(email: string, uid: string, checked: boolean) {

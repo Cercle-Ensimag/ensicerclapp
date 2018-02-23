@@ -16,3 +16,8 @@ mat-slide-toggle {
 .search {
   width: 100%;
 }
+
+mat-checkbox {
+  margin-left: 12px;
+  margin-right: 12px;
+}
