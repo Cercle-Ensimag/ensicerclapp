@@ -70,7 +70,7 @@ exports.onCreateAccount = functions.auth.user().onCreate(event => {
   var refs = {uid: user.uid};
   refs[user.uid+"/admin/email"] = user.email;
 
-  if (verifyEmail(user.email)) {
+  if (!verifyEmail(user.email)) {
     return admin.auth().deleteUser(user.uid).then(() => {
       return db.ref("/errors/account").push().set(user.email+' pushed back');
     });
