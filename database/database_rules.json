@@ -11,13 +11,13 @@
           ".read": "auth.token.email_verified == true &&
                     auth.token.email.endsWith('@ensimag.fr') &&
                     $emailId === auth.token.email.replace('@ensimag.fr', '').replace('.', '|')",
-          ".write": "(auth.token.email_verified == true &&
-                      auth.token.email.endsWith('@ensimag.fr') &&
-                      $emailId === auth.token.email.replace('@ensimag.fr', '').replace('.', '|')) ||
-                     (auth.token.email_verified == true &&
-                      root.child('users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/'+auth.uid+'/admin/assessor').val() == true)",
-
           "$poll_id": {
+            ".write": "((auth.token.email_verified == true &&
+                         auth.token.email.endsWith('@ensimag.fr') &&
+                         $emailId === auth.token.email.replace('@ensimag.fr', '').replace('.', '|')) ||
+                        (auth.token.email_verified == true &&
+                         root.child('users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/'+auth.uid+'/admin/assessor').val() == true)) &&
+                       root.child('vote/polls/'+$poll_id+'/started').val() == true",
             ".validate": "root.child('vote/polls/'+$poll_id).exists() &&
                           newData.isBoolean() && newData.val() == true &&
                           (root.child('vote/users/'+$poll_id+'/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/voted').exists() &&
@@ -212,19 +212,22 @@
 
           "$emailId": {
             ".write": "auth.token.email_verified == true &&
-                       root.child('users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/'+auth.uid+'/admin/assessor').val() == true",
+                       root.child('users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/'+auth.uid+'/admin/assessor').val() == true &&
+                       root.child('vote/polls/'+$poll_id+'/started').val() == true",
             ".validate": "newData.hasChildren(['emailId', 'voted'])",
 
             "emailId": {
               ".write": "auth.token.email_verified == true &&
                          auth.token.email.endsWith('@ensimag.fr') &&
-                         $emailId === auth.token.email.replace('@ensimag.fr', '').replace('.', '|')",
+                         $emailId === auth.token.email.replace('@ensimag.fr', '').replace('.', '|') &&
+                         root.child('vote/polls/'+$poll_id+'/started').val() == true",
               ".validate": "newData.val() === $emailId"
             },
             "voted": {
               ".write": "auth.token.email_verified == true &&
                          auth.token.email.endsWith('@ensimag.fr') &&
                          $emailId === auth.token.email.replace('@ensimag.fr', '').replace('.', '|') &&
+                         root.child('vote/polls/'+$poll_id+'/started').val() == true &&
                          (!data.exists() || data.val() != true) &&
                          newData.val() == true",
               ".validate": "newData.isBoolean()"
