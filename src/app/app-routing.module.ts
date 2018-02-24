@@ -20,6 +20,7 @@ import { VoteAdminComponent } from './vote/vote-admin/vote-admin.component';
 import { EditPollComponent } from './vote/edit-poll/edit-poll.component';
 import { ResultsComponent } from './vote/results/results.component';
 import { VoteUsersComponent } from './vote/vote-users/vote-users.component';
+import { AssessorComponent } from './vote/assessor/assessor.component';
 
 import { CalendarComponent } from './calendar/calendar.component';
 import { AccountComponent } from './account/account.component';
@@ -27,6 +28,7 @@ import { ReadmeComponent } from './info/readme/readme.component';
 
 import { CanActivateHome } from './home/home-guard/home.service';
 import { CanActivateVoteAdmin } from './vote/vote-guard/vote-admin.service';
+import { CanActivateAssessor } from './vote/vote-guard/assessor.service';
 import { CanActivateAdmin } from './admin/guard/admin-guard.service';
 import { CanActivateCafetAdmin } from './cafet/cafet-guard/cafet-admin.service';
 import { EmailVerifGuard } from './auth/email-verif/email-verif-guard/email-verif.guard';
@@ -45,12 +47,15 @@ const routes: Routes = [
   { path: 'home', component: DashboardComponent, canActivate: [CanActivateHome] },
   { path: 'cafet', component: CafetComponent, canActivate: [CanActivateHome] },
   { path: 'cafet-admin', component: CafetAdminComponent, canActivate: [CanActivateHome, CanActivateCafetAdmin]},
+
   { path: 'vote', component: VoteComponent, canActivate: [CanActivateHome] },
   { path: 'vote/poll/:id', component: PollComponent, canActivate: [CanActivateHome] },
   { path: 'vote-admin', component: VoteAdminComponent, canActivate: [CanActivateHome, CanActivateVoteAdmin] },
   { path: 'vote-admin/edit/:id', component: EditPollComponent, canActivate: [CanActivateHome, CanActivateVoteAdmin] },
   { path: 'vote-admin/results/:id', component: ResultsComponent, canActivate: [CanActivateHome, CanActivateVoteAdmin] },
   { path: 'vote-admin/users/:id', component: VoteUsersComponent, canActivate: [CanActivateHome, CanActivateVoteAdmin] },
+  { path: 'assessor', component: AssessorComponent, canActivate: [CanActivateHome, CanActivateVoteAdmin] },
+
   { path: 'calendar', component: CalendarComponent, canActivate: [CanActivateHome] },
   { path: 'z-moi', component: ReadmeComponent, canActivate: [CanActivateHome] },
   { path: 'admin', component: AdminUsersComponent, canActivate: [CanActivateHome, CanActivateAdmin] }

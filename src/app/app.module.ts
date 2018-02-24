@@ -33,6 +33,7 @@ import { VoteAdminComponent } from './vote/vote-admin/vote-admin.component';
 import { EditPollComponent } from './vote/edit-poll/edit-poll.component';
 import { ResultsComponent } from './vote/results/results.component';
 import { VoteUsersComponent } from './vote/vote-users/vote-users.component';
+import { AssessorComponent } from './vote/assessor/assessor.component';
 
 import { CalendarComponent } from './calendar/calendar.component';
 import { AccountComponent } from './account/account.component';
@@ -51,6 +52,7 @@ import { ListService } from './providers/list.service';
 
 import { CanActivateHome } from './home/home-guard/home.service';
 import { CanActivateVoteAdmin } from './vote/vote-guard/vote-admin.service';
+import { CanActivateAssessor } from './vote/vote-guard/assessor.service';
 import { CanActivateAdmin } from './admin/guard/admin-guard.service';
 import { CanActivateCafetAdmin } from './cafet/cafet-guard/cafet-admin.service';
 import { EmailVerifGuard } from './auth/email-verif/email-verif-guard/email-verif.guard';
@@ -83,7 +85,7 @@ import { environment } from '../environments/environment';
     HomeComponent, DashboardComponent,
     LoginComponent, SignUpComponent, EmailVerifComponent, PasswordResetComponent,
     CafetComponent, CafetInfoComponent, CafetAdminComponent,
-    VoteComponent, PollComponent, VoteSnackbarComponent, VoteAdminComponent, EditPollComponent, ResultsComponent, VoteUsersComponent,
+    VoteComponent, PollComponent, VoteSnackbarComponent, VoteAdminComponent, EditPollComponent, ResultsComponent, VoteUsersComponent, AssessorComponent,
     CalendarComponent,
     ReadmeComponent,
     AccountComponent
@@ -100,7 +102,7 @@ import { environment } from '../environments/environment';
   providers: [
     AuthService, VoteService, AdminService, CafetService,
     AppModulesService, DeviceSizeService, ListService,
-    CanActivateHome, CanActivateVoteAdmin, CanActivateAdmin, CanActivateCafetAdmin, EmailVerifGuard, AccountGuard,
+    CanActivateHome, CanActivateVoteAdmin, CanActivateAssessor, CanActivateAdmin, CanActivateCafetAdmin, EmailVerifGuard, AccountGuard,
     DicoService
   ],
   entryComponents: [

@@ -47,6 +47,7 @@ export class French {
   // Admin
   public static readonly adminLabel = "Admin";
   public static readonly voteAdminLabel = "Admin vote";
+  public static readonly assessorLabel = "Assesseur"
   public static readonly cafetAdminLabel = "Master cafet";
   public static readonly nbMembersLabel = "{0} membres";
 

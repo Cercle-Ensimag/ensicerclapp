@@ -28,6 +28,10 @@
             routerLink="/vote-admin"
           >{{ d.l.voteAdminLabel }}</a>
           <a mat-list-item
+            *ngIf="auth.isAssessor"
+            routerLink="/assessor"
+          >{{ d.l.assessorLabel }}</a>
+          <a mat-list-item
             *ngIf="auth.isCafetAdmin"
             routerLink="/cafet-admin"
           >{{ d.l.cafetAdminLabel }}</a>

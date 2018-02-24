@@ -39,6 +39,7 @@ export class AuthService {
 
   isAdmin: boolean = false;
   isVoteAdmin: boolean = false;
+  isAssessor: boolean = false;
   isCafetAdmin: boolean = false;
   cafetActivated: boolean = false;
 
@@ -273,10 +274,12 @@ export class AuthService {
     .subscribe(data => {
       if (data) {
         this.isVoteAdmin = data["vote-admin"] || false;
+        this.isAssessor = data["assessor"] || false;
         this.isCafetAdmin = data["cafet-admin"] || false;
         this.cafetActivated = data["cafet-activated"] || false;
       } else {
         this.isVoteAdmin = false;
+        this.isAssessor = false;
         this.isCafetAdmin = false;
         this.cafetActivated = false;
       }
