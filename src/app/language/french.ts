@@ -28,7 +28,7 @@ export class French {
   public static readonly emailFormatError = "L'e-mail est incorrect";
   public static readonly beforePwdRstEmailInfo = "Un e-mail de réinitialisation de mot de passe va être envoyé à l'adresse donnée";
   public static readonly sendPwdResetEmailLabel = "Envoyer l'e-mail";
-  public static readonly afterPwdRstEmailInfo = "Ouvre le lien contenu dans l'email envoyé à";
+  public static readonly afterPwdRstEmailInfo = "Ouvre le lien contenu dans l'email envoyé à {0}";
   public static readonly verificationEmailSentInfo = "Un e-mail de confirmation a été envoyé.<br>Consulte tes e-mails<br>Pour recevoir un nouvel e-mail ou être redirigé sur la page de connexion, choisis ci-dessous :";
   public static readonly sendEmailAgainLabel = "Renvoyer l'email";
   public static readonly passwordTooShortError = "Mot de passe trop court";
@@ -48,13 +48,13 @@ export class French {
   public static readonly adminLabel = "Admin";
   public static readonly voteAdminLabel = "Admin vote";
   public static readonly cafetAdminLabel = "Master cafet";
-  public static readonly membersLabel = "membres";
+  public static readonly nbMembersLabel = "{0} membres";
 
   // Vote
   public static readonly noPoll = "Il n'y a pour l'instant aucun nouveau scrutin !";
   public static readonly addPollLabel = "Créer un nouveau scrutin";
   public static readonly confirmPollDeleteLabel = "Supprimer quand même";
-  public static readonly confirmPollDeleteInfo = "Tu es sur le point de supprimer ce scrutin et ses résultats<br>En es-tu sûr ?";
+  public static readonly confirmPollDeleteInfo = "Tu es sur le point de supprimer<br>\"{0}\"<br> et ses résultats<br>En es-tu sûr ?";
   public static readonly choiceSelectionInfo = "Tu es sur le point de voter pour";
   public static readonly voteForLabel = "Voter";
   public static readonly pollIdLabel = "ID";
@@ -70,8 +70,8 @@ export class French {
   public static readonly pollDescriptionError = "Erreur dans la description";
   public static readonly markAsVotedInfo = "Ajouter un votant en face-à-face";
   public static readonly votedButtonLabel = "A voté !";
-  public static readonly notOnTheList = "n'est pas dans la liste";
-  public static readonly voteUsers = "votants";
+  public static readonly notOnTheList = "{0} n'est pas dans la liste";
+  public static readonly nbVoteUsersLabel = "{0} votants";
 
   // Cafet
   public static readonly troll = "T'ES EN NEGATIF !!<br><small>(*non contractuel, t'as pas encore de compte)</small>";

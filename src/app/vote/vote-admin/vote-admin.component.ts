@@ -12,6 +12,7 @@ import { DicoService } from '../../language/dico.service';
 export class VoteAdminComponent {
 
   deletePollId: string;
+  deletePollTitle: string;
 
   constructor(
     private vote: VoteService,
@@ -28,8 +29,9 @@ export class VoteAdminComponent {
     this.vote.stop();
   }
 
-  delete(pollId: string) {
+  delete(pollId: string, pollTitle: string) {
     this.deletePollId = pollId;
+    this.deletePollTitle = pollTitle;
   }
 
   back() {

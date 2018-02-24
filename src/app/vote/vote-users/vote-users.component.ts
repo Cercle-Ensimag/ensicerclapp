@@ -84,7 +84,8 @@ export class VoteUsersComponent implements OnInit, OnDestroy {
     if (!this.emailCtrl.invalid && this.displayedUsers.length == 0) {
       let emailId = this.auth.getEmailIdFromEmail(this.emailCtrl.value);
       if (!this.list.authUsers[emailId]) {
-        this.error = this.titleCase(emailId.replace('|', ' ').replace('  ', ' ')) + " " + this.d.l.notOnTheList;
+        let name = this.titleCase(emailId.replace('|', ' ').replace('  ', ' '));
+        this.error = this.d.format(this.d.l.notOnTheList, name);
       } else {
         this.vote.markAsVoted(this.pollId, this.emailCtrl.value.toLowerCase());
       }

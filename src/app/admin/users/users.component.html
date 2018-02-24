@@ -1,6 +1,6 @@
 <div class="width">
   <mat-card *ngIf="admin.users" class="group">
-    <h3 *ngIf="admin.users">{{ admin.users.length }} {{ d.l.membersLabel }}</h3>
+    <h3 *ngIf="admin.users">{{ d.format(d.l.nbMembersLabel, admin.users.length) }}</h3>
     <mat-form-field class="search">
       <input matInput placeholder="{{ d.l.search }}" [formControl]="search">
       <button mat-icon-button matSuffix><mat-icon>search</mat-icon></button>
