@@ -93,4 +93,7 @@ export class French {
   public static readonly usersWithNoAccountLabel = "Demandes";
   public static readonly ActivateAccountButtonLabel = "Activer le compte";
 
+  // Events
+  public static readonly noEvent = "Aucun événement, pour le moment ;)";
+  public static readonly periodFormat = "Du {0} au {1}";
 }

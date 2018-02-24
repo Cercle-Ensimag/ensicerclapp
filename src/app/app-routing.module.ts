@@ -22,6 +22,9 @@ import { ResultsComponent } from './vote/results/results.component';
 import { VoteUsersComponent } from './vote/vote-users/vote-users.component';
 import { AssessorComponent } from './vote/assessor/assessor.component';
 
+import { EventsHomeComponent } from './events/events-home/events-home.component';
+import { EventComponent } from './events/event/event.component';
+
 import { CalendarComponent } from './calendar/calendar.component';
 import { AccountComponent } from './account/account.component';
 import { ReadmeComponent } from './info/readme/readme.component';
@@ -55,6 +58,9 @@ const routes: Routes = [
   { path: 'vote-admin/results/:id', component: ResultsComponent, canActivate: [CanActivateHome, CanActivateVoteAdmin] },
   { path: 'vote-admin/users/:id', component: VoteUsersComponent, canActivate: [CanActivateHome, CanActivateVoteAdmin] },
   { path: 'assessor', component: AssessorComponent, canActivate: [CanActivateHome, CanActivateAssessor] },
+
+  { path: 'events', component: EventsHomeComponent, canActivate: [CanActivateHome] },
+  { path: 'events/event/:id', component: EventComponent, canActivate: [CanActivateHome] },
 
   { path: 'calendar', component: CalendarComponent, canActivate: [CanActivateHome] },
   { path: 'z-moi', component: ReadmeComponent, canActivate: [CanActivateHome] },

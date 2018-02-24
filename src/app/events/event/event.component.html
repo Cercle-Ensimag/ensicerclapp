@@ -1,0 +1,6 @@
+<mat-card *ngIf="event">
+  <h1>{{ event.title }}</h1>
+  <h3 [innerHTML]="event.description"></h3>
+  <img *ngIf="event.image !== ''" mat-card-image src="{{ event.image }}">
+  <button mat-raised-button color="primary" (click)='back()'>{{ d.l.backLabel }}</button>
+</mat-card>

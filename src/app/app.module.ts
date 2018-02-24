@@ -35,6 +35,9 @@ import { ResultsComponent } from './vote/results/results.component';
 import { VoteUsersComponent } from './vote/vote-users/vote-users.component';
 import { AssessorComponent } from './vote/assessor/assessor.component';
 
+import { EventsHomeComponent } from './events/events-home/events-home.component';
+import { EventComponent } from './events/event/event.component';
+
 import { CalendarComponent } from './calendar/calendar.component';
 import { AccountComponent } from './account/account.component';
 
@@ -45,6 +48,7 @@ import { AuthService } from './auth/auth-service/auth.service';
 import { VoteService } from './vote/vote-service/vote.service';
 import { AdminService } from './admin/admin-service/admin.service';
 import { CafetService } from './cafet/cafet-service/cafet.service';
+import { EventsService } from './events/events-service/events.service';
 
 import { AppModulesService } from './providers/app-modules.service';
 import { DeviceSizeService } from './providers/device-size.service';
@@ -88,6 +92,7 @@ import { environment } from '../environments/environment';
     CafetComponent, CafetInfoComponent, CafetAdminComponent,
     VoteComponent, PollComponent, VoteSnackbarComponent, VoteAdminComponent, EditPollComponent, ResultsComponent, VoteUsersComponent, AssessorComponent,
     CalendarComponent,
+    EventsHomeComponent, EventComponent,
     ReadmeComponent,
     AccountComponent
   ],
@@ -101,7 +106,7 @@ import { environment } from '../environments/environment';
     FlexLayoutModule
   ],
   providers: [
-    AuthService, VoteService, AdminService, CafetService,
+    AuthService, VoteService, AdminService, CafetService, EventsService,
     AppModulesService, DeviceSizeService, ListService,
     CanActivateHome, CanActivateVoteAdmin, CanActivateAssessor, CanActivateAdmin, CanActivateCafetAdmin, EmailVerifGuard, AccountGuard,
     DicoService
