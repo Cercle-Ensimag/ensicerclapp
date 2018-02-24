@@ -40,8 +40,12 @@
                             !data.exists()"
             },
             "vote-admin": { ".validate": "newData.isBoolean()" },
-            "assessor": { ".validate": "newData.isBoolean()" },
             "cafet-admin": { ".validate": "newData.isBoolean()" },
+            "assessor": {
+              ".write": "auth.token.email_verified == true &&
+                         root.child('users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/'+auth.uid+'/admin/vote-admin').val() == true",
+              ".validate": "newData.isBoolean()"
+            },
 
             "$other": { ".validate": false }
           },

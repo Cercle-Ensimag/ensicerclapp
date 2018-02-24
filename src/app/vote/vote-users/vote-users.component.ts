@@ -6,7 +6,6 @@ import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
 import { DeviceSizeService } from '../../providers/device-size.service';
 import { AuthService } from '../../auth/auth-service/auth.service';
 import { VoteService } from '../vote-service/vote.service';
-import { Poll, Choice } from '../poll/poll.component';
 import { ListService } from '../../providers/list.service';
 import { DicoService } from '../../language/dico.service';
 
@@ -28,6 +27,9 @@ export class VoteUsersComponent implements OnInit, OnDestroy {
 
   usersWatcher: any;
   error: string;
+
+  pageIndex: number = 0;
+  pageSize: number = 20;
 
   constructor(
     private vote: VoteService,
@@ -61,6 +63,7 @@ export class VoteUsersComponent implements OnInit, OnDestroy {
 
   sortUsers(email: string) {
     let emailId = email.split('@')[0].replace('.', '|');
+    this.pageIndex = 0;
     if (email.length > 0) {
       this.displayedUsers = this.users.filter(user => user.emailId.includes(emailId));
     } else {
@@ -70,26 +73,13 @@ export class VoteUsersComponent implements OnInit, OnDestroy {
 
   watchUsers(pollId: string) {
     return this.vote.getUsers(pollId).subscribe(users => {
-      this.emailCtrl.setValue("");
       this.users = users;
-      this.displayedUsers = users;
+      this.sortUsers(this.emailCtrl.value);
     });
   }
 
-  back() {
-    this.location.back();
-  }
-
-  markAsVoted() {
-    if (!this.emailCtrl.invalid && this.displayedUsers.length == 0) {
-      let emailId = this.auth.getEmailIdFromEmail(this.emailCtrl.value);
-      if (!this.list.authUsers[emailId]) {
-        let name = this.titleCase(emailId.replace('|', ' ').replace('  ', ' '));
-        this.error = this.d.format(this.d.l.notOnTheList, name);
-      } else {
-        this.vote.markAsVoted(this.pollId, this.emailCtrl.value.toLowerCase());
-      }
-    }
+  updateList(event) {
+    this.pageIndex = event.pageIndex;
   }
 
   titleCase(str) {

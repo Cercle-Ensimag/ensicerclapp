@@ -3,6 +3,10 @@ button {
   width: 100%;
 }
 
+.item {
+  max-width: 200px;
+}
+
 mat-card {
   max-width: 500px;
   margin: auto;

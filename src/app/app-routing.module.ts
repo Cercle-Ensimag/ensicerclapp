@@ -54,7 +54,7 @@ const routes: Routes = [
   { path: 'vote-admin/edit/:id', component: EditPollComponent, canActivate: [CanActivateHome, CanActivateVoteAdmin] },
   { path: 'vote-admin/results/:id', component: ResultsComponent, canActivate: [CanActivateHome, CanActivateVoteAdmin] },
   { path: 'vote-admin/users/:id', component: VoteUsersComponent, canActivate: [CanActivateHome, CanActivateVoteAdmin] },
-  { path: 'assessor', component: AssessorComponent, canActivate: [CanActivateHome, CanActivateVoteAdmin] },
+  { path: 'assessor', component: AssessorComponent, canActivate: [CanActivateHome, CanActivateAssessor] },
 
   { path: 'calendar', component: CalendarComponent, canActivate: [CanActivateHome] },
   { path: 'z-moi', component: ReadmeComponent, canActivate: [CanActivateHome] },

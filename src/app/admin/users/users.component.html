@@ -5,12 +5,13 @@
       <input matInput placeholder="{{ d.l.search }}" [formControl]="search">
       <button mat-icon-button matSuffix><mat-icon>search</mat-icon></button>
     </mat-form-field>
-    <mat-checkbox [formControl]="voteAdminCtrl" color="primary">{{ d.l.voteAdminLabel }}</mat-checkbox>
-    <mat-checkbox [formControl]="cafetAdminCtrl" color="primary">{{ d.l.cafetAdminLabel }}</mat-checkbox>
+    <mat-checkbox [formControl]="voteAdminCtrl" color="primary">{{ d.l.voteAdminPlLabel }}</mat-checkbox>
+    <mat-checkbox [formControl]="assessorCtrl" color="primary">{{ d.l.assessorPlLabel }}</mat-checkbox>
+    <mat-checkbox [formControl]="cafetAdminCtrl" color="primary">{{ d.l.cafetAdminPlLabel }}</mat-checkbox>
   </mat-card>
 
   <mat-accordion>
-    <div *ngFor="let user of displayedUsers">
+    <div *ngFor="let user of displayedUsers | slice:pageIndex*pageSize:(pageIndex+1)*pageSize">
       <mat-expansion-panel *ngIf="user[user.uid]">
         <mat-expansion-panel-header>
           <mat-panel-title>
@@ -23,9 +24,14 @@
 
         <div style="text-align=right">
           <mat-slide-toggle [checked]="voteChecked(user)" (change)="setVoteAdmin(user[user.uid].admin.email, user.uid, $event.checked)" color="primary">{{ d.l.voteAdminLabel }}</mat-slide-toggle>
+          <mat-slide-toggle [checked]="assessChecked(user)" (change)="setAssessor(user[user.uid].admin.email, user.uid, $event.checked)" color="primary">{{ d.l.assessorLabel }}</mat-slide-toggle>
           <mat-slide-toggle [checked]="cafetChecked(user)" (change)="setCafetAdmim(user[user.uid].admin.email, user.uid, $event.checked)" color="primary">{{ d.l.cafetAdminLabel }}</mat-slide-toggle>
         </div>
       </mat-expansion-panel>
     </div>
   </mat-accordion>
+  <mat-paginator [length]="displayedUsers.length"
+                [pageSize]="pageSize"
+                (page)="updateList($event)">
+  </mat-paginator>
 </div>

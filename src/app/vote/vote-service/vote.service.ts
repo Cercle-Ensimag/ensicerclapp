@@ -20,10 +20,13 @@ export class VoteService {
   ) { }
 
   watchPolls() {
-    return this.db.list<Poll>('vote/polls').valueChanges()
-    .subscribe(polls => {
+    return this.getPolls().subscribe(polls => {
       this.polls = polls || [];
     });
+  }
+
+  getPolls(): Observable<Poll[]> {
+    return this.db.list<Poll>('vote/polls').valueChanges();
   }
 
   watchVotes() {

@@ -50,12 +50,18 @@ export class French {
   public static readonly assessorLabel = "Assesseur"
   public static readonly cafetAdminLabel = "Master cafet";
   public static readonly nbMembersLabel = "{0} membres";
+  public static readonly voteAdminPlLabel = "Admins vote";
+  public static readonly assessorPlLabel = "Assesseurs"
+  public static readonly cafetAdminPlLabel = "Masters cafet";
+
 
   // Vote
-  public static readonly noPoll = "Il n'y a pour l'instant aucun nouveau scrutin !";
+  public static readonly polls = "Scrutins";
+  public static readonly noPoll = "Il n'y a pour l'instant aucun scrutin !";
+  public static readonly pollChoiceLabel = "Choix des scrutins";
   public static readonly addPollLabel = "Créer un nouveau scrutin";
   public static readonly confirmPollDeleteLabel = "Supprimer quand même";
-  public static readonly confirmPollDeleteInfo = "Tu es sur le point de supprimer<br>\"{0}\"<br> et ses résultats<br>En es-tu sûr ?";
+  public static readonly confirmPollDeleteInfo = "Tu es sur le point de supprimer<br>\"{0}\"<br> et ses résultats.<br>En es-tu sûr ?";
   public static readonly choiceSelectionInfo = "Tu es sur le point de voter pour";
   public static readonly voteForLabel = "Voter";
   public static readonly pollIdLabel = "ID";

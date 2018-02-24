@@ -38,6 +38,9 @@ export class AdminService {
   setVoteAdmin(email: string, uid: string, checked: boolean) {
     this.db.object('users/'+this.auth.getEmailIdFromEmail(email)+'/'+uid+'/admin/vote-admin').set(checked);
   }
+  setAssessor(email: string, uid: string, checked: boolean) {
+    this.db.object('users/'+this.auth.getEmailIdFromEmail(email)+'/'+uid+'/admin/assessor').set(checked);
+  }
 
   setCafetAdmim(email: string, uid: string, checked: boolean) {
     this.db.object('users/'+this.auth.getEmailIdFromEmail(email)+'/'+uid+'/admin/cafet-admin').set(checked);
