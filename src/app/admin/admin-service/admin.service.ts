@@ -31,7 +31,7 @@ export class AdminService {
   watchUsers() {
     return this.db.list<any>('users').valueChanges()
     .subscribe(users => {
-      this.users = users;
+      this.users = users.filter(user => user[user.uid]);
     })
   }
 
