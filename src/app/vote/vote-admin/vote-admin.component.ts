@@ -16,7 +16,7 @@ export class Assessor {
   templateUrl: './vote-admin.component.html',
   styleUrls: ['./vote-admin.component.css']
 })
-export class VoteAdminComponent {
+export class VoteAdminComponent implements OnInit, OnDestroy {
 
   deletePollId: string;
   deletePollTitle: string;
