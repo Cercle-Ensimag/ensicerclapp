@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { AuthService } from '../../auth/auth-service/auth.service';
 import { Poll, Choice } from '../poll/poll.component';
+import { Assessor } from '../vote-admin/vote-admin.component';
 import { VoteUser } from '../vote-users/vote-users.component';
 
 @Injectable()
@@ -105,6 +106,19 @@ export class VoteService {
     .then(() => {
       return this.db.object('users/'+emailId+'/votes/'+pollId).set(true);
     });
+  }
+
+  getAssessors() {
+    return this.db.list<Assessor>('vote/assessors').valueChanges();
+  }
+
+  removeAssessor(emailId: string) {
+    return this.db.object<Assessor>('vote/assessors/'+emailId).remove();
+  }
+
+  addAssessor(email: string) {
+    let emailId = this.auth.getEmailIdFromEmail(email);
+    return this.db.object<Assessor>('vote/assessors/'+emailId).set({emailId: emailId});
   }
 
 }

@@ -16,3 +16,11 @@ mat-slide-toggle {
   max-width: 500px;
   margin: auto;
 }
+
+mat-form-field {
+  width: 100%;
+}
+
+.large {
+  width: 400px;
+}

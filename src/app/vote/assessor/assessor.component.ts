@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 
 import { DeviceSizeService } from '../../providers/device-size.service';
 import { AuthService } from '../../auth/auth-service/auth.service';
@@ -143,8 +143,8 @@ export class AssessorComponent implements OnInit, OnDestroy {
   markAsVoted() {
     if (!this.emailCtrl.invalid && this.displayedUsers.length == 0) {
       let emailId = this.auth.getEmailIdFromEmail(this.emailCtrl.value);
+      let name = this.titleCase(emailId.replace('|', ' ').replace('  ', ' '));
       if (!this.list.authUsers[emailId]) {
-        let name = this.titleCase(emailId.replace('|', ' ').replace('  ', ' '));
         this.error = this.d.format(this.d.l.notOnTheList, name);
       } else {
         for (let poll of this.polls) {
@@ -153,6 +153,7 @@ export class AssessorComponent implements OnInit, OnDestroy {
           }
         }
         this.emailCtrl.setValue("");
+        this.error = this.d.format(this.d.l.markedAsVoted, name);
       }
     }
   }

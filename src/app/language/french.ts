@@ -53,6 +53,8 @@ export class French {
   public static readonly voteAdminPlLabel = "Admins vote";
   public static readonly assessorPlLabel = "Assesseurs"
   public static readonly cafetAdminPlLabel = "Masters cafet";
+  public static readonly addAssessorInfo = "Entrer l'e-mail d'un assesseur";
+  public static readonly addAssessorButtonLabel = "Ajouter";
 
 
   // Vote
@@ -76,6 +78,7 @@ export class French {
   public static readonly pollTitleTooShortError = "Titre trop court";
   public static readonly pollDescriptionError = "Erreur dans la description";
   public static readonly markAsVotedInfo = "Ajouter un votant en face-à-face";
+  public static readonly markedAsVoted = "{0} a bien été ajouté";
   public static readonly votedButtonLabel = "A voté !";
   public static readonly notOnTheList = "{0} n'est pas dans la liste";
   public static readonly nbVoteUsersLabel = "{0} votants";

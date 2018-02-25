@@ -40,6 +40,7 @@ export class AuthService {
   isAdmin: boolean = false;
   isVoteAdmin: boolean = false;
   isAssessor: boolean = false;
+  isEventsAdmin: boolean = false;
   isCafetAdmin: boolean = false;
   cafetActivated: boolean = false;
 
@@ -47,6 +48,7 @@ export class AuthService {
   profileWatcher: any;
   adminWatcher: any;
   adminOtherWatcher: any;
+  assessorWatcher: any;
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -245,6 +247,7 @@ export class AuthService {
     this.profileWatcher = this.watchProfile();
     this.adminWatcher = this.watchIsAdmin();
     this.adminOtherWatcher = this.watchIsAdminOther();
+    this.assessorWatcher = this.watchIsAssessor();
   }
 
   watchProfile() {
@@ -274,16 +277,23 @@ export class AuthService {
     .subscribe(data => {
       if (data) {
         this.isVoteAdmin = data["vote-admin"] || false;
-        this.isAssessor = data["assessor"] || false;
         this.isCafetAdmin = data["cafet-admin"] || false;
+        this.isEventsAdmin = data["events-admin"] || false;
         this.cafetActivated = data["cafet-activated"] || false;
       } else {
         this.isVoteAdmin = false;
-        this.isAssessor = false;
         this.isCafetAdmin = false;
+        this.isEventsAdmin = false;
         this.cafetActivated = false;
       }
     });
+  }
+
+  watchIsAssessor() {
+    return this.adminOtherWatcher = this.db.object<string>('vote/assessors/'+this.getEmailId()).valueChanges()
+    .subscribe(is => {
+      this.isAssessor = is != null;
+    })
   }
 
   stopWatchingUserProfile() {
@@ -298,6 +308,10 @@ export class AuthService {
     if (this.adminOtherWatcher){
       this.adminOtherWatcher.unsubscribe();
       this.adminOtherWatcher = null;
+    }
+    if (this.assessorWatcher) {
+      this.assessorWatcher.unsubscribe();
+      this.assessorWatcher = null;
     }
   }
 

@@ -24,5 +24,28 @@
     </div>
   </mat-tab>
 
-  <mat-tab label="{{ d.l.assessorPlLabel }}">Liste des assesseurs</mat-tab>
+  <mat-tab label="{{ d.l.assessorPlLabel }}">
+    <mat-card *ngIf="assessors">
+      <span *ngIf="error" class="error">{{ error }}</span>
+
+      <mat-form-field [class.large]="!media.mobileSize">
+        <input matInput placeholder="{{ d.l.addAssessorInfo }}" [formControl]="emailCtrl">
+        <button mat-icon-button matSuffix><mat-icon>search</mat-icon></button>
+      </mat-form-field>
+      <button mat-raised-button
+        (click)="addAssessor()"
+        [disabled]="emailCtrl.invalid || displayedUsers.length != 0"
+        color="primary"
+      >{{ d.l.addAssessorButtonLabel }}</button>
+    </mat-card>
+
+    <mat-card *ngIf="displayedUsers.length != 0">
+      <mat-nav-list>
+        <a mat-list-item *ngFor="let user of displayedUsers">
+          {{ titleCase(user.emailId.split('|').join(' ')) }}
+          <button mat-icon-button matSuffix (click)="vote.removeAssessor(user.emailId)"><mat-icon>delete</mat-icon></button>
+        </a>
+      </mat-nav-list>
+    </mat-card>
+  </mat-tab>
 </mat-tab-group>
