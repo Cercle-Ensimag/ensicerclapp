@@ -32,9 +32,12 @@ export class VoteService {
 
   watchVotes() {
     return this.db.object<{[pollId: string]: boolean}>('users/'+this.auth.getEmailId()+'/votes').valueChanges()
-    .subscribe(votes => {
-      this.votes = votes || {};
-    });
+    .subscribe(
+      votes => {
+        this.votes = votes || {};
+      },
+      err => {}
+    );
   }
 
   start() {
