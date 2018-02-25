@@ -14,6 +14,7 @@ const db = admin.database();
 
 // List of authorised emails { $emailID: email }
 const usersEmailIds = require("./users_emails.json");
+const usersEmailExteIds = require("./users_emails_exte.json");
 
 /**
  * Local function that generates an ID from the email
@@ -111,5 +112,5 @@ exports.onDeleteAccount = functions.auth.user().onDelete(event => {
  */
 exports.updateList = functions.database.ref('/list/update')
 .onWrite(event => {
-  return db.ref("/list/users").set(usersEmailIds);
+  return db.ref("/list/users").set(usersEmailIds.concat(usersEmailExteIds));
 });
