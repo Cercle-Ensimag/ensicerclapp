@@ -12,21 +12,21 @@ admin.initializeApp({
 
 const db = admin.database();
 
-// List of authorised email IDs
+// List of authorised emails { $emailID: email }
 const usersEmailIds = require("./users_emails.json");
 
 /**
  * Local function that generates an ID from the email
  */
 function getEmailId(email) {
-  return email.replace('@ensimag.fr', '').replace('.', '|');
+  return email.split("@")[0].replace('.', '|');
 }
 
 /**
  * Local function that verifies that the email used is correct
  */
 function verifyEmail(email) {
-  return email.includes('@ensimag.fr') && usersEmailIds[getEmailId(email)];
+  return usersEmailIds[getEmailId(email)] === email;
 }
 
 /**
