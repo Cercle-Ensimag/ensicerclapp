@@ -97,7 +97,7 @@ export class AssessorComponent implements OnInit, OnDestroy {
   }
 
   sortUsers(email: string) {
-    let emailId = this.auth.getEmailIdFromEmail(email);
+    let emailId = this.auth.getEmailIdFromEmail(email.split('@')[0]);
     this.displayedUsers = [];
     this.pageIndex = 0;
     for (let poll of this.polls) {
