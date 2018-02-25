@@ -284,7 +284,7 @@
                          root.child('users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/'+auth.uid).exists() &&
                          (!root.child('vote/users/'+$poll_id+'/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/voted').exists() ||
                           (root.child('vote/users/'+$poll_id+'/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/voted').val() != true)) &&
-                         root.child('vote/polls/'+$poll_id+'/started').val() == true",
+                         root.child('vote/polls/'+$poll_id+'/started').val() == true && !data.exists()",
               ".validate": "root.child('vote/polls/'+$poll_id+'/choices/'+newData.val()).exists()"
             }
           },
