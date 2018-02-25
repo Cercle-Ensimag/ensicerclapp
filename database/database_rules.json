@@ -19,9 +19,7 @@
                          root.child('users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/'+auth.uid+'/admin/assessor').val() == true)) &&
                        root.child('vote/polls/'+$poll_id+'/started').val() == true",
             ".validate": "root.child('vote/polls/'+$poll_id).exists() &&
-                          newData.isBoolean() && newData.val() == true &&
-                          (root.child('vote/users/'+$poll_id+'/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/voted').exists() &&
-                           root.child('vote/users/'+$poll_id+'/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/voted').val() == true)"
+                          newData.isBoolean() && newData.val() == true"
           }
         },
         "uid": { ".validate": "newData.val() === auth.uid" },
