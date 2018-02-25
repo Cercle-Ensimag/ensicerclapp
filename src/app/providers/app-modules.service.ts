@@ -20,9 +20,12 @@ export class AppModulesService {
 
   watchModules() {
     return this.db.list<AppModule>('admin/public/modules').valueChanges()
-    .subscribe(modules => {
-      this.appModules = modules;
-    })
+    .subscribe(
+      modules => {
+        this.appModules = modules;
+      },
+      err => {}
+    );
   }
 
   start() {

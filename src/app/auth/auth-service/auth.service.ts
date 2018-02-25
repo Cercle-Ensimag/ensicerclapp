@@ -10,6 +10,7 @@ import { AppModulesService } from '../../providers/app-modules.service';
 import { DicoService } from '../../language/dico.service';
 
 const ENSIDOMAIN = "ensimag.fr";
+const INPGDOMAIN = "grenoble-inp.org";
 
 export class Profile {
   name: {
@@ -166,7 +167,7 @@ export class AuthService {
     let email = control.value;
     if (email && email.indexOf("@") != -1) {
       let [_, domain] = email.split("@");
-      if (domain !== ENSIDOMAIN) {
+      if (domain !== ENSIDOMAIN && domain !== INPGDOMAIN) {
         return { domain: { parsedDomain: domain } }
       }
     }
@@ -205,7 +206,7 @@ export class AuthService {
   }
 
   getEmailIdFromEmail(email: string) {
-    return email.toLowerCase().replace('@ensimag.fr', '').replace('.', '|');
+    return email.toLowerCase().split("@")[0].replace('.', '|');
   }
 
   getUserAccountPath(): string {
@@ -252,48 +253,60 @@ export class AuthService {
 
   watchProfile() {
     return this.db.object<Profile>(this.getUserAccountPath()+'/account/')
-    .valueChanges().subscribe(profile => {
-      if (profile) {
-        this.profile = profile;
-      }
-    });
+    .valueChanges().subscribe(
+      profile => {
+        if (profile) {
+          this.profile = profile;
+        }
+      },
+      err => {}
+    );
   }
 
   watchIsAdmin() {
-    return this.adminWatcher = this.db.list<string>('admin/public/admins').valueChanges()
-    .subscribe(admins => {
-      for (let admin of admins) {
-        if (admin === this.currentUser.email) {
-          this.isAdmin = true;
-          return;
+    return this.adminWatcher = this.db.list<string>('admin/private/admins').valueChanges()
+    .subscribe(
+      admins => {
+        for (let admin of admins) {
+          if (admin === this.currentUser.email) {
+            this.isAdmin = true;
+            return;
+          }
         }
-      }
-      this.isAdmin = false;
-    });
+        this.isAdmin = false;
+      },
+      err => {}
+    );
   }
 
   watchIsAdminOther() {
     return this.adminOtherWatcher = this.db.object<string>(this.getUserAccountPath()+'/admin').valueChanges()
-    .subscribe(data => {
-      if (data) {
-        this.isVoteAdmin = data["vote-admin"] || false;
-        this.isCafetAdmin = data["cafet-admin"] || false;
-        this.isEventsAdmin = data["events-admin"] || false;
-        this.cafetActivated = data["cafet-activated"] || false;
-      } else {
-        this.isVoteAdmin = false;
-        this.isCafetAdmin = false;
-        this.isEventsAdmin = false;
-        this.cafetActivated = false;
-      }
-    });
+    .subscribe(
+      data => {
+        if (data) {
+          this.isVoteAdmin = data["vote-admin"] || false;
+          this.isCafetAdmin = data["cafet-admin"] || false;
+          this.isEventsAdmin = data["events-admin"] || false;
+          this.cafetActivated = data["cafet-activated"] || false;
+        } else {
+          this.isVoteAdmin = false;
+          this.isCafetAdmin = false;
+          this.isEventsAdmin = false;
+          this.cafetActivated = false;
+        }
+      },
+      err => {}
+    );
   }
 
   watchIsAssessor() {
     return this.adminOtherWatcher = this.db.object<string>('vote/assessors/'+this.getEmailId()).valueChanges()
-    .subscribe(is => {
-      this.isAssessor = is != null;
-    })
+    .subscribe(
+      is => {
+        this.isAssessor = is != null;
+      },
+      err => {}
+    )
   }
 
   stopWatchingUserProfile() {
