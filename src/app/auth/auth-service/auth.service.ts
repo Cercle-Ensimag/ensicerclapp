@@ -10,7 +10,7 @@ import { AppModulesService } from '../../providers/app-modules.service';
 import { DicoService } from '../../language/dico.service';
 
 const ENSIDOMAIN = "ensimag.fr";
-const INPGDOMAIN = "grenoble-inp.org";
+const PHELMADOMAIN = "phelma.grenoble-inp.fr";
 
 export class Profile {
   name: {
@@ -167,7 +167,7 @@ export class AuthService {
     let email = control.value;
     if (email && email.indexOf("@") != -1) {
       let [_, domain] = email.split("@");
-      if (domain !== ENSIDOMAIN && domain !== INPGDOMAIN) {
+      if (domain !== ENSIDOMAIN && domain !== PHELMADOMAIN) {
         return { domain: { parsedDomain: domain } }
       }
     }
