@@ -314,7 +314,7 @@
                        auth.token.email === root.child('admin/public/admins/admin2').val() ||
                        auth.token.email === root.child('admin/public/admins/admin3').val() ||
                        root.child('users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/'+auth.uid+'/admin/vote-admin').val() == true ||
-                       root.child('users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/'+auth.uid+'/admin/cafet-admin').val() == true) ||,
+                       root.child('users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/'+auth.uid+'/admin/cafet-admin').val() == true) ||
                        root.child('vote/assessors/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')).exists()",
             "$emailId": { ".validate": "newData.isNumber()" }
         }
