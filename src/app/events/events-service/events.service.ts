@@ -30,13 +30,13 @@ export class EventsService {
   }
 
   watchEvents() {
-    return this.db.list<Event>('events').valueChanges().subscribe(events => {
+    return this.db.list<Event>('events/events').valueChanges().subscribe(events => {
       this.events = events;
     });
   }
 
   getEvent(eventId) {
-    return this.db.object<Event>('events/'+eventId).valueChanges();
+    return this.db.object<Event>('events/events/'+eventId).valueChanges();
   }
 
 
