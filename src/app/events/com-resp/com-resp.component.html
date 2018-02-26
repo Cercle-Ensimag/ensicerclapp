@@ -1,3 +1,22 @@
-<p>
-  com-resp works!
-</p>
+<div *ngIf="!deleteEventId">
+  <div *ngFor="let event of events.events">
+    <mat-card *ngIf="event.author === auth.groupId">
+      <h2>{{ event.title }}</h2>
+      <button mat-icon-button routerLink="/events-admin/edit/{{ event.id }}"><mat-icon>edit</mat-icon></button>
+      <button mat-icon-button routerLink="/events/event/{{ event.id }}"><mat-icon>search</mat-icon></button>
+      <button mat-icon-button (click)="delete(event.id, event.title)"><mat-icon>delete</mat-icon></button>
+    </mat-card>
+  </div>
+  <mat-card>
+    <h2>{{ d.l.addEventLabel }}</h2>
+    <button mat-icon-button routerLink="/events-admin/edit/-"><mat-icon>add</mat-icon></button>
+  </mat-card>
+</div>
+
+<div *ngIf="deleteEventId">
+  <mat-card class="message">
+    <h3 [innerHTML]="d.format(d.l.confirmEventDeleteInfo, deleteEventTitle)"></h3>
+    <button mat-raised-button (click)="confirmDelete()" color="warn">{{ d.l.confirmEventDeleteLabel }}</button>
+    <button mat-raised-button (click)="back()" color="primary">{{ d.l.backLabel }}</button>
+  </mat-card>
+</div>

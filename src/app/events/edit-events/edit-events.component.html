@@ -1,3 +1,43 @@
-<p>
-  edit-events works!
-</p>
+<mat-card *ngIf="event">
+  <form class="container">
+
+    <span *ngIf="error" class="error">{{ error }}</span>
+
+    <mat-form-field>
+      <input matInput placeholder="{{ d.l.eventIdLabel }}" [formControl]="id_ctrl">
+      <mat-error *ngIf="id_ctrl.invalid">{{ d.l.invalidIdError }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="{{ d.l.eventTitleLabel }}" [formControl]="title_ctrl">
+      <mat-error *ngIf="title_ctrl.invalid">{{ d.l.eventTitleTooShortError }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <textarea matInput placeholder="{{ d.l.eventDescriptionLabel }}" [formControl]="description_ctrl"></textarea>
+      <mat-error *ngIf="description_ctrl.invalid">{{ d.l.eventDescriptionError }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="{{ d.l.eventImageLabel }}" [formControl]="image_ctrl">
+      <mat-error *ngIf="image_ctrl.invalid">{{ d.l.eventImageError }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="{{ d.l.eventStartLabel }}" [formControl]="start_ctrl">
+      <mat-error *ngIf="start_ctrl.invalid">{{ d.l.eventStartError }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="{{ d.l.eventEndLabel }}" [formControl]="end_ctrl">
+      <mat-error *ngIf="end_ctrl.invalid">{{ d.l.eventEndError }}</mat-error>
+    </mat-form-field>
+
+    <button mat-raised-button
+      (click)="onSubmit()" color="primary"
+      [disabled]="title_ctrl.invalid || description_ctrl.invalid || image_ctrl.invalid || start_ctrl.invalid || end_ctrl.invalid"
+    >{{ d.l.applyChangesLabel }}</button>
+
+    <button mat-raised-button (click)="back()">{{ d.l.backLabel }}</button>
+  </form>
+</mat-card>

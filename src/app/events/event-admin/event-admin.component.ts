@@ -9,6 +9,12 @@ import { DicoService } from '../../language/dico.service';
 
 export class ComResp {
   emailId: string;
+  groupId: string;
+}
+
+export class Group {
+  groupId: string;
+  displayName: string;
 }
 
 @Component({
@@ -100,7 +106,10 @@ export class EventAdminComponent implements OnInit, OnDestroy {
         let name = this.titleCase(emailId.replace('|', ' ').replace('  ', ' '));
         this.error = this.d.format(this.d.l.notOnTheList, name);
       } else {
-        this.events.addComResp(this.emailCtrl.value);
+        this.events.addComResp(this.emailCtrl.value, {
+          groupId: emailId,
+          displayName: emailId
+        });
         this.emailCtrl.setValue("");
       }
     }

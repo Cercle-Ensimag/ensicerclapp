@@ -3,12 +3,11 @@
     <div *ngIf="!deleteEventId">
         <mat-card *ngFor="let event of events.events">
           <h2>{{ event.title }}</h2>
-          <button mat-icon-button routerLink="/events-admin/edit/{{ event.id }}"><mat-icon>edit</mat-icon></button>
+          <button mat-icon-button routerLink="/events/event/{{ event.id }}"><mat-icon>search</mat-icon></button>
           <button mat-icon-button (click)="delete(event.id, event.title)"><mat-icon>delete</mat-icon></button>
         </mat-card>
-        <mat-card>
-          <h2>{{ d.l.addEventLabel }}</h2>
-          <button mat-icon-button routerLink="/events-admin/edit/-"><mat-icon>add</mat-icon></button>
+        <mat-card *ngIf="events.events.length == 0">
+          <h3>{{ d.l.noEvent }}</h3>
         </mat-card>
     </div>
 

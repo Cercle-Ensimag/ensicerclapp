@@ -166,7 +166,8 @@
         ".read": "(auth.token.email === root.child('admin/private/admins/admin1').val() ||
                    auth.token.email === root.child('admin/private/admins/admin2').val() ||
                    auth.token.email === root.child('admin/private/admins/admin3').val() ||
-                   root.child('users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/'+auth.uid+'/admin/events-admin').val() == true) &&
+                   root.child('users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/'+auth.uid+'/admin/events-admin').val() == true ||
+                   root.child('events/com-resps/resps/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')).exists()) &&
                   auth != null && auth.token.email_verified == true",
         ".write": "(auth.token.email === root.child('admin/private/admins/admin1').val() ||
                     auth.token.email === root.child('admin/private/admins/admin2').val() ||
@@ -179,26 +180,35 @@
             "displayName": { ".validate": "newData.isString()" }
           }
         },
-        "$emailId": {
-          "emailId": { ".validate": "newData.val() === $emailId || !newData.exists()" },
-          "group": { ".validate": "root.child('events/com-resp/groups/'+newData.val()).exists()" }
-        }
+        "resps": {
+          "$emailId": {
+            "emailId": { ".validate": "newData.val() === $emailId || !newData.exists()" },
+            "groupId": { ".validate": "root.child('events/com-resps/groups/'+newData.val()).exists()" }
+          }
+        },
+
+        "$other": { ".validate": false }
       },
       "events": {
         ".read": "auth != null && auth.token.email_verified == true",
 
         "$eventId": {
           ".write": "auth != null && auth.token.email_verified == true &&
-                     root.child('users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/'+auth.uid+'/admin/events-admin').val() == true &&
-                     newData.child('author').val() === auth.token.email.replace('@ensimag.fr', '').replace('.', '|')",
+                     (root.child('users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/'+auth.uid+'/admin/events-admin').val() == true ||
+                      root.child('events/com-resps/resps/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')).exists()) &&
+                     (root.child('events/com-resps/resps/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/groupId').val() === newData.child('author').val() ||
+                      !newData.exists())",
 
           "id": { ".validate": "newData.val() === $eventId" },
           "title": { ".validate": "newData.isString()" },
           "description": { ".validate": "newData.isString()" },
           "image": { ".validate": "newData.isString()" },
-          "start": { ".validate": "newData.isBoolean()" },
-          "end": { ".validate": "newData.isBoolean()" },
-          "author": { ".validate": "newData.val() === auth.token.email.replace('@ensimag.fr', '').replace('.', '|')"},
+          "start": { ".validate": "newData.isString()" },
+          "end": { ".validate": "newData.isString()" },
+          "author": {
+            ".validate": "root.child('events/com-resps/resps/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/groupId').val() === data.val() ||
+                          !data.exists()"
+          },
 
           "$other": { ".validate": false }
         }
@@ -211,7 +221,8 @@
         ".read": "(auth.token.email === root.child('admin/private/admins/admin1').val() ||
                    auth.token.email === root.child('admin/private/admins/admin2').val() ||
                    auth.token.email === root.child('admin/private/admins/admin3').val() ||
-                   root.child('users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/'+auth.uid+'/admin/vote-admin').val() == true) &&
+                   root.child('users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/'+auth.uid+'/admin/vote-admin').val() == true ||
+                   root.child('vote/assessors/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')).exists()) &&
                   auth != null && auth.token.email_verified == true",
         ".write": "(auth.token.email === root.child('admin/private/admins/admin1').val() ||
                     auth.token.email === root.child('admin/private/admins/admin2').val() ||

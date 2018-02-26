@@ -9,6 +9,9 @@ import { AngularFireDatabase } from 'angularfire2/database';
 import { AppModulesService } from '../../providers/app-modules.service';
 import { DicoService } from '../../language/dico.service';
 
+import { ComResp } from '../../events/event-admin/event-admin.component';
+import { Assessor } from '../../vote/vote-admin/vote-admin.component';
+
 const ENSIDOMAIN = "ensimag.fr";
 const PHELMADOMAIN = "phelma.grenoble-inp.fr";
 
@@ -45,6 +48,7 @@ export class AuthService {
   isComResp: boolean = false;
   isCafetAdmin: boolean = false;
   cafetActivated: boolean = false;
+  groupId: string = null;
 
   userWatcher: any;
   profileWatcher: any;
@@ -303,7 +307,7 @@ export class AuthService {
   }
 
   watchIsAssessor() {
-    return this.adminOtherWatcher = this.db.object<string>('vote/assessors/'+this.getEmailId()).valueChanges()
+    return this.adminOtherWatcher = this.db.object<Assessor>('vote/assessors/'+this.getEmailId()).valueChanges()
     .subscribe(
       is => {
         this.isAssessor = is != null;
@@ -313,10 +317,17 @@ export class AuthService {
   }
 
   watchIsComResp() {
-    return this.adminOtherWatcher = this.db.object<string>('events/com-resps/'+this.getEmailId()).valueChanges()
+    return this.adminOtherWatcher = this.db.object<ComResp>('events/com-resps/resps/'+this.getEmailId()).valueChanges()
     .subscribe(
-      is => {
-        this.isComResp = is != null;
+      resp => {
+        this.isComResp = resp != null;
+        if (resp != null) {
+          this.isComResp = true;
+          this.groupId = resp.groupId;
+        } else {
+          this.isComResp = false;
+          this.groupId = null;
+        }
       },
       err => {}
     )

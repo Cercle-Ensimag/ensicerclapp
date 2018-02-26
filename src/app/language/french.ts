@@ -100,6 +100,19 @@ export class French {
   public static readonly confirmEventDeleteLabel = "Supprimer quand même";
   public static readonly confirmEventDeleteInfo = "Tu es sur le point de supprimer l'événement<br>\"{0}\".<br>En es-tu sûr ?";
 
+  public static readonly eventIdLabel = "ID";
+  public static readonly eventTitleLabel = "Titre";
+  public static readonly eventDescriptionLabel = "Description";
+  public static readonly eventImageLabel = "URL de l'image";
+  public static readonly eventStartLabel = "Début";
+  public static readonly eventEndLabel = "Fin";
+  public static readonly eventTitleTooShortError = "Titre trop court";
+  public static readonly eventDescriptionError = "";
+  public static readonly eventImageError = "";
+  public static readonly eventStartError = "Date de début requise";
+  public static readonly eventEndError = "Date de fin requise";
+
+
   // Cafet
   public static readonly troll = "T'ES EN NEGATIF !!<br><small>(*non contractuel, t'as pas encore de compte)</small>";
   public static readonly creditLabel = "Solde";
