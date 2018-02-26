@@ -162,7 +162,7 @@
 
     },
     "events": {
-      "com-resp": {
+      "com-resps": {
         ".read": "(auth.token.email === root.child('admin/private/admins/admin1').val() ||
                    auth.token.email === root.child('admin/private/admins/admin2').val() ||
                    auth.token.email === root.child('admin/private/admins/admin3').val() ||

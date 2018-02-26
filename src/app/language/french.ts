@@ -60,8 +60,10 @@ export class French {
 
   public static readonly eventsAdminLabel = "Admin events";
   public static readonly eventsAdminPlLabel = "Admins events";
-  public static readonly comRespLabel = "Respo com'"
-  public static readonly comRespPlLabel = "Respos com'"
+  public static readonly comRespLabel = "Respo com'";
+  public static readonly comRespPlLabel = "Respos com'";
+  public static readonly addComRespInfo = "Entrer l'e-mail d'un respo com";
+  public static readonly addComRespButtonLabel = "Ajouter";
 
 
   // Vote
@@ -90,6 +92,14 @@ export class French {
   public static readonly notOnTheList = "{0} n'est pas dans la liste";
   public static readonly nbVoteUsersLabel = "{0} votants";
 
+  // Events
+  public static readonly events = "Evénements";
+  public static readonly noEvent = "Aucun événement, pour le moment ;)";
+  public static readonly periodFormat = "Du {0} au {1}";
+  public static readonly addEventLabel = "Créer un nouvel événement";
+  public static readonly confirmEventDeleteLabel = "Supprimer quand même";
+  public static readonly confirmEventDeleteInfo = "Tu es sur le point de supprimer l'événement<br>\"{0}\".<br>En es-tu sûr ?";
+
   // Cafet
   public static readonly troll = "T'ES EN NEGATIF !!<br><small>(*non contractuel, t'as pas encore de compte)</small>";
   public static readonly creditLabel = "Solde";
@@ -102,8 +112,4 @@ export class French {
   public static readonly usersWithAccountLabel = "Utilistateurs";
   public static readonly usersWithNoAccountLabel = "Demandes";
   public static readonly ActivateAccountButtonLabel = "Activer le compte";
-
-  // Events
-  public static readonly noEvent = "Aucun événement, pour le moment ;)";
-  public static readonly periodFormat = "Du {0} au {1}";
 }

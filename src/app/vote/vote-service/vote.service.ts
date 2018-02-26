@@ -21,9 +21,12 @@ export class VoteService {
   ) { }
 
   watchPolls() {
-    return this.getPolls().subscribe(polls => {
-      this.polls = polls || [];
-    });
+    return this.getPolls().subscribe(
+      polls => {
+        this.polls = polls || [];
+      },
+      err => {}
+    );
   }
 
   getPolls(): Observable<Poll[]> {

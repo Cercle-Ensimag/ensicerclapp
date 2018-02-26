@@ -51,6 +51,7 @@ export class AuthService {
   adminWatcher: any;
   adminOtherWatcher: any;
   assessorWatcher: any;
+  comRespsWatcher: any;
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -250,6 +251,7 @@ export class AuthService {
     this.adminWatcher = this.watchIsAdmin();
     this.adminOtherWatcher = this.watchIsAdminOther();
     this.assessorWatcher = this.watchIsAssessor();
+    this.comRespsWatcher = this.watchIsComResp();
   }
 
   watchProfile() {
@@ -310,6 +312,16 @@ export class AuthService {
     )
   }
 
+  watchIsComResp() {
+    return this.adminOtherWatcher = this.db.object<string>('events/com-resps/'+this.getEmailId()).valueChanges()
+    .subscribe(
+      is => {
+        this.isComResp = is != null;
+      },
+      err => {}
+    )
+  }
+
   stopWatchingUserProfile() {
     if (this.profileWatcher) {
       this.profileWatcher.unsubscribe();
@@ -326,6 +338,10 @@ export class AuthService {
     if (this.assessorWatcher) {
       this.assessorWatcher.unsubscribe();
       this.assessorWatcher = null;
+    }
+    if (this.comRespsWatcher) {
+      this.comRespsWatcher.unsubscribe();
+      this.comRespsWatcher = null;
     }
   }
 
