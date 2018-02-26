@@ -10,6 +10,7 @@ export class Event {
   image: string;
   start: string;
   end: string;
+  location: string;
   author: string;
 }
 

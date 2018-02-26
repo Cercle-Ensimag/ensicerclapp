@@ -21,6 +21,7 @@ export class EditEventsComponent implements OnInit, OnDestroy {
   image_ctrl: FormControl;
   start_ctrl: FormControl;
   end_ctrl: FormControl;
+  location_ctrl: FormControl;
 
   event: Event;
   eventWatcher: any;
@@ -56,6 +57,7 @@ export class EditEventsComponent implements OnInit, OnDestroy {
       this.image_ctrl = new FormControl(this.event.image || "", []);
       this.start_ctrl = new FormControl(this.event.start || "", [Validators.required]);
       this.end_ctrl = new FormControl(this.event.end || "", [Validators.required]);
+      this.location_ctrl = new FormControl(this.event.location || "", [Validators.required]);
     });
   }
 
@@ -68,7 +70,8 @@ export class EditEventsComponent implements OnInit, OnDestroy {
         image: this.image_ctrl.value,
         start: this.start_ctrl.value,
         end: this.end_ctrl.value,
-        author: this.auth.getEmailId()
+        location: this.location_ctrl.value,
+        author: this.auth.groupId
       };
       this.events.setEvent(event);
     }

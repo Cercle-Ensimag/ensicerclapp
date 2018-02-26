@@ -102,15 +102,19 @@ export class French {
 
   public static readonly eventIdLabel = "ID";
   public static readonly eventTitleLabel = "Titre";
-  public static readonly eventDescriptionLabel = "Description";
+  public static readonly eventDescriptionLabel = "Description (Utiliser des balises HTML pour la mise en forme)";
   public static readonly eventImageLabel = "URL de l'image";
   public static readonly eventStartLabel = "Début";
   public static readonly eventEndLabel = "Fin";
+  public static readonly eventLocationLabel = "Lieu";
   public static readonly eventTitleTooShortError = "Titre trop court";
   public static readonly eventDescriptionError = "";
   public static readonly eventImageError = "";
   public static readonly eventStartError = "Date de début requise";
   public static readonly eventEndError = "Date de fin requise";
+  public static readonly eventStart = "Début : {0}";
+  public static readonly eventEnd = "Fin : {0}";
+  public static readonly eventLocation = "Lieu : {0}";
 
 
   // Cafet

@@ -33,6 +33,11 @@
       <mat-error *ngIf="end_ctrl.invalid">{{ d.l.eventEndError }}</mat-error>
     </mat-form-field>
 
+    <mat-form-field>
+      <input matInput placeholder="{{ d.l.eventLocationLabel }}" [formControl]="location_ctrl">
+      <mat-error *ngIf="location_ctrl.invalid">{{ d.l.eventEndError }}</mat-error>
+    </mat-form-field>
+
     <button mat-raised-button
       (click)="onSubmit()" color="primary"
       [disabled]="title_ctrl.invalid || description_ctrl.invalid || image_ctrl.invalid || start_ctrl.invalid || end_ctrl.invalid"

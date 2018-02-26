@@ -1,6 +1,13 @@
 <mat-card *ngIf="event">
-  <h1>{{ event.title }}</h1>
-  <h3 [innerHTML]="event.description"></h3>
+  <h2>{{ event.title }}</h2>
+  <mat-card-content style="text-align:left">
+    <h4>
+      {{ d.format(d.l.eventStart, event.start) }}<br>
+      {{ d.format(d.l.eventEnd, event.end) }}<br>
+      {{ d.format(d.l.eventLocation, event.location || "") }}
+    </h4>
+    <h4 [innerHTML]="event.description"></h4>
+  </mat-card-content>
   <img *ngIf="event.image !== ''" mat-card-image src="{{ event.image }}">
   <button mat-raised-button color="primary" (click)='back()'>{{ d.l.backLabel }}</button>
 </mat-card>

@@ -205,6 +205,7 @@
           "image": { ".validate": "newData.isString()" },
           "start": { ".validate": "newData.isString()" },
           "end": { ".validate": "newData.isString()" },
+          "location": { ".validate": "newData.isString()" },
           "author": {
             ".validate": "root.child('events/com-resps/resps/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/groupId').val() === data.val() ||
                           !data.exists()"
