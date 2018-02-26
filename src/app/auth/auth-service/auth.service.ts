@@ -42,6 +42,7 @@ export class AuthService {
   isVoteAdmin: boolean = false;
   isAssessor: boolean = false;
   isEventsAdmin: boolean = false;
+  isComResp: boolean = false;
   isCafetAdmin: boolean = false;
   cafetActivated: boolean = false;
 

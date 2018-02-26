@@ -46,15 +46,22 @@ export class French {
 
   // Admin
   public static readonly adminLabel = "Admin";
-  public static readonly voteAdminLabel = "Admin vote";
-  public static readonly assessorLabel = "Assesseur"
-  public static readonly cafetAdminLabel = "Master cafet";
   public static readonly nbMembersLabel = "{0} membres";
+
+  public static readonly voteAdminLabel = "Admin vote";
   public static readonly voteAdminPlLabel = "Admins vote";
+  public static readonly assessorLabel = "Assesseur"
   public static readonly assessorPlLabel = "Assesseurs"
-  public static readonly cafetAdminPlLabel = "Masters cafet";
   public static readonly addAssessorInfo = "Entrer l'e-mail d'un assesseur";
   public static readonly addAssessorButtonLabel = "Ajouter";
+
+  public static readonly cafetAdminLabel = "Master cafet";
+  public static readonly cafetAdminPlLabel = "Masters cafet";
+
+  public static readonly eventsAdminLabel = "Admin events";
+  public static readonly eventsAdminPlLabel = "Admins events";
+  public static readonly comRespLabel = "Respo com'"
+  public static readonly comRespPlLabel = "Respos com'"
 
 
   // Vote

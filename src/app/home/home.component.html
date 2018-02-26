@@ -32,6 +32,14 @@
             routerLink="/assessor"
           >{{ d.l.assessorLabel }}</a>
           <a mat-list-item
+            *ngIf="auth.isEventsAdmin"
+            routerLink="/events-admin"
+          >{{ d.l.eventsAdminLabel }}</a>
+          <a mat-list-item
+            *ngIf="auth.isComResp"
+            routerLink="/com-resp"
+          >{{ d.l.comRespLabel }}</a>
+          <a mat-list-item
             *ngIf="auth.isCafetAdmin"
             routerLink="/cafet-admin"
           >{{ d.l.cafetAdminLabel }}</a>

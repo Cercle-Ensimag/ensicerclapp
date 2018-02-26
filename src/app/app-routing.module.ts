@@ -24,6 +24,8 @@ import { AssessorComponent } from './vote/assessor/assessor.component';
 
 import { EventsHomeComponent } from './events/events-home/events-home.component';
 import { EventComponent } from './events/event/event.component';
+import { EventAdminComponent } from './events/event-admin/event-admin.component';
+import { ComRespComponent } from './events/com-resp/com-resp.component';
 
 import { CalendarComponent } from './calendar/calendar.component';
 import { AccountComponent } from './account/account.component';
@@ -32,6 +34,8 @@ import { ReadmeComponent } from './info/readme/readme.component';
 import { CanActivateHome } from './home/home-guard/home.service';
 import { CanActivateVoteAdmin } from './vote/vote-guard/vote-admin.service';
 import { CanActivateAssessor } from './vote/vote-guard/assessor.service';
+import { CanActivateEventsAdmin } from './events/events-guard/events-admin.service';
+import { CanActivateComResp } from './events/events-guard/com-resp.service';
 import { CanActivateAdmin } from './admin/guard/admin-guard.service';
 import { CanActivateCafetAdmin } from './cafet/cafet-guard/cafet-admin.service';
 import { EmailVerifGuard } from './auth/email-verif/email-verif-guard/email-verif.guard';
@@ -61,6 +65,8 @@ const routes: Routes = [
 
   { path: 'events', component: EventsHomeComponent, canActivate: [CanActivateHome] },
   { path: 'events/event/:id', component: EventComponent, canActivate: [CanActivateHome] },
+  { path: 'events-admin', component: EventAdminComponent, canActivate: [CanActivateHome, CanActivateEventsAdmin] },
+  { path: 'com-resp', component: ComRespComponent, canActivate: [CanActivateHome, CanActivateComResp] },
 
   { path: 'calendar', component: CalendarComponent, canActivate: [CanActivateHome] },
   { path: 'z-moi', component: ReadmeComponent, canActivate: [CanActivateHome] },
