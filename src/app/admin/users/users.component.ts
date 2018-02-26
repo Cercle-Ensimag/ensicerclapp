@@ -14,15 +14,18 @@ export class AdminUsersComponent implements OnInit {
 
   voteAdmin: {[uid: string]: boolean};
   eventsAdmin: {[uid: string]: boolean};
+  actusAdmin: {[uid: string]: boolean};
   cafetAdmin: {[uid: string]: boolean};
 
   displayedUsers: any[] = [];
   search: FormControl;
   voteAdminCtrl: FormControl;
   eventsAdminCtrl: FormControl;
+  actusAdminCtrl: FormControl;
   cafetAdminCtrl: FormControl;
   voteAdminChecked: boolean;
   eventsAdminChecked: boolean;
+  actusAdminChecked: boolean;
   cafetAdminChecked: boolean;
 
   pageIndex: number = 0;
@@ -35,6 +38,7 @@ export class AdminUsersComponent implements OnInit {
   ) {
     this.voteAdmin = {};
     this.eventsAdmin = {};
+    this.actusAdmin = {};
     this.cafetAdmin = {};
   }
 
@@ -51,6 +55,7 @@ export class AdminUsersComponent implements OnInit {
     this.search = new FormControl();
     this.voteAdminCtrl = new FormControl();
     this.eventsAdminCtrl = new FormControl();
+    this.actusAdminCtrl = new FormControl();
     this.cafetAdminCtrl = new FormControl();
     this.search.valueChanges.subscribe(name => {
       this.sortUsers(name);
@@ -61,6 +66,10 @@ export class AdminUsersComponent implements OnInit {
     })
     this.eventsAdminCtrl.valueChanges.subscribe(checked => {
       this.eventsAdminChecked = checked;
+      this.sortUsers(this.search.value || "");
+    })
+    this.actusAdminCtrl.valueChanges.subscribe(checked => {
+      this.actusAdminChecked = checked;
       this.sortUsers(this.search.value || "");
     })
     this.cafetAdminCtrl.valueChanges.subscribe(checked => {
@@ -87,6 +96,9 @@ export class AdminUsersComponent implements OnInit {
       if (userData.admin["events-admin"] != true && this.eventsAdminChecked == true) {
         return false;
       }
+      if (userData.admin["actus-admin"] != true && this.actusAdminChecked == true) {
+        return false;
+      }
       if (userData.admin["cafet-admin"] != true && this.cafetAdminChecked == true) {
         return false;
       }
@@ -103,6 +115,11 @@ export class AdminUsersComponent implements OnInit {
   setEventsAdmin(email: string, uid: string, checked: boolean) {
     this.eventsAdmin[uid] = checked;
     this.admin.setEventsAdmin(email, uid, checked);
+  }
+
+  setActusAdmin(email: string, uid: string, checked: boolean) {
+    this.actusAdmin[uid] = checked;
+    this.admin.setActusAdmin(email, uid, checked);
   }
 
   setCafetAdmin(email: string, uid: string, checked: boolean) {
@@ -122,6 +139,13 @@ export class AdminUsersComponent implements OnInit {
       return user[user.uid]['admin']['events-admin'] || false;
     } else {
       return this.eventsAdmin[user.uid];
+    }
+  }
+  actusChecked(user: any) {
+    if (typeof this.actusAdmin[user.uid] === 'undefined'){
+      return user[user.uid]['admin']['actus-admin'] || false;
+    } else {
+      return this.actusAdmin[user.uid];
     }
   }
   cafetChecked(user: any) {

@@ -1,6 +1,6 @@
 <div *ngIf="!deleteEventId">
   <div *ngFor="let event of events.events">
-    <mat-card *ngIf="event.author === auth.groupId">
+    <mat-card *ngIf="event.groupId === auth.groupId">
       <h2>{{ event.title }}</h2>
       <button mat-icon-button routerLink="/events-admin/edit/{{ event.id }}"><mat-icon>edit</mat-icon></button>
       <button mat-icon-button routerLink="/events/event/{{ event.id }}"><mat-icon>search</mat-icon></button>

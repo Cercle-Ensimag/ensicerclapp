@@ -1,0 +1,43 @@
+<mat-card *ngIf="actu">
+  <form class="container">
+
+    <span *ngIf="error" class="error">{{ error }}</span>
+
+    <mat-form-field>
+      <input matInput placeholder="{{ d.l.actuIdLabel }}" [formControl]="id_ctrl">
+      <mat-error *ngIf="id_ctrl.invalid">{{ d.l.invalidIdError }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="{{ d.l.actuTitleLabel }}" [formControl]="title_ctrl">
+      <mat-error *ngIf="title_ctrl.invalid">{{ d.l.actuTitleTooShortError }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <textarea matInput placeholder="{{ d.l.actuDescriptionLabel }}" [formControl]="description_ctrl"></textarea>
+      <mat-error *ngIf="description_ctrl.invalid">{{ d.l.actuDescriptionError }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="{{ d.l.actuImageLabel }}" [formControl]="image_ctrl">
+      <mat-error *ngIf="image_ctrl.invalid">{{ d.l.actuImageError }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="{{ d.l.actuDateLabel }}" [formControl]="date_ctrl">
+      <mat-error *ngIf="date_ctrl.invalid">{{ d.l.actuDateError }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="{{ d.l.actuAuthorLabel }}" [formControl]="author_ctrl">
+      <mat-error *ngIf="author_ctrl.invalid">{{ d.l.actuAuthorError }}</mat-error>
+    </mat-form-field>
+
+    <button mat-raised-button
+      (click)="onSubmit()" color="primary"
+      [disabled]="title_ctrl.invalid || description_ctrl.invalid || image_ctrl.invalid || date_ctrl.invalid || author_ctrl.invalid"
+    >{{ d.l.applyChangesLabel }}</button>
+
+    <button mat-raised-button (click)="back()">{{ d.l.backLabel }}</button>
+  </form>
+</mat-card>

@@ -34,6 +34,7 @@
             },
             "cafet-admin": { ".validate": "newData.isBoolean()" },
             "events-admin": { ".validate": "newData.isBoolean()" },
+            "actus-admin": { ".validate": "newData.isBoolean()" },
             "vote-admin": { ".validate": "newData.isBoolean()" },
 
             "$other": { ".validate": false }
@@ -83,6 +84,61 @@
           "$email": { ".validate": "newData.isString() && newData.val().endsWith('@ensimag.fr')" },
         },
         "$other": { ".validate": false }
+      },
+
+      "$other": { ".validate": false }
+    },
+    "actus": {
+      "journalists": {
+        ".read": "(auth.token.email === root.child('admin/private/admins/admin1').val() ||
+                   auth.token.email === root.child('admin/private/admins/admin2').val() ||
+                   auth.token.email === root.child('admin/private/admins/admin3').val() ||
+                   root.child('users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/'+auth.uid+'/admin/actus-admin').val() == true ||
+                   root.child('actus/journalists/users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')).exists()) &&
+                  auth != null && auth.token.email_verified == true",
+        ".write": "(auth.token.email === root.child('admin/private/admins/admin1').val() ||
+                    auth.token.email === root.child('admin/private/admins/admin2').val() ||
+                    auth.token.email === root.child('admin/private/admins/admin3').val() ||
+                    root.child('users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/'+auth.uid+'/admin/actus-admin').val() == true) &&
+                   auth != null && auth.token.email_verified == true",
+        "groups": {
+          "$groupId": {
+            "groupId": { ".validate": "newData.isString()" },
+            "displayName": { ".validate": "newData.isString()" }
+          }
+        },
+        "users": {
+          "$emailId": {
+            "emailId": { ".validate": "newData.val() === $emailId || !newData.exists()" },
+            "groupId": { ".validate": "root.child('actus/journalists/groups/'+newData.val()).exists()" }
+          }
+        },
+
+        "$other": { ".validate": false }
+      },
+      "actus": {
+        ".read": "auth != null && auth.token.email_verified == true",
+
+        "$actuId": {
+          ".write": "auth != null && auth.token.email_verified == true &&
+                     (root.child('users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/'+auth.uid+'/admin/actus-admin').val() == true ||
+                      root.child('actus/journalists/users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')).exists()) &&
+                     (root.child('actus/journalists/users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/groupId').val() === newData.child('groupId').val() ||
+                      !newData.exists())",
+
+          "id": { ".validate": "newData.val() === $actuId" },
+          "title": { ".validate": "newData.isString()" },
+          "description": { ".validate": "newData.isString()" },
+          "image": { ".validate": "newData.isString()" },
+          "date": { ".validate": "newData.isString()" },
+          "author": { ".validate": "newData.isString()" },
+          "groupId": {
+            ".validate": "root.child('actus/journalists/users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/groupId').val() === data.val() ||
+                          !data.exists()"
+          },
+
+          "$other": { ".validate": false }
+        }
       },
 
       "$other": { ".validate": false }
@@ -196,7 +252,7 @@
           ".write": "auth != null && auth.token.email_verified == true &&
                      (root.child('users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/'+auth.uid+'/admin/events-admin').val() == true ||
                       root.child('events/com-resps/resps/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')).exists()) &&
-                     (root.child('events/com-resps/resps/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/groupId').val() === newData.child('author').val() ||
+                     (root.child('events/com-resps/resps/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/groupId').val() === newData.child('groupId').val() ||
                       !newData.exists())",
 
           "id": { ".validate": "newData.val() === $eventId" },
@@ -206,7 +262,7 @@
           "start": { ".validate": "newData.isString()" },
           "end": { ".validate": "newData.isString()" },
           "location": { ".validate": "newData.isString()" },
-          "author": {
+          "groupId": {
             ".validate": "root.child('events/com-resps/resps/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/groupId').val() === data.val() ||
                           !data.exists()"
           },

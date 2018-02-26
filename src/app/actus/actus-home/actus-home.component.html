@@ -1,0 +1,13 @@
+<div *ngIf="actus.actus">
+  <div *ngFor="let actu of actus.actus">
+    <button mat-raised-button routerLink="/actus/actu/{{ actu.id }}">
+      <h2>{{ actu.title }}</h2>
+    </button>
+  </div>
+</div>
+<div *ngIf="actus.actus.length == 0">
+  <mat-card>
+    <h3>{{ d.l.noActu }}</h3>
+    <button class="item" mat-raised-button routerLink='/home' color="primary">{{ d.l.backLabel }}</button>
+  </mat-card>
+</div>

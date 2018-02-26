@@ -7,6 +7,7 @@
     </mat-form-field>
     <mat-checkbox [formControl]="voteAdminCtrl" color="primary">{{ d.l.voteAdminPlLabel }}</mat-checkbox>
     <mat-checkbox [formControl]="eventsAdminCtrl" color="primary">{{ d.l.eventsAdminPlLabel }}</mat-checkbox>
+    <mat-checkbox [formControl]="actusAdminCtrl" color="primary">{{ d.l.actusAdminPlLabel }}</mat-checkbox>
     <mat-checkbox [formControl]="cafetAdminCtrl" color="primary">{{ d.l.cafetAdminPlLabel }}</mat-checkbox>
   </mat-card>
 
@@ -25,6 +26,7 @@
         <div style="text-align=right">
           <mat-slide-toggle [checked]="voteChecked(user)" (change)="setVoteAdmin(user[user.uid].admin.email, user.uid, $event.checked)" color="primary">{{ d.l.voteAdminLabel }}</mat-slide-toggle>
           <mat-slide-toggle [checked]="eventsChecked(user)" (change)="setEventsAdmin(user[user.uid].admin.email, user.uid, $event.checked)" color="primary">{{ d.l.eventsAdminLabel }}</mat-slide-toggle>
+          <mat-slide-toggle [checked]="actusChecked(user)" (change)="setActusAdmin(user[user.uid].admin.email, user.uid, $event.checked)" color="primary">{{ d.l.actusAdminLabel }}</mat-slide-toggle>
           <mat-slide-toggle [checked]="cafetChecked(user)" (change)="setCafetAdmin(user[user.uid].admin.email, user.uid, $event.checked)" color="primary">{{ d.l.cafetAdminLabel }}</mat-slide-toggle>
         </div>
       </mat-expansion-panel>

@@ -65,6 +65,13 @@ export class French {
   public static readonly addComRespInfo = "Entrer l'e-mail d'un respo com";
   public static readonly addComRespButtonLabel = "Ajouter";
 
+  public static readonly actusAdminLabel = "Admin actus";
+  public static readonly actusAdminPlLabel = "Admins actus";
+  public static readonly journalistLabel = "Journaliste";
+  public static readonly journalistPlLabel = "Journalistes";
+  public static readonly addJournalistInfo = "Entrer l'e-mail d'un journaliste";
+  public static readonly addJournalistButtonLabel = "Ajouter";
+
 
   // Vote
   public static readonly polls = "Scrutins";
@@ -116,6 +123,26 @@ export class French {
   public static readonly eventEnd = "Fin : {0}";
   public static readonly eventLocation = "Lieu : {0}";
 
+  // Actus
+  public static readonly actus = "Actualités";
+  public static readonly noActu = "Aucun article, pour le moment ;)";
+  public static readonly addActuLabel = "Créer un nouvel article";
+  public static readonly confirmActuDeleteLabel = "Supprimer quand même";
+  public static readonly confirmActuDeleteInfo = "Tu es sur le point de supprimer l'article<br>\"{0}\".<br>En es-tu sûr ?";
+
+  public static readonly actuIdLabel = "ID";
+  public static readonly actuTitleLabel = "Titre";
+  public static readonly actuDescriptionLabel = "Description (Utiliser des balises HTML pour la mise en forme)";
+  public static readonly actuImageLabel = "URL de l'image";
+  public static readonly actuDateLabel = "Date";
+  public static readonly actuAuthorLabel = "Auteur";
+  public static readonly actuTitleTooShortError = "Titre trop court";
+  public static readonly actuDescriptionError = "";
+  public static readonly actuImageError = "";
+  public static readonly actuDateError = "Date requise";
+  public static readonly actuAuthorError = "Auteur requis";
+  public static readonly actuDate = "Date : {0}";
+  public static readonly actuAuthor = "Auteur : {0}";
 
   // Cafet
   public static readonly troll = "T'ES EN NEGATIF !!<br><small>(*non contractuel, t'as pas encore de compte)</small>";

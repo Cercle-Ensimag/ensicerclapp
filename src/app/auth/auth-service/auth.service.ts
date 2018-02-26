@@ -46,6 +46,8 @@ export class AuthService {
   isAssessor: boolean = false;
   isEventsAdmin: boolean = false;
   isComResp: boolean = false;
+  isActusAdmin: boolean = false;
+  isJournalist: boolean = false;
   isCafetAdmin: boolean = false;
   cafetActivated: boolean = false;
   groupId: string = null;
@@ -56,6 +58,7 @@ export class AuthService {
   adminOtherWatcher: any;
   assessorWatcher: any;
   comRespsWatcher: any;
+  journalistsWatcher: any;
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -256,6 +259,7 @@ export class AuthService {
     this.adminOtherWatcher = this.watchIsAdminOther();
     this.assessorWatcher = this.watchIsAssessor();
     this.comRespsWatcher = this.watchIsComResp();
+    this.journalistsWatcher = this.watchIsJournalist();
   }
 
   watchProfile() {
@@ -294,6 +298,7 @@ export class AuthService {
           this.isVoteAdmin = data["vote-admin"] || false;
           this.isCafetAdmin = data["cafet-admin"] || false;
           this.isEventsAdmin = data["events-admin"] || false;
+          this.isActusAdmin = data["actus-admin"] || false;
           this.cafetActivated = data["cafet-activated"] || false;
         } else {
           this.isVoteAdmin = false;
@@ -333,6 +338,23 @@ export class AuthService {
     )
   }
 
+  watchIsJournalist() {
+    return this.adminOtherWatcher = this.db.object<ComResp>('actus/journalists/users/'+this.getEmailId()).valueChanges()
+    .subscribe(
+      user => {
+        this.isJournalist = user != null;
+        if (user != null) {
+          this.isJournalist = true;
+          this.groupId = user.groupId;
+        } else {
+          this.isJournalist = false;
+          this.groupId = null;
+        }
+      },
+      err => {}
+    )
+  }
+
   stopWatchingUserProfile() {
     if (this.profileWatcher) {
       this.profileWatcher.unsubscribe();
@@ -353,6 +375,10 @@ export class AuthService {
     if (this.comRespsWatcher) {
       this.comRespsWatcher.unsubscribe();
       this.comRespsWatcher = null;
+    }
+    if (this.journalistsWatcher) {
+      this.journalistsWatcher.unsubscribe();
+      this.journalistsWatcher = null;
     }
   }
 

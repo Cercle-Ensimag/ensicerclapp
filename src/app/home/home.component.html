@@ -40,6 +40,14 @@
             routerLink="/com-resp"
           >{{ d.l.comRespLabel }}</a>
           <a mat-list-item
+            *ngIf="auth.isActusAdmin"
+            routerLink="/actus-admin"
+          >{{ d.l.actusAdminLabel }}</a>
+          <a mat-list-item
+            *ngIf="auth.isJournalist"
+            routerLink="/journalist"
+          >{{ d.l.journalistLabel }}</a>
+          <a mat-list-item
             *ngIf="auth.isCafetAdmin"
             routerLink="/cafet-admin"
           >{{ d.l.cafetAdminLabel }}</a>

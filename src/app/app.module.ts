@@ -41,6 +41,12 @@ import { EventAdminComponent } from './events/event-admin/event-admin.component'
 import { ComRespComponent } from './events/com-resp/com-resp.component';
 import { EditEventsComponent } from './events/edit-events/edit-events.component';
 
+import { ActusHomeComponent } from './actus/actus-home/actus-home.component';
+import { ActuComponent } from './actus/actu/actu.component';
+import { ActuAdminComponent } from './actus/actu-admin/actu-admin.component';
+import { JournalistComponent } from './actus/journalist/journalist.component';
+import { EditActusComponent } from './actus/edit-actus/edit-actus.component';
+
 import { CalendarComponent } from './calendar/calendar.component';
 import { AccountComponent } from './account/account.component';
 
@@ -52,6 +58,7 @@ import { VoteService } from './vote/vote-service/vote.service';
 import { AdminService } from './admin/admin-service/admin.service';
 import { CafetService } from './cafet/cafet-service/cafet.service';
 import { EventsService } from './events/events-service/events.service';
+import { ActusService } from './actus/actus-service/actus.service';
 
 import { AppModulesService } from './providers/app-modules.service';
 import { DeviceSizeService } from './providers/device-size.service';
@@ -63,6 +70,9 @@ import { CanActivateAssessor } from './vote/vote-guard/assessor.service';
 import { CanActivateEventsAdmin } from './events/events-guard/events-admin.service';
 import { CanActivateComResp } from './events/events-guard/com-resp.service';
 import { CanActivateEventsEdit } from './events/events-guard/events-edit.service';
+import { CanActivateActusAdmin } from './actus/actus-guard/actus-admin.service';
+import { CanActivateJournalist } from './actus/actus-guard/journalist.service';
+import { CanActivateActusEdit } from './actus/actus-guard/actus-edit.service';
 import { CanActivateAdmin } from './admin/guard/admin-guard.service';
 import { CanActivateCafetAdmin } from './cafet/cafet-guard/cafet-admin.service';
 import { EmailVerifGuard } from './auth/email-verif/email-verif-guard/email-verif.guard';
@@ -99,6 +109,7 @@ import { environment } from '../environments/environment';
     VoteComponent, PollComponent, VoteSnackbarComponent, VoteAdminComponent, EditPollComponent, ResultsComponent, VoteUsersComponent, AssessorComponent,
     CalendarComponent,
     EventsHomeComponent, EventComponent, EventAdminComponent, ComRespComponent, EditEventsComponent,
+    ActusHomeComponent, ActuComponent, ActuAdminComponent, JournalistComponent, EditActusComponent,
     ReadmeComponent,
     AccountComponent
   ],
@@ -112,9 +123,9 @@ import { environment } from '../environments/environment';
     FlexLayoutModule
   ],
   providers: [
-    AuthService, VoteService, AdminService, CafetService, EventsService,
+    AuthService, VoteService, AdminService, CafetService, EventsService, ActusService,
     AppModulesService, DeviceSizeService, ListService,
-    CanActivateHome, CanActivateVoteAdmin, CanActivateAssessor, CanActivateEventsAdmin, CanActivateComResp, CanActivateEventsEdit, CanActivateAdmin, CanActivateCafetAdmin, EmailVerifGuard, AccountGuard,
+    CanActivateHome, CanActivateVoteAdmin, CanActivateAssessor, CanActivateEventsAdmin, CanActivateComResp, CanActivateEventsEdit, CanActivateActusAdmin, CanActivateJournalist, CanActivateActusEdit, CanActivateAdmin, CanActivateCafetAdmin, EmailVerifGuard, AccountGuard,
     DicoService
   ],
   entryComponents: [

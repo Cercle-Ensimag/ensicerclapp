@@ -11,7 +11,7 @@ export class Event {
   start: string;
   end: string;
   location: string;
-  author: string;
+  groupId: string;
 }
 
 @Component({

@@ -71,7 +71,7 @@ export class EditEventsComponent implements OnInit, OnDestroy {
         start: this.start_ctrl.value,
         end: this.end_ctrl.value,
         location: this.location_ctrl.value,
-        author: this.auth.groupId
+        groupId: this.auth.groupId
       };
       this.events.setEvent(event);
     }
