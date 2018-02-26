@@ -78,7 +78,7 @@ export class French {
   public static readonly noPoll = "Il n'y a pour l'instant aucun scrutin !";
   public static readonly pollChoiceLabel = "Choix des scrutins";
   public static readonly addPollLabel = "Créer un nouveau scrutin";
-  public static readonly confirmPollDeleteLabel = "Supprimer quand même";
+  public static readonly confirmPollDeleteLabel = "Supprimer";
   public static readonly confirmPollDeleteInfo = "Tu es sur le point de supprimer<br>\"{0}\"<br> et ses résultats.<br>En es-tu sûr ?";
   public static readonly choiceSelectionInfo = "Tu es sur le point de voter pour";
   public static readonly voteForLabel = "Voter";
@@ -104,7 +104,7 @@ export class French {
   public static readonly noEvent = "Aucun événement, pour le moment ;)";
   public static readonly periodFormat = "Du {0} au {1}";
   public static readonly addEventLabel = "Créer un nouvel événement";
-  public static readonly confirmEventDeleteLabel = "Supprimer quand même";
+  public static readonly confirmEventDeleteLabel = "Supprimer";
   public static readonly confirmEventDeleteInfo = "Tu es sur le point de supprimer l'événement<br>\"{0}\".<br>En es-tu sûr ?";
 
   public static readonly eventIdLabel = "ID";
@@ -127,7 +127,7 @@ export class French {
   public static readonly actus = "Actualités";
   public static readonly noActu = "Aucun article, pour le moment ;)";
   public static readonly addActuLabel = "Créer un nouvel article";
-  public static readonly confirmActuDeleteLabel = "Supprimer quand même";
+  public static readonly confirmActuDeleteLabel = "Supprimer";
   public static readonly confirmActuDeleteInfo = "Tu es sur le point de supprimer l'article<br>\"{0}\".<br>En es-tu sûr ?";
 
   public static readonly actuIdLabel = "ID";
