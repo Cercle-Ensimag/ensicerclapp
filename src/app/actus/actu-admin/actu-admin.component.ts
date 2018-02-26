@@ -7,7 +7,7 @@ import { AuthService } from '../../auth/auth-service/auth.service';
 import { ListService } from '../../providers/list.service';
 import { DicoService } from '../../language/dico.service';
 
-export class ComResp {
+export class Journalist {
   emailId: string;
   groupId: string;
 }
@@ -30,8 +30,8 @@ export class ActuAdminComponent implements OnInit, OnDestroy {
   emailCtrl: FormControl;
   emailWatcher: any;
 
-  comResps: ComResp[];
-  displayedUsers: ComResp[] = [];
+  comResps: Journalist[];
+  displayedUsers: Journalist[] = [];
   comRespsWatcher: any;
 
   error: string;

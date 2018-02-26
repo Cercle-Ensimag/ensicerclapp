@@ -10,6 +10,7 @@ import { AppModulesService } from '../../providers/app-modules.service';
 import { DicoService } from '../../language/dico.service';
 
 import { ComResp } from '../../events/event-admin/event-admin.component';
+import { Journalist } from '../../actus/actu-admin/actu-admin.component';
 import { Assessor } from '../../vote/vote-admin/vote-admin.component';
 
 const ENSIDOMAIN = "ensimag.fr";
@@ -50,7 +51,8 @@ export class AuthService {
   isJournalist: boolean = false;
   isCafetAdmin: boolean = false;
   cafetActivated: boolean = false;
-  groupId: string = null;
+  comRespGroupId: string = null;
+  journalistGroupId: string = null;
 
   userWatcher: any;
   profileWatcher: any;
@@ -328,10 +330,10 @@ export class AuthService {
         this.isComResp = resp != null;
         if (resp != null) {
           this.isComResp = true;
-          this.groupId = resp.groupId;
+          this.comRespGroupId = resp.groupId;
         } else {
           this.isComResp = false;
-          this.groupId = null;
+          this.comRespGroupId = null;
         }
       },
       err => {}
@@ -339,16 +341,16 @@ export class AuthService {
   }
 
   watchIsJournalist() {
-    return this.adminOtherWatcher = this.db.object<ComResp>('actus/journalists/users/'+this.getEmailId()).valueChanges()
+    return this.adminOtherWatcher = this.db.object<Journalist>('actus/journalists/users/'+this.getEmailId()).valueChanges()
     .subscribe(
       user => {
         this.isJournalist = user != null;
         if (user != null) {
           this.isJournalist = true;
-          this.groupId = user.groupId;
+          this.journalistGroupId = user.groupId;
         } else {
           this.isJournalist = false;
-          this.groupId = null;
+          this.journalistGroupId = null;
         }
       },
       err => {}

@@ -3,7 +3,7 @@ import { AngularFireDatabase } from 'angularfire2/database';
 
 import { AuthService } from '../../auth/auth-service/auth.service';
 import { Actu } from '../actus-home/actus-home.component';
-import { ComResp, Group } from '../actu-admin/actu-admin.component';
+import { Journalist, Group } from '../actu-admin/actu-admin.component';
 
 @Injectable()
 export class ActusService {
@@ -52,18 +52,18 @@ export class ActusService {
   }
 
   getJournalists() {
-    return this.db.list<ComResp>('actus/journalists/users').valueChanges();
+    return this.db.list<Journalist>('actus/journalists/users').valueChanges();
   }
 
   removeJournalist(emailId: string) {
-    return this.db.object<ComResp>('actus/journalists/users/'+emailId).remove();
+    return this.db.object<Journalist>('actus/journalists/users/'+emailId).remove();
   }
 
   addJournalist(email: string, group: Group) {
     let emailId = this.auth.getEmailIdFromEmail(email);
     return this.db.object<Group>('actus/journalists/groups/'+group.groupId).set(group)
     .then(() => {
-      return this.db.object<ComResp>('actus/journalists/users/'+emailId).set({
+      return this.db.object<Journalist>('actus/journalists/users/'+emailId).set({
         emailId: emailId,
         groupId: group.groupId
       });

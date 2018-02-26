@@ -1,6 +1,6 @@
 <div *ngIf="!deleteActuId">
   <div *ngFor="let actu of actus.actus">
-    <mat-card *ngIf="actu.groupId === auth.groupId">
+    <mat-card *ngIf="actu.journalistGroupId === auth.groupId">
       <h2>{{ actu.title }}</h2>
       <button mat-icon-button routerLink="/actus-admin/edit/{{ actu.id }}"><mat-icon>edit</mat-icon></button>
       <button mat-icon-button routerLink="/actus/actu/{{ actu.id }}"><mat-icon>search</mat-icon></button>

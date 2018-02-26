@@ -68,7 +68,7 @@ export class EditActusComponent implements OnInit, OnDestroy {
         image: this.image_ctrl.value,
         date: this.date_ctrl.value,
         author: this.author_ctrl.value,
-        groupId: this.auth.groupId
+        groupId: this.auth.journalistGroupId
       };
       this.actus.setActu(actu);
     }
