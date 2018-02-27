@@ -33,7 +33,7 @@ export class ActusService {
   watchActus() {
     return this.db.list<Actu>('actus/actus').valueChanges().subscribe(
       actus => {
-        this.actus = actus || [];
+        this.actus = actus.reverse() || [];
       },
       err => {}
     );
