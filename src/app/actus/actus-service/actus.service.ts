@@ -43,6 +43,10 @@ export class ActusService {
     return this.db.object<Actu>('actus/actus/'+actuId).valueChanges();
   }
 
+  getActuId() {
+    return this.db.list<Actu>('actus/actus/').push(null).key;
+  }
+
   setActu(actu: Actu) {
     return this.db.object<Actu>('actus/actus/'+actu.id).set(actu);
   }
