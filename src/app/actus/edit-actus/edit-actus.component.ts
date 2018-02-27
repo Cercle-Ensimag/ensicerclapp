@@ -15,11 +15,6 @@ import { DicoService } from '../../language/dico.service';
   styleUrls: ['./edit-actus.component.css']
 })
 export class EditActusComponent implements OnInit, OnDestroy {
-  title_ctrl: FormControl;
-  description_ctrl: FormControl;
-  image_ctrl: FormControl;
-  date_ctrl: FormControl;
-  author_ctrl: FormControl;
   actuCtrl: FormGroup;
 
   actu: Actu;
