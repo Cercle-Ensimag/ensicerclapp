@@ -1,3 +1,6 @@
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
+registerLocaleData(localeFr);
 
 export class French {
   // Common
@@ -8,6 +11,7 @@ export class French {
   public static readonly applyChangesLabel = "Appliquer";
   public static readonly changesApplied = "Changements appliqués avec succès";
   public static readonly search = "recherche";
+  public static readonly locale = "fr";
 
   // Auth
   public static readonly logOutLabel = "Déconnexion";

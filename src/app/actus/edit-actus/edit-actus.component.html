@@ -25,11 +25,6 @@
       <mat-error *ngIf="actuCtrl.get('date').invalid">{{ d.l.actuDateError }}</mat-error>
     </mat-form-field>
 
-    <!-- <mat-form-field>
-      <input matInput placeholder="{{ d.l.actuDateLabel }}" formControlName="date">
-      <mat-error *ngIf="actuCtrl.get('date').invalid">{{ d.l.actuDateError }}</mat-error>
-    </mat-form-field> -->
-
     <mat-form-field>
       <input matInput placeholder="{{ d.l.actuAuthorLabel }}" formControlName="author">
       <mat-error *ngIf="actuCtrl.get('author').invalid">{{ d.l.actuAuthorError }}</mat-error>

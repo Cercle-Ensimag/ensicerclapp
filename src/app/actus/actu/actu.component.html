@@ -3,7 +3,7 @@
   <mat-card-content style="text-align:left">
     <h4 [innerHTML]="actu.description"></h4>
     <h4>
-      {{ d.format(d.l.actuDate, actu.date) }}<br>
+      {{ d.format(d.l.actuDate, actu.date | date:'fullDate':'':d.l.locale) }}<br>
       {{ d.format(d.l.actuAuthor, actu.author) }}
     </h4>
   </mat-card-content>
