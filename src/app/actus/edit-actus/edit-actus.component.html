@@ -19,9 +19,16 @@
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput type='date' placeholder="{{ d.l.actuDateLabel }}" formControlName="date">
+      <input matInput [matDatepicker]="picker" placeholder="{{ d.l.actuDateLabel }}" formControlName="date">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
       <mat-error *ngIf="actuCtrl.get('date').invalid">{{ d.l.actuDateError }}</mat-error>
     </mat-form-field>
+
+    <!-- <mat-form-field>
+      <input matInput placeholder="{{ d.l.actuDateLabel }}" formControlName="date">
+      <mat-error *ngIf="actuCtrl.get('date').invalid">{{ d.l.actuDateError }}</mat-error>
+    </mat-form-field> -->
 
     <mat-form-field>
       <input matInput placeholder="{{ d.l.actuAuthorLabel }}" formControlName="author">

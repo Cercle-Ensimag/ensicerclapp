@@ -57,7 +57,7 @@ export class EditActusComponent implements OnInit, OnDestroy {
         title: [this.actu.title || "", [Validators.required, Validators.minLength(3)]],
         description: [this.actu.description || "", []],
         image: [this.actu.image || "", []],
-        date: [this.actu.date || "", [Validators.required]],
+        date: [new Date(this.actu.date) || "", [Validators.required]],
         author: [this.actu.author || "", [Validators.required]]
       })
       if (this.actuCtrlWatcher) {
@@ -79,7 +79,7 @@ export class EditActusComponent implements OnInit, OnDestroy {
     return this.actuCtrl.get('image').value;
   }
   getWDate(): string {
-    return this.actuCtrl.get('date').value;
+    return this.actuCtrl.get('date').value.toString();
   }
   getAuthor(): string {
     return this.actuCtrl.get('author').value;
