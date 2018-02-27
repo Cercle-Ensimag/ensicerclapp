@@ -1,46 +1,57 @@
 <mat-card *ngIf="event">
-  <form class="container">
+  <form [formGroup]="eventCtrl" class="container">
 
     <span *ngIf="error" class="error">{{ error }}</span>
 
     <mat-form-field>
-      <input matInput placeholder="{{ d.l.eventIdLabel }}" [formControl]="id_ctrl">
-      <mat-error *ngIf="id_ctrl.invalid">{{ d.l.invalidIdError }}</mat-error>
+      <input matInput placeholder="{{ d.l.eventTitleLabel }}" formControlName="title">
+      <mat-error *ngIf="eventCtrl.get('title').invalid">{{ d.l.eventTitleTooShortError }}</mat-error>
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput placeholder="{{ d.l.eventTitleLabel }}" [formControl]="title_ctrl">
-      <mat-error *ngIf="title_ctrl.invalid">{{ d.l.eventTitleTooShortError }}</mat-error>
+      <textarea matInput placeholder="{{ d.l.eventDescriptionLabel }}" formControlName="description"></textarea>
+      <mat-error *ngIf="eventCtrl.get('description').invalid">{{ d.l.eventDescriptionError }}</mat-error>
     </mat-form-field>
 
     <mat-form-field>
-      <textarea matInput placeholder="{{ d.l.eventDescriptionLabel }}" [formControl]="description_ctrl"></textarea>
-      <mat-error *ngIf="description_ctrl.invalid">{{ d.l.eventDescriptionError }}</mat-error>
+      <input matInput placeholder="{{ d.l.eventImageLabel }}" formControlName="image">
+      <mat-error *ngIf="eventCtrl.get('image').invalid">{{ d.l.eventImageError }}</mat-error>
     </mat-form-field>
 
-    <mat-form-field>
-      <input matInput placeholder="{{ d.l.eventImageLabel }}" [formControl]="image_ctrl">
-      <mat-error *ngIf="image_ctrl.invalid">{{ d.l.eventImageError }}</mat-error>
-    </mat-form-field>
+    <div class="grid-container">
+        <mat-form-field style="max-width: 200px">
+          <input matInput [matDatepicker]="picker1" placeholder="{{ d.l.eventStartLabel }}" formControlName="start">
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+          <mat-error *ngIf="eventCtrl.get('start').invalid">{{ d.l.eventStartError }}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field style="max-width: 200px">
+          <input matInput type='time' placeholder="{{ d.l.eventStartTimeLabel }}" formControlName="startTime">
+          <mat-error *ngIf="eventCtrl.get('startTime').invalid">{{ d.l.eventStartTimeError }}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field style="max-width: 200px">
+          <input matInput [matDatepicker]="picker2" placeholder="{{ d.l.eventEndLabel }}" formControlName="end">
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+          <mat-error *ngIf="eventCtrl.get('end').invalid">{{ d.l.eventEndError }}</mat-error>
+        </mat-form-field>
+
+        <mat-form-field style="max-width: 200px">
+          <input matInput type='time' placeholder="{{ d.l.eventEndTimeLabel }}" formControlName="endTime">
+          <mat-error *ngIf="eventCtrl.get('endTime').invalid">{{ d.l.eventEndTimeError }}</mat-error>
+        </mat-form-field>
+    </div>
 
     <mat-form-field>
-      <input matInput placeholder="{{ d.l.eventStartLabel }}" [formControl]="start_ctrl">
-      <mat-error *ngIf="start_ctrl.invalid">{{ d.l.eventStartError }}</mat-error>
-    </mat-form-field>
-
-    <mat-form-field>
-      <input matInput placeholder="{{ d.l.eventEndLabel }}" [formControl]="end_ctrl">
-      <mat-error *ngIf="end_ctrl.invalid">{{ d.l.eventEndError }}</mat-error>
-    </mat-form-field>
-
-    <mat-form-field>
-      <input matInput placeholder="{{ d.l.eventLocationLabel }}" [formControl]="location_ctrl">
-      <mat-error *ngIf="location_ctrl.invalid">{{ d.l.eventEndError }}</mat-error>
+      <input matInput placeholder="{{ d.l.eventLocationLabel }}" formControlName="location">
+      <mat-error *ngIf="eventCtrl.get('location').invalid">{{ d.l.eventLocationError }}</mat-error>
     </mat-form-field>
 
     <button mat-raised-button
       (click)="onSubmit()" color="primary"
-      [disabled]="title_ctrl.invalid || description_ctrl.invalid || image_ctrl.invalid || start_ctrl.invalid || end_ctrl.invalid"
+      [disabled]="eventCtrl.invalid"
     >{{ d.l.applyChangesLabel }}</button>
 
     <button mat-raised-button (click)="back()">{{ d.l.backLabel }}</button>

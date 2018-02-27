@@ -43,6 +43,10 @@ export class EventsService {
     return this.db.object<Event>('events/events/'+eventId).valueChanges();
   }
 
+  getEventId() {
+    return this.db.list<Event>('events/events/').push(null).key;
+  }
+
   setEvent(event: Event) {
     return this.db.object<Event>('events/events/'+event.id).set(event);
   }

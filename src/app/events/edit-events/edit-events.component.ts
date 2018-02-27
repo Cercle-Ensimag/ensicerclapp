@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { Event } from '../events-home/events-home.component';
 
@@ -15,22 +15,19 @@ import { DicoService } from '../../language/dico.service';
   styleUrls: ['./edit-events.component.css']
 })
 export class EditEventsComponent implements OnInit, OnDestroy {
-  id_ctrl: FormControl;
-  title_ctrl: FormControl;
-  description_ctrl: FormControl;
-  image_ctrl: FormControl;
-  start_ctrl: FormControl;
-  end_ctrl: FormControl;
-  location_ctrl: FormControl;
+  eventCtrl: FormGroup;
 
   event: Event;
   eventWatcher: any;
+  eventCtrlWatcher: any;
+  error: string;
 
   constructor(
     private auth: AuthService,
     private events: EventsService,
     private route: ActivatedRoute,
     private location: Location,
+    private fb: FormBuilder,
     public d: DicoService
   ) {}
 
@@ -47,34 +44,70 @@ export class EditEventsComponent implements OnInit, OnDestroy {
     return this.events.getEvent(eventId).subscribe((event) => {
       if (event) {
         this.event = event;
-        this.id_ctrl = new FormControl({ value: event.id, disabled: true }, []);
       } else {
         this.event = new Event();
-        this.id_ctrl = new FormControl("", [Validators.required, Validators.minLength(3)]);
+        this.event.id = this.events.getEventId();
       }
-      this.title_ctrl = new FormControl(this.event.title || "", [Validators.required, Validators.minLength(3)]);
-      this.description_ctrl = new FormControl(this.event.description || "", []);
-      this.image_ctrl = new FormControl(this.event.image || "", []);
-      this.start_ctrl = new FormControl(this.event.start || "", [Validators.required]);
-      this.end_ctrl = new FormControl(this.event.end || "", [Validators.required]);
-      this.location_ctrl = new FormControl(this.event.location || "", [Validators.required]);
+      this.eventCtrl = this.fb.group({
+        title: [this.event.title || "", [Validators.required, Validators.minLength(3)]],
+        description: [this.event.description || "", []],
+        image: [this.event.image || "", []],
+        start: [new Date(this.event.start) || "", [Validators.required]],
+        startTime: [this.getTimeFromDate(this.event.start), [Validators.required]],
+        end: [new Date(this.event.end) || "", [Validators.required]],
+        endTime: [this.getTimeFromDate(this.event.end), [Validators.required]],
+        location: [this.event.location || "", [Validators.required]]
+      })
+      if (this.eventCtrlWatcher) {
+        this.eventCtrlWatcher.unsubscribe();
+      }
+      this.eventCtrlWatcher = this.eventCtrl.valueChanges.subscribe(() => {
+        this.error = null;
+      });
     });
   }
 
+  getTitle(): string {
+    return this.eventCtrl.get('title').value;
+  }
+  getDescription(): string {
+    return this.eventCtrl.get('description').value;
+  }
+  getImage(): string {
+    return this.eventCtrl.get('image').value;
+  }
+  getStart(): string {
+    let time = this.eventCtrl.get('startTime').value;
+    return this.eventCtrl.get('start').value.toString().replace('00:00:00', time + ':00');
+  }
+  getEnd(): string {
+    let time = this.eventCtrl.get('endTime').value;
+    return this.eventCtrl.get('end').value.toString().replace('00:00:00', time + ':00');
+  }
+  getLocation(): string {
+    return this.eventCtrl.get('location').value;
+  }
+
   onSubmit() {
-    if (!this.title_ctrl.invalid && ! this.description_ctrl.invalid) {
+    if (!this.eventCtrl.invalid) {
       let event = {
-        id: this.id_ctrl.value,
-        title: this.title_ctrl.value,
-        description: this.description_ctrl.value,
-        image: this.image_ctrl.value,
-        start: this.start_ctrl.value,
-        end: this.end_ctrl.value,
-        location: this.location_ctrl.value,
+        id: this.event.id,
+        title: this.getTitle(),
+        description: this.getDescription(),
+        image: this.getImage(),
+        start: this.getStart(),
+        end: this.getEnd(),
+        location: this.getLocation(),
         groupId: this.auth.comRespGroupId
       };
-      this.events.setEvent(event);
+      this.events.setEvent(event).then(() => {
+        this.error = this.d.l.changesApplied;
+      });
     }
+  }
+
+  getTimeFromDate(date: string) {
+    return (date  || "").split(' ')[4] || "";
   }
 
   back() {

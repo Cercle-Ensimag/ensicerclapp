@@ -12,6 +12,8 @@ export class French {
   public static readonly changesApplied = "Changements appliqués avec succès";
   public static readonly search = "recherche";
   public static readonly locale = "fr";
+  public static readonly shortDateTimeFormat = "E d LLL H:mm";
+  public static readonly longDateTimeFormat = "EEEE d LLLL H:mm";
 
   // Auth
   public static readonly logOutLabel = "Déconnexion";
@@ -116,14 +118,18 @@ export class French {
   public static readonly eventTitleLabel = "Titre";
   public static readonly eventDescriptionLabel = "Description (Utiliser des balises HTML pour la mise en forme)";
   public static readonly eventImageLabel = "URL de l'image";
-  public static readonly eventStartLabel = "Début";
-  public static readonly eventEndLabel = "Fin";
+  public static readonly eventStartLabel = "Date de début";
+  public static readonly eventEndLabel = "Date de fin";
+  public static readonly eventStartTimeLabel = "Heure de début";
+  public static readonly eventEndTimeLabel = "Heure de fin";
   public static readonly eventLocationLabel = "Lieu";
   public static readonly eventTitleTooShortError = "Titre trop court";
   public static readonly eventDescriptionError = "";
   public static readonly eventImageError = "";
   public static readonly eventStartError = "Date de début requise";
   public static readonly eventEndError = "Date de fin requise";
+  public static readonly eventStartTimeError = "Heure de début requise";
+  public static readonly eventEndTimeError = "Heure de fin requise";
   public static readonly eventStart = "Début : {0}";
   public static readonly eventEnd = "Fin : {0}";
   public static readonly eventLocation = "Lieu : {0}";

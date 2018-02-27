@@ -2,7 +2,13 @@
   <div *ngFor="let event of events.events">
     <button mat-raised-button routerLink="/events/event/{{ event.id }}">
       <h2>{{ event.title }}</h2>
-      <label>{{ d.format(d.l.periodFormat, event.start, event.end) }}</label>
+      <label>
+        {{ d.format(
+          d.l.periodFormat,
+          event.start | date:d.l.shortDateTimeFormat:'':d.l.locale,
+          event.end | date:d.l.shortDateTimeFormat:'':d.l.locale
+        ) }}
+      </label>
     </button>
   </div>
 </div>
