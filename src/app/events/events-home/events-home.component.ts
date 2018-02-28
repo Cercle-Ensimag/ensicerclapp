@@ -37,4 +37,12 @@ export class EventsHomeComponent implements OnInit, OnDestroy {
     this.events.stop();
   }
 
+  color(event: Event) {
+      if (event.start < this.now && event.end > this.now) {
+          return "primary";
+      } else {
+          return "";
+      }
+  }
+
 }
