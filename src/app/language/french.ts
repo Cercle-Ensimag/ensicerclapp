@@ -118,10 +118,10 @@ export class French {
   public static readonly eventTitleLabel = "Titre";
   public static readonly eventDescriptionLabel = "Description (Utiliser des balises HTML pour la mise en forme)";
   public static readonly eventImageLabel = "URL de l'image";
-  public static readonly eventStartLabel = "Date de début";
-  public static readonly eventEndLabel = "Date de fin";
-  public static readonly eventStartTimeLabel = "Heure de début";
-  public static readonly eventEndTimeLabel = "Heure de fin";
+  public static readonly eventStartLabel = "Date de début (mm/dd/yyyy)";
+  public static readonly eventEndLabel = "Date de fin (mm/dd/yyyy)";
+  public static readonly eventStartTimeLabel = "Heure de début (HH:mm)";
+  public static readonly eventEndTimeLabel = "Heure de fin (HH:mm)";
   public static readonly eventLocationLabel = "Lieu";
   public static readonly eventTitleTooShortError = "Titre trop court";
   public static readonly eventDescriptionError = "";

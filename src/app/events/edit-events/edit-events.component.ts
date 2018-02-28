@@ -52,10 +52,10 @@ export class EditEventsComponent implements OnInit, OnDestroy {
         title: [this.event.title || "", [Validators.required, Validators.minLength(3)]],
         description: [this.event.description || "", []],
         image: [this.event.image || "", []],
-        start: [new Date(this.event.start) || "", [Validators.required]],
-        startTime: [this.getTimeFromDate(this.event.start), [Validators.required]],
-        end: [new Date(this.event.end) || "", [Validators.required]],
-        endTime: [this.getTimeFromDate(this.event.end), [Validators.required]],
+        start: [new Date(this.event.start) || "", [Validators.required, this.dateValidator]],
+        startTime: [this.getTimeFromDate(this.event.start), [Validators.required, this.timeValidator]],
+        end: [new Date(this.event.end) || "", [Validators.required, this.dateValidator]],
+        endTime: [this.getTimeFromDate(this.event.end), [Validators.required, this.timeValidator]],
         location: [this.event.location || "", [Validators.required]]
       })
       if (this.eventCtrlWatcher) {
@@ -107,7 +107,25 @@ export class EditEventsComponent implements OnInit, OnDestroy {
   }
 
   getTimeFromDate(date: string) {
-    return (date  || "").split(' ')[4] || "";
+    if (!date) {
+      return "";
+    }
+    return date.split(' ')[4].substring(0, 5);
+  }
+
+  timeValidator(control: FormControl) {
+    if (!control.value.match(/^[0-9][0-9]:[0-9][0-9]$/)){
+      return { incorrect: true };
+    }
+    return null;
+  }
+
+  dateValidator(control: FormControl) {
+    console.log(control.value.toString());
+    if (!control.value.toString().match(/^(Mon|Tue|Wed|Thu|Fri|Sat|Sun) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) ([0-2][0-9]|3[0-2]) 20[1-9][0-9]/)){
+      return { incorrect: true };
+    }
+    return null;
   }
 
   back() {
