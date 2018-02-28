@@ -9,6 +9,7 @@ import { ComResp, Group } from '../event-admin/event-admin.component';
 export class EventsService {
 
   events: Event[] = [];
+  activeEvents: Event[] = [];
   eventsWatcher: any;
 
   constructor(
@@ -31,9 +32,10 @@ export class EventsService {
   }
 
   watchEvents() {
-    return this.db.list<Event>('events/events').valueChanges().subscribe(
+    return this.db.list<Event>('events/events', ref => ref.orderByChild('start')).valueChanges().subscribe(
       events => {
         this.events = events || [];
+        this.activeEvents = events.filter(event => event.end > Date.now()) || [];
       },
       err => {}
     );

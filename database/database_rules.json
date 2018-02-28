@@ -254,13 +254,14 @@
                       root.child('events/com-resps/resps/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')).exists()) &&
                      (root.child('events/com-resps/resps/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/groupId').val() === newData.child('groupId').val() ||
                       !newData.exists())",
+          ".indexOn": ["start"],
 
           "id": { ".validate": "newData.val() === $eventId" },
           "title": { ".validate": "newData.isString()" },
           "description": { ".validate": "newData.isString()" },
           "image": { ".validate": "newData.isString()" },
-          "start": { ".validate": "newData.isString()" },
-          "end": { ".validate": "newData.isString()" },
+          "start": { ".validate": "newData.isNumber()" },
+          "end": { ".validate": "newData.isNumber()" },
           "location": { ".validate": "newData.isString()" },
           "groupId": {
             ".validate": "root.child('events/com-resps/resps/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/groupId').val() === data.val() ||

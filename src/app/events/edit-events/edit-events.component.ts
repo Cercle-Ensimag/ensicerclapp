@@ -76,13 +76,13 @@ export class EditEventsComponent implements OnInit, OnDestroy {
   getImage(): string {
     return this.eventCtrl.get('image').value;
   }
-  getStart(): string {
+  getStart(): number {
     let time = this.eventCtrl.get('startTime').value;
-    return this.eventCtrl.get('start').value.toString().replace('00:00:00', time + ':00');
+    return (new Date(this.eventCtrl.get('start').value.toString().replace('00:00:00', time + ':00'))).getTime();
   }
-  getEnd(): string {
+  getEnd(): number {
     let time = this.eventCtrl.get('endTime').value;
-    return this.eventCtrl.get('end').value.toString().replace('00:00:00', time + ':00');
+    return (new Date(this.eventCtrl.get('end').value.toString().replace('00:00:00', time + ':00'))).getTime();
   }
   getLocation(): string {
     return this.eventCtrl.get('location').value;
@@ -106,11 +106,11 @@ export class EditEventsComponent implements OnInit, OnDestroy {
     }
   }
 
-  getTimeFromDate(date: string) {
+  getTimeFromDate(date: any) {
     if (!date) {
       return "";
     }
-    return date.split(' ')[4].substring(0, 5);
+    return (new Date(date)).toString().split(' ')[4].substring(0, 5);
   }
 
   timeValidator(control: FormControl) {
@@ -121,7 +121,6 @@ export class EditEventsComponent implements OnInit, OnDestroy {
   }
 
   dateValidator(control: FormControl) {
-    console.log(control.value.toString());
     if (!control.value.toString().match(/^(Mon|Tue|Wed|Thu|Fri|Sat|Sun) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) ([0-2][0-9]|3[0-2]) 20[1-9][0-9]/)){
       return { incorrect: true };
     }

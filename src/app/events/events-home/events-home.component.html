@@ -1,6 +1,6 @@
-<div *ngIf="events.events">
-  <div *ngFor="let event of events.events">
-    <button mat-raised-button routerLink="/events/event/{{ event.id }}">
+<div *ngIf="events.activeEvents">
+  <div *ngFor="let event of events.activeEvents">
+    <button mat-raised-button *ngIf="event.end > now" routerLink="/events/event/{{ event.id }}">
       <h2>{{ event.title }}</h2>
       <label>
         {{ d.format(
@@ -12,7 +12,7 @@
     </button>
   </div>
 </div>
-<div *ngIf="events.events.length == 0">
+<div *ngIf="events.activeEvents.length == 0">
   <mat-card>
     <h3>{{ d.l.noEvent }}</h3>
     <button class="item" mat-raised-button routerLink='/home' color="primary">{{ d.l.backLabel }}</button>

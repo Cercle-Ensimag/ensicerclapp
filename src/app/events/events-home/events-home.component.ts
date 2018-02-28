@@ -8,8 +8,8 @@ export class Event {
   title: string;
   description: string;
   image: string;
-  start: string;
-  end: string;
+  start: number;
+  end: number;
   location: string;
   groupId: string;
 }
@@ -21,6 +21,8 @@ export class Event {
 })
 export class EventsHomeComponent implements OnInit, OnDestroy {
 
+  now: number;
+
   constructor(
     public events: EventsService,
     public d: DicoService
@@ -28,6 +30,7 @@ export class EventsHomeComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.events.start();
+    this.now = Date.now();
   }
 
   ngOnDestroy() {
