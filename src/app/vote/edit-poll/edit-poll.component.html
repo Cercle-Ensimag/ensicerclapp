@@ -4,11 +4,6 @@
     <span *ngIf="error" class="error">{{ error }}</span>
 
     <mat-form-field>
-      <input matInput placeholder="{{ d.l.pollIdLabel }}" [formControl]="id_ctrl">
-      <mat-error *ngIf="id_ctrl.invalid">{{ d.l.invalidIdError }}</mat-error>
-    </mat-form-field>
-
-    <mat-form-field>
       <input matInput placeholder="{{ d.l.pollTitleLabel }}" [formControl]="title_ctrl">
       <mat-error *ngIf="title_ctrl.invalid">{{ d.l.pollTitleTooShortError }}</mat-error>
     </mat-form-field>
@@ -22,10 +17,6 @@
       <div *ngFor="let choice of newChoices">
         <div class="wraper border">
           <div class="container">
-            <mat-form-field>
-              <input matInput placeholder="{{ d.l.choiceIdLabel }}" [formControl]="choice.id_ctrl">
-              <mat-error *ngIf="choice.id_ctrl.invalid">{{ d.l.invalidIdError }}</mat-error>
-            </mat-form-field>
             <mat-form-field>
               <input matInput placeholder="{{ d.l.choiceLabelLabel }}" [formControl]="choice.label_ctrl">
               <mat-error *ngIf="choice.label_ctrl.invalid"></mat-error>

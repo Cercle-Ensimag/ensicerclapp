@@ -66,8 +66,16 @@ export class VoteService {
     return this.db.object<Poll>('vote/polls/'+id).valueChanges();
   }
 
+  getPollId() {
+    return this.db.list<Poll>('vote/polls/').push(null).key;
+  }
+
   getChoices(pollId: string): Observable<Choice[]> {
     return this.db.list<Choice>('vote/polls/'+pollId+'/choices').valueChanges();
+  }
+
+  getChoiceId(pollId: string) {
+    return this.db.list<Poll>('vote/polls/'+pollId+'/choices').push(null).key;
   }
 
   getResults(pollId: string, choiceId: string) {
