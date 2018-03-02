@@ -49,8 +49,10 @@ import { JournalistComponent } from './actus/journalist/journalist.component';
 import { EditActusComponent } from './actus/edit-actus/edit-actus.component';
 
 import { CalendarComponent } from './calendar/cal-home/calendar.component';
-import { AccountComponent } from './account/account.component';
+import { EditCalComponent } from './calendar/edit-cal/edit-cal.component';
+import { CalSettingsComponent } from './calendar/cal-settings/cal-settings.component';
 
+import { AccountComponent } from './account/account.component';
 import { ReadmeComponent } from './info/readme/readme.component';
 
 // services
@@ -111,7 +113,7 @@ import { environment } from '../environments/environment';
     LoginComponent, SignUpComponent, EmailVerifComponent, PasswordResetComponent,
     CafetComponent, CafetInfoComponent, CafetAdminComponent,
     VoteComponent, PollComponent, VoteSnackbarComponent, VoteAdminComponent, EditPollComponent, ResultsComponent, VoteUsersComponent, AssessorComponent,
-    CalendarComponent,
+    CalendarComponent, EditCalComponent, CalSettingsComponent,
     EventsHomeComponent, EventComponent, EventAdminComponent, ComRespComponent, EditEventsComponent,
     ActusHomeComponent, ActuComponent, ActuAdminComponent, JournalistComponent, EditActusComponent,
     ReadmeComponent,

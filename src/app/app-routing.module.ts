@@ -35,6 +35,9 @@ import { JournalistComponent } from './actus/journalist/journalist.component';
 import { EditActusComponent } from './actus/edit-actus/edit-actus.component';
 
 import { CalendarComponent } from './calendar/cal-home/calendar.component';
+import { EditCalComponent } from './calendar/edit-cal/edit-cal.component';
+import { CalSettingsComponent } from './calendar/cal-settings/cal-settings.component';
+
 import { AccountComponent } from './account/account.component';
 import { ReadmeComponent } from './info/readme/readme.component';
 
@@ -87,6 +90,9 @@ const routes: Routes = [
   { path: 'actus-admin/edit/:id', component: EditActusComponent, canActivate: [CanActivateHome, CanActivateActusEdit] },
 
   { path: 'calendar', component: CalendarComponent, canActivate: [CanActivateHome] },
+  { path: 'calendar/settings', component: CalSettingsComponent, canActivate: [CanActivateHome] },
+  { path: 'calendar/edit/:id', component: EditCalComponent, canActivate: [CanActivateHome] },
+
   { path: 'z-moi', component: ReadmeComponent, canActivate: [CanActivateHome] },
   { path: 'admin', component: AdminUsersComponent, canActivate: [CanActivateHome, CanActivateAdmin] }
 

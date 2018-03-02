@@ -3,7 +3,7 @@
   <button mat-icon-button (click)="previousDay()"><mat-icon>navigate_before</mat-icon></button>
   <label>{{ (today + getTimeOffset()) | date:d.l.shortDateFormat:'':d.l.locale | uppercase }}</label>
   <button mat-icon-button (click)="nextDay()"><mat-icon>navigate_next</mat-icon></button>
-  <button mat-icon-button routerLink="/calendar/edit/"><mat-icon>insert_invitation</mat-icon></button>
+  <button mat-icon-button routerLink="/calendar/edit/-"><mat-icon>insert_invitation</mat-icon></button>
 </mat-card>
 <mat-card *ngFor="let event of getDisplayEvents()" class="event" [class.border]="isNow(event)">
   {{ event.title }}<br>

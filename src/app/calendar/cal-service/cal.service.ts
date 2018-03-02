@@ -213,7 +213,6 @@ export class CalService {
     this.courses = parseICS(CAL).map(event => new CalEvent(
       "", event.name, event.startDate, event.endDate, event.location
     ));
-    console.log(this.courses);
     this.concatEvents();
     return null;
     // return this.http.get(LINK).subscribe(
