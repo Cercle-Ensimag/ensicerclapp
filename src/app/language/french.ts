@@ -100,7 +100,9 @@ export class French {
   public static readonly invalidIdError = "ID trop court ou déjà existant";
   public static readonly pollTitleTooShortError = "Titre trop court";
   public static readonly pollDescriptionError = "Erreur dans la description";
-  public static readonly markAsVotedInfo = "Ajouter un votant en face-à-face";
+  public static readonly markAsVotedEmailInfo = "Email d'un votant en face-à-face";
+  public static readonly markAsVotedDomainInfo = "Domaine";
+
   public static readonly markedAsVoted = "{0} a bien été ajouté";
   public static readonly votedButtonLabel = "A voté !";
   public static readonly notOnTheList = "{0} n'est pas dans la liste";
