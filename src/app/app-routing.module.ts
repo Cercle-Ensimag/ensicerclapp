@@ -83,7 +83,7 @@ const routes: Routes = [
   { path: 'actus', component: ActusHomeComponent, canActivate: [CanActivateHome] },
   { path: 'actus/actu/:id', component: ActuComponent, canActivate: [CanActivateHome] },
   { path: 'actus-admin', component: ActuAdminComponent, canActivate: [CanActivateHome, CanActivateActusAdmin] },
-  { path: 'journalist', component: JournalistComponent, canActivate: [CanActivateHome, CanActivateComResp] },
+  { path: 'journalist', component: JournalistComponent, canActivate: [CanActivateHome, CanActivateJournalist] },
   { path: 'actus-admin/edit/:id', component: EditActusComponent, canActivate: [CanActivateHome, CanActivateActusEdit] },
 
   { path: 'calendar', component: CalendarComponent, canActivate: [CanActivateHome] },

@@ -9,7 +9,7 @@ export class CanActivateActusEdit implements CanActivate {
   constructor(private auth: AuthService, private router: Router) { }
 
   canActivate(): boolean {
-    if (!this.auth.isActusAdmin && !this.auth.isComResp) {
+    if (!this.auth.isActusAdmin && !this.auth.isJournalist) {
       this.router.navigateByUrl('/home');
       return false;
     } else {
