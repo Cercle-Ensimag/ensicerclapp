@@ -21,13 +21,14 @@ export class EditPollComponent implements OnInit, OnDestroy {
 
   pollWatcher: any;
   choicesWatcher: any;
+  pollCtrlWatcher: any;
 
   newChoices: {
     id: string,
-    label_ctrl: FormControl,
-    image_ctrl: FormControl,
-    short_ctrl: FormControl
+    ctrl: FormGroup
   }[];
+
+  message: string;
 
   constructor(
     private vote: VoteService,
@@ -62,6 +63,12 @@ export class EditPollComponent implements OnInit, OnDestroy {
         title: [this.poll.title || "", [Validators.required, Validators.minLength(3)]],
         description: [this.poll.description || "", []]
       });
+      if (this.pollCtrlWatcher) {
+        this.pollCtrlWatcher.unsubscribe();
+      }
+      this.pollCtrlWatcher = this.pollCtrl.valueChanges.subscribe(() => {
+        this.message = null;
+      })
     });
   }
 
@@ -79,9 +86,11 @@ export class EditPollComponent implements OnInit, OnDestroy {
       for (let choice of choices || []) {
         this.newChoices.push({
           id: choice.id,
-          label_ctrl: new FormControl(choice.label, []),
-          image_ctrl: new FormControl(choice.image, []),
-          short_ctrl: new FormControl(choice.short, [])
+          ctrl: this.fb.group({
+            label: [choice.label, [Validators.required]],
+            image: [choice.image, []],
+            short: [choice.short, []]
+          })
         });
       }
     });
@@ -90,15 +99,18 @@ export class EditPollComponent implements OnInit, OnDestroy {
   addChoice() {
     this.newChoices.push({
       id: this.vote.getChoiceId(this.poll.id),
-      label_ctrl: new FormControl("", [Validators.required]),
-      image_ctrl: new FormControl("", []),
-      short_ctrl: new FormControl("", [])
-    })
+      ctrl: this.fb.group({
+        label: ["", [Validators.required]],
+        image: ["", []],
+        short: ["", []]
+      })
+    });
+    this.message = null;
   }
 
   choicesOk() {
     for (let choice of this.newChoices) {
-      if (choice.label_ctrl.invalid || choice.image_ctrl.invalid || choice.short_ctrl.invalid) {
+      if (choice.ctrl.invalid) {
         return false;
       }
     }
@@ -118,9 +130,9 @@ export class EditPollComponent implements OnInit, OnDestroy {
       for (let choice of this.newChoices) {
         choices[choice.id] = {
           id: choice.id,
-          label: choice.label_ctrl.value,
-          image: choice.image_ctrl.value,
-          short: choice.short_ctrl.value
+          label: choice.ctrl.get('label').value,
+          image: choice.ctrl.get('image').value,
+          short: choice.ctrl.get('short').value
         };
       }
       let poll = {
@@ -131,6 +143,7 @@ export class EditPollComponent implements OnInit, OnDestroy {
         choices: choices
       };
       this.vote.setPoll(poll);
+      this.message = this.d.l.changesApplied;
     }
   }
 

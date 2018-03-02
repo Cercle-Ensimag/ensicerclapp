@@ -1,7 +1,7 @@
 <mat-card *ngIf="poll">
-  <form [formGroup]="pollCtrl" (ngSubmit)="onSubmit()" class="container">
+  <form [formGroup]="pollCtrl" class="container">
 
-    <span *ngIf="error" class="error">{{ error }}</span>
+    <span *ngIf="message" class="error">{{ message }}</span>
 
     <mat-form-field>
       <input matInput placeholder="{{ d.l.pollTitleLabel }}" formControlName="title">
@@ -16,27 +16,27 @@
     <div class="grid-container">
       <div *ngFor="let choice of newChoices">
         <div class="wraper border">
-          <div class="container">
+          <form [formGroup]="choice.ctrl" class="container">
             <mat-form-field>
-              <input matInput placeholder="{{ d.l.choiceLabelLabel }}" [formControl]="choice.label_ctrl">
-              <mat-error *ngIf="choice.label_ctrl.invalid"></mat-error>
+              <input matInput placeholder="{{ d.l.choiceLabelLabel }}" formControlName="label">
+              <mat-error *ngIf="choice.ctrl.get('label').invalid"></mat-error>
             </mat-form-field>
             <mat-form-field>
-              <input matInput placeholder="{{ d.l.choiceImageLabel }}" [formControl]="choice.image_ctrl">
-              <mat-error *ngIf="choice.image_ctrl.invalid"></mat-error>
+              <input matInput placeholder="{{ d.l.choiceImageLabel }}" formControlName="image">
+              <mat-error *ngIf="choice.ctrl.get('image').invalid"></mat-error>
             </mat-form-field>
             <mat-form-field>
-              <input matInput placeholder="{{ d.l.choiceShortLabelLabel }}" [formControl]="choice.short_ctrl">
-              <mat-error *ngIf="choice.short_ctrl.invalid"></mat-error>
+              <input matInput placeholder="{{ d.l.choiceShortLabelLabel }}" formControlName="short">
+              <mat-error *ngIf="choice.ctrl.get('short').invalid"></mat-error>
             </mat-form-field>
             <mat-icon (click)="removeChoice(choice.id)">delete</mat-icon>
-          </div>
+          </form>
         </div>
       </div>
     </div>
 
     <button mat-raised-button (click)="addChoice()" [disabled]="!choicesOk()" color="primary">{{ d.l.addChoiceLabel }}</button>
-    <button mat-raised-button type="submit" color="primary" [disabled]="!choicesOk() || pollCtrl.invalid">{{ d.l.applyChangesLabel }}</button>
+    <button mat-raised-button (click)="onSubmit()" color="primary" [disabled]="!choicesOk() || pollCtrl.invalid">{{ d.l.applyChangesLabel }}</button>
     <button mat-raised-button (click)="back()">{{ d.l.backLabel }}</button>
   </form>
 </mat-card>
