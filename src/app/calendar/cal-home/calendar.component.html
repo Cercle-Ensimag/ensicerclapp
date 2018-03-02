@@ -5,8 +5,8 @@
   <button mat-icon-button (click)="nextDay()"><mat-icon>navigate_next</mat-icon></button>
   <button mat-icon-button routerLink="/calendar/edit/"><mat-icon>insert_invitation</mat-icon></button>
 </mat-card>
-<mat-card *ngFor="let event of getDisplayEvents()" class="events">
-  {{ event.name }}<br>
-  {{ event.startDate | date:d.l.timeFormat:'':d.l.locale }} - {{ event.endDate | date:d.l.timeFormat:'':d.l.locale }}<br>
+<mat-card *ngFor="let event of getDisplayEvents()" class="event" [class.border]="isNow(event)">
+  {{ event.title }}<br>
+  {{ event.start | date:d.l.timeFormat:'':d.l.locale }} - {{ event.end | date:d.l.timeFormat:'':d.l.locale }}<br>
   {{ event.location }}
 </mat-card>

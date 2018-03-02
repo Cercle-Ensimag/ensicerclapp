@@ -15,6 +15,7 @@ export class CalendarComponent implements OnInit {
 
   dayOffset: number = 0;
   today: number;
+  now: number;
 
   constructor(
     public cal: CalService,
@@ -22,8 +23,8 @@ export class CalendarComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.today = (new Date()).getTime();
-    this.today = this.today - this.today % DAY_TIME - GMT_OFFSET;
+    this.today = this.getToday();
+    this.now = Date.now();
     this.cal.start();
   }
 
@@ -31,15 +32,30 @@ export class CalendarComponent implements OnInit {
     this.cal.stop();
   }
 
+  getToday() {
+    let today = (new Date()).getTime();
+    return today - today % DAY_TIME - GMT_OFFSET;
+  }
+
   isToday(event: CalEvent) {
     let tomorrow = this.today + DAY_TIME;
-    let start = (new Date(event.startDate)).getTime();
-    let end = (new Date(event.endDate)).getTime();
     let timeOffset = this.getTimeOffset();
     return (
-      (start > this.today + timeOffset && start < tomorrow + timeOffset) ||
-      (end > this.today + timeOffset && end < tomorrow + timeOffset)
+      (event.start > this.today + timeOffset && event.start < tomorrow + timeOffset) ||
+      (event.end > this.today + timeOffset && event.end < tomorrow + timeOffset)
     );
+  }
+
+  isNow(event: CalEvent) {
+    return event.start < this.now && event.end > this.now;
+  }
+
+  color(event: CalEvent) {
+    if (this.isNow(event)) {
+      return "primary";
+    } else {
+      return "";
+    }
   }
 
   getDayEvents() {

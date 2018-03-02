@@ -110,8 +110,8 @@ SEQUENCE:1806105032\n\
 END:VEVENT\n\
 BEGIN:VEVENT\n\
 DTSTAMP:20180302T002352Z\n\
-DTSTART:20180305T130000Z\n\
-DTEND:20180305T143000Z\n\
+DTSTART:20180302T210000Z\n\
+DTEND:20180302T233000Z\n\
 SUMMARY:Principes des systemes de gestion de bases de donnees\n\
 LOCATION:D109 (V)\n\
 DESCRIPTION:\n4MMPSGS2_2017_S4_CTD2_G1\n(Exporté le:02/03/2018 01:23)\n\
@@ -150,20 +150,20 @@ END:VEVENT\n\
 END:VCALENDAR"
 
 export class CalEvent {
-  uid: string;
-  name: string;
-  startDate: string;
-  endDate: string;
+  id: string;
+  title: string;
+  start: number;
+  end: number;
   location: string;
   // description: string;
   // type: string;
   // end: string;
 
-  constructor(id, name, start, end, loc) {
-    this.uid = id;
-    this.name = name;
-    this.startDate = start;
-    this.endDate = end;
+  constructor(id, name, start: string, end: string, loc) {
+    this.id = id;
+    this.title = name;
+    this.start = (new Date(start)).getTime();
+    this.end = (new Date(end)).getTime();
     this.location = loc;
   }
 }
@@ -210,7 +210,10 @@ export class CalService {
   }
 
   watchCoursesEvents() {
-    this.courses = parseICS(CAL);
+    this.courses = parseICS(CAL).map(event => new CalEvent(
+      "", event.name, event.startDate, event.endDate, event.location
+    ));
+    console.log(this.courses);
     this.concatEvents();
     return null;
     // return this.http.get(LINK).subscribe(
@@ -224,9 +227,7 @@ export class CalService {
   watchAssosEvents() {
     return this.events.getEvents().subscribe(
       events => {
-        this.assos = events.map(event => new CalEvent(
-          event.id, event.title, event.start, event.end, event.location
-        )) || [];
+        this.assos = events || [];
         this.concatEvents();
       },
       err => {}
@@ -255,7 +256,7 @@ export class CalService {
 
   concatEvents() {
     this.calEvents = this.courses.concat(this.persos).concat(
-      this.assos.filter(event => event.uid === this.assosEventsIds[event.uid])
+      this.assos.filter(event => event.id === this.assosEventsIds[event.id])
     );
   }
 }

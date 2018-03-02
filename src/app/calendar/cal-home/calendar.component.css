@@ -1,4 +1,4 @@
-.events {
+.event {
   margin-top: 4px;
 }
 
@@ -7,9 +7,9 @@ mat-card {
   margin: auto;
 }
 
-.events button {
-  margin-top: 4px;
-  width: 100%;
+.border {
+  background-color: #3fb551;
+  color: #e8f6ea;
 }
 
 .header button {
