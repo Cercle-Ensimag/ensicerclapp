@@ -13,8 +13,8 @@ import { ComResp } from '../../events/event-admin/event-admin.component';
 import { Journalist } from '../../actus/actu-admin/actu-admin.component';
 import { Assessor } from '../../vote/vote-admin/vote-admin.component';
 
-const ENSIDOMAIN = "ensimag.fr";
-const PHELMADOMAIN = "phelma.grenoble-inp.fr";
+export const ENSIDOMAIN = "ensimag.fr";
+export const PHELMADOMAIN = "phelma.grenoble-inp.fr";
 
 export class Profile {
   name: {
@@ -179,7 +179,7 @@ export class AuthService {
     if (email && email.indexOf("@") != -1) {
       let [_, domain] = email.split("@");
       if (domain !== ENSIDOMAIN && domain !== PHELMADOMAIN) {
-        return { domain: { parsedDomain: domain } }
+        return { domain: { parsedDomain: domain } };
       }
     }
     return null;

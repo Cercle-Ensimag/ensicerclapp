@@ -54,7 +54,7 @@ export class EditActusComponent implements OnInit, OnDestroy {
         image: [this.actu.image || "", []],
         date: [new Date(this.actu.date) || "", [Validators.required]],
         author: [this.actu.author || "", [Validators.required]]
-      })
+      });
       if (this.actuCtrlWatcher) {
         this.actuCtrlWatcher.unsubscribe();
       }

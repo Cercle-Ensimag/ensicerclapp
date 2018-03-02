@@ -8,7 +8,11 @@ mat-form-field {
 }
 
 .large {
-  width: 400px;
+  width: 300px;
+}
+
+.domain {
+  max-width: 150px;
 }
 
 mat-card {

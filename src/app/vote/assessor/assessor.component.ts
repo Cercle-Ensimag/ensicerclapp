@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { DeviceSizeService } from '../../providers/device-size.service';
-import { AuthService } from '../../auth/auth-service/auth.service';
+import { AuthService, ENSIDOMAIN, PHELMADOMAIN } from '../../auth/auth-service/auth.service';
 import { VoteService } from '../vote-service/vote.service';
 import { ListService } from '../../providers/list.service';
 import { DicoService } from '../../language/dico.service';
@@ -19,7 +19,7 @@ import { Poll, Choice } from '../poll/poll.component';
 })
 export class AssessorComponent implements OnInit, OnDestroy {
 
-  emailCtrl: FormControl;
+  searchCtrl: FormGroup;
   displayedUsers: string[] = [];
   polls: Poll[];
   users: {
@@ -34,12 +34,14 @@ export class AssessorComponent implements OnInit, OnDestroy {
   checkedWatchers: {
     [pollId: string]: any
   } = {};
-  emailWatcher: any;
+  searchWatcher: any;
 
+  domains: string[];
   error: string;
 
   pageIndex: number = 0;
   pageSize: number = 20;
+
 
   constructor(
     private vote: VoteService,
@@ -47,6 +49,7 @@ export class AssessorComponent implements OnInit, OnDestroy {
     private location: Location,
     private auth: AuthService,
     public media: DeviceSizeService,
+    private fb: FormBuilder,
     private list: ListService,
     public d: DicoService
   ) {}
@@ -67,14 +70,30 @@ export class AssessorComponent implements OnInit, OnDestroy {
   }
 
   createSearchForm() {
-    this.emailCtrl = new FormControl('', [this.auth.emailDomainValidator, Validators.email]);
-    if (this.emailWatcher) {
-      this.emailWatcher.unsubscribe();
+    this.domains = [
+      "@" + ENSIDOMAIN,
+      "@" + PHELMADOMAIN
+    ];
+    this.searchCtrl = this.fb.group({
+      email: ['', [this.emailValidator]],
+      domain: [this.domains[0], []]
+    });
+    if (this.searchWatcher) {
+      this.searchWatcher.unsubscribe();
     }
-    this.emailWatcher = this.emailCtrl.valueChanges.subscribe((email) => {
+    this.searchWatcher = this.searchCtrl.get('email').valueChanges.subscribe((email) => {
       this.sortUsers(email);
+    });
+    this.searchWatcher = this.searchCtrl.valueChanges.subscribe(() => {
       this.error = null;
     });
+  }
+
+  getEmail(): string {
+    return this.searchCtrl.get('email').value;
+  }
+  getDomain(): string {
+    return this.searchCtrl.get('domain').value;
   }
 
   createPollCheckboxesCtrl() {
@@ -92,12 +111,12 @@ export class AssessorComponent implements OnInit, OnDestroy {
     if (checked) {
       this.checkedWatchers[pollId] = this.watchPollUsers(pollId);
     } else {
-      this.sortUsers(this.emailCtrl.value);
+      this.sortUsers(this.getEmail());
     }
   }
 
   sortUsers(email: string) {
-    let emailId = this.auth.getEmailIdFromEmail(email.split('@')[0]);
+    let emailId = this.auth.getEmailIdFromEmail(email);
     this.displayedUsers = [];
     this.pageIndex = 0;
     for (let poll of this.polls) {
@@ -136,23 +155,24 @@ export class AssessorComponent implements OnInit, OnDestroy {
   watchPollUsers(pollId) {
     return this.vote.getUsers(pollId).subscribe(users => {
       this.users[pollId] = users;
-      this.sortUsers(this.emailCtrl.value);
+      this.sortUsers(this.getEmail());
     });
   }
 
   markAsVoted() {
-    if (!this.emailCtrl.invalid && this.displayedUsers.length == 0) {
-      let emailId = this.auth.getEmailIdFromEmail(this.emailCtrl.value);
+    if (!this.searchCtrl.invalid && this.displayedUsers.length == 0) {
+      let emailId = this.auth.getEmailIdFromEmail(this.getEmail());
       let name = this.titleCase(emailId.replace('|', ' ').replace('  ', ' '));
-      if (!this.list.authUsers[emailId]) {
+      if (this.list.authUsers[emailId] !== this.getEmail() + this.getDomain()) {
         this.error = this.d.format(this.d.l.notOnTheList, name);
       } else {
         for (let poll of this.polls) {
           if (this.checked[poll.id]) {
-            this.vote.markAsVoted(poll.id, this.emailCtrl.value);
+            this.vote.markAsVoted(poll.id, this.getEmail());
           }
         }
-        this.emailCtrl.setValue("");
+        this.searchCtrl.get('email').setValue("");
+        this.searchCtrl.get('domain').setValue(this.domains[0]);
         this.error = this.d.format(this.d.l.markedAsVoted, name);
       }
     }
@@ -184,6 +204,13 @@ export class AssessorComponent implements OnInit, OnDestroy {
       str[i] = str[i].charAt(0).toUpperCase() + str[i].slice(1);
     }
     return str.join(' ');
+  }
+
+  emailValidator (control: FormControl) {
+    if (!control.value.match(/^[a-z]+((-|--)[a-z]+)*.[a-z]+((-|--)[a-z]+)*$/)) {
+      return { error: true };
+    }
+    return null;
   }
 
 }
