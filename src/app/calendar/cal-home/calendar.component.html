@@ -1,0 +1,8 @@
+<div *ngFor="let event of cal.events" >
+  <mat-card *ngIf="isToday(event)">
+    {{ event.name }}<br>
+    {{ d.format(d.l.eventStart, event.startDate | date:d.l.shortDateTimeFormat:'':d.l.locale) }}<br>
+    {{ d.format(d.l.eventEnd, event.endDate | date:d.l.shortDateTimeFormat:'':d.l.locale) }}<br>
+    {{ d.format(d.l.eventLocation, event.location) }}
+  </mat-card>
+</div>

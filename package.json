@@ -29,6 +29,7 @@
     "firebase": "^4.8.0",
     "firebase-admin": "^5.8.2",
     "firebase-functions": "^0.8.1",
+    "ics-parser": "^0.1.5",
     "rxjs": "^5.5.2",
     "zone.js": "^0.8.14"
   },

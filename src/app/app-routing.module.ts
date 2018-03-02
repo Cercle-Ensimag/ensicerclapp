@@ -34,7 +34,7 @@ import { ActuAdminComponent } from './actus/actu-admin/actu-admin.component';
 import { JournalistComponent } from './actus/journalist/journalist.component';
 import { EditActusComponent } from './actus/edit-actus/edit-actus.component';
 
-import { CalendarComponent } from './calendar/calendar.component';
+import { CalendarComponent } from './calendar/cal-home/calendar.component';
 import { AccountComponent } from './account/account.component';
 import { ReadmeComponent } from './info/readme/readme.component';
 

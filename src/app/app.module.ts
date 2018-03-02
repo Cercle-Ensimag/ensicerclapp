@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { HttpClientModule } from '@angular/common/http';
 
 // angularfire modules
 import { AngularFireModule } from 'angularfire2';
@@ -47,7 +48,7 @@ import { ActuAdminComponent } from './actus/actu-admin/actu-admin.component';
 import { JournalistComponent } from './actus/journalist/journalist.component';
 import { EditActusComponent } from './actus/edit-actus/edit-actus.component';
 
-import { CalendarComponent } from './calendar/calendar.component';
+import { CalendarComponent } from './calendar/cal-home/calendar.component';
 import { AccountComponent } from './account/account.component';
 
 import { ReadmeComponent } from './info/readme/readme.component';
@@ -59,6 +60,7 @@ import { AdminService } from './admin/admin-service/admin.service';
 import { CafetService } from './cafet/cafet-service/cafet.service';
 import { EventsService } from './events/events-service/events.service';
 import { ActusService } from './actus/actus-service/actus.service';
+import { CalService } from './calendar/cal-service/cal.service';
 
 import { AppModulesService } from './providers/app-modules.service';
 import { DeviceSizeService } from './providers/device-size.service';
@@ -116,6 +118,7 @@ import { environment } from '../environments/environment';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     FormsModule, ReactiveFormsModule,
@@ -124,7 +127,7 @@ import { environment } from '../environments/environment';
     FlexLayoutModule
   ],
   providers: [
-    AuthService, VoteService, AdminService, CafetService, EventsService, ActusService,
+    AuthService, VoteService, AdminService, CafetService, EventsService, ActusService, CalService,
     AppModulesService, DeviceSizeService, ListService,
     CanActivateHome, CanActivateVoteAdmin, CanActivateAssessor, CanActivateEventsAdmin, CanActivateComResp, CanActivateEventsEdit, CanActivateActusAdmin, CanActivateJournalist, CanActivateActusEdit, CanActivateAdmin, CanActivateCafetAdmin, EmailVerifGuard, AccountGuard,
     DicoService
