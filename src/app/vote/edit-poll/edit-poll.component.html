@@ -1,16 +1,16 @@
 <mat-card *ngIf="poll">
-  <form (ngSubmit)="onSubmit()" class="container">
+  <form [formGroup]="pollCtrl" (ngSubmit)="onSubmit()" class="container">
 
     <span *ngIf="error" class="error">{{ error }}</span>
 
     <mat-form-field>
-      <input matInput placeholder="{{ d.l.pollTitleLabel }}" [formControl]="title_ctrl">
-      <mat-error *ngIf="title_ctrl.invalid">{{ d.l.pollTitleTooShortError }}</mat-error>
+      <input matInput placeholder="{{ d.l.pollTitleLabel }}" formControlName="title">
+      <mat-error *ngIf="pollCtrl.get('title').invalid">{{ d.l.pollTitleTooShortError }}</mat-error>
     </mat-form-field>
 
     <mat-form-field>
-      <textarea matInput placeholder="{{ d.l.pollDescriptionLabel }}" [formControl]="description_ctrl"></textarea>
-      <mat-error *ngIf="description_ctrl.invalid">{{ d.l.pollDescriptionError }}</mat-error>
+      <textarea matInput placeholder="{{ d.l.pollDescriptionLabel }}" formControlName="description"></textarea>
+      <mat-error *ngIf="pollCtrl.get('description').invalid">{{ d.l.pollDescriptionError }}</mat-error>
     </mat-form-field>
 
     <div class="grid-container">
@@ -36,7 +36,7 @@
     </div>
 
     <button mat-raised-button (click)="addChoice()" [disabled]="!choicesOk()" color="primary">{{ d.l.addChoiceLabel }}</button>
-    <button mat-raised-button type="submit" color="primary" [disabled]="!choicesOk() || title_ctrl.invalid || description_ctrl.invalid">{{ d.l.applyChangesLabel }}</button>
+    <button mat-raised-button type="submit" color="primary" [disabled]="!choicesOk() || pollCtrl.invalid">{{ d.l.applyChangesLabel }}</button>
     <button mat-raised-button (click)="back()">{{ d.l.backLabel }}</button>
   </form>
 </mat-card>

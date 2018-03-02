@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { Poll, Choice } from '../poll/poll.component';
 
@@ -14,28 +14,26 @@ import { DicoService } from '../../language/dico.service';
   styleUrls: ['./edit-poll.component.css']
 })
 export class EditPollComponent implements OnInit, OnDestroy {
-  id_ctrl: FormControl;
-  title_ctrl: FormControl;
-  description_ctrl: FormControl;
+  pollCtrl: FormGroup;
 
   poll: Poll;
   choices: Choice[];
+
+  pollWatcher: any;
+  choicesWatcher: any;
 
   newChoices: {
     id: string,
     label_ctrl: FormControl,
     image_ctrl: FormControl,
-    short_ctrl: FormControl,
-    exists: boolean
+    short_ctrl: FormControl
   }[];
-
-  pollWatcher: any;
-  choicesWatcher: any;
 
   constructor(
     private vote: VoteService,
     private route: ActivatedRoute,
     private location: Location,
+    private fb: FormBuilder,
     public d: DicoService
   ) {
     this.newChoices = [];
@@ -60,9 +58,18 @@ export class EditPollComponent implements OnInit, OnDestroy {
         this.poll = new Poll();
         this.poll.id = this.vote.getPollId();
       }
-      this.title_ctrl = new FormControl(this.poll.title || "", [Validators.required, Validators.minLength(3)]);
-      this.description_ctrl = new FormControl(this.poll.description || "", []);
+      this.pollCtrl = this.fb.group({
+        title: [this.poll.title || "", [Validators.required, Validators.minLength(3)]],
+        description: [this.poll.description || "", []]
+      });
     });
+  }
+
+  getTitle(): string {
+    return this.pollCtrl.get('title').value;
+  }
+  getDescription(): string {
+    return this.pollCtrl.get('description').value;
   }
 
   watchChoices(pollId: string) {
@@ -74,8 +81,7 @@ export class EditPollComponent implements OnInit, OnDestroy {
           id: choice.id,
           label_ctrl: new FormControl(choice.label, []),
           image_ctrl: new FormControl(choice.image, []),
-          short_ctrl: new FormControl(choice.short, []),
-          exists: true
+          short_ctrl: new FormControl(choice.short, [])
         });
       }
     });
@@ -86,8 +92,7 @@ export class EditPollComponent implements OnInit, OnDestroy {
       id: this.vote.getChoiceId(this.poll.id),
       label_ctrl: new FormControl("", [Validators.required]),
       image_ctrl: new FormControl("", []),
-      short_ctrl: new FormControl("", []),
-      exists: false
+      short_ctrl: new FormControl("", [])
     })
   }
 
@@ -108,9 +113,7 @@ export class EditPollComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    if (!this.title_ctrl.invalid && ! this.description_ctrl.invalid &&
-      this.choicesOk()
-    ) {
+    if (!this.pollCtrl.invalid && this.choicesOk()) {
       let choices = {};
       for (let choice of this.newChoices) {
         choices[choice.id] = {
@@ -122,8 +125,8 @@ export class EditPollComponent implements OnInit, OnDestroy {
       }
       let poll = {
         id: this.poll.id,
-        title: this.title_ctrl.value,
-        description: this.description_ctrl.value,
+        title: this.getTitle(),
+        description: this.getDescription(),
         started: this.poll.started || false,
         choices: choices
       };
