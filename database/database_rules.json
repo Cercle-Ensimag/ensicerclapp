@@ -13,7 +13,7 @@
           "$poll_id": {
             ".write": "auth != null && auth.token.email_verified == true &&
                        (root.child('list/users/'+$emailId).val() === auth.token.email ||
-                        root.child('users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/'+auth.uid+'/admin/assessor').val() == true) &&
+                        root.child('vote/assessors/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')).exists()) &&
                        root.child('vote/polls/'+$poll_id+'/started').val() == true",
             ".validate": "root.child('vote/polls/'+$poll_id).exists() &&
                           newData.isBoolean() && newData.val() == true"
