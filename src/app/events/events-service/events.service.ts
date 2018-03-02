@@ -31,8 +31,12 @@ export class EventsService {
     }
   }
 
+  getEvents() {
+    return this.db.list<Event>('events/events', ref => ref.orderByChild('start')).valueChanges();
+  }
+
   watchEvents() {
-    return this.db.list<Event>('events/events', ref => ref.orderByChild('start')).valueChanges().subscribe(
+    return this.getEvents().subscribe(
       events => {
         this.events = events || [];
         this.activeEvents = events.filter(event => event.end > Date.now()) || [];

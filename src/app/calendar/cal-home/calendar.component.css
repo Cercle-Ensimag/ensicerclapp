@@ -1,0 +1,18 @@
+.events {
+  margin-top: 4px;
+}
+
+mat-card {
+  max-width: 600px;
+  margin: auto;
+}
+
+.events button {
+  margin-top: 4px;
+  width: 100%;
+}
+
+.header button {
+  margin-left: 8px;
+  margin-right: 8px;
+}

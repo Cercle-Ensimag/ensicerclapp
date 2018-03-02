@@ -12,6 +12,9 @@ export class French {
   public static readonly changesApplied = "Changements appliqués avec succès";
   public static readonly search = "recherche";
   public static readonly locale = "fr";
+  public static readonly timeFormat = "H:mm";
+  public static readonly shortDateFormat = "E d LLL";
+  public static readonly longDateFormat = "EEEE d LLLL";
   public static readonly shortDateTimeFormat = "E d LLL H:mm";
   public static readonly longDateTimeFormat = "EEEE d LLLL H:mm";
 
@@ -169,4 +172,6 @@ export class French {
   public static readonly usersWithAccountLabel = "Utilistateurs";
   public static readonly usersWithNoAccountLabel = "Demandes";
   public static readonly ActivateAccountButtonLabel = "Activer le compte";
+
+  // Calendar
 }
