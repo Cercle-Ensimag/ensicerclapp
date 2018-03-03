@@ -67,6 +67,7 @@ import { CalService } from './calendar/cal-service/cal.service';
 import { AppModulesService } from './providers/app-modules.service';
 import { DeviceSizeService } from './providers/device-size.service';
 import { ListService } from './providers/list.service';
+import { ToolsService } from './providers/tools.service';
 
 import { CanActivateHome } from './home/home-guard/home.service';
 import { CanActivateVoteAdmin } from './vote/vote-guard/vote-admin.service';
@@ -131,7 +132,7 @@ import { environment } from '../environments/environment';
   ],
   providers: [
     AuthService, VoteService, AdminService, CafetService, EventsService, ActusService, CalService,
-    AppModulesService, DeviceSizeService, ListService,
+    AppModulesService, DeviceSizeService, ListService, ToolsService,
     CanActivateHome, CanActivateVoteAdmin, CanActivateAssessor, CanActivateEventsAdmin, CanActivateComResp, CanActivateEventsEdit, CanActivateActusAdmin, CanActivateJournalist, CanActivateActusEdit, CanActivateAdmin, CanActivateCafetAdmin, EmailVerifGuard, AccountGuard,
     DicoService
   ],

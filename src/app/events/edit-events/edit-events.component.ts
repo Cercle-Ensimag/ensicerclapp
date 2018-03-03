@@ -6,6 +6,7 @@ import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
 import { Event } from '../events-home/events-home.component';
 
 import { AuthService } from '../../auth/auth-service/auth.service';
+import { ToolsService } from '../../providers/tools.service';
 import { EventsService } from '../events-service/events.service';
 import { DicoService } from '../../language/dico.service';
 
@@ -24,6 +25,7 @@ export class EditEventsComponent implements OnInit, OnDestroy {
 
   constructor(
     private auth: AuthService,
+    private tools: ToolsService,
     private events: EventsService,
     private route: ActivatedRoute,
     private location: Location,
@@ -52,10 +54,10 @@ export class EditEventsComponent implements OnInit, OnDestroy {
         title: [this.event.title || "", [Validators.required, Validators.minLength(3)]],
         description: [this.event.description || "", []],
         image: [this.event.image || "", []],
-        start: [new Date(this.event.start) || "", [Validators.required, this.dateValidator]],
-        startTime: [this.getTimeFromDate(this.event.start), [Validators.required, this.timeValidator]],
-        end: [new Date(this.event.end) || "", [Validators.required, this.dateValidator]],
-        endTime: [this.getTimeFromDate(this.event.end), [Validators.required, this.timeValidator]],
+        start: [new Date(this.event.start) || "", [Validators.required, this.tools.dateValidator]],
+        startTime: [this.tools.getTimeFromDate(this.event.start), [Validators.required, this.tools.timeValidator]],
+        end: [new Date(this.event.end) || "", [Validators.required, this.tools.dateValidator]],
+        endTime: [this.tools.getTimeFromDate(this.event.end), [Validators.required, this.tools.timeValidator]],
         location: [this.event.location || "", [Validators.required]]
       })
       if (this.eventCtrlWatcher) {
@@ -104,27 +106,6 @@ export class EditEventsComponent implements OnInit, OnDestroy {
         this.error = this.d.l.changesApplied;
       });
     }
-  }
-
-  getTimeFromDate(date: any) {
-    if (!date) {
-      return "";
-    }
-    return (new Date(date)).toString().split(' ')[4].substring(0, 5);
-  }
-
-  timeValidator(control: FormControl) {
-    if (!control.value.match(/^[0-9][0-9]:[0-9][0-9]$/)){
-      return { incorrect: true };
-    }
-    return null;
-  }
-
-  dateValidator(control: FormControl) {
-    if (!control.value.toString().match(/^(Mon|Tue|Wed|Thu|Fri|Sat|Sun) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) ([0-2][0-9]|3[0-2]) 20[1-9][0-9]/)){
-      return { incorrect: true };
-    }
-    return null;
   }
 
   back() {

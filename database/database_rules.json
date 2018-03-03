@@ -203,7 +203,39 @@
       "$other": { ".validate": false }
     },
     "calendar": {
+      "users": {
+        "$emailId": {
+          "assos": {
+            ".read": "auth != null && auth.token.email_verified == true &&
+                      root.child('list/users/'+$emailId).val() === auth.token.email",
+            "$eventId": {
+              ".write": "auth != null && auth.token.email_verified == true &&
+                         root.child('list/users/'+$emailId).val() === auth.token.email",
+              "eventId": { ".validate": "newData.val() === $eventId" },
+              "$other": { ".validate": false }
+            }
+          },
+          "perso": {
+            ".read": "auth != null && auth.token.email_verified == true &&
+                      root.child('list/users/'+$emailId).val() === auth.token.email",
+            "$eventId": {
+              ".write": "auth != null && auth.token.email_verified == true &&
+                         root.child('list/users/'+$emailId).val() === auth.token.email",
 
+              "id": { ".validate": "newData.isString()" },
+              "title": { ".validate": "newData.isString()" },
+              "start": { ".validate": "newData.isNumber()" },
+              "end": { ".validate": "newData.isNumber()" },
+              "location": { ".validate": "newData.isString()" },
+
+              "$other": { ".validate": false }
+            }
+          },
+          "$other": { ".validate": false }
+        }
+      },
+
+      "$other": { ".validate": false }
     },
     "events": {
       "com-resps": {
