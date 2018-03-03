@@ -26,7 +26,6 @@ export class CalendarComponent implements OnInit {
 
   ngOnInit() {
     this.today = this.getToday();
-    this.now = Date.now();
     this.cal.start();
   }
 
@@ -49,7 +48,7 @@ export class CalendarComponent implements OnInit {
   }
 
   isNow(event: CalEvent) {
-    return event.start < this.now && event.end > this.now;
+    return event.start < Date.now() && event.end > Date.now();
   }
 
   color(event: CalEvent) {
