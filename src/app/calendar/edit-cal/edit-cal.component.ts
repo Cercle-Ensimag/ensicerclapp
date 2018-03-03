@@ -52,9 +52,9 @@ export class EditCalComponent implements OnInit, OnDestroy {
         // description: [this.event.description || "", []],
         // image: [this.event.image || "", []],
         start: [new Date(this.event.start) || "", [Validators.required, this.tools.dateValidator]],
-        startTime: [this.getTimeFromDate(this.event.start), [Validators.required, this.tools.timeValidator]],
+        startTime: [this.tools.getTimeFromDate(this.event.start), [Validators.required, this.tools.timeValidator]],
         end: [new Date(this.event.end) || "", [Validators.required, this.tools.dateValidator]],
-        endTime: [this.getTimeFromDate(this.event.end), [Validators.required, this.tools.timeValidator]],
+        endTime: [this.tools.getTimeFromDate(this.event.end), [Validators.required, this.tools.timeValidator]],
         location: [this.event.location || "", [Validators.required]]
       })
       if (this.eventCtrlWatcher) {
@@ -103,13 +103,6 @@ export class EditCalComponent implements OnInit, OnDestroy {
         this.error = this.d.l.changesApplied;
       });
     }
-  }
-
-  getTimeFromDate(date: any) {
-    if (!date) {
-      return "";
-    }
-    return (new Date(date)).toString().split(' ')[4].substring(0, 5);
   }
 
   back() {

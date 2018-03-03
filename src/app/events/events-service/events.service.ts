@@ -80,5 +80,9 @@ export class EventsService {
     });
   }
 
+  addEventToCalendar(eventId: string) {
+    return this.db.object('calendar/users/'+this.auth.getEmailId()+'/assos/'+eventId).set(eventId);
+  }
+
 
 }

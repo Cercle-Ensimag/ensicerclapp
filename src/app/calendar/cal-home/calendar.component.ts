@@ -42,8 +42,9 @@ export class CalendarComponent implements OnInit {
     let tomorrow = this.today + DAY_TIME;
     let timeOffset = this.getTimeOffset();
     return (
-      (event.start > this.today + timeOffset && event.start < tomorrow + timeOffset) ||
-      (event.end > this.today + timeOffset && event.end < tomorrow + timeOffset)
+      (event.start >= this.today + timeOffset && event.start < tomorrow + timeOffset) ||
+      (event.end >= this.today + timeOffset && event.end < tomorrow + timeOffset) ||
+      (event.start < this.today + timeOffset && event.end >= tomorrow + timeOffset)
     );
   }
 
