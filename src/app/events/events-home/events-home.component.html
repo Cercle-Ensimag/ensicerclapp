@@ -1,6 +1,6 @@
 <div *ngIf="events.activeEvents">
   <div *ngFor="let event of events.activeEvents">
-    <button mat-raised-button *ngIf="event.end > now" [color]="color(event)"routerLink="/events/event/{{ event.id }}">
+    <button mat-raised-button *ngIf="isNotPassed(event)" [color]="color(event)"routerLink="/events/event/{{ event.id }}">
       <h2>{{ event.title }}</h2>
       <label>
         {{ d.format(

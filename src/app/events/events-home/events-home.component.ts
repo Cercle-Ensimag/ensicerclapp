@@ -30,15 +30,22 @@ export class EventsHomeComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.events.start();
-    this.now = Date.now();
   }
 
   ngOnDestroy() {
     this.events.stop();
   }
 
+  isNotPassed(event: Event) {
+    return event.end > Date.now();
+  }
+
+  isNow(event: Event) {
+    return event.start < Date.now() && this.isNotPassed(event);
+  }
+
   color(event: Event) {
-      if (event.start < this.now && event.end > this.now) {
+      if (this.isNow(event)) {
           return "primary";
       } else {
           return "";
