@@ -97,7 +97,6 @@ export class EditCalComponent implements OnInit, OnDestroy {
         start: this.getStart(),
         end: this.getEnd(),
         location: this.getLocation(),
-        // groupId: this.auth.comRespGroupId
       };
       this.cal.setEvent(event).then(() => {
         this.error = this.d.l.changesApplied;

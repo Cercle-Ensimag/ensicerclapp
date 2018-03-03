@@ -286,6 +286,6 @@ export class CalService {
   concatEvents() {
     this.calEvents = this.courses.concat(this.persos).concat(
       this.assos.filter(event => event.id === this.assosEventsIds[event.id])
-    );
+    ).sort(event => event.start);
   }
 }
