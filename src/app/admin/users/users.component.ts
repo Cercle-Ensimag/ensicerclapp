@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 
+import { ToolsService } from '../../providers/tools.service';
 import { DeviceSizeService } from '../../providers/device-size.service'
 import { AdminService } from '../admin-service/admin.service';
 import { DicoService } from '../../language/dico.service';
@@ -34,6 +35,7 @@ export class AdminUsersComponent implements OnInit {
   constructor(
     public admin: AdminService,
     public d: DicoService,
+    private tools: ToolsService,
     public media: DeviceSizeService
   ) {
     this.voteAdmin = {};
@@ -156,16 +158,8 @@ export class AdminUsersComponent implements OnInit {
     }
   }
 
-  titleCase(str) {
-    str = str.toLowerCase().split(' ');
-    for (var i = 0; i < str.length; i++) {
-      str[i] = str[i].charAt(0).toUpperCase() + str[i].slice(1);
-    }
-    return str.join(' ');
-  }
-
   getName(user: any): string {
-    return this.titleCase(
+    return this.tools.titleCase(
       user[user.uid].admin.email
       .split('@')[0].split('.').join(' ')
       .replace('1', '').replace('2', '').replace('3', '')

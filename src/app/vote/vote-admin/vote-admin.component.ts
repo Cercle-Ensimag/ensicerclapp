@@ -5,6 +5,7 @@ import { DeviceSizeService } from '../../providers/device-size.service';
 import { VoteService } from '../vote-service/vote.service';
 import { AuthService } from '../../auth/auth-service/auth.service';
 import { ListService } from '../../providers/list.service';
+import { ToolsService } from '../../providers/tools.service';
 import { DicoService } from '../../language/dico.service';
 
 export class Assessor {
@@ -35,6 +36,7 @@ export class VoteAdminComponent implements OnInit, OnDestroy {
     private vote: VoteService,
     public media: DeviceSizeService,
     private list: ListService,
+    private tools: ToolsService,
     public d: DicoService
   ) {
     this.deletePollId = null;
@@ -89,19 +91,11 @@ export class VoteAdminComponent implements OnInit, OnDestroy {
     );
   }
 
-  titleCase(str) {
-    str = str.toLowerCase().split(' ');
-    for (var i = 0; i < str.length; i++) {
-      str[i] = str[i].charAt(0).toUpperCase() + str[i].slice(1);
-    }
-    return str.join(' ');
-  }
-
   addAssessor() {
     if (!this.emailCtrl.invalid && this.displayedUsers.length == 0) {
       let emailId = this.auth.getEmailIdFromEmail(this.emailCtrl.value);
       if (!this.list.authUsers[emailId]) {
-        let name = this.titleCase(emailId.replace('|', ' ').replace('  ', ' '));
+        let name = this.tools.titleCase(emailId.replace('|', ' ').replace('  ', ' '));
         this.error = this.d.format(this.d.l.notOnTheList, name);
       } else {
         this.vote.addAssessor(this.emailCtrl.value);

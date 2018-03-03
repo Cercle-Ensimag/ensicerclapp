@@ -38,7 +38,7 @@
     <mat-card *ngIf="displayedUsers.length != 0">
       <mat-nav-list>
         <a mat-list-item *ngFor="let user of displayedUsers">
-          {{ titleCase(user.emailId.split('|').join(' ')) }}
+          {{ tools.titleCase(user.emailId.split('|').join(' ')) }}
           <button mat-icon-button matSuffix (click)="actus.removeJournalist(user.emailId)"><mat-icon>delete</mat-icon></button>
         </a>
       </mat-nav-list>

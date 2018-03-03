@@ -7,6 +7,7 @@ import { DeviceSizeService } from '../../providers/device-size.service';
 import { AuthService } from '../../auth/auth-service/auth.service';
 import { VoteService } from '../vote-service/vote.service';
 import { ListService } from '../../providers/list.service';
+import { ToolsService } from '../../providers/tools.service';
 import { DicoService } from '../../language/dico.service';
 
 export class VoteUser {
@@ -38,6 +39,7 @@ export class VoteUsersComponent implements OnInit, OnDestroy {
     private auth: AuthService,
     public media: DeviceSizeService,
     private list: ListService,
+    public tools: ToolsService,
     public d: DicoService
   ) {}
 
@@ -80,14 +82,6 @@ export class VoteUsersComponent implements OnInit, OnDestroy {
 
   updateList(event) {
     this.pageIndex = event.pageIndex;
-  }
-
-  titleCase(str) {
-    str = str.toLowerCase().split(' ');
-    for (var i = 0; i < str.length; i++) {
-      str[i] = str[i].charAt(0).toUpperCase() + str[i].slice(1);
-    }
-    return str.join(' ');
   }
 
 }

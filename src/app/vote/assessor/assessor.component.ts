@@ -7,6 +7,7 @@ import { DeviceSizeService } from '../../providers/device-size.service';
 import { AuthService, ENSIDOMAIN, PHELMADOMAIN } from '../../auth/auth-service/auth.service';
 import { VoteService } from '../vote-service/vote.service';
 import { ListService } from '../../providers/list.service';
+import {ToolsService } from '../../providers/tools.service';
 import { DicoService } from '../../language/dico.service';
 
 import { VoteUser } from '../vote-users/vote-users.component';
@@ -51,6 +52,7 @@ export class AssessorComponent implements OnInit, OnDestroy {
     public media: DeviceSizeService,
     private fb: FormBuilder,
     private list: ListService,
+    private tools: ToolsService,
     public d: DicoService
   ) {}
 
@@ -124,7 +126,7 @@ export class AssessorComponent implements OnInit, OnDestroy {
         this.displayedUsers = this.displayedUsers.concat(this.users[poll.id].filter(
           user => user.emailId.includes(emailId)
         ). map(
-          user => this.titleCase(user.emailId.split('|').join(' ')) + " <small>(" + poll.title + ")</small>"
+          user => this.tools.titleCase(user.emailId.split('|').join(' ')) + " <small>(" + poll.title + ")</small>"
         ));
       }
     }
@@ -162,7 +164,7 @@ export class AssessorComponent implements OnInit, OnDestroy {
   markAsVoted() {
     if (!this.searchCtrl.invalid && this.displayedUsers.length == 0) {
       let emailId = this.auth.getEmailIdFromEmail(this.getEmail());
-      let name = this.titleCase(emailId.replace('|', ' ').replace('  ', ' '));
+      let name = this.tools.titleCase(emailId.replace('|', ' ').replace('  ', ' '));
       if (this.list.authUsers[emailId] !== this.getEmail() + this.getDomain()) {
         this.error = this.d.format(this.d.l.notOnTheList, name);
       } else {
@@ -196,14 +198,6 @@ export class AssessorComponent implements OnInit, OnDestroy {
       }
     }
     return true;
-  }
-
-  titleCase(str) {
-    str = str.toLowerCase().split(' ');
-    for (var i = 0; i < str.length; i++) {
-      str[i] = str[i].charAt(0).toUpperCase() + str[i].slice(1);
-    }
-    return str.join(' ');
   }
 
   emailValidator (control: FormControl) {

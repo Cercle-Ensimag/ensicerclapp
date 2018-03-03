@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 
+import { ToolsService } from '../../providers/tools.service';
 import { CafetService, CafetUser } from '../cafet-service/cafet.service';
 import { DicoService } from '../../language/dico.service';
 
@@ -27,6 +28,7 @@ export class CafetAdminComponent implements OnInit, OnDestroy {
 
   constructor(
     public cafet: CafetService,
+    public tools: ToolsService,
     public d: DicoService
   ) { }
 
@@ -98,14 +100,6 @@ export class CafetAdminComponent implements OnInit, OnDestroy {
     } else {
       this.displayedUsers = this.usersWithAccount;
     }
-  }
-
-  titleCase(str) {
-    str = str.toLowerCase().split(' ');
-    for (var i = 0; i < str.length; i++) {
-      str[i] = str[i].charAt(0).toUpperCase() + str[i].slice(1);
-    }
-    return str.join(' ');
   }
 
 }

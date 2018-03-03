@@ -6,6 +6,14 @@ export class ToolsService {
 
   constructor() { }
 
+  titleCase(str) {
+    str = str.toLowerCase().split(' ');
+    for (var i = 0; i < str.length; i++) {
+      str[i] = str[i].charAt(0).toUpperCase() + str[i].slice(1);
+    }
+    return str.join(' ');
+  }
+  
   timeValidator(control: FormControl) {
     if (!control.value.match(/^[0-9][0-9]:[0-9][0-9]$/)){
       return { error: true };
