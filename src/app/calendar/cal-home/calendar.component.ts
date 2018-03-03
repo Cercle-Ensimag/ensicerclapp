@@ -71,11 +71,11 @@ export class CalendarComponent implements OnInit {
   }
 
   nextDay () {
-    this.dayOffset++;
+    this.dayOffset = (this.dayOffset+1+20)%50-20;
   }
 
   previousDay () {
-    this.dayOffset--;
+    this.dayOffset = (this.dayOffset-30)%50+30-1;
   }
 
 }
