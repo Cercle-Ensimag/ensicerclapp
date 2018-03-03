@@ -5,6 +5,8 @@ import { DicoService } from '../../language/dico.service';
 
 const DAY_TIME = 24 * 60 * 60* 1000;
 const GMT_OFFSET = 60 * 60* 1000;
+const MAX_DAY_OFFSET = 30;
+const MIN_DAY_OFFSET = -20;
 
 @Component({
   selector: 'app-calendar',
@@ -71,11 +73,11 @@ export class CalendarComponent implements OnInit {
   }
 
   nextDay () {
-    this.dayOffset = (this.dayOffset+1+20)%50-20;
+    this.dayOffset = (this.dayOffset+1-MIN_DAY_OFFSET)%(MAX_DAY_OFFSET-MIN_DAY_OFFSET)+MIN_DAY_OFFSET;
   }
 
   previousDay () {
-    this.dayOffset = (this.dayOffset-30)%50+30-1;
+    this.dayOffset = (this.dayOffset-MAX_DAY_OFFSET)%(MAX_DAY_OFFSET-MIN_DAY_OFFSET)+MAX_DAY_OFFSET-1;
   }
 
 }
