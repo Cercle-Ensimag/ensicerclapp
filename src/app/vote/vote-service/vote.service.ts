@@ -34,7 +34,7 @@ export class VoteService {
   }
 
   watchVotes() {
-    return this.db.object<{[pollId: string]: boolean}>('users/'+this.auth.getEmailId()+'/votes').valueChanges()
+    return this.db.object<{[pollId: string]: boolean}>('vote/users/'+this.auth.getEmailId()+'/votes').valueChanges()
     .subscribe(
       votes => {
         this.votes = votes || {};
@@ -83,7 +83,7 @@ export class VoteService {
   }
 
   getUsers(pollId: string) {
-    return this.db.list<VoteUser>('vote/users/'+pollId).valueChanges();
+    return this.db.list<VoteUser>('vote/votes/'+pollId).valueChanges();
   }
 
   setPoll(poll: Poll) {
@@ -96,7 +96,7 @@ export class VoteService {
 
   deletePoll(pollId: string) {
     this.db.object<Poll>('vote/polls/'+pollId).set(null);
-    this.db.object('vote/users/'+pollId).remove();
+    this.db.object('vote/votes/'+pollId).remove();
     this.db.object('vote/results/'+pollId).remove();
   }
 
@@ -116,9 +116,9 @@ export class VoteService {
       emailId: emailId,
       voted: true
     }
-    return this.db.object('vote/users/'+pollId+'/'+emailId).update(refs)
+    return this.db.object('vote/votes/'+pollId+'/'+emailId).update(refs)
     .then(() => {
-      return this.db.object('users/'+emailId+'/votes/'+pollId).set(true);
+      return this.db.object('vote/users/'+emailId+'/votes/'+pollId).set(true);
     });
   }
 

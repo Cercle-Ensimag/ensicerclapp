@@ -9,7 +9,7 @@
       <mat-card-title>{{ choice.label }}</mat-card-title>
       <img mat-card-image src="{{ choice.image }}" alt="{{ choice.label }} - image" class="image">
       <mat-card-actions>
-        <button mat-raised-button (click)="onVote(choice);" color="primary">{{ d.l.voteForLabel }} {{ choice.short || choice.label }}</button>
+        <button mat-raised-button [disabled]="!poll.started" (click)="onVote(choice);" color="primary">{{ d.l.voteForLabel }} {{ choice.short || choice.label }}</button>
       </mat-card-actions>
     </mat-card>
   </div>

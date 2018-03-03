@@ -7,18 +7,6 @@
                 auth != null && auth.token.email_verified == true",
 
       "$emailId": {
-        "votes": {
-          ".read": "auth != null && auth.token.email_verified == true &&
-                    root.child('list/users/'+$emailId).val() === auth.token.email",
-          "$poll_id": {
-            ".write": "auth != null && auth.token.email_verified == true &&
-                       (root.child('list/users/'+$emailId).val() === auth.token.email ||
-                        root.child('vote/assessors/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')).exists()) &&
-                       root.child('vote/polls/'+$poll_id+'/started').val() == true",
-            ".validate": "root.child('vote/polls/'+$poll_id).exists() &&
-                          newData.isBoolean() && newData.val() == true"
-          }
-        },
         "uid": { ".validate": "newData.val() === auth.uid" },
         "$user": {
           ".read": "$user === auth.uid",
@@ -320,7 +308,7 @@
           "$other": { ".validate": false }
         },
       },
-      "users": {
+      "votes": {
         "$poll_id": {
           ".read": "auth != null && auth.token.email_verified == true &&
                     (root.child('users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/'+auth.uid+'/admin/vote-admin').val() == true ||
@@ -384,6 +372,23 @@
             }
           },
 
+          "$other": { ".validate": false }
+        }
+      },
+      "users": {
+        "$emailId": {
+          "votes": {
+            ".read": "auth != null && auth.token.email_verified == true &&
+                      root.child('list/users/'+$emailId).val() === auth.token.email",
+            "$poll_id": {
+              ".write": "auth != null && auth.token.email_verified == true &&
+                         (root.child('list/users/'+$emailId).val() === auth.token.email ||
+                          root.child('vote/assessors/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')).exists()) &&
+                         root.child('vote/polls/'+$poll_id+'/started').val() == true",
+              ".validate": "root.child('vote/polls/'+$poll_id).exists() &&
+                            newData.isBoolean() && newData.val() == true"
+            }
+          },
           "$other": { ".validate": false }
         }
       },
