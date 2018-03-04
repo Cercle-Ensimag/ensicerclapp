@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
-import { CalService, CalEvent } from '../cal-service/cal.service';
+import { CalService, CalEvent, PERSOS, ASSOS, COURSE } from '../cal-service/cal.service';
 import { DicoService } from '../../language/dico.service';
+import { DeviceSizeService } from '../../providers/device-size.service'
 
 const DAY_TIME = 24 * 60 * 60* 1000;
 const GMT_OFFSET = 60 * 60* 1000;
@@ -18,9 +19,11 @@ export class CalendarComponent implements OnInit {
   dayOffset: number = 0;
   today: number;
   now: number;
+  edit: boolean;
 
   constructor(
     public cal: CalService,
+    public media: DeviceSizeService,
     public d: DicoService
   ) {}
 
@@ -34,17 +37,18 @@ export class CalendarComponent implements OnInit {
   }
 
   getToday() {
-    let today = (new Date()).getTime();
-    return today - today % DAY_TIME - GMT_OFFSET;
+    let todaySp = (new Date()).toString().split(" ");
+    todaySp[4] = "00:00:00";
+    return (new Date(todaySp.join(" "))).getTime();
   }
 
   isToday(event: CalEvent) {
     let tomorrow = this.today + DAY_TIME;
     let timeOffset = this.getTimeOffset();
     return (
-      (event.start >= this.today + timeOffset && event.start < tomorrow + timeOffset) ||
-      (event.end >= this.today + timeOffset && event.end < tomorrow + timeOffset) ||
-      (event.start < this.today + timeOffset && event.end >= tomorrow + timeOffset)
+      (event.start >= this.today + timeOffset - GMT_OFFSET && event.start < tomorrow + timeOffset - GMT_OFFSET) ||
+      (event.end >= this.today + timeOffset - GMT_OFFSET && event.end < tomorrow + timeOffset - GMT_OFFSET) ||
+      (event.start < this.today + timeOffset - GMT_OFFSET && event.end >= tomorrow + timeOffset - GMT_OFFSET)
     );
   }
 

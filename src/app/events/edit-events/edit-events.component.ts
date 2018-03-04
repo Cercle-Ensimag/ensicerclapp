@@ -80,11 +80,11 @@ export class EditEventsComponent implements OnInit, OnDestroy {
   }
   getStart(): number {
     let time = this.eventCtrl.get('startTime').value;
-    return (new Date(this.eventCtrl.get('start').value.toString().replace('00:00:00', time + ':00'))).getTime();
+    return this.tools.setDayTime(this.eventCtrl.get('start').value.getTime(), time + ':00');
   }
   getEnd(): number {
     let time = this.eventCtrl.get('endTime').value;
-    return (new Date(this.eventCtrl.get('end').value.toString().replace('00:00:00', time + ':00'))).getTime();
+    return this.tools.setDayTime(this.eventCtrl.get('end').value.getTime(), time + ':00');
   }
   getLocation(): string {
     return this.eventCtrl.get('location').value;

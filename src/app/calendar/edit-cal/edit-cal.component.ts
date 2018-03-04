@@ -5,7 +5,7 @@ import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
 
 import { AuthService } from '../../auth/auth-service/auth.service';
 import { ToolsService } from '../../providers/tools.service';
-import { CalService, CalEvent } from '../cal-service/cal.service';
+import { CalService, CalEvent, PERSOS, ASSOS, COURSE } from '../cal-service/cal.service';
 import { DicoService } from '../../language/dico.service';
 
 @Component({
@@ -45,7 +45,7 @@ export class EditCalComponent implements OnInit, OnDestroy {
       if (event) {
         this.event = event;
       } else {
-        this.event = new CalEvent(this.cal.getEventId(), "", "", "", "");
+        this.event = new CalEvent(this.cal.getEventId(), "", "", "", "", PERSOS);
       }
       this.eventCtrl = this.fb.group({
         title: [this.event.title || "", [Validators.required, Validators.minLength(3)]],
@@ -77,11 +77,11 @@ export class EditCalComponent implements OnInit, OnDestroy {
   // }
   getStart(): number {
     let time = this.eventCtrl.get('startTime').value;
-    return (new Date(this.eventCtrl.get('start').value.toString().replace('00:00:00', time + ':00'))).getTime();
+    return this.tools.setDayTime(this.eventCtrl.get('start').value.getTime(), time + ':00');
   }
   getEnd(): number {
     let time = this.eventCtrl.get('endTime').value;
-    return (new Date(this.eventCtrl.get('end').value.toString().replace('00:00:00', time + ':00'))).getTime();
+    return this.tools.setDayTime(this.eventCtrl.get('end').value.getTime(), time + ':00');
   }
   getLocation(): string {
     return this.eventCtrl.get('location').value;
@@ -89,15 +89,15 @@ export class EditCalComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (!this.eventCtrl.invalid) {
-      let event: CalEvent = {
-        id: this.event.id,
-        title: this.getTitle(),
-        // description: this.getDescription(),
-        // image: this.getImage(),
-        start: this.getStart(),
-        end: this.getEnd(),
-        location: this.getLocation(),
-      };
+      let event = new CalEvent(
+        this.event.id,
+        this.getTitle(),
+        this.getStart(),
+        this.getEnd(),
+        this.getLocation(),
+        this.event.type
+      );
+      console.log(event);
       this.cal.setEvent(event).then(() => {
         this.error = this.d.l.changesApplied;
       });

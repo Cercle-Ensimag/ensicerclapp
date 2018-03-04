@@ -1,13 +1,13 @@
 <mat-card *ngIf="event">
   <h2>{{ event.title }}</h2>
-  <mat-card-content style="text-align:left">
-    <button mat-icon-button (click)="events.addEventToCalendar(event.id)"><mat-icon>event_available</mat-icon></button>
-    <button mat-icon-button (click)="events.addEventToCalendar(null)"><mat-icon>event_busy</mat-icon></button>
+  <mat-card-content class="description">
     <h4>
       {{ d.format(d.l.eventStart, event.start | date:d.l.longDateTimeFormat:'':d.l.locale) }}<br>
       {{ d.format(d.l.eventEnd, event.end | date:d.l.longDateTimeFormat:'':d.l.locale) }}<br>
       {{ d.format(d.l.eventLocation, event.location || "") }}
     </h4>
+    <button mat-icon-button [color]="isInCalendar ? 'primary': ''" (click)="events.addEventToCalendar(event.id)"><mat-icon>event_available</mat-icon></button>
+    <button mat-icon-button [color]="isInCalendar ? '': 'primary'" (click)="events.removeEventFromCalendar(event.id)"><mat-icon>event_busy</mat-icon></button>
     <h4 [innerHTML]="event.description"></h4>
   </mat-card-content>
   <img *ngIf="event.image !== ''" mat-card-image src="{{ event.image }}">

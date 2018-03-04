@@ -227,6 +227,7 @@
               "start": { ".validate": "newData.isNumber()" },
               "end": { ".validate": "newData.isNumber()" },
               "location": { ".validate": "newData.isString()" },
+              "type": { ".validate": "newData.isString()" },
 
               "$other": { ".validate": false }
             }

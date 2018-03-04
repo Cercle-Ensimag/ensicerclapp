@@ -84,5 +84,12 @@ export class EventsService {
     return this.db.object('calendar/users/'+this.auth.getEmailId()+'/assos/'+eventId).set(eventId);
   }
 
+  removeEventFromCalendar(eventId: string) {
+    return this.db.object('calendar/users/'+this.auth.getEmailId()+'/assos/'+eventId).set(null);
+  }
+
+  getEventInCalendar(eventId: string) {
+    return this.db.object('calendar/users/'+this.auth.getEmailId()+'/assos/'+eventId).valueChanges();
+  }
 
 }

@@ -13,7 +13,7 @@ export class ToolsService {
     }
     return str.join(' ');
   }
-  
+
   timeValidator(control: FormControl) {
     if (!control.value.match(/^[0-9][0-9]:[0-9][0-9]$/)){
       return { error: true };
@@ -33,5 +33,11 @@ export class ToolsService {
       return "";
     }
     return (new Date(date)).toString().split(' ')[4].substring(0, 5);
+  }
+
+  setDayTime(date: number, time: string) {
+    let daySp = (new Date(date)).toString().split(" ");
+    daySp[4] = time;
+    return (new Date(daySp.join(" "))).getTime();
   }
 }
