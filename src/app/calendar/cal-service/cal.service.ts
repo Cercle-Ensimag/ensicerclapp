@@ -8,10 +8,7 @@ import { Event } from '../../events/events-home/events-home.component';
 
 import * as parseICS from 'ics-parser';
 
-const LINK = "https://edt.grenoble-inp.fr/directCal/2017-2018/exterieur?resources=15711,14992,14225,14226,14223,16819,17042,14239,14240,16612,16450,13769,13772,13753,13750,3222,16303,13880,14123,14129,14175,14059,16319,16317,17131,17184,16336,16404,17048,14204,14202,14208,14220,14221,14218,17025,17028,17026,18750,18746,13680,13682,13679,18346,13188,13193,16881,16880,16989,12957,13107,13078,13094,18828,18827,18023,17925,17921,18339,18768,10341,8527,8769";
-
-const CAL =
-""
+import { environment } from '../../../environments/environment';
 
 export const COURSE = "course";
 export const PERSOS = "persos";
@@ -61,12 +58,14 @@ export class CalService {
   calEvents: CalEvent[] = [];
 
   courses: CalEvent[] = [];
+  resources: string = "";
   assos: CalEvent[] = [];
   persos: CalEvent[] = [];
 
   assosEventsIds: AssoEventIds = {};
 
   coursesWatcher: any;
+  resourcesWatcher: any;
   assosWatcher: any;
   assosEventsIdsWatcher: any;
   persosWatcher: any;
@@ -80,12 +79,12 @@ export class CalService {
 
   start () {
     if (
-      this.coursesWatcher || this.assosWatcher ||
+      this.coursesWatcher || this.resourcesWatcher || this.assosWatcher ||
       this.assosEventsIdsWatcher || this.persosWatcher
     ) {
       this.stop();
     }
-    this.coursesWatcher = this.watchCoursesEvents();
+    this.resourcesWatcher = this.watchResources();
     this.assosWatcher = this.watchAssosEvents();
     this.assosEventsIdsWatcher = this.watchAssosEventsIds();
     this.persosWatcher = this.watchPersoEvents();
@@ -110,13 +109,28 @@ export class CalService {
     }
   }
 
-  watchCoursesEvents() {
-    this.courses = parseICS(CAL).map(event => new CalEvent(
+  watchResources() {
+    return this.getResources().subscribe(
+      resources => {
+        if (this.coursesWatcher) {
+          this.coursesWatcher.unsubscribe();
+          this.coursesWatcher = null;
+        }
+        console.log(this.getCoursesURL(resources));
+        if (resources != null) {
+          this.coursesWatcher = this.watchCoursesEvents(resources);
+        }
+      }
+    )
+  }
+
+  watchCoursesEvents(resources: string) {
+    this.courses = parseICS("").map(event => new CalEvent(
       "", event.name, event.startDate, event.endDate, event.location, COURSE
     )) || [];
     this.concatEvents();
     return null;
-    // return this.http.get(LINK).subscribe(
+    // return this.http.get(this.getCoursesURL(resources)).subscribe(
     //   cal => {
     //     this.events = parseICS(cal);
     //   },
@@ -166,6 +180,14 @@ export class CalService {
     )
   }
 
+  getResources() {
+    return this.db.object<string>('calendar/users/'+this.auth.getEmailId()+'/courses/resources').valueChanges();
+  }
+
+  setResources(resources: string) {
+    return this.db.object<string>('calendar/users/'+this.auth.getEmailId()+'/courses/resources').set(resources);
+  }
+
   getEvent(eventId: string) {
     return this.db.object<CalEvent>('calendar/users/'+this.auth.getEmailId()+'/perso/'+eventId).valueChanges();
   }
@@ -187,5 +209,19 @@ export class CalService {
       this.assos.filter(event => event.id === this.assosEventsIds[event.id])
     ))
     .sort((event1, event2) => event1.start - event2.start);
+  }
+
+  getCoursesURL(resources: string) {
+    if (resources == null) {
+      return null;
+    }
+    return environment.proxi.domain + "?resources=" + resources;
+  }
+
+  resourcesValidator(resources: string) {
+    if (!resources.match(/^[0-9]+(,[0-9])*/)) {
+      return { error: true };
+    }
+    return null;
   }
 }

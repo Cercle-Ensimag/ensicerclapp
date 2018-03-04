@@ -12,5 +12,8 @@ export const environment = {
     projectId: "ensicerclapp",
     storageBucket: "ensicerclapp.appspot.com",
     messagingSenderId: "5656243105"
+  },
+  proxi: {
+    domain: "https://edt.grenoble-inp.fr/directCal/2017-2018/exterieur"
   }
 };

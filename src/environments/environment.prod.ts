@@ -7,5 +7,8 @@ export const environment = {
     projectId: "ensicerclapp",
     storageBucket: "ensicerclapp.appspot.com",
     messagingSenderId: "5656243105"
+  },
+  proxi: {
+    domain: ""
   }
 };
