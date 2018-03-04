@@ -89,16 +89,16 @@ export class EditCalComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (!this.eventCtrl.invalid) {
-      let event = new CalEvent(
-        this.event.id,
-        this.getTitle(),
-        this.getStart(),
-        this.getEnd(),
-        this.getLocation(),
-        this.event.type
-      );
-      console.log(event);
-      this.cal.setEvent(event).then(() => {
+      this.cal.setEvent(
+        new CalEvent(
+          this.event.id,
+          this.getTitle(),
+          this.getStart(),
+          this.getEnd(),
+          this.getLocation(),
+          this.event.type
+        )
+      ).then(() => {
         this.error = this.d.l.changesApplied;
       });
     }
