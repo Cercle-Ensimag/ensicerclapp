@@ -201,7 +201,7 @@ export class AssessorComponent implements OnInit, OnDestroy {
   }
 
   emailValidator (control: FormControl) {
-    if (!control.value.match(/^[a-z]+((-|--)[a-z]+)*.[a-z]+((-|--)[a-z]+)*[0-9]$/)) {
+    if (!control.value.match(/^[a-z]+((-|--)[a-z]+)*.[a-z]+((-|--)[a-z]+)*(|[0-9])$/)) {
       return { error: true };
     }
     return null;
