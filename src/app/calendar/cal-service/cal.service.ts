@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AngularFireDatabase } from 'angularfire2/database';
+import { FormControl } from '@angular/forms';
 
 import { AuthService } from '../../auth/auth-service/auth.service';
 import { EventsService } from '../../events/events-service/events.service';
@@ -48,6 +49,14 @@ export class CalEvent {
   }
 }
 
+export class Settings {
+  resources: string;
+
+  constructor(resources: string) {
+    this.resources = resources;
+  }
+}
+
 class AssoEventIds {
   [eventId: string]: string;
 }
@@ -58,14 +67,14 @@ export class CalService {
   calEvents: CalEvent[] = [];
 
   courses: CalEvent[] = [];
-  resources: string = "";
+  settings: Settings;
   assos: CalEvent[] = [];
   persos: CalEvent[] = [];
 
   assosEventsIds: AssoEventIds = {};
 
   coursesWatcher: any;
-  resourcesWatcher: any;
+  settingsWatcher: any;
   assosWatcher: any;
   assosEventsIdsWatcher: any;
   persosWatcher: any;
@@ -79,12 +88,12 @@ export class CalService {
 
   start () {
     if (
-      this.coursesWatcher || this.resourcesWatcher || this.assosWatcher ||
+      this.coursesWatcher || this.settingsWatcher || this.assosWatcher ||
       this.assosEventsIdsWatcher || this.persosWatcher
     ) {
       this.stop();
     }
-    this.resourcesWatcher = this.watchResources();
+    this.settingsWatcher = this.watchSettings();
     this.assosWatcher = this.watchAssosEvents();
     this.assosEventsIdsWatcher = this.watchAssosEventsIds();
     this.persosWatcher = this.watchPersoEvents();
@@ -94,6 +103,10 @@ export class CalService {
     if (this.coursesWatcher) {
       this.coursesWatcher.unsubscribe();
       this.coursesWatcher = null;
+    }
+    if (this.settingsWatcher) {
+      this.settingsWatcher.unsubscribe();
+      this.settingsWatcher = null;
     }
     if (this.assosWatcher) {
       this.assosWatcher.unsubscribe();
@@ -109,19 +122,21 @@ export class CalService {
     }
   }
 
-  watchResources() {
-    return this.getResources().subscribe(
-      resources => {
+  watchSettings() {
+    return this.getSettings().subscribe(
+      settings => {
         if (this.coursesWatcher) {
           this.coursesWatcher.unsubscribe();
         }
-        this.coursesWatcher = this.watchCoursesEvents(resources);
+        if (settings != null){
+          this.coursesWatcher = this.watchCoursesEvents(settings.resources);
+        }
       }
     )
   }
 
   watchCoursesEvents(resources: string) {
-    console.log(this.getCoursesURL(resources || "null"));
+    console.log(this.getCoursesURL((resources==""?null:resources) || "null"));
     if (this.getCoursesURL(resources) == null) {
       return null;
     }
@@ -180,12 +195,12 @@ export class CalService {
     )
   }
 
-  getResources() {
-    return this.db.object<string>('calendar/users/'+this.auth.getEmailId()+'/courses/resources').valueChanges();
+  getSettings() {
+    return this.db.object<Settings>('calendar/users/'+this.auth.getEmailId()+'/settings').valueChanges();
   }
 
-  setResources(resources: string) {
-    return this.db.object<string>('calendar/users/'+this.auth.getEmailId()+'/courses/resources').set(resources);
+  setSettings(settings: Settings) {
+    return this.db.object<Settings>('calendar/users/'+this.auth.getEmailId()+'/settings').set(settings);
   }
 
   getEvent(eventId: string) {
@@ -212,14 +227,14 @@ export class CalService {
   }
 
   getCoursesURL(resources: string) {
-    if (resources == null) {
+    if (resources == null || resources === "") {
       return null;
     }
     return environment.proxi.domain + "?resources=" + resources;
   }
 
-  resourcesValidator(resources: string) {
-    if (!resources.match(/^[0-9]+(,[0-9])*/)) {
+  resourcesValidator(control: FormControl) {
+    if (!control.value.match(/^[0-9]+(,[0-9])*/)) {
       return { error: true };
     }
     return null;

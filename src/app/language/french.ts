@@ -174,4 +174,8 @@ export class French {
   public static readonly ActivateAccountButtonLabel = "Activer le compte";
 
   // Calendar
+  public static readonly calSettingsRessourcesLabel = "Ressources ADE";
+  public static readonly calSettingsRessourcesError = "ex: '1234,5678,1479'";
+  public static readonly calSettingsTitle = "Paramètres du calendrier";
+
 }

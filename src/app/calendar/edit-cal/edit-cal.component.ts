@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { AuthService } from '../../auth/auth-service/auth.service';
 import { ToolsService } from '../../providers/tools.service';
 import { CalService, CalEvent, PERSOS, ASSOS, COURSE } from '../cal-service/cal.service';
 import { DicoService } from '../../language/dico.service';
@@ -22,7 +21,6 @@ export class EditCalComponent implements OnInit, OnDestroy {
   error: string;
 
   constructor(
-    private auth: AuthService,
     private tools: ToolsService,
     private cal: CalService,
     private route: ActivatedRoute,
@@ -56,7 +54,7 @@ export class EditCalComponent implements OnInit, OnDestroy {
         end: [new Date(this.event.end) || "", [Validators.required, this.tools.dateValidator]],
         endTime: [this.tools.getTimeFromDate(this.event.end), [Validators.required, this.tools.timeValidator]],
         location: [this.event.location || "", [Validators.required]]
-      })
+      });
       if (this.eventCtrlWatcher) {
         this.eventCtrlWatcher.unsubscribe();
       }

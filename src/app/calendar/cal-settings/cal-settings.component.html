@@ -1,3 +1,20 @@
 <mat-card>
-  A venir: edition du lien de téléchargement ADE
+  <h2>{{ d.l.calSettingsTitle }}</h2>
+
+  <form [formGroup]="settingsCtrl" class="container">
+
+    <span *ngIf="error" class="error">{{ error }}</span>
+
+    <mat-form-field>
+      <textarea matInput placeholder="{{ d.l.calSettingsRessourcesLabel }}" formControlName="resources"></textarea>
+      <mat-error *ngIf="settingsCtrl.get('resources').invalid">{{ d.l.calSettingsRessourcesError }}</mat-error>
+    </mat-form-field>
+
+    <button mat-raised-button
+      (click)="onSubmit()" color="primary"
+      [disabled]="settingsCtrl.invalid"
+    >{{ d.l.applyChangesLabel }}</button>
+
+    <button mat-raised-button (click)="back()">{{ d.l.backLabel }}</button>
+  </form>
 </mat-card>

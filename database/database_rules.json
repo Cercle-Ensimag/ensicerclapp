@@ -205,14 +205,12 @@
     "calendar": {
       "users": {
         "$emailId": {
-          "courses": {
+          "settings": {
             ".read": "auth != null && auth.token.email_verified == true &&
                       root.child('list/users/'+$emailId).val() === auth.token.email",
-            "resources": {
-              ".write": "auth != null && auth.token.email_verified == true &&
-                         root.child('list/users/'+$emailId).val() === auth.token.email",
-              ".validate": "newData.val().matches(/^[0-9]+(,[0-9])*/)"
-            },
+            ".write": "auth != null && auth.token.email_verified == true &&
+                       root.child('list/users/'+$emailId).val() === auth.token.email",
+            "resources": { ".validate": "newData.val().matches(/^[0-9]+(,[0-9])*/)" },
 
             "$other": { ".validate": false }
           },
