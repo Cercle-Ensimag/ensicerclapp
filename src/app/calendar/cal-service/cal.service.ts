@@ -136,21 +136,23 @@ export class CalService {
   }
 
   watchCoursesEvents(resources: string) {
-    console.log(this.getCoursesURL((resources==""?null:resources) || "null"));
     if (this.getCoursesURL(resources) == null) {
       return null;
     }
-    this.courses = parseICS("").map(event => new CalEvent(
-      "", event.name, event.startDate, event.endDate, event.location, COURSE
-    )) || [];
-    this.concatEvents();
-    return null;
-    // return this.http.get(this.getCoursesURL(resources)).subscribe(
-    //   cal => {
-    //     this.events = parseICS(cal);
-    //   },
-    //   err => { console.log(err); }
-    // )
+    // this.courses = parseICS("").map(event => new CalEvent(
+    //   "", event.name, event.startDate, event.endDate, event.location, COURSE
+    // )) || [];
+    // this.concatEvents();
+    // return null;
+    return this.http.get(this.getCoursesURL(resources), { responseType: 'text' }).subscribe(
+      cal => {
+        this.courses = parseICS(cal).map(event => new CalEvent(
+          "", event.name, event.startDate, event.endDate, event.location, COURSE
+        )) || [];
+        this.concatEvents();
+      },
+      err => { console.log(err); }
+    )
   }
 
   watchAssosEvents() {
@@ -230,11 +232,11 @@ export class CalService {
     if (resources == null || resources === "") {
       return null;
     }
-    return environment.proxi.domain + "?resources=" + resources;
+    return environment.proxy.domain + "?resources=" + resources;
   }
 
   resourcesValidator(control: FormControl) {
-    if (!control.value.match(/^[0-9]+(,[0-9])*/)) {
+    if (!control.value.match(/^[0-9]+(,[0-9]+)*$/)) {
       return { error: true };
     }
     return null;

@@ -8,7 +8,7 @@ export const environment = {
     storageBucket: "ensicerclapp.appspot.com",
     messagingSenderId: "5656243105"
   },
-  proxi: {
+  proxy: {
     domain: ""
   }
 };

@@ -13,7 +13,7 @@ export const environment = {
     storageBucket: "ensicerclapp.appspot.com",
     messagingSenderId: "5656243105"
   },
-  proxi: {
-    domain: "https://edt.grenoble-inp.fr/directCal/2017-2018/exterieur"
+  proxy: {
+    domain: "http://proxy-cercle.epizy.com/proxy.php"
   }
 };
