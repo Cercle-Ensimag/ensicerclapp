@@ -139,15 +139,10 @@ export class CalService {
     if (this.getCoursesURL(resources) == null) {
       return null;
     }
-    // this.courses = parseICS("").map(event => new CalEvent(
-    //   "", event.name, event.startDate, event.endDate, event.location, COURSE
-    // )) || [];
-    // this.concatEvents();
-    // return null;
     return this.http.get(this.getCoursesURL(resources), { responseType: 'text' }).subscribe(
       cal => {
         this.courses = parseICS(cal).map(event => new CalEvent(
-          "", event.name, event.startDate, event.endDate, event.location, COURSE
+          "", event.name.replace(/\\,/g, ','), event.startDate, event.endDate, event.location, COURSE
         )) || [];
         this.concatEvents();
       },

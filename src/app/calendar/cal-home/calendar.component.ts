@@ -17,6 +17,7 @@ const MIN_DAY_OFFSET = -20;
 export class CalendarComponent implements OnInit {
 
   dayOffset: number = 0;
+  dayEvents: CalEvent[] = [];
   today: number;
   now: number;
   edit: boolean;
@@ -67,8 +68,9 @@ export class CalendarComponent implements OnInit {
     return this.cal.calEvents.filter(event => this.isToday(event));
   }
 
-  getDisplayEvents() {
-    return this.getDayEvents();
+  isDayEvents() {
+    this.dayEvents = this.getDayEvents();
+    return this.dayEvents;
   }
 
   getTimeOffset() {

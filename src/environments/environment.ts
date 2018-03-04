@@ -14,6 +14,7 @@ export const environment = {
     messagingSenderId: "5656243105"
   },
   proxy: {
-    domain: "http://proxy-cercle.epizy.com/proxy.php"
+    domain: "http://localhost:8080/proxy.php"
+    // domain: "https://evoliofly.com:445/proxy.php"
   }
 };

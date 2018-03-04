@@ -177,5 +177,6 @@ export class French {
   public static readonly calSettingsRessourcesLabel = "Ressources ADE";
   public static readonly calSettingsRessourcesError = "ex: '1234,5678,1479'";
   public static readonly calSettingsTitle = "Paramètres du calendrier";
+  public static readonly noCalEvent = "Rien de prévu";
 
 }

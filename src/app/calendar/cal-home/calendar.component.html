@@ -15,11 +15,18 @@
     <button mat-icon-button (click)="nextDay()"><mat-icon>navigate_next</mat-icon></button>
   </div>
 </mat-card>
-<mat-card *ngFor="let event of getDisplayEvents()" class="event" [class.border]="isNow(event)">
-  {{ event.title }}<br>
-  {{ event.start | date:d.l.timeFormat:'':d.l.locale }} - {{ event.end | date:d.l.timeFormat:'':d.l.locale }}<br>
-  {{ event.location }}<br>
-  <button mat-icon-button *ngIf="event.isAssos() && !edit" routerLink="/events/event/{{ event.id }}"><mat-icon>search</mat-icon></button>
-  <button mat-icon-button *ngIf="event.isPerso() && edit" routerLink="/calendar/edit/{{ event.id }}"><mat-icon>edit</mat-icon></button>
-  <button mat-icon-button *ngIf="event.isPerso() && edit" (click)="cal.removeEvent(event.id)"><mat-icon>delete</mat-icon></button>
-</mat-card>
+<div *ngIf="isDayEvents()">
+  <mat-card *ngFor="let event of dayEvents" class="event" [class.border]="isNow(event)">
+    {{ event.title }}<br>
+    {{ event.start | date:d.l.timeFormat:'':d.l.locale }} - {{ event.end | date:d.l.timeFormat:'':d.l.locale }}<br>
+    {{ event.location }}<br>
+    <button mat-icon-button *ngIf="event.isAssos() && !edit" routerLink="/events/event/{{ event.id }}"><mat-icon>search</mat-icon></button>
+    <button mat-icon-button *ngIf="event.isPerso() && edit" routerLink="/calendar/edit/{{ event.id }}"><mat-icon>edit</mat-icon></button>
+    <button mat-icon-button *ngIf="event.isPerso() && edit" (click)="cal.removeEvent(event.id)"><mat-icon>delete</mat-icon></button>
+  </mat-card>
+</div>
+<div *ngIf="dayEvents.length == 0">
+  <mat-card class="event">
+    {{ d.l.noCalEvent }}
+  </mat-card>
+</div>
