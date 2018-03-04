@@ -114,17 +114,17 @@ export class CalService {
       resources => {
         if (this.coursesWatcher) {
           this.coursesWatcher.unsubscribe();
-          this.coursesWatcher = null;
         }
-        console.log(this.getCoursesURL(resources));
-        if (resources != null) {
-          this.coursesWatcher = this.watchCoursesEvents(resources);
-        }
+        this.coursesWatcher = this.watchCoursesEvents(resources);
       }
     )
   }
 
   watchCoursesEvents(resources: string) {
+    console.log(this.getCoursesURL(resources || "null"));
+    if (this.getCoursesURL(resources) == null) {
+      return null;
+    }
     this.courses = parseICS("").map(event => new CalEvent(
       "", event.name, event.startDate, event.endDate, event.location, COURSE
     )) || [];
