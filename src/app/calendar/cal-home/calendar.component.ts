@@ -18,8 +18,6 @@ export class CalendarComponent implements OnInit {
 
   dayOffset: number = 0;
   dayEvents: CalEvent[] = [];
-  today: number;
-  now: number;
   edit: boolean;
 
   constructor(
@@ -30,7 +28,6 @@ export class CalendarComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.today = this.getToday();
     this.cal.start();
   }
 
