@@ -1,15 +1,49 @@
 <mat-card>
-  Salut !
+  <div class="info">
+    Salut !<br>
+    <br>
+    Petite astuce: ajoute ce site à l'écran d'acceuil du ton téléphone, cela te permettra d'y revenir plus facilement !<br>
+    <br>
+    J'espère que tu apprécies le fait de pouvoir voter en ligne, entre autres, grâce à cette application web.<br>
+    Comme tu peux le constater, tout n'est pas fini !<br>
+    <br>
+    Il sera bientôt possible de :<br>
+     - consulter ton solde cafet et de commander via l'application<br>
+     - recevoir des notifications<br>
+    <br>
+    Si tu veux participer à ce projet, contacte Hans Imag et deviens codeur-développeur bénévole pour le Cercle !<br>
+    <br>
+
+
+    <h2>Fonctionnalités</h2>
+
+    <h3>Actualités</h3>
+    Consulte les actualités publiées par les différentes associations, notamment par le Pole Com'.
+
+    <h3>Cafet</h3>
+    Consulte ton solde cafet et passe commande. (Pas encore disponible)<br>
+
+    <h3>Calendrier</h3>
+    Ce calendrier regroupe tes cours, les événements associatif que tu y as ajouté, et tes événements personnels.<br>
+    Un événement en cours est affiché en vert<br>
+    <br>
+    Pour ajouter ou retirer un événement associatif, réfère-toi à la Fonctionnalité 'Evénements'.<br>
+    <br>
+    Les cours sont téléchargés en fonction des sessources données dans le champ 'Ressources ADE' des paramètres du calendrier <mat-icon>settings</mat-icon>.<br>
+    Pour obtenir ces ressources, connecte-toi à ADE depuis Zenith et copie les ressources présentes dans l'URL.<br>
+    Il faudra mettre à jour ces ressources à chaque fois que tu t'incrit à un nouveau cours, c'est-à-dire en général au début de chaque semestre.<br>
+    <br>
+    Pour créer un événement personnel, utilise l'icone <mat-icon>add_circle</mat-icon> et utilise <mat-icon>edit</mat-icon> pour le modifier. Pour quitter le mode édition clique sur <mat-icon>close</mat-icon><br>
+    Le contenu de ces événement peut pour l'instant être consulté par l'administrateur.
+
+    <h3>Evénements</h3>
+    Consulte les événements créés par les associations de l'Ensimag<br>
+    Pour ajouter un événement à ton calendrier, clique sur <mat-icon>event_available</mat-icon> et clique sur <mat-icon>event_busy</mat-icon> pour l'en retirer.
+
+    <h3>Vote</h3>
+    Vote pour une élection ou un sondage. Ton vote est totalement anonyme en base de donnée.
+  </div>
   <br>
-  <br>Petite astuce: ajoute ce site à l'écran d'acceuil du ton téléphone, cela te permettra d'y revenir plus facilement !
-  <br>
-  <br>J'espère que tu apprécies le fait de pouvoir voter en ligne, entre autres, grâce à cette application web.
-  <br>Comme tu peux le constater, tout n'est pas fini !
-  <br>
-  <br>Il sera bientôt possible de :
-  <br> - consulter ton solde cafet et de commander via l'application
-  <br> - recevoir des notifications
-  <br> - accéder à ton emploi du temps et y ajouter les événements
-  <br>
-  <br>Si tu veux participer à ce projet, contacte Hans Imag et deviens codeur-développeur bénévole pour le Cercle !
+  <button mat-raised-button color="primary" (click)="back()">{{ d.l.backLabel }}</button>
+
 </mat-card>

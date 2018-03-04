@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
+
+import { DicoService } from '../../language/dico.service';
 
 @Component({
   selector: 'app-readme',
@@ -7,9 +10,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ReadmeComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private location: Location,
+    public d: DicoService
+  ) { }
 
   ngOnInit() {
+  }
+
+  back() {
+    this.location.back();
   }
 
 }
