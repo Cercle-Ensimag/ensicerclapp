@@ -65,7 +65,7 @@
       Lorsqu'un srutin est actif, tu ne peux qu'accéder à l'aperçu et aux votants.<br>
     </div>
 
-    <div *ngIf="auth.isAssessor || auth.isVoteAdmin">
+    <div *ngIf="auth.isAssessor || auth.isVoteAdmin || auth.isAdmin">
       <h3>Assesseur</h3>
       Selectionne les scrutins pour lesquels tu dois assesser et ajoute des votants en face-à-face.<br>
       <br>
@@ -84,7 +84,7 @@
       - le supprimer <mat-icon>delete</mat-icon><br>
     </div>
 
-    <div *ngIf="auth.isComResp || auth.isEventsAdmin">
+    <div *ngIf="auth.isComResp || auth.isEventsAdmin || auth.isAdmin">
       <h3>Responsable communication</h3>
       Crée des événements.<br>
       Un événement n'est éditable que par celui qui l'a créé.<br>
@@ -104,7 +104,7 @@
       - le supprimer <mat-icon>delete</mat-icon><br>
     </div>
 
-    <div *ngIf="auth.isJournalist || auth.isActusAdmin">
+    <div *ngIf="auth.isJournalist || auth.isActusAdmin || auth.isAdmin">
       <h3>Journaliste</h3>
       Crée des articles.<br>
       Un article n'est éditable que par celui qui l'a créé.<br>
@@ -113,6 +113,11 @@
       - éditer <mat-icon>edit</mat-icon><br>
       - avoir un aperçu <mat-icon>search</mat-icon><br>
       - le supprimer <mat-icon>delete</mat-icon><br>
+    </div>
+
+    <div *ngIf="auth.isCafetAdmin || auth.isAdmin">
+      <h3 >Master cafet'</h3>
+      Gère tout ce qui est en relation avec la cafet<br>
     </div>
 
 
