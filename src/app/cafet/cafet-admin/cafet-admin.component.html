@@ -1,51 +1,84 @@
-<div class="width">
-  <mat-card *ngIf="users" class="group">
-    <mat-form-field class="search">
-      <input matInput placeholder="{{ d.l.search }}" [formControl]="search">
-      <button mat-icon-button matSuffix><mat-icon>search</mat-icon></button>
-    </mat-form-field>
-  </mat-card>
+<mat-card *ngIf="users">
+  <mat-form-field class="search">
+    <input matInput placeholder="{{ d.l.search }}" [formControl]="search">
+    <button mat-icon-button matSuffix><mat-icon>search</mat-icon></button>
+  </mat-form-field>
+</mat-card>
 
-  <div class="group">
-    <mat-accordion *ngFor="let user of usersWithNoAccount">
-      <mat-expansion-panel expanded="false">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            {{ tools.titleCase(user.emailId.split('|').join(' ')) }}
-          </mat-panel-title>
-          <mat-panel-description>
-            {{ d.l.accountRequestButtonLabel }}
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-
-        <form (ngSubmit)="activateAccount(user)">
-          <mat-form-field>
-            <input type='number' matInput placeholder="{{ d.l.creditLabel }}" [formControl]="controls[user.emailId].add">
-            <label matSuffix>€</label>
-          </mat-form-field>
-          <button mat-button
-            type="submit"
-            [disabled]="controls[user.emailId].add.invalid"
-            color="primary"
-          >{{ d.l.ActivateAccountButtonLabel }}</button>
-        </form>
-      </mat-expansion-panel>
-    </mat-accordion>
-  </div>
-  <mat-accordion>
-    <!-- <mat-expansion-panel *ngFor="let user of displayedUsers" [expanded]="expanded[user.emailId]" (opened)="expanded[user.emailId]=true" hideToggle="true"> -->
-    <mat-expansion-panel *ngFor="let user of displayedUsers">
+<div class="group">
+  <mat-accordion *ngFor="let user of usersWithNoAccount">
+    <mat-expansion-panel expanded="false">
       <mat-expansion-panel-header>
         <mat-panel-title>
           {{ tools.titleCase(user.emailId.split('|').join(' ')) }}
         </mat-panel-title>
         <mat-panel-description>
-          {{ user.credit }}€
+          {{ d.l.accountRequestButtonLabel }}
         </mat-panel-description>
       </mat-expansion-panel-header>
 
-      <form (ngSubmit)="transaction(user, false)">
-        <span>
+      <form (ngSubmit)="activateAccount(user)">
+        <mat-form-field>
+          <input type='number' matInput placeholder="{{ d.l.creditLabel }}" [formControl]="controls[user.emailId].add">
+          <label matSuffix>€</label>
+        </mat-form-field>
+        <button mat-button
+          type="submit"
+          [disabled]="controls[user.emailId].add.invalid"
+          color="primary"
+        >{{ d.l.ActivateAccountButtonLabel }}</button>
+      </form>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
+<mat-accordion *ngIf="media.mobileSize" class="group">
+  <mat-expansion-panel *ngFor="let user of displayedUsers | slice:pageIndex*pageSize:(pageIndex+1)*pageSize">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{ tools.titleCase(user.emailId.split('|').join(' ')) }}
+      </mat-panel-title>
+      <mat-panel-description>
+        {{ user.credit }}€
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+
+    <form (ngSubmit)="transaction(user, false)">
+      <span>
+        <mat-form-field>
+          <input type='number' matInput placeholder="{{ d.l.substractButtonLabel }}" [formControl]="controls[user.emailId].sub">
+        </mat-form-field>
+        <button mat-button
+          type="submit"
+          [disabled]="controls[user.emailId].sub.invalid"
+          color="primary"
+        >{{ d.l.substractButtonLabel }}</button>
+      </span>
+    </form>
+    <form (ngSubmit)="transaction(user, true)">
+      <span>
+        <mat-form-field>
+          <input type='number' matInput placeholder="{{ d.l.addButtonLabel }}" [formControl]="controls[user.emailId].add">
+        </mat-form-field>
+        <button mat-button
+          type="submit"
+          [disabled]="controls[user.emailId].add.invalid"
+          color="primary"
+        >{{ d.l.addButtonLabel }}</button>
+      </span>
+    </form>
+  </mat-expansion-panel>
+</mat-accordion>
+
+<div *ngIf="!media.mobileSize" class="group">
+  <mat-card *ngFor="let user of displayedUsers | slice:pageIndex*pageSize:(pageIndex+1)*pageSize">
+    <div class="large">
+      <span class="text">{{ tools.titleCase(user.emailId.split('|').join(' ')) }}</span>
+      <span>
+        <button mat-icon-button class="history" matSuffix><mat-icon>history</mat-icon></button>
+        <span>{{ user.credit }}€</span>
+      </span>
+      <span>
+        <form (ngSubmit)="transaction(user, false)">
           <mat-form-field>
             <input type='number' matInput placeholder="{{ d.l.substractButtonLabel }}" [formControl]="controls[user.emailId].sub">
           </mat-form-field>
@@ -54,10 +87,11 @@
             [disabled]="controls[user.emailId].sub.invalid"
             color="primary"
           >{{ d.l.substractButtonLabel }}</button>
-        </span>
-      </form>
-      <form (ngSubmit)="transaction(user, true)">
-        <span>
+        </form>
+      </span>
+
+      <span>
+        <form (ngSubmit)="transaction(user, true)">
           <mat-form-field>
             <input type='number' matInput placeholder="{{ d.l.addButtonLabel }}" [formControl]="controls[user.emailId].add">
           </mat-form-field>
@@ -66,8 +100,14 @@
             [disabled]="controls[user.emailId].add.invalid"
             color="primary"
           >{{ d.l.addButtonLabel }}</button>
-        </span>
-      </form>
-    </mat-expansion-panel>
-  </mat-accordion>
+        </form>
+      </span>
+    </div>
+  </mat-card>
 </div>
+<mat-paginator
+  [length]="displayedUsers.length"
+  [pageSize]="pageSize"
+  (page)="updateList($event)"
+  class="group"
+></mat-paginator>

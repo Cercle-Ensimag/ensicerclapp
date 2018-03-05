@@ -14,7 +14,7 @@ export const environment = {
     messagingSenderId: "5656243105"
   },
   proxy: {
-    domain: "https://evoliofly.com:8082/proxy.php?"
+    domain: "https://evoliofly.com:42000/proxy.php?"
     // domain: "http://localhost:8080/proxy.php?"
   }
 };

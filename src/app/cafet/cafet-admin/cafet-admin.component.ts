@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 
 import { ToolsService } from '../../providers/tools.service';
+import { DeviceSizeService } from '../../providers/device-size.service';
 import { CafetService, CafetUser } from '../cafet-service/cafet.service';
 import { DicoService } from '../../language/dico.service';
 
@@ -15,7 +16,7 @@ export class CafetAdminComponent implements OnInit, OnDestroy {
   users: CafetUser[];
   usersWithAccount: CafetUser[];
   usersWithNoAccount: CafetUser[];
-  displayedUsers: CafetUser[];
+  displayedUsers: CafetUser[] = [];
 
   search: FormControl;
   controls: {[emailId: string]: {
@@ -26,9 +27,13 @@ export class CafetAdminComponent implements OnInit, OnDestroy {
 
   usersWatcher: any;
 
+  pageIndex: number = 0;
+  pageSize: number = 20;
+
   constructor(
     public cafet: CafetService,
     public tools: ToolsService,
+    public media: DeviceSizeService,
     public d: DicoService
   ) { }
 
@@ -56,7 +61,7 @@ export class CafetAdminComponent implements OnInit, OnDestroy {
       this.usersWithAccount = users.filter(user => user.activated);
       this.usersWithNoAccount = users.filter(user => !user.activated);
       this.search.setValue("");
-
+      this.sortUsers("");
     })
   }
 
@@ -91,15 +96,14 @@ export class CafetAdminComponent implements OnInit, OnDestroy {
 
   sortUsers(name: string) {
     let emailId = name.replace(' ', '|').toLowerCase();
-    if (name.length > 0) {
-      this.displayedUsers = this.usersWithAccount.filter(
-        user => (
-          user.emailId.includes(emailId)
-        )
-      );
-    } else {
-      this.displayedUsers = this.usersWithAccount;
-    }
+    this.pageIndex = 0;
+    this.displayedUsers = this.usersWithAccount.filter(
+      user => user.emailId.includes(emailId)
+    );
+  }
+
+  updateList(event) {
+    this.pageIndex = event.pageIndex;
   }
 
 }

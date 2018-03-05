@@ -1,17 +1,42 @@
-button {
+.group {
+  margin-top: 4px;
+}
+
+.group button {
   margin-left: 16px;
   margin-right: 16px;
 }
 
-.width {
-  max-width: 600px;
-  margin: auto
-}
-
-.group {
-  margin-bottom: 4px;
-}
-
 .search {
   width: 100%;
+}
+
+.large {
+  display: grid;
+  grid-template-columns: 30% 20% 25% 25%;
+  text-align: left;
+  vertical-align: center;
+}
+
+.large mat-form-field {
+  max-width: 100px;
+}
+
+.large span {
+  margin-left: 4px;
+  margin-right: 4px;
+  margin-top: 0;
+}
+
+.large button {
+  margin-left: 4px;
+  margin-right: 4px;
+}
+
+.large .text {
+  margin-top: 19px;
+}
+
+.large .history {
+  margin-top: 8px;
 }

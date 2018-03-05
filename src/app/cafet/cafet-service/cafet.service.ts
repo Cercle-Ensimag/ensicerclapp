@@ -3,6 +3,7 @@ import { AngularFireDatabase } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
 
 import { AuthService } from '../../auth/auth-service/auth.service';
+import { ToolsService } from '../../providers/tools.service';
 
 export class CafetUser {
   activated: boolean;
@@ -35,6 +36,7 @@ export class CafetService {
 
   constructor(
     private db: AngularFireDatabase,
+    private tools: ToolsService,
     private auth: AuthService
   ) { }
 
@@ -95,7 +97,7 @@ export class CafetService {
 
   newTransaction(user: CafetUser, value: number) {
     let oldCredit = user.credit;
-    let newCredit = oldCredit + value;
+    let newCredit = this.tools.round(oldCredit + value, 2);
     return this.db.object<number>("cafet/users/"+user.emailId+"/credit").set(newCredit)
     .then(() => {
       return this.db.list<Transaction>("cafet/history/"+user.emailId).push({
