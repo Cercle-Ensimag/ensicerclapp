@@ -49,7 +49,7 @@
       Tape le nom d'un membre dans la barre de recherche pour y accéder plus rapidement.
     </div>
 
-    <div *ngIf="auth.isVoteAdmin">
+    <div *ngIf="auth.isVoteAdmin || auth.isAdmin">
       <h3 >Administrateurs des votes</h3>
       Crée des srcutins et nomme les assesseurs.<br>
       <br>
@@ -65,9 +65,54 @@
       Lorsqu'un srutin est actif, tu ne peux qu'accéder à l'aperçu et aux votants.<br>
     </div>
 
-    <div *ngIf="auth.isAssessor">
+    <div *ngIf="auth.isAssessor || auth.isVoteAdmin">
       <h3>Assesseur</h3>
       Selectionne les scrutins pour lesquels tu dois assesser et ajoute des votants en face-à-face.<br>
+      <br>
+      Un votant en face-à-face est ajouté à partir de son adresse email. Le nom de domaine est par defaut sur '@ensimag.fr'.<br>
+      <br>
+      Un étudiant présent dans la liste a déjà voté et ne peut donc pas être ajouté.<br>
+      Il peut être dans cette liste s'il a voté en ligne ou en face-à-face.
+    </div>
+
+    <div *ngIf="auth.isEventsAdmin || auth.isAdmin">
+      <h3 >Administrateurs des événements</h3>
+      Consulte les événements et nomme les respos com'.<br>
+      <br>
+      Chaque événement dispose des fonctionnalités suivantes:<br>
+      - avoir un aperçu <mat-icon>search</mat-icon><br>
+      - le supprimer <mat-icon>delete</mat-icon><br>
+    </div>
+
+    <div *ngIf="auth.isComResp || auth.isEventsAdmin">
+      <h3>Responsable communication</h3>
+      Crée des événements.<br>
+      Un événement n'est éditable que par celui qui l'a créé.<br>
+      <br>
+      Chaque événement dispose des fonctionnalités suivantes:<br>
+      - éditer <mat-icon>edit</mat-icon><br>
+      - avoir un aperçu <mat-icon>search</mat-icon><br>
+      - le supprimer <mat-icon>delete</mat-icon><br>
+    </div>
+
+    <div *ngIf="auth.isActusAdmin || auth.isAdmin">
+      <h3 >Administrateurs des actualités</h3>
+      Consulte les articles et nomme les journalistes.<br>
+      <br>
+      Chaque article dispose des fonctionnalités suivantes:<br>
+      - avoir un aperçu <mat-icon>search</mat-icon><br>
+      - le supprimer <mat-icon>delete</mat-icon><br>
+    </div>
+
+    <div *ngIf="auth.isJournalist || auth.isActusAdmin">
+      <h3>Journaliste</h3>
+      Crée des articles.<br>
+      Un article n'est éditable que par celui qui l'a créé.<br>
+      <br>
+      Chaque article dispose des fonctionnalités suivantes:<br>
+      - éditer <mat-icon>edit</mat-icon><br>
+      - avoir un aperçu <mat-icon>search</mat-icon><br>
+      - le supprimer <mat-icon>delete</mat-icon><br>
     </div>
 
 
