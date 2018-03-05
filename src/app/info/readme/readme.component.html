@@ -42,6 +42,35 @@
 
     <h3>Vote</h3>
     Vote pour une élection ou un sondage. Ton vote est totalement anonyme en base de donnée.
+
+    <div *ngIf="auth.isAdmin">
+      <h3>Administrateur</h3>
+      Accède à la liste des utilisateurs et accorde leur des droits.<br>
+      Tape le nom d'un membre dans la barre de recherche pour y accéder plus rapidement.
+    </div>
+
+    <div *ngIf="auth.isVoteAdmin">
+      <h3 >Administrateurs des votes</h3>
+      Crée des srcutins et nomme les assesseurs.<br>
+      <br>
+      Un scrutin n'est pas visible par les utilisateurs et les assesseurs tant qu'il n'est pas activé.<br>
+      <br>
+      Chaque srutin dispose des fonctionnalités suivantes:<br>
+      - éditer <mat-icon>edit</mat-icon><br>
+      - avoir un aperçu <mat-icon>search</mat-icon><br>
+      - consulter les resultats <mat-icon>poll</mat-icon><br>
+      - accéder à la liste des votants en ligne et en face-à-face <mat-icon>face</mat-icon><br>
+      - le supprimer <mat-icon>delete</mat-icon><br>
+      <br>
+      Lorsqu'un srutin est actif, tu ne peux qu'accéder à l'aperçu et aux votants.<br>
+    </div>
+
+    <div *ngIf="auth.isAssessor">
+      <h3>Assesseur</h3>
+      Selectionne les scrutins pour lesquels tu dois assesser et ajoute des votants en face-à-face.<br>
+    </div>
+
+
   </div>
   <br>
   <button mat-raised-button color="primary" (click)="back()">{{ d.l.backLabel }}</button>

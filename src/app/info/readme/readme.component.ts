@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 
+import { AuthService } from '../../auth/auth-service/auth.service';
 import { DicoService } from '../../language/dico.service';
 
 @Component({
@@ -12,6 +13,7 @@ export class ReadmeComponent implements OnInit {
 
   constructor(
     private location: Location,
+    public auth: AuthService,
     public d: DicoService
   ) { }
 
