@@ -1,3 +1,16 @@
+.search {
+  display: grid;
+  grid-template-columns: 50% 25% 25%;
+}
+
+.search button {
+  margin-top: 12px;
+}
+
+.input-width {
+  width: 300px;
+}
+
 .group {
   margin-top: 4px;
 }
@@ -5,10 +18,6 @@
 .group button {
   margin-left: 16px;
   margin-right: 16px;
-}
-
-.search {
-  width: 100%;
 }
 
 .large {

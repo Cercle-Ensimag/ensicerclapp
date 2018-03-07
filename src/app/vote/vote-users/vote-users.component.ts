@@ -64,7 +64,7 @@ export class VoteUsersComponent implements OnInit, OnDestroy {
   }
 
   sortUsers(email: string) {
-    let emailId = this.auth.getEmailIdFromEmail(email.split('@')[0]);
+    let emailId = this.tools.getEmailIdFromEmail(email.split('@')[0]);
     this.pageIndex = 0;
     if (email.length > 0) {
       this.displayedUsers = this.users.filter(user => user.emailId.includes(emailId));

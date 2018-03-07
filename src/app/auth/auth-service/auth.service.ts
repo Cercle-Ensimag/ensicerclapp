@@ -7,6 +7,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireDatabase } from 'angularfire2/database';
 
 import { AppModulesService } from '../../providers/app-modules.service';
+import { ToolsService } from '../../providers/tools.service';
 import { DicoService } from '../../language/dico.service';
 
 import { ComResp } from '../../events/event-admin/event-admin.component';
@@ -68,6 +69,7 @@ export class AuthService {
     private router: Router,
     private location: Location,
     private modules: AppModulesService,
+    private tools: ToolsService,
     public d: DicoService
   ) {
     this.currentUser = this.afAuth.auth.currentUser;
@@ -213,11 +215,7 @@ export class AuthService {
   }
 
   getEmailId(): string {
-    return this.getEmailIdFromEmail(this.getCurrentUser().email);
-  }
-
-  getEmailIdFromEmail(email: string) {
-    return email.toLowerCase().split("@")[0].replace('.', '|');
+    return this.tools.getEmailIdFromEmail(this.getCurrentUser().email);
   }
 
   getUserAccountPath(): string {
@@ -225,7 +223,7 @@ export class AuthService {
   }
 
   getUserAccountPathFromUser(user: any) {
-    return "users/" + this.getEmailIdFromEmail(user.email) + '/' + user.uid;
+    return "users/" + this.tools.getEmailIdFromEmail(user.email) + '/' + user.uid;
   }
 
   sendEmailVerification(user: any) {

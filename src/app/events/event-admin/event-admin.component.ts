@@ -87,7 +87,7 @@ export class EventAdminComponent implements OnInit, OnDestroy {
   }
 
   sortUsers(email: string) {
-    let emailId = this.auth.getEmailIdFromEmail(email.split('@')[0]);
+    let emailId = this.tools.getEmailIdFromEmail(email.split('@')[0]);
     this.displayedUsers = this.comResps.filter(
       user => user.emailId.includes(emailId)
     );
@@ -95,7 +95,7 @@ export class EventAdminComponent implements OnInit, OnDestroy {
 
   addComResp() {
     if (!this.emailCtrl.invalid && this.displayedUsers.length == 0) {
-      let emailId = this.auth.getEmailIdFromEmail(this.emailCtrl.value);
+      let emailId = this.tools.getEmailIdFromEmail(this.emailCtrl.value);
       if (!this.list.authUsers[emailId]) {
         let name = this.tools.titleCase(emailId.replace('|', ' ').replace('  ', ' '));
         this.error = this.d.format(this.d.l.notOnTheList, name);

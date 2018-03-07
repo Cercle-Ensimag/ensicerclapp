@@ -5,6 +5,10 @@ import { FormControl } from '@angular/forms';
 export class ToolsService {
 
   constructor() { }
+  
+  getEmailIdFromEmail(email: string) {
+    return email.toLowerCase().split("@")[0].replace('.', '|');
+  }
 
   titleCase(str) {
     str = str.toLowerCase().split(' ');

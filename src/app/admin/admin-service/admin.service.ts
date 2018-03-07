@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
-import { AuthService } from '../../auth/auth-service/auth.service';
+import { ToolsService } from '../../providers/tools.service';
 
 @Injectable()
 export class AdminService {
@@ -11,7 +11,7 @@ export class AdminService {
 
   constructor(
     private db: AngularFireDatabase,
-    private auth: AuthService
+    private tools: ToolsService
   ) { }
 
   start() {
@@ -36,19 +36,19 @@ export class AdminService {
   }
 
   setVoteAdmin(email: string, uid: string, checked: boolean) {
-    this.db.object('users/'+this.auth.getEmailIdFromEmail(email)+'/'+uid+'/admin/vote-admin').set(checked);
+    this.db.object('users/'+this.tools.getEmailIdFromEmail(email)+'/'+uid+'/admin/vote-admin').set(checked);
   }
 
   setEventsAdmin(email: string, uid: string, checked: boolean) {
-    this.db.object('users/'+this.auth.getEmailIdFromEmail(email)+'/'+uid+'/admin/events-admin').set(checked);
+    this.db.object('users/'+this.tools.getEmailIdFromEmail(email)+'/'+uid+'/admin/events-admin').set(checked);
   }
 
   setActusAdmin(email: string, uid: string, checked: boolean) {
-    this.db.object('users/'+this.auth.getEmailIdFromEmail(email)+'/'+uid+'/admin/actus-admin').set(checked);
+    this.db.object('users/'+this.tools.getEmailIdFromEmail(email)+'/'+uid+'/admin/actus-admin').set(checked);
   }
 
   setCafetAdmin(email: string, uid: string, checked: boolean) {
-    this.db.object('users/'+this.auth.getEmailIdFromEmail(email)+'/'+uid+'/admin/cafet-admin').set(checked);
+    this.db.object('users/'+this.tools.getEmailIdFromEmail(email)+'/'+uid+'/admin/cafet-admin').set(checked);
   }
 
 }

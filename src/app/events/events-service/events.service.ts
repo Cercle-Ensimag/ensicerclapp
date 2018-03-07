@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
 
+import { ToolsService } from '../../providers/tools.service';
 import { AuthService } from '../../auth/auth-service/auth.service';
 import { Event } from '../events-home/events-home.component';
 import { ComResp, Group } from '../event-admin/event-admin.component';
@@ -14,6 +15,7 @@ export class EventsService {
 
   constructor(
     private db: AngularFireDatabase,
+    private tools: ToolsService,
     private auth: AuthService
   ) { }
 
@@ -70,7 +72,7 @@ export class EventsService {
   }
 
   addComResp(email: string, group: Group) {
-    let emailId = this.auth.getEmailIdFromEmail(email);
+    let emailId = this.tools.getEmailIdFromEmail(email);
     return this.db.object<Group>('events/com-resps/groups/'+group.groupId).set(group)
     .then(() => {
       return this.db.object<ComResp>('events/com-resps/resps/'+emailId).set({

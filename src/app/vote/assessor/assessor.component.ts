@@ -4,10 +4,10 @@ import { Location } from '@angular/common';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { DeviceSizeService } from '../../providers/device-size.service';
-import { AuthService, ENSIDOMAIN, PHELMADOMAIN } from '../../auth/auth-service/auth.service';
+import { ENSIDOMAIN, PHELMADOMAIN } from '../../auth/auth-service/auth.service';
 import { VoteService } from '../vote-service/vote.service';
 import { ListService } from '../../providers/list.service';
-import {ToolsService } from '../../providers/tools.service';
+import { ToolsService } from '../../providers/tools.service';
 import { DicoService } from '../../language/dico.service';
 
 import { VoteUser } from '../vote-users/vote-users.component';
@@ -48,7 +48,6 @@ export class AssessorComponent implements OnInit, OnDestroy {
     private vote: VoteService,
     private route: ActivatedRoute,
     private location: Location,
-    private auth: AuthService,
     public media: DeviceSizeService,
     private fb: FormBuilder,
     private list: ListService,
@@ -62,7 +61,7 @@ export class AssessorComponent implements OnInit, OnDestroy {
       this.polls = polls;
       this.createPollCheckboxesCtrl();
       this.watchUsers();
-    })
+    });
     this.list.start();
   }
 
@@ -118,7 +117,7 @@ export class AssessorComponent implements OnInit, OnDestroy {
   }
 
   sortUsers(email: string) {
-    let emailId = this.auth.getEmailIdFromEmail(email);
+    let emailId = this.tools.getEmailIdFromEmail(email);
     this.displayedUsers = [];
     this.pageIndex = 0;
     for (let poll of this.polls) {
@@ -163,7 +162,7 @@ export class AssessorComponent implements OnInit, OnDestroy {
 
   markAsVoted() {
     if (!this.searchCtrl.invalid && this.displayedUsers.length == 0) {
-      let emailId = this.auth.getEmailIdFromEmail(this.getEmail());
+      let emailId = this.tools.getEmailIdFromEmail(this.getEmail());
       let name = this.tools.titleCase(emailId.replace('|', ' ').replace('  ', ' '));
       if (this.list.authUsers[emailId] !== this.getEmail() + this.getDomain()) {
         this.error = this.d.format(this.d.l.notOnTheList, name);

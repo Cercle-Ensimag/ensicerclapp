@@ -1,37 +1,31 @@
 <mat-card *ngIf="users">
-  <mat-form-field class="search">
-    <input matInput placeholder="{{ d.l.search }}" [formControl]="search">
-    <button mat-icon-button matSuffix><mat-icon>search</mat-icon></button>
-  </mat-form-field>
+  <form [formGroup]="searchCtrl">
+
+    <span *ngIf="error" class="error">{{ error }}</span>
+
+    <div [class.search]="media.largeSize">
+      <mat-form-field [class.input-width]="!media.largeSize">
+        <input matInput placeholder="{{ d.l.cafetEmailmailInfo }}" formControlName="email">
+      </mat-form-field>
+
+      <span>
+        <mat-form-field>
+          <input matInput type="number" placeholder="{{ d.l.creditLabel }}" formControlName="credit">
+        </mat-form-field>
+      </span>
+      <span>
+        <button mat-raised-button
+          type="submit"
+          (click)="createCafetAccount()"
+          [disabled]="searchCtrl.invalid || displayedUsers.length != 0"
+          color="primary"
+        >{{ d.l.createAccountLabel }}</button>
+      </span>
+    </div>
+  </form>
 </mat-card>
 
-<div class="group">
-  <mat-accordion *ngFor="let user of usersWithNoAccount">
-    <mat-expansion-panel expanded="false">
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          {{ tools.titleCase(user.emailId.split('|').join(' ')) }}
-        </mat-panel-title>
-        <mat-panel-description>
-          {{ d.l.accountRequestButtonLabel }}
-        </mat-panel-description>
-      </mat-expansion-panel-header>
-
-      <form (ngSubmit)="activateAccount(user)">
-        <mat-form-field>
-          <input type='number' matInput placeholder="{{ d.l.creditLabel }}" [formControl]="controls[user.emailId].add">
-          <label matSuffix>€</label>
-        </mat-form-field>
-        <button mat-button
-          type="submit"
-          [disabled]="controls[user.emailId].add.invalid"
-          color="primary"
-        >{{ d.l.ActivateAccountButtonLabel }}</button>
-      </form>
-    </mat-expansion-panel>
-  </mat-accordion>
-</div>
-<mat-accordion *ngIf="media.mobileSize" class="group">
+<mat-accordion *ngIf="!media.largeSize" class="group">
   <mat-expansion-panel *ngFor="let user of displayedUsers | slice:pageIndex*pageSize:(pageIndex+1)*pageSize">
     <mat-expansion-panel-header>
       <mat-panel-title>
@@ -66,16 +60,17 @@
         >{{ d.l.addButtonLabel }}</button>
       </span>
     </form>
+    <button mat-icon-button matSuffix><mat-icon>history</mat-icon></button>
   </mat-expansion-panel>
 </mat-accordion>
 
-<div *ngIf="!media.mobileSize" class="group">
+<div *ngIf="media.largeSize" class="group">
   <mat-card *ngFor="let user of displayedUsers | slice:pageIndex*pageSize:(pageIndex+1)*pageSize">
     <div class="large">
       <span class="text">{{ tools.titleCase(user.emailId.split('|').join(' ')) }}</span>
       <span>
         <button mat-icon-button class="history" matSuffix><mat-icon>history</mat-icon></button>
-        <span>{{ user.credit }}€</span>
+        <span>{{ user.credit.toFixed(2) }}€</span>
       </span>
       <span>
         <form (ngSubmit)="transaction(user, false)">

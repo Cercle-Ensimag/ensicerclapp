@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
 
+import { ToolsService } from '../../providers/tools.service';
 import { AuthService } from '../../auth/auth-service/auth.service';
 import { Poll, Choice } from '../poll/poll.component';
 import { Assessor } from '../vote-admin/vote-admin.component';
@@ -17,7 +18,8 @@ export class VoteService {
 
   constructor(
     private db: AngularFireDatabase,
-    private auth: AuthService
+    private auth: AuthService,
+    private tools: ToolsService
   ) { }
 
   watchPolls() {
@@ -105,13 +107,13 @@ export class VoteService {
     .set(choiceId).then(() => {
       return this.markAsVoted(
         pollId,
-        this.auth.getEmailIdFromEmail(this.auth.getCurrentUser().email)
+        this.auth.getEmailId()
       );
     });
   }
 
   markAsVoted(pollId: string, email: string) {
-    let emailId = this.auth.getEmailIdFromEmail(email);
+    let emailId = this.tools.getEmailIdFromEmail(email);
     let refs = {
       emailId: emailId,
       voted: true
@@ -131,7 +133,7 @@ export class VoteService {
   }
 
   addAssessor(email: string) {
-    let emailId = this.auth.getEmailIdFromEmail(email);
+    let emailId = this.tools.getEmailIdFromEmail(email);
     return this.db.object<Assessor>('vote/assessors/'+emailId).set({emailId: emailId});
   }
 

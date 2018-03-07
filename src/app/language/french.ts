@@ -163,15 +163,12 @@ export class French {
   // Cafet
   public static readonly troll = "T'ES EN NEGATIF !!<br><small>(*non contractuel, t'as pas encore de compte)</small>";
   public static readonly creditLabel = "Solde";
+  public static readonly createAccountLabel = "Créer le compte";
+  public static readonly cafetEmailmailInfo = "Entrer l'e-mail d'un client";
   public static readonly addButtonLabel = "Crediter";
   public static readonly substractButtonLabel = "Débiter";
-  public static readonly accountRequestInfo = "Pour informer les masters cafet que tu souhaites activer ton compte cafet en ligne, clique sur le bouton ci-dessous puis va voir un master";
-  public static readonly accountRequestButtonLabel = "Demande de compte";
   public static readonly weekIngredientLabel = "Ingrédient de la semaine";
   public static readonly negativeCreditError = "T'ES EN NEGATIF !!<br><small>Tu devrais mettre de l'argent sur ton compte</small>";
-  public static readonly usersWithAccountLabel = "Utilistateurs";
-  public static readonly usersWithNoAccountLabel = "Demandes";
-  public static readonly ActivateAccountButtonLabel = "Activer le compte";
 
   // Calendar
   public static readonly calSettingsRessourcesLabel = "Ressources ADE";

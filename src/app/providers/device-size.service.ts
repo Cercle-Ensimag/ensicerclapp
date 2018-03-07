@@ -7,6 +7,7 @@ import { MediaChange, ObservableMedia } from "@angular/flex-layout";
 export class DeviceSizeService {
 
   mobileSize: boolean;
+  largeSize: boolean;
   currentSize: string;
   watcher: Subscription;
 
@@ -18,6 +19,7 @@ export class DeviceSizeService {
     this.watcher = this.media.subscribe((change: MediaChange) => {
       this.currentSize = change.mqAlias;
       this.setMobileSize(change.mqAlias);
+      this.setLargeSize(change.mqAlias);
     });
   }
 
@@ -33,6 +35,14 @@ export class DeviceSizeService {
       this.mobileSize = true;
     } else {
       this.mobileSize = false;
+    }
+  }
+
+  private setLargeSize(size: string) {
+    if (size == 'lg') {
+      this.largeSize = true;
+    } else {
+      this.largeSize = false;
     }
   }
 

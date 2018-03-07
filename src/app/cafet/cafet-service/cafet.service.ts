@@ -6,7 +6,6 @@ import { AuthService } from '../../auth/auth-service/auth.service';
 import { ToolsService } from '../../providers/tools.service';
 
 export class CafetUser {
-  activated: boolean;
   credit: number;
   emailId: string;
 }

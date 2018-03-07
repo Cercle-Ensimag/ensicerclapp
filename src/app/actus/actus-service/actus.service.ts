@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
 
-import { AuthService } from '../../auth/auth-service/auth.service';
+import { ToolsService } from '../../providers/tools.service';
 import { Actu } from '../actus-home/actus-home.component';
 import { Journalist, Group } from '../actu-admin/actu-admin.component';
 
@@ -13,7 +13,7 @@ export class ActusService {
 
   constructor(
     private db: AngularFireDatabase,
-    private auth: AuthService
+    private tools: ToolsService
   ) { }
 
   start() {
@@ -64,7 +64,7 @@ export class ActusService {
   }
 
   addJournalist(email: string, group: Group) {
-    let emailId = this.auth.getEmailIdFromEmail(email);
+    let emailId = this.tools.getEmailIdFromEmail(email);
     return this.db.object<Group>('actus/journalists/groups/'+group.groupId).set(group)
     .then(() => {
       return this.db.object<Journalist>('actus/journalists/users/'+emailId).set({
