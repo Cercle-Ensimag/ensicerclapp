@@ -39,7 +39,7 @@ export class DeviceSizeService {
   }
 
   private setLargeSize(size: string) {
-    if (size == 'lg') {
+    if (size == 'lg' || size == 'xl') {
       this.largeSize = true;
     } else {
       this.largeSize = false;

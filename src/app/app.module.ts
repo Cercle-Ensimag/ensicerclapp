@@ -26,6 +26,7 @@ import { PasswordResetComponent } from './auth/password-reset/password-reset.com
 import { CafetComponent } from './cafet/cafet-home/cafet.component';
 import { CafetInfoComponent } from './cafet/cafet-info/cafet-info.component';
 import { CafetAdminComponent } from './cafet/cafet-admin/cafet-admin.component';
+import { CafetHistoryComponent } from './cafet/cafet-history/cafet-history.component';
 
 import { VoteComponent } from './vote/vote-all/vote.component';
 import { PollComponent } from './vote/poll/poll.component';
@@ -103,6 +104,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material';
 import { MatSelectModule } from '@angular/material/select';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { environment } from '../environments/environment';
 
@@ -112,7 +114,7 @@ import { environment } from '../environments/environment';
     AdminUsersComponent,
     HomeComponent, DashboardComponent,
     LoginComponent, SignUpComponent, EmailVerifComponent, PasswordResetComponent,
-    CafetComponent, CafetInfoComponent, CafetAdminComponent,
+    CafetComponent, CafetInfoComponent, CafetAdminComponent, CafetHistoryComponent,
     VoteComponent, PollComponent, VoteSnackbarComponent, VoteAdminComponent, EditPollComponent, ResultsComponent, VoteUsersComponent, AssessorComponent,
     CalendarComponent, EditCalComponent, CalSettingsComponent,
     EventsHomeComponent, EventComponent, EventAdminComponent, ComRespComponent, EditEventsComponent,
@@ -127,7 +129,7 @@ import { environment } from '../environments/environment';
     AppRoutingModule,
     FormsModule, ReactiveFormsModule,
     AngularFireModule.initializeApp(environment.firebase), AngularFireAuthModule, AngularFireDatabaseModule,
-    MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule, MatToolbarModule, MatSidenavModule, MatListModule, MatCardModule, MatSnackBarModule, MatSlideToggleModule, MatTabsModule, MatExpansionModule, MatCheckboxModule, MatPaginatorModule, MatDatepickerModule, MatNativeDateModule, MatSelectModule,
+    MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule, MatToolbarModule, MatSidenavModule, MatListModule, MatCardModule, MatSnackBarModule, MatSlideToggleModule, MatTabsModule, MatExpansionModule, MatCheckboxModule, MatPaginatorModule, MatDatepickerModule, MatNativeDateModule, MatSelectModule, MatDialogModule,
     FlexLayoutModule
   ],
   providers: [
@@ -137,7 +139,8 @@ import { environment } from '../environments/environment';
     DicoService
   ],
   entryComponents: [
-    VoteSnackbarComponent
+    VoteSnackbarComponent,
+    CafetHistoryComponent
   ],
   bootstrap: [AppComponent]
 })

@@ -163,6 +163,8 @@ export class French {
   // Cafet
   public static readonly troll = "T'ES EN NEGATIF !!<br><small>(*non contractuel, t'as pas encore de compte)</small>";
   public static readonly creditLabel = "Solde";
+  public static readonly informAboutTransaction = "Le solde du compte de {0} a bien été modifié de {1}€";
+  public static readonly clientListLabel = "Clients";
   public static readonly createAccountLabel = "Créer le compte";
   public static readonly cafetEmailmailInfo = "Entrer l'e-mail d'un client";
   public static readonly addButtonLabel = "Crediter";

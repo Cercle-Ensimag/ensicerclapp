@@ -7,6 +7,7 @@ import { ToolsService } from '../../providers/tools.service';
 
 export class CafetUser {
   credit: number;
+  activated: boolean;
   emailId: string;
 }
 

@@ -1,11 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material';
 
 import { ToolsService } from '../../providers/tools.service';
 import { ListService } from '../../providers/list.service';
 import { DeviceSizeService } from '../../providers/device-size.service';
 import { CafetService, CafetUser } from '../cafet-service/cafet.service';
 import { DicoService } from '../../language/dico.service';
+
+import { CafetHistoryComponent } from '../cafet-history/cafet-history.component';
 
 @Component({
   selector: 'app-cafet-admin',
@@ -39,6 +42,7 @@ export class CafetAdminComponent implements OnInit, OnDestroy {
     public media: DeviceSizeService,
     private list: ListService,
     private fb: FormBuilder,
+    public dialog: MatDialog,
     public d: DicoService
   ) { }
 
@@ -76,10 +80,18 @@ export class CafetAdminComponent implements OnInit, OnDestroy {
     } else {
       value = -this.controls[user.emailId].sub.value;
     }
+    let name = this.tools.titleCase(user.emailId.replace('|', ' ').replace('  ', ' '));
     this.controls[user.emailId].add.setValue("");
     this.controls[user.emailId].sub.setValue("");
     this.expanded[user.emailId] = false;
-    this.cafet.newTransaction(user, value);
+    this.cafet.newTransaction(user, value).then(
+      () => {
+        this.error = this.d.format(this.d.l.informAboutTransaction, name, value.toFixed(2));
+      },
+      (err) => {
+        this.error = err.toSring();
+      }
+    );
   }
 
   activateAccount(user: CafetUser) {
@@ -98,6 +110,7 @@ export class CafetAdminComponent implements OnInit, OnDestroy {
     } else {
       this.cafet.setUserAccount({
         credit: this.getSearchCredit(),
+        activated: true,
         emailId: emailId
       });
       this.searchCtrl.get('email').setValue("");
@@ -109,7 +122,7 @@ export class CafetAdminComponent implements OnInit, OnDestroy {
   createSearchForm() {
     this.searchCtrl = this.fb.group({
       email: ['', [Validators.email]],
-      credit: ["", []]
+      credit: [0, []]
     });
     if (this.searchWatcher) {
       this.searchWatcher.unsubscribe();
@@ -140,6 +153,12 @@ export class CafetAdminComponent implements OnInit, OnDestroy {
 
   updateList(event) {
     this.pageIndex = event.pageIndex;
+  }
+
+  openHistory(user: CafetUser): void {
+    let dialogRef = this.dialog.open(CafetHistoryComponent, {
+      data: user
+    });
   }
 
 }

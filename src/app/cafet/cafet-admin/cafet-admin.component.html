@@ -1,108 +1,114 @@
-<mat-card *ngIf="users">
-  <form [formGroup]="searchCtrl">
+<mat-tab-group>
+  <mat-tab label="{{ d.l.clientListLabel }}">
 
-    <span *ngIf="error" class="error">{{ error }}</span>
+    <mat-card *ngIf="users">
+      <form [formGroup]="searchCtrl">
 
-    <div [class.search]="media.largeSize">
-      <mat-form-field [class.input-width]="!media.largeSize">
-        <input matInput placeholder="{{ d.l.cafetEmailmailInfo }}" formControlName="email">
-      </mat-form-field>
+        <span *ngIf="error" class="error">{{ error }}</span>
 
-      <span>
-        <mat-form-field>
-          <input matInput type="number" placeholder="{{ d.l.creditLabel }}" formControlName="credit">
-        </mat-form-field>
-      </span>
-      <span>
-        <button mat-raised-button
-          type="submit"
-          (click)="createCafetAccount()"
-          [disabled]="searchCtrl.invalid || displayedUsers.length != 0"
-          color="primary"
-        >{{ d.l.createAccountLabel }}</button>
-      </span>
-    </div>
-  </form>
-</mat-card>
+        <div [class.search]="media.largeSize">
+          <mat-form-field [class.input-width]="!media.largeSize">
+            <input matInput placeholder="{{ d.l.cafetEmailmailInfo }}" formControlName="email">
+          </mat-form-field>
 
-<mat-accordion *ngIf="!media.largeSize" class="group">
-  <mat-expansion-panel *ngFor="let user of displayedUsers | slice:pageIndex*pageSize:(pageIndex+1)*pageSize">
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        {{ tools.titleCase(user.emailId.split('|').join(' ')) }}
-      </mat-panel-title>
-      <mat-panel-description>
-        {{ user.credit }}€
-      </mat-panel-description>
-    </mat-expansion-panel-header>
+          <span>
+            <mat-form-field>
+              <input matInput type="number" placeholder="{{ d.l.creditLabel }}" formControlName="credit">
+            </mat-form-field>
+          </span>
+          <span>
+            <button mat-raised-button
+              type="submit"
+              (click)="createCafetAccount()"
+              [disabled]="searchCtrl.invalid || displayedUsers.length != 0"
+              color="primary"
+            >{{ d.l.createAccountLabel }}</button>
+          </span>
+        </div>
+      </form>
+    </mat-card>
 
-    <form (ngSubmit)="transaction(user, false)">
-      <span>
-        <mat-form-field>
-          <input type='number' matInput placeholder="{{ d.l.substractButtonLabel }}" [formControl]="controls[user.emailId].sub">
-        </mat-form-field>
-        <button mat-button
-          type="submit"
-          [disabled]="controls[user.emailId].sub.invalid"
-          color="primary"
-        >{{ d.l.substractButtonLabel }}</button>
-      </span>
-    </form>
-    <form (ngSubmit)="transaction(user, true)">
-      <span>
-        <mat-form-field>
-          <input type='number' matInput placeholder="{{ d.l.addButtonLabel }}" [formControl]="controls[user.emailId].add">
-        </mat-form-field>
-        <button mat-button
-          type="submit"
-          [disabled]="controls[user.emailId].add.invalid"
-          color="primary"
-        >{{ d.l.addButtonLabel }}</button>
-      </span>
-    </form>
-    <button mat-icon-button matSuffix><mat-icon>history</mat-icon></button>
-  </mat-expansion-panel>
-</mat-accordion>
+    <mat-accordion *ngIf="!media.largeSize" class="group">
+      <mat-expansion-panel *ngFor="let user of displayedUsers | slice:pageIndex*pageSize:(pageIndex+1)*pageSize">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ tools.titleCase(user.emailId.split('|').join(' ')) }}
+          </mat-panel-title>
+          <mat-panel-description>
+            {{ user.credit }}€
+          </mat-panel-description>
+        </mat-expansion-panel-header>
 
-<div *ngIf="media.largeSize" class="group">
-  <mat-card *ngFor="let user of displayedUsers | slice:pageIndex*pageSize:(pageIndex+1)*pageSize">
-    <div class="large">
-      <span class="text">{{ tools.titleCase(user.emailId.split('|').join(' ')) }}</span>
-      <span>
-        <button mat-icon-button class="history" matSuffix><mat-icon>history</mat-icon></button>
-        <span>{{ user.credit.toFixed(2) }}€</span>
-      </span>
-      <span>
         <form (ngSubmit)="transaction(user, false)">
-          <mat-form-field>
-            <input type='number' matInput placeholder="{{ d.l.substractButtonLabel }}" [formControl]="controls[user.emailId].sub">
-          </mat-form-field>
-          <button mat-button
-            type="submit"
-            [disabled]="controls[user.emailId].sub.invalid"
-            color="primary"
-          >{{ d.l.substractButtonLabel }}</button>
+          <span>
+            <mat-form-field>
+              <input type='number' matInput placeholder="{{ d.l.substractButtonLabel }}" [formControl]="controls[user.emailId].sub">
+            </mat-form-field>
+            <button mat-button
+              type="submit"
+              [disabled]="controls[user.emailId].sub.invalid"
+              color="primary"
+            >{{ d.l.substractButtonLabel }}</button>
+          </span>
         </form>
-      </span>
-
-      <span>
         <form (ngSubmit)="transaction(user, true)">
-          <mat-form-field>
-            <input type='number' matInput placeholder="{{ d.l.addButtonLabel }}" [formControl]="controls[user.emailId].add">
-          </mat-form-field>
-          <button mat-button
-            type="submit"
-            [disabled]="controls[user.emailId].add.invalid"
-            color="primary"
-          >{{ d.l.addButtonLabel }}</button>
+          <span>
+            <mat-form-field>
+              <input type='number' matInput placeholder="{{ d.l.addButtonLabel }}" [formControl]="controls[user.emailId].add">
+            </mat-form-field>
+            <button mat-button
+              type="submit"
+              [disabled]="controls[user.emailId].add.invalid"
+              color="primary"
+            >{{ d.l.addButtonLabel }}</button>
+          </span>
         </form>
-      </span>
+        <button mat-icon-button matSuffix><mat-icon>history</mat-icon></button>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+    <div *ngIf="media.largeSize" class="group">
+      <mat-card *ngFor="let user of displayedUsers | slice:pageIndex*pageSize:(pageIndex+1)*pageSize">
+        <div class="large">
+          <span class="text">{{ tools.titleCase(user.emailId.split('|').join(' ')) }}</span>
+          <span>
+            <button mat-icon-button (click)="openHistory(user)" class="history" matSuffix><mat-icon>history</mat-icon></button>
+            <span>{{ user.credit.toFixed(2) }}€</span>
+          </span>
+          <span>
+            <form (ngSubmit)="transaction(user, false)">
+              <mat-form-field>
+                <input type='number' matInput placeholder="{{ d.l.substractButtonLabel }}" [formControl]="controls[user.emailId].sub">
+              </mat-form-field>
+              <button mat-button
+                type="submit"
+                [disabled]="controls[user.emailId].sub.invalid"
+                color="primary"
+              >{{ d.l.substractButtonLabel }}</button>
+            </form>
+          </span>
+
+          <span>
+            <form (ngSubmit)="transaction(user, true)">
+              <mat-form-field>
+                <input type='number' matInput placeholder="{{ d.l.addButtonLabel }}" [formControl]="controls[user.emailId].add">
+              </mat-form-field>
+              <button mat-button
+                type="submit"
+                [disabled]="controls[user.emailId].add.invalid"
+                color="primary"
+              >{{ d.l.addButtonLabel }}</button>
+            </form>
+          </span>
+        </div>
+      </mat-card>
     </div>
-  </mat-card>
-</div>
-<mat-paginator
-  [length]="displayedUsers.length"
-  [pageSize]="pageSize"
-  (page)="updateList($event)"
-  class="group"
-></mat-paginator>
+    <mat-paginator
+      [length]="displayedUsers.length"
+      [pageSize]="pageSize"
+      (page)="updateList($event)"
+      class="group"
+    ></mat-paginator>
+
+  </mat-tab>
+</mat-tab-group>
