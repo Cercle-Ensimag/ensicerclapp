@@ -167,11 +167,15 @@ export class French {
   public static readonly informAboutCafetCreation = "Le compte de {0} a bien été créé et crédité de {1}€";
   public static readonly clientListLabel = "Clients";
   public static readonly createAccountLabel = "Créer le compte";
-  public static readonly cafetEmailmailInfo = "Entrer l'e-mail d'un client";
+  public static readonly cafetEmailInfo = "Entrer l'e-mail d'un client";
+  public static readonly cafetSearchInfo = "Chercher un client";
   public static readonly addButtonLabel = "Crediter";
   public static readonly substractButtonLabel = "Débiter";
   public static readonly weekIngredientLabel = "Ingrédient de la semaine";
   public static readonly negativeCreditError = "T'ES EN NEGATIF !!<br><small>Tu devrais mettre de l'argent sur ton compte</small>";
+  public static readonly cafetAccountsLabel = "Comptes";
+  public static readonly printAccountsToPdf = "Imprimer les comptes";
+  public static readonly cafetAccountsMatch = "{0} compte existe déjà";
 
   // Calendar
   public static readonly calSettingsRessourcesLabel = "Ressources ADE";

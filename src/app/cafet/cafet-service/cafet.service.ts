@@ -5,6 +5,8 @@ import { Observable } from 'rxjs/Observable';
 import { AuthService } from '../../auth/auth-service/auth.service';
 import { ToolsService } from '../../providers/tools.service';
 
+declare var jsPDF: any;
+
 export class CafetUser {
   credit: number;
   activated: boolean;
@@ -108,6 +110,42 @@ export class CafetService {
 
   getHistory(user: CafetUser) {
     return this.db.list<Transaction>("cafet/history/"+user.emailId).valueChanges();
+  }
+
+  accountsToPdf(users: CafetUser[]) {
+    var columns = ["Nom", "Prenom", "Solde", "-", "-", "-", "-", "-", "-", "+", "+"];
+    var rows = [];
+    for (let user of users) {
+      let prenom = this.tools.titleCase(user.emailId.split('|')[0]);
+      let nom = this.tools.titleCase(user.emailId.split('|')[1]);
+      rows.push([prenom, nom, user.credit.toFixed(2) + "€", "    ", "    ", "    ", "    ", "    ", "    ", "    ", "    "]);
+    }
+
+    var pdf = new jsPDF('p', 'pt');
+
+    pdf.setProperties({
+      title: 'comptes_cafet_' + (new Date()).toString().replace(/ /g, '_').replace(/_GMT\+0100_\(CET\)/, '')
+    });
+
+    pdf.autoTable(columns, rows, {
+      headerStyles: {
+        fillColor: 50,
+        textColor: 250,
+        lineWidth: 0.1,
+        lineColor: 100,
+      },
+      bodyStyles: {
+        lineColor: 150,
+        lineWidth: 0.1
+      },
+      alternateRowStyles: {
+        fillColor: 240
+      }
+    });
+
+    // pdf.autoPrint();
+    pdf.output("dataurlnewwindow");
+    // pdf.save('comptes_' + (new Date()).toString().replace(' ', '_') + '.pdf');
   }
 
 }

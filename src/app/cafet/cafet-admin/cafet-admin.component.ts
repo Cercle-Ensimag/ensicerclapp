@@ -19,9 +19,15 @@ export class CafetAdminComponent implements OnInit, OnDestroy {
 
   users: CafetUser[];
   displayedUsers: CafetUser[] = [];
+  matchUsers: CafetUser[] = [];
 
   searchCtrl: FormGroup;
-  searchWatcher: any;
+  searchWatcher1: any;
+  searchWatcher2: any;
+
+  accountCtrl: FormGroup;
+  accountWatcher1: any;
+  accountWatcher2: any;
 
   controls: {[emailId: string]: {
     add: FormControl,
@@ -35,6 +41,7 @@ export class CafetAdminComponent implements OnInit, OnDestroy {
   pageSize: number = 20;
 
   error: string;
+  message: string;
 
   constructor(
     public cafet: CafetService,
@@ -48,6 +55,7 @@ export class CafetAdminComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.createSearchForm();
+    this.createAccountForm();
     this.usersWatcher = this.watchUsers();
     this.list.start();
   }
@@ -70,8 +78,11 @@ export class CafetAdminComponent implements OnInit, OnDestroy {
         this.expanded[user.emailId] = false;
       }
       this.sortUsers(this.getSearchEmail());
+      this.findMatchUsers(this.getAccountEmail());
     })
   }
+
+  // Clients
 
   transaction(user: CafetUser, add: boolean) {
     let value;
@@ -94,61 +105,26 @@ export class CafetAdminComponent implements OnInit, OnDestroy {
     );
   }
 
-  createCafetAccount() {
-    let emailId = this.tools.getEmailIdFromEmail(this.getSearchEmail());
-    let name = this.tools.titleCase(emailId.replace('|', ' ').replace('  ', ' '));
-    if (this.list.authUsers[emailId] !== this.getSearchEmail()) {
-      this.error = this.d.format(this.d.l.notOnTheList, name);
-    } else {
-      let user = {
-        credit: 0,
-        activated: true,
-        emailId: emailId,
-        creationDate: (new Date()).getTime()
-      };
-      this.cafet.setUserAccount(user).then(
-        () => {
-          this.cafet.newTransaction(user, this.getSearchCredit()).then(
-            () => {
-              let value = this.getSearchCredit();
-              this.searchCtrl.get('email').setValue("");
-              this.searchCtrl.get('credit').setValue(0);
-              this.error = this.d.format(this.d.l.informAboutCafetCreation, name, value.toFixed(2));
-            },
-            (err) => {
-              this.error = err.toSring();
-            }
-          );
-        },
-        (err) => {
-          this.error = err.toSring();
-        }
-      );
-    }
-  }
-
   createSearchForm() {
     this.searchCtrl = this.fb.group({
-      email: ['', [Validators.email]],
-      credit: [0, []]
+      email: ['', [Validators.email]]
     });
-    if (this.searchWatcher) {
-      this.searchWatcher.unsubscribe();
+    if (this.searchWatcher1) {
+      this.searchWatcher1.unsubscribe();
     }
-    this.searchWatcher = this.searchCtrl.get('email').valueChanges.subscribe((email) => {
+    this.searchWatcher1 = this.searchCtrl.get('email').valueChanges.subscribe((email) => {
       this.sortUsers(email);
     });
-    this.searchWatcher = this.searchCtrl.valueChanges.subscribe(() => {
+    if (this.searchWatcher2) {
+      this.searchWatcher2.unsubscribe();
+    }
+    this.searchWatcher1 = this.searchCtrl.valueChanges.subscribe(() => {
       this.error = null;
     });
   }
 
   getSearchEmail() {
     return this.searchCtrl.get('email').value;
-  }
-
-  getSearchCredit() {
-    return this.searchCtrl.get('credit').value;
   }
 
   sortUsers(email: string) {
@@ -168,6 +144,75 @@ export class CafetAdminComponent implements OnInit, OnDestroy {
       data: user,
       width: '450px'
     });
+  }
+
+  // Accounts
+
+  createCafetAccount() {
+    let emailId = this.tools.getEmailIdFromEmail(this.getAccountEmail());
+    let name = this.tools.titleCase(emailId.replace('|', ' ').replace('  ', ' '));
+    if (this.list.authUsers[emailId] !== this.getAccountEmail()) {
+      this.error = this.d.format(this.d.l.notOnTheList, name);
+    } else {
+      let user = {
+        credit: 0,
+        activated: true,
+        emailId: emailId,
+        creationDate: (new Date()).getTime()
+      };
+      this.cafet.setUserAccount(user).then(
+        () => {
+          this.cafet.newTransaction(user, this.getAccountCredit()).then(
+            () => {
+              let value = this.getAccountCredit();
+              this.accountCtrl.get('email').setValue("");
+              this.accountCtrl.get('credit').setValue(0);
+              this.error = this.d.format(this.d.l.informAboutCafetCreation, name, value.toFixed(2));
+            },
+            (err) => {
+              this.error = err.toSring();
+            }
+          );
+        },
+        (err) => {
+          this.error = err.toSring();
+        }
+      );
+    }
+  }
+
+  createAccountForm() {
+    this.accountCtrl = this.fb.group({
+      email: ['', [Validators.email]],
+      credit: [0, []]
+    });
+    if (this.accountWatcher1) {
+      this.accountWatcher1.unsubscribe();
+    }
+    this.accountWatcher1 = this.accountCtrl.get('email').valueChanges.subscribe((email) => {
+      this.findMatchUsers(email);
+    });
+    if (this.accountWatcher2) {
+      this.accountWatcher2.unsubscribe();
+    }
+    this.accountWatcher2 = this.accountCtrl.valueChanges.subscribe(() => {
+      this.error = null;
+    });
+  }
+
+  getAccountEmail() {
+    return this.accountCtrl.get('email').value;
+  }
+
+  getAccountCredit() {
+    return this.accountCtrl.get('credit').value;
+  }
+
+  findMatchUsers(email: string) {
+    let emailId = this.tools.getEmailIdFromEmail(email);
+    this.matchUsers = this.users.filter(
+      user => user.emailId.includes(emailId)
+    );
   }
 
 }

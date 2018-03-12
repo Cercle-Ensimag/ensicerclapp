@@ -1,51 +1,55 @@
-.search {
-  display: grid;
-  grid-template-columns: 50% 25% 25%;
-}
-
-.search button {
-  margin-top: 12px;
-}
-
-.input-width {
-  width: 300px;
-}
-
-.group {
+.client-group {
   margin-top: 4px;
 }
 
-.group button {
+.client-group button {
   margin-left: 16px;
   margin-right: 16px;
 }
 
-.large {
+.client-large {
   display: grid;
   grid-template-columns: 30% 20% 25% 25%;
   text-align: left;
   vertical-align: center;
 }
 
-.large mat-form-field {
+.client-large mat-form-field {
   max-width: 100px;
 }
 
-.large span {
+.client-large span {
   margin-left: 4px;
   margin-right: 4px;
   margin-top: 0;
 }
 
-.large button {
+.client-large button {
   margin-left: 4px;
   margin-right: 4px;
 }
 
-.large .text {
+.client-large .text {
   margin-top: 19px;
 }
 
-.large .history {
+.client-large .history {
   margin-top: 8px;
+}
+
+.accounts-card {
+  margin-bottom: 4px;
+}
+
+.accounts-search {
+  display: grid;
+  grid-template-columns: 50% 25% 25%;
+}
+
+.accounts-search button {
+  margin-top: 12px;
+}
+
+.accounts-input-width {
+  width: 300px;
 }

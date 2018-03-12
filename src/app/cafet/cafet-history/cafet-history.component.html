@@ -1,4 +1,5 @@
 <div class="history">
+  <mat-spinner *ngIf="!history"></mat-spinner>
   <mat-list>
     <div *ngIf="history">
       <mat-list-item *ngFor="let trans of history">

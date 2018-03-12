@@ -6,29 +6,17 @@
 
         <span *ngIf="error" class="error">{{ error }}</span>
 
-        <div [class.search]="media.largeSize">
-          <mat-form-field [class.input-width]="!media.largeSize">
-            <input matInput placeholder="{{ d.l.cafetEmailmailInfo }}" formControlName="email">
+        <div class="container">
+          <mat-form-field>
+            <input matInput placeholder="{{ d.l.cafetSearchInfo }}" formControlName="email">
+            <button mat-icon-button matSuffix><mat-icon>search</mat-icon></button>
           </mat-form-field>
-
-          <span>
-            <mat-form-field>
-              <input matInput type="number" placeholder="{{ d.l.creditLabel }}" formControlName="credit">
-            </mat-form-field>
-          </span>
-          <span>
-            <button mat-raised-button
-              type="submit"
-              (click)="createCafetAccount()"
-              [disabled]="searchCtrl.invalid || displayedUsers.length != 0"
-              color="primary"
-            >{{ d.l.createAccountLabel }}</button>
-          </span>
         </div>
+
       </form>
     </mat-card>
 
-    <mat-accordion *ngIf="!media.largeSize" class="group">
+    <mat-accordion *ngIf="!media.largeSize" class="client-group">
       <mat-expansion-panel *ngFor="let user of displayedUsers | slice:pageIndex*pageSize:(pageIndex+1)*pageSize">
         <mat-expansion-panel-header>
           <mat-panel-title>
@@ -67,9 +55,9 @@
       </mat-expansion-panel>
     </mat-accordion>
 
-    <div *ngIf="media.largeSize" class="group">
+    <div *ngIf="media.largeSize" class="client-group">
       <mat-card *ngFor="let user of displayedUsers | slice:pageIndex*pageSize:(pageIndex+1)*pageSize">
-        <div class="large">
+        <div class="client-large">
           <span class="text">{{ tools.titleCase(user.emailId.split('|').join(' ')) }}</span>
           <span>
             <button mat-icon-button (click)="openHistory(user)" class="history" matSuffix><mat-icon>history</mat-icon></button>
@@ -107,8 +95,43 @@
       [length]="displayedUsers.length"
       [pageSize]="pageSize"
       (page)="updateList($event)"
-      class="group"
+      class="client-group"
     ></mat-paginator>
 
   </mat-tab>
+
+  <mat-tab label="{{ d.l.cafetAccountsLabel }}">
+    <mat-card class="accounts-card" *ngIf="users">
+      <button mat-raised-button [disabled]="!users" (click)="cafet.accountsToPdf(users)" color="primary">{{ d.l.printAccountsToPdf }}</button>
+    </mat-card>
+
+    <mat-card *ngIf="users">
+      <form [formGroup]="accountCtrl">
+
+        <span *ngIf="error" class="error">{{ error }}</span>
+
+        <div [class.accounts-search]="media.largeSize">
+          <mat-form-field [class.account-inputs-width]="!media.largeSize">
+            <input matInput placeholder="{{ d.l.cafetEmailInfo }}" formControlName="email">
+            <mat-hint *ngIf="accountCtrl.get('email').valid && matchUsers.length > 0">{{ d.format(d.l.cafetAccountsMatch, matchUsers.length) }}</mat-hint>
+          </mat-form-field>
+
+          <span>
+            <mat-form-field>
+              <input matInput type="number" placeholder="{{ d.l.creditLabel }}" formControlName="credit">
+            </mat-form-field>
+          </span>
+          <span>
+            <button mat-raised-button
+              type="submit"
+              (click)="createCafetAccount()"
+              [disabled]="accountCtrl.invalid || matchUsers.length != 0"
+              color="primary"
+            >{{ d.l.createAccountLabel }}</button>
+          </span>
+        </div>
+      </form>
+    </mat-card>
+  </mat-tab>
+
 </mat-tab-group>
