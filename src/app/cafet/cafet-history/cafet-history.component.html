@@ -1,3 +1,19 @@
-<p>
-  cafet-history works!
-</p>
+<div class="history">
+  <mat-list>
+    <div *ngIf="history">
+      <mat-list-item *ngFor="let trans of history">
+        <span>
+          <label><i>{{ trans.date | date:d.l.shortDateFormat:'':d.l.locale }}</i>&nbsp;:</label>
+        </span>
+        <span>
+          <label>&emsp;<b>{{ trans.value.toFixed(2) }}€</b></label>
+          <label>&emsp;<small>{{ trans.newCredit.toFixed(2) }}€</small></label>
+        </span>
+      </mat-list-item>
+    </div>
+    <mat-list-item>
+      <label><i>{{ user.creationDate | date:d.l.shortDateFormat:'':d.l.locale }}</i>&nbsp;:</label>
+      <label>&emsp;Creation du compte</label>
+    </mat-list-item>
+  </mat-list>
+</div>

@@ -94,28 +94,36 @@ export class CafetAdminComponent implements OnInit, OnDestroy {
     );
   }
 
-  activateAccount(user: CafetUser) {
-    if (this.controls[user.emailId].add.valid) {
-      user.credit = this.controls[user.emailId].add.value;
-      this.controls[user.emailId].add.setValue("");
-      this.cafet.setUserAccount(user);
-    }
-  }
-
   createCafetAccount() {
     let emailId = this.tools.getEmailIdFromEmail(this.getSearchEmail());
     let name = this.tools.titleCase(emailId.replace('|', ' ').replace('  ', ' '));
     if (this.list.authUsers[emailId] !== this.getSearchEmail()) {
       this.error = this.d.format(this.d.l.notOnTheList, name);
     } else {
-      this.cafet.setUserAccount({
-        credit: this.getSearchCredit(),
+      let user = {
+        credit: 0,
         activated: true,
-        emailId: emailId
-      });
-      this.searchCtrl.get('email').setValue("");
-      this.searchCtrl.get('credit').setValue("");
-      this.error = this.d.format(this.d.l.markedAsVoted, name);
+        emailId: emailId,
+        creationDate: (new Date()).getTime()
+      };
+      this.cafet.setUserAccount(user).then(
+        () => {
+          this.cafet.newTransaction(user, this.getSearchCredit()).then(
+            () => {
+              let value = this.getSearchCredit();
+              this.searchCtrl.get('email').setValue("");
+              this.searchCtrl.get('credit').setValue(0);
+              this.error = this.d.format(this.d.l.informAboutCafetCreation, name, value.toFixed(2));
+            },
+            (err) => {
+              this.error = err.toSring();
+            }
+          );
+        },
+        (err) => {
+          this.error = err.toSring();
+        }
+      );
     }
   }
 
@@ -157,7 +165,8 @@ export class CafetAdminComponent implements OnInit, OnDestroy {
 
   openHistory(user: CafetUser): void {
     let dialogRef = this.dialog.open(CafetHistoryComponent, {
-      data: user
+      data: user,
+      width: '450px'
     });
   }
 

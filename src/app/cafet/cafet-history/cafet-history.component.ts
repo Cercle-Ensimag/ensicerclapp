@@ -1,5 +1,8 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+
+import { CafetService, CafetUser, Transaction } from '../cafet-service/cafet.service';
+import { DicoService } from '../../language/dico.service';
 
 @Component({
   selector: 'app-cafet-history',
@@ -8,17 +11,39 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 })
 export class CafetHistoryComponent {
 
+  history: Transaction[];
+  historyWatcher: any;
+
   constructor(
+    @Inject(MAT_DIALOG_DATA) public user: CafetUser,
     public dialogRef: MatDialogRef<CafetHistoryComponent>,
-    @Inject(MAT_DIALOG_DATA) public user: any
+    public cafet: CafetService,
+    public d: DicoService
   ) { }
 
   ngOnInit() {
-    console.log(this.user.emailId);
+    if (this.historyWatcher) {
+      this.historyWatcher.unsubscribe();
+    }
+    this.historyWatcher = this.watchHistory();
+  }
+
+  ngOnDestroy() {
+    if (this.historyWatcher) {
+      this.historyWatcher.unsubscribe();
+      this.historyWatcher = null;
+    }
   }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
+  watchHistory() {
+    return this.cafet.getHistory(this.user).subscribe(
+      history => {
+        this.history = history.reverse() || [];
+      }
+    )
+  }
 }

@@ -145,6 +145,7 @@
           "emailId": { ".validate": "newData.val() === $emailId" },
           "activated": { ".validate": "newData.isBoolean()" },
           "credit": { ".validate": "newData.isNumber()" },
+          "creationDate": { ".validate": "newData.isNumber()" },
 
           "$other": { ".validate": false }
         },
@@ -157,7 +158,10 @@
           "$transaction": {
             "value": { ".validate": "newData.isNumber()" },
             "newCredit": { ".validate": "newData.isNumber()" },
-            "oldCredit": { ".validate": "newData.isNumber()" }
+            "oldCredit": { ".validate": "newData.isNumber()" },
+            "date": { ".validate": "newData.isNumber()" },
+
+            "$other": { ".validate": false }
           }
         }
       },

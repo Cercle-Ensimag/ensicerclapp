@@ -1,7 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { MatDialog } from '@angular/material';
 
 import { CafetService, Ingredient } from '../cafet-service/cafet.service';
 import { DicoService } from '../../language/dico.service';
+import { CafetHistoryComponent } from '../cafet-history/cafet-history.component';
 
 @Component({
   selector: 'app-cafet',
@@ -18,6 +20,7 @@ export class CafetComponent implements OnInit, OnDestroy {
 
   constructor(
     public cafet: CafetService,
+    public dialog: MatDialog,
     public d: DicoService
   ) { }
 
@@ -57,6 +60,13 @@ export class CafetComponent implements OnInit, OnDestroy {
 
   getCreditError(): string {
     return this.creditError;
+  }
+
+  openHistory(): void {
+    let dialogRef = this.dialog.open(CafetHistoryComponent, {
+      data: this.cafet.user,
+      width: '450px'
+    });
   }
 
 }

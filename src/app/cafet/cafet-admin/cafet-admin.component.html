@@ -63,7 +63,7 @@
             >{{ d.l.addButtonLabel }}</button>
           </span>
         </form>
-        <button mat-icon-button matSuffix><mat-icon>history</mat-icon></button>
+        <button mat-icon-button (click)="openHistory(user)" matSuffix><mat-icon>history</mat-icon></button>
       </mat-expansion-panel>
     </mat-accordion>
 

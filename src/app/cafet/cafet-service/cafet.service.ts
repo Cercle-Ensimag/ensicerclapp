@@ -9,12 +9,14 @@ export class CafetUser {
   credit: number;
   activated: boolean;
   emailId: string;
+  creationDate: number;
 }
 
 export class Transaction {
   value: number;
   oldCredit: number;
   newCredit: number;
+  date: number;
 }
 
 export class Ingredient {
@@ -90,11 +92,6 @@ export class CafetService {
     return this.db.object<CafetUser>("cafet/users/"+user.emailId).set(user);
   }
 
-  sendAccountRequest() {
-    return this.db.object<string>("cafet/users/"+this.auth.getEmailId()+"/emailId")
-    .set(this.auth.getEmailId());
-  }
-
   newTransaction(user: CafetUser, value: number) {
     let oldCredit = user.credit;
     let newCredit = this.tools.round(oldCredit + value, 2);
@@ -103,9 +100,14 @@ export class CafetService {
       return this.db.list<Transaction>("cafet/history/"+user.emailId).push({
         value: value,
         oldCredit: oldCredit,
-        newCredit: newCredit
+        newCredit: newCredit,
+        date: (new Date()).getTime()
       });
     });
+  }
+
+  getHistory(user: CafetUser) {
+    return this.db.list<Transaction>("cafet/history/"+user.emailId).valueChanges();
   }
 
 }
