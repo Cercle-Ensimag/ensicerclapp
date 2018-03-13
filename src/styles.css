@@ -33,10 +33,18 @@ body {
 }
 
 .error {
-    background:#f1f0ef;
-    padding:1em;
-    width:100%;
-    display:block;
-    margin-bottom:20px;
-    margin-left: -1em;
+  background:#f1f0ef;
+  padding:1em;
+  width:100%;
+  display:block;
+  margin-bottom:20px;
+  margin-left: -1em;
+}
+
+.spinner-wraper {
+  text-align: center !important;
+}
+
+.spinner {
+  display: inline-block !important;
 }

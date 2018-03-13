@@ -1,4 +1,7 @@
-<div *ngIf="events.activeEvents">
+<mat-card *ngIf="!events.activeEvents" class="spinner-wraper">
+  <mat-spinner class="spinner"></mat-spinner>
+</mat-card>
+<div *ngIf="events.activeEvents && events.activeEvents.length > 0">
   <div *ngFor="let event of events.activeEvents">
     <button mat-raised-button *ngIf="isNotPassed(event)" [color]="color(event)"routerLink="/events/event/{{ event.id }}">
       <h2>{{ event.title }}</h2>
@@ -12,7 +15,7 @@
     </button>
   </div>
 </div>
-<div *ngIf="events.activeEvents.length == 0">
+<div *ngIf="events.activeEvents && events.activeEvents.length == 0">
   <mat-card>
     <h3>{{ d.l.noEvent }}</h3>
     <button class="item" mat-raised-button routerLink='/home' color="primary">{{ d.l.backLabel }}</button>

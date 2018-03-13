@@ -1,7 +1,3 @@
 .history {
   max-height: 40vh !important;
-  text-align: center;
-}
-mat-spinner {
-  display: inline-block;
 }

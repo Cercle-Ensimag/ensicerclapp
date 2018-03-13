@@ -9,8 +9,8 @@ import { ComResp, Group } from '../event-admin/event-admin.component';
 @Injectable()
 export class EventsService {
 
-  events: Event[] = [];
-  activeEvents: Event[] = [];
+  events: Event[];
+  activeEvents: Event[];
   eventsWatcher: any;
 
   constructor(
