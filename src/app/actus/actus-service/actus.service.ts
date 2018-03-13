@@ -8,7 +8,7 @@ import { Journalist, Group } from '../actu-admin/actu-admin.component';
 @Injectable()
 export class ActusService {
 
-  actus: Actu[] = [];
+  actus: Actu[];
   actusWatcher: any;
 
   constructor(

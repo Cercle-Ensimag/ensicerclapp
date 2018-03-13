@@ -1,26 +1,49 @@
 <mat-tab-group>
-  <mat-tab label="{{ d.l.actus }}">
-    <div *ngIf="!deleteActuId">
-        <mat-card *ngFor="let actu of actus.actus">
-          <h2>{{ actu.title }}</h2>
-          <button mat-icon-button routerLink="/actus/actu/{{ actu.id }}"><mat-icon>search</mat-icon></button>
-          <button mat-icon-button (click)="delete(actu.id, actu.title)"><mat-icon>delete</mat-icon></button>
-        </mat-card>
-        <mat-card *ngIf="actus.actus.length == 0">
-          <h3>{{ d.l.noActu }}</h3>
-        </mat-card>
-    </div>
 
-    <div *ngIf="deleteActuId">
-      <mat-card class="message">
-        <h3 [innerHTML]="d.format(d.l.confirmActuDeleteInfo, deleteActuTitle)"></h3>
-        <button mat-raised-button (click)="confirmDelete()" color="warn">{{ d.l.confirmActuDeleteLabel }}</button>
-        <button mat-raised-button (click)="back()" color="primary">{{ d.l.backLabel }}</button>
-      </mat-card>
+  <!-- Actus tab -->
+  <mat-tab label="{{ d.l.actus }}">
+
+    <!-- Loading -->
+    <mat-card *ngIf="!actus.actus" class="spinner-wraper">
+      <mat-spinner class="spinner"></mat-spinner>
+    </mat-card>
+
+    <!-- Actus -->
+    <div *ngIf="actus.actus">
+
+      <!-- Actus display -->
+      <div *ngIf="!deleteActuId">
+          <mat-card *ngFor="let actu of actus.actus">
+            <h2>{{ actu.title }}</h2>
+            <button mat-icon-button routerLink="/actus/actu/{{ actu.id }}"><mat-icon>search</mat-icon></button>
+            <button mat-icon-button (click)="delete(actu.id, actu.title)"><mat-icon>delete</mat-icon></button>
+          </mat-card>
+          <mat-card *ngIf="actus.actus.length == 0">
+            <h3>{{ d.l.noActu }}</h3>
+          </mat-card>
+      </div>
+
+      <!-- Delete actu -->
+      <div *ngIf="deleteActuId">
+        <mat-card class="message">
+          <h3 [innerHTML]="d.format(d.l.confirmActuDeleteInfo, deleteActuTitle)"></h3>
+          <button mat-raised-button (click)="confirmDelete()" color="warn">{{ d.l.confirmActuDeleteLabel }}</button>
+          <button mat-raised-button (click)="back()" color="primary">{{ d.l.backLabel }}</button>
+        </mat-card>
+      </div>
+
     </div>
   </mat-tab>
 
+  <!-- Journalists tab -->
   <mat-tab label="{{ d.l.journalistPlLabel }}">
+
+    <!-- Loading -->
+    <mat-card *ngIf="!comResps" class="spinner-wraper">
+      <mat-spinner class="spinner"></mat-spinner>
+    </mat-card>
+
+    <!-- Header display -->
     <mat-card *ngIf="comResps">
       <span *ngIf="error" class="error">{{ error }}</span>
 
@@ -35,6 +58,7 @@
       >{{ d.l.addJournalistButtonLabel }}</button>
     </mat-card>
 
+    <!-- Users display -->
     <mat-card *ngIf="displayedUsers.length != 0">
       <mat-nav-list>
         <a mat-list-item *ngFor="let user of displayedUsers">

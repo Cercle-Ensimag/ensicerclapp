@@ -1,3 +1,9 @@
+<!-- Loading -->
+<mat-card *ngIf="!actu" class="spinner-wraper">
+  <mat-spinner class="spinner"></mat-spinner>
+</mat-card>
+
+<!-- Actu display -->
 <mat-card *ngIf="actu">
   <form [formGroup]="actuCtrl" class="container">
 

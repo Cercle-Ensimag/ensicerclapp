@@ -1,22 +1,33 @@
-<div *ngIf="!deleteActuId">
-  <div *ngFor="let actu of actus.actus">
-    <mat-card *ngIf="actu.journalistGroupId === auth.groupId">
-      <h2>{{ actu.title }}</h2>
-      <button mat-icon-button routerLink="/actus-admin/edit/{{ actu.id }}"><mat-icon>edit</mat-icon></button>
-      <button mat-icon-button routerLink="/actus/actu/{{ actu.id }}"><mat-icon>search</mat-icon></button>
-      <button mat-icon-button (click)="delete(actu.id, actu.title)"><mat-icon>delete</mat-icon></button>
+<!-- Loading -->
+<mat-card *ngIf="!actu" class="spinner-wraper">
+  <mat-spinner class="spinner"></mat-spinner>
+</mat-card>
+
+<!-- Actus -->
+<div *ngIf="actus.actus">
+
+  <!-- Actus display -->
+  <div *ngIf="!deleteActuId">
+    <div *ngFor="let actu of actus.actus">
+      <mat-card *ngIf="actu.journalistGroupId === auth.groupId">
+        <h2>{{ actu.title }}</h2>
+        <button mat-icon-button routerLink="/actus-admin/edit/{{ actu.id }}"><mat-icon>edit</mat-icon></button>
+        <button mat-icon-button routerLink="/actus/actu/{{ actu.id }}"><mat-icon>search</mat-icon></button>
+        <button mat-icon-button (click)="delete(actu.id, actu.title)"><mat-icon>delete</mat-icon></button>
+      </mat-card>
+    </div>
+    <mat-card>
+      <h2>{{ d.l.addActuLabel }}</h2>
+      <button mat-icon-button routerLink="/actus-admin/edit/-"><mat-icon>add</mat-icon></button>
     </mat-card>
   </div>
-  <mat-card>
-    <h2>{{ d.l.addActuLabel }}</h2>
-    <button mat-icon-button routerLink="/actus-admin/edit/-"><mat-icon>add</mat-icon></button>
-  </mat-card>
-</div>
 
-<div *ngIf="deleteActuId">
-  <mat-card class="message">
-    <h3 [innerHTML]="d.format(d.l.confirmActuDeleteInfo, deleteActuTitle)"></h3>
-    <button mat-raised-button (click)="confirmDelete()" color="warn">{{ d.l.confirmActuDeleteLabel }}</button>
-    <button mat-raised-button (click)="back()" color="primary">{{ d.l.backLabel }}</button>
-  </mat-card>
+  <!-- Delete actu -->
+  <div *ngIf="deleteActuId">
+    <mat-card class="message">
+      <h3 [innerHTML]="d.format(d.l.confirmActuDeleteInfo, deleteActuTitle)"></h3>
+      <button mat-raised-button (click)="confirmDelete()" color="warn">{{ d.l.confirmActuDeleteLabel }}</button>
+      <button mat-raised-button (click)="back()" color="primary">{{ d.l.backLabel }}</button>
+    </mat-card>
+  </div>
 </div>

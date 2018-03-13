@@ -32,7 +32,7 @@ export class ActuAdminComponent implements OnInit, OnDestroy {
   emailWatcher: any;
 
   comResps: Journalist[];
-  displayedUsers: Journalist[] = [];
+  displayedUsers: Journalist[];
   comRespsWatcher: any;
 
   error: string;
