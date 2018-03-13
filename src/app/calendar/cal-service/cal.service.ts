@@ -64,13 +64,13 @@ class AssoEventIds {
 @Injectable()
 export class CalService {
 
-  calEvents: CalEvent[] = [];
+  calEvents: CalEvent[];
 
-  courses: CalEvent[] = [];
+  courses: CalEvent[];
+  assos: CalEvent[];
+  persos: CalEvent[];
+
   settings: Settings;
-  assos: CalEvent[] = [];
-  persos: CalEvent[] = [];
-
   assosEventsIds: AssoEventIds = {};
 
   coursesWatcher: any;
@@ -78,6 +78,8 @@ export class CalService {
   assosWatcher: any;
   assosEventsIdsWatcher: any;
   persosWatcher: any;
+
+  component: any;
 
   constructor(
     private auth: AuthService,
@@ -120,6 +122,10 @@ export class CalService {
       this.persosWatcher.unsubscribe();
       this.persosWatcher = null;
     }
+  }
+
+  setComponent(component: any) {
+    this.component = component;
   }
 
   watchSettings() {
@@ -217,10 +223,13 @@ export class CalService {
   }
 
   concatEvents() {
-    this.calEvents = (this.courses.concat(this.persos).concat(
-      this.assos.filter(event => event.id === this.assosEventsIds[event.id])
-    ))
-    .sort((event1, event2) => event1.start - event2.start);
+    if (this.courses && this.persos && this.assos) {
+      this.calEvents = (this.courses.concat(this.persos).concat(
+        this.assos.filter(event => event.id === this.assosEventsIds[event.id])
+      ))
+      .sort((event1, event2) => event1.start - event2.start);
+      this.component.calCallback();
+    }
   }
 
   getCoursesURL(resources: string) {

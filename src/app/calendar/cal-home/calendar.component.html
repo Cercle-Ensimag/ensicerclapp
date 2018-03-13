@@ -1,3 +1,4 @@
+<!-- Header -->
 <mat-card class="header">
   <button mat-icon-button [disabled]="edit" routerLink="/calendar/edit/-"><mat-icon>add_circle</mat-icon></button>
   <button mat-icon-button *ngIf="!edit" (click)="edit=!edit" [color]="edit ? 'primary': ''"><mat-icon>edit</mat-icon></button>
@@ -8,14 +9,21 @@
     <button mat-icon-button (click)="nextDay()"><mat-icon>navigate_next</mat-icon></button>
   </span>
   <button mat-icon-button [disabled]="edit" routerLink="/calendar/settings"><mat-icon>settings</mat-icon></button>
-  <button mat-icon-button (click)="dayOffset=0"><mat-icon>today</mat-icon></button>
+  <button mat-icon-button (click)="setToToday()"><mat-icon>today</mat-icon></button>
   <div *ngIf="media.mobileSize">
     <button mat-icon-button (click)="previousDay()"><mat-icon>navigate_before</mat-icon></button>
     <label>{{ (getToday() + getTimeOffset()) | date:d.l.shortDateFormat:'':d.l.locale | uppercase }}</label>
     <button mat-icon-button (click)="nextDay()"><mat-icon>navigate_next</mat-icon></button>
   </div>
 </mat-card>
-<div *ngIf="isDayEvents()">
+
+<!-- Loading -->
+<mat-card *ngIf="!dayEvents" class="spinner-wraper">
+  <mat-spinner class="spinner"></mat-spinner>
+</mat-card>
+
+<!-- Day events -->
+<div *ngIf="dayEvents && dayEvents.length > 0">
   <mat-card *ngFor="let event of dayEvents" class="event" [class.border]="isNow(event)">
     {{ event.title }}<br>
     {{ event.start | date:d.l.timeFormat:'':d.l.locale }} - {{ event.end | date:d.l.timeFormat:'':d.l.locale }}<br>
@@ -25,7 +33,7 @@
     <button mat-icon-button *ngIf="event.isPerso() && edit" (click)="cal.removeEvent(event.id)"><mat-icon>delete</mat-icon></button>
   </mat-card>
 </div>
-<div *ngIf="dayEvents.length == 0">
+<div *ngIf="dayEvents && dayEvents.length == 0">
   <mat-card class="event">
     {{ d.l.noCalEvent }}
   </mat-card>

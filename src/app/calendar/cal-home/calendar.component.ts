@@ -17,7 +17,7 @@ const MIN_DAY_OFFSET = -20;
 export class CalendarComponent implements OnInit {
 
   dayOffset: number = 0;
-  dayEvents: CalEvent[] = [];
+  dayEvents: CalEvent[];
   edit: boolean;
 
   constructor(
@@ -29,10 +29,15 @@ export class CalendarComponent implements OnInit {
 
   ngOnInit() {
     this.cal.start();
+    this.cal.setComponent(this);
   }
 
   ngOnDestroy() {
     this.cal.stop();
+  }
+
+  calCallback() {
+    this.isDayEvents();
   }
 
   getToday() {
@@ -62,6 +67,9 @@ export class CalendarComponent implements OnInit {
   }
 
   getDayEvents() {
+    if (!this.cal.calEvents) {
+      return null;
+    }
     return this.cal.calEvents.filter(event => this.isToday(event));
   }
 
@@ -76,10 +84,17 @@ export class CalendarComponent implements OnInit {
 
   nextDay () {
     this.dayOffset = (this.dayOffset+1-MIN_DAY_OFFSET)%(MAX_DAY_OFFSET-MIN_DAY_OFFSET)+MIN_DAY_OFFSET;
+    this.isDayEvents();
   }
 
   previousDay () {
     this.dayOffset = (this.dayOffset-MAX_DAY_OFFSET)%(MAX_DAY_OFFSET-MIN_DAY_OFFSET)+MAX_DAY_OFFSET-1;
+    this.isDayEvents();
+  }
+
+  setToToday() {
+    this.dayOffset = 0;
+    this.isDayEvents();
   }
 
 }
