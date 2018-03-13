@@ -1,4 +1,10 @@
 <div class="width">
+  <!-- Loading -->
+  <mat-card *ngIf="!admin.users" class="spinner-wraper">
+    <mat-spinner class="spinner"></mat-spinner>
+  </mat-card>
+
+  <!-- Header display -->
   <mat-card *ngIf="admin.users" class="group">
     <h3 *ngIf="admin.users">{{ d.format(d.l.nbMembersLabel, admin.users.length) }}</h3>
     <mat-form-field class="search">
@@ -11,29 +17,32 @@
     <mat-checkbox [formControl]="cafetAdminCtrl" color="primary">{{ d.l.cafetAdminPlLabel }}</mat-checkbox>
   </mat-card>
 
-  <mat-accordion>
-    <div *ngFor="let user of displayedUsers | slice:pageIndex*pageSize:(pageIndex+1)*pageSize">
-      <mat-expansion-panel *ngIf="user[user.uid]">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            {{ getName(user) }}
-          </mat-panel-title>
-          <mat-panel-description *ngIf="!media.mobileSize">
-            {{ user[user.uid].admin.email }}
-          </mat-panel-description>
-        </mat-expansion-panel-header>
+  <!-- Users display -->
+  <div *ngIf="isReady()">
+    <mat-accordion>
+      <div *ngFor="let user of displayedUsers | slice:pageIndex*pageSize:(pageIndex+1)*pageSize">
+        <mat-expansion-panel *ngIf="user[user.uid]">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{ getName(user) }}
+            </mat-panel-title>
+            <mat-panel-description *ngIf="!media.mobileSize">
+              {{ user[user.uid].admin.email }}
+            </mat-panel-description>
+          </mat-expansion-panel-header>
 
-        <div style="text-align=right">
-          <mat-slide-toggle [checked]="voteChecked(user)" (change)="setVoteAdmin(user[user.uid].admin.email, user.uid, $event.checked)" color="primary">{{ d.l.voteAdminLabel }}</mat-slide-toggle>
-          <mat-slide-toggle [checked]="eventsChecked(user)" (change)="setEventsAdmin(user[user.uid].admin.email, user.uid, $event.checked)" color="primary">{{ d.l.eventsAdminLabel }}</mat-slide-toggle>
-          <mat-slide-toggle [checked]="actusChecked(user)" (change)="setActusAdmin(user[user.uid].admin.email, user.uid, $event.checked)" color="primary">{{ d.l.actusAdminLabel }}</mat-slide-toggle>
-          <mat-slide-toggle [checked]="cafetChecked(user)" (change)="setCafetAdmin(user[user.uid].admin.email, user.uid, $event.checked)" color="primary">{{ d.l.cafetAdminLabel }}</mat-slide-toggle>
-        </div>
-      </mat-expansion-panel>
-    </div>
-  </mat-accordion>
-  <mat-paginator [length]="displayedUsers.length"
-                [pageSize]="pageSize"
-                (page)="updateList($event)">
-  </mat-paginator>
+          <div style="text-align=right">
+            <mat-slide-toggle [checked]="voteChecked(user)" (change)="setVoteAdmin(user[user.uid].admin.email, user.uid, $event.checked)" color="primary">{{ d.l.voteAdminLabel }}</mat-slide-toggle>
+            <mat-slide-toggle [checked]="eventsChecked(user)" (change)="setEventsAdmin(user[user.uid].admin.email, user.uid, $event.checked)" color="primary">{{ d.l.eventsAdminLabel }}</mat-slide-toggle>
+            <mat-slide-toggle [checked]="actusChecked(user)" (change)="setActusAdmin(user[user.uid].admin.email, user.uid, $event.checked)" color="primary">{{ d.l.actusAdminLabel }}</mat-slide-toggle>
+            <mat-slide-toggle [checked]="cafetChecked(user)" (change)="setCafetAdmin(user[user.uid].admin.email, user.uid, $event.checked)" color="primary">{{ d.l.cafetAdminLabel }}</mat-slide-toggle>
+          </div>
+        </mat-expansion-panel>
+      </div>
+    </mat-accordion>
+    <mat-paginator [length]="displayedUsers.length"
+                  [pageSize]="pageSize"
+                  (page)="updateList($event)">
+    </mat-paginator>
+  </div>
 </div>

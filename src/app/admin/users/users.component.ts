@@ -18,7 +18,7 @@ export class AdminUsersComponent implements OnInit {
   actusAdmin: {[uid: string]: boolean};
   cafetAdmin: {[uid: string]: boolean};
 
-  displayedUsers: any[] = [];
+  displayedUsers: any[];
   search: FormControl;
   voteAdminCtrl: FormControl;
   eventsAdminCtrl: FormControl;
@@ -168,5 +168,15 @@ export class AdminUsersComponent implements OnInit {
 
   updateList(event) {
     this.pageIndex = event.pageIndex;
+  }
+
+  isReady() {
+    if (!this.admin.users) {
+      return false;
+    }
+    if (!this.displayedUsers) {
+      this.displayedUsers = this.admin.users;
+    }
+    return true;
   }
 }
