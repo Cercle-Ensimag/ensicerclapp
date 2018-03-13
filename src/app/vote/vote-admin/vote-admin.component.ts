@@ -33,7 +33,7 @@ export class VoteAdminComponent implements OnInit, OnDestroy {
 
   constructor(
     private auth: AuthService,
-    private vote: VoteService,
+    public vote: VoteService,
     public media: DeviceSizeService,
     private list: ListService,
     private tools: ToolsService,

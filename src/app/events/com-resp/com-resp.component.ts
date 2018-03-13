@@ -16,7 +16,7 @@ export class ComRespComponent implements OnInit, OnDestroy {
 
   constructor(
     public auth: AuthService,
-    private events: EventsService,
+    public events: EventsService,
     public d: DicoService
   ) {
     this.deleteEventId = null;

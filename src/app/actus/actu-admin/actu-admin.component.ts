@@ -40,7 +40,7 @@ export class ActuAdminComponent implements OnInit, OnDestroy {
   constructor(
     private auth: AuthService,
     public tools: ToolsService,
-    private actus: ActusService,
+    public actus: ActusService,
     public media: DeviceSizeService,
     private list: ListService,
     public d: DicoService

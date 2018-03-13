@@ -16,7 +16,7 @@ export class JournalistComponent implements OnInit, OnDestroy {
 
   constructor(
     public auth: AuthService,
-    private actus: ActusService,
+    public actus: ActusService,
     public d: DicoService
   ) {
     this.deleteActuId = null;
