@@ -1,19 +1,27 @@
-<div *ngIf="cafet.user && cafet.user.activated">
-  <!-- Credit -->
-  <mat-card>
-    <h2>{{ d.l.creditLabel }}: {{ cafet.user.credit.toFixed(2) }}€</h2>
-    <mat-error *ngIf="isCreditError()" [innerHTML]="getCreditError()"></mat-error>
-    <button mat-icon-button (click)="openHistory()" matSuffix><mat-icon>history</mat-icon></button>
-  </mat-card>
-  <!-- Week ingredient -->
-  <!-- <mat-card *ngIf="ingredients">
-    <small>{{ d.l.weekIngredientLabel }}:</small>
-    <h2 *ngFor="let ingredient of weekIngredients">{{ ingredient.name }}</h2>
-  </mat-card> -->
-  <!-- Order -->
-  <!-- <mat-card>
-    C'est ici qu'on commandera !
-  </mat-card> -->
-</div>
+<!-- Loading -->
+<mat-card *ngIf="!cafet.user" class="spinner-wraper">
+  <mat-spinner class="spinner"></mat-spinner>
+</mat-card>
 
-<app-cafet-info *ngIf="cafet.user && !cafet.user.activated"></app-cafet-info>
+<!-- Compte --> 
+<div *ngIf="cafet.user">
+  <div *ngIf="cafet.user.activated">
+    <!-- Credit -->
+    <mat-card>
+      <h2>{{ d.l.creditLabel }}: {{ cafet.user.credit.toFixed(2) }}€</h2>
+      <mat-error *ngIf="isCreditError()" [innerHTML]="getCreditError()"></mat-error>
+      <button mat-icon-button (click)="openHistory()" matSuffix><mat-icon>history</mat-icon></button>
+    </mat-card>
+    <!-- Week ingredient -->
+    <!-- <mat-card *ngIf="ingredients">
+      <small>{{ d.l.weekIngredientLabel }}:</small>
+      <h2 *ngFor="let ingredient of weekIngredients">{{ ingredient.name }}</h2>
+    </mat-card> -->
+    <!-- Order -->
+    <!-- <mat-card>
+      C'est ici qu'on commandera !
+    </mat-card> -->
+  </div>
+
+  <app-cafet-info *ngIf="!cafet.user.activated"></app-cafet-info>
+</div>
