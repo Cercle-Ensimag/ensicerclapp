@@ -110,6 +110,7 @@ export class AssessorComponent implements OnInit, OnDestroy {
       this.checkedWatchers[pollId].unsubscribe();
     }
     if (checked) {
+      this.displayedUsers = null;
       this.checkedWatchers[pollId] = this.watchPollUsers(pollId);
     } else {
       this.sortUsers(this.getEmail());

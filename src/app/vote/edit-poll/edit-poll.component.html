@@ -1,3 +1,9 @@
+<!-- Loading -->
+<mat-card *ngIf="!poll" class="spinner-wraper">
+  <mat-spinner class="spinner"></mat-spinner>
+</mat-card>
+
+<!-- Poll display -->
 <mat-card *ngIf="poll">
   <form [formGroup]="pollCtrl" class="container">
 

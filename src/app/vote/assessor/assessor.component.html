@@ -1,5 +1,13 @@
-<div *ngIf="!noPollAvailaible()">
-  <mat-card *ngIf="polls">
+<!-- Loading -->
+<mat-card *ngIf="!polls" class="spinner-wraper">
+  <mat-spinner class="spinner"></mat-spinner>
+</mat-card>
+
+<!-- Assessor -->
+<div *ngIf="polls && !noPollAvailaible()">
+
+  <!-- Header -->
+  <mat-card>
     <form [formGroup]="searchCtrl">
 
       <span *ngIf="error" class="error">{{ error }}</span>
@@ -18,13 +26,14 @@
         <button mat-raised-button
           type="submit"
           (click)="markAsVoted()"
-          [disabled]="searchCtrl.invalid || displayedUsers.length != 0 || noPollSelected()"
+          [disabled]="searchCtrl.invalid || !displayedUsers || displayedUsers.length != 0 || noPollSelected()"
           color="primary"
         >{{ d.l.votedButtonLabel }}</button>
       </span>
     </form>
   </mat-card>
 
+  <!-- Options -->
   <mat-expansion-panel *ngIf="polls" [expanded]="true">
     <mat-expansion-panel-header>
       <mat-panel-title>{{ d.l.pollChoiceLabel }}</mat-panel-title>
@@ -39,17 +48,26 @@
     </mat-nav-list>
   </mat-expansion-panel>
 
-  <mat-card *ngIf="displayedUsers.length != 0">
-    <mat-nav-list>
-      <a mat-list-item *ngFor="let user of displayedUsers | slice:pageIndex*pageSize:(pageIndex+1)*pageSize" [innerHTML]="user"></a>
-    </mat-nav-list>
+  <!-- Loading -->
+  <mat-card *ngIf="!displayedUsers" class="spinner-wraper">
+    <mat-spinner class="spinner"></mat-spinner>
   </mat-card>
-  <mat-paginator [length]="displayedUsers.length"
-                [pageSize]="pageSize"
-                (page)="updateList($event)">
-  </mat-paginator>
+
+  <!-- Users -->
+  <div *ngIf="displayedUsers">
+    <mat-card *ngIf="displayedUsers.length != 0">
+      <mat-nav-list>
+        <a mat-list-item *ngFor="let user of displayedUsers | slice:pageIndex*pageSize:(pageIndex+1)*pageSize" [innerHTML]="user"></a>
+      </mat-nav-list>
+    </mat-card>
+    <mat-paginator [length]="displayedUsers.length"
+                  [pageSize]="pageSize"
+                  (page)="updateList($event)">
+    </mat-paginator>
+  </div>
 </div>
 
-<mat-card *ngIf="noPollAvailaible()">
+<!-- No poll -->
+<mat-card *ngIf="polls && noPollAvailaible()">
   <h3>{{ d.l.noPoll }}</h3>
 </mat-card>

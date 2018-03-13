@@ -22,6 +22,25 @@ export class VoteService {
     private tools: ToolsService
   ) { }
 
+  start() {
+    if (this.pollsWatcher || this.votesWatcher) {
+      this.stop();
+    }
+    this.pollsWatcher = this.watchPolls();
+    this.votesWatcher = this.watchVotes();
+  }
+
+  stop() {
+    if (this.pollsWatcher) {
+      this.pollsWatcher.unsubscribe();
+      this.pollsWatcher = null;
+    }
+    if (this.votesWatcher) {
+      this.votesWatcher.unsubscribe();
+      this.votesWatcher = null;
+    }
+  }
+
   watchPolls() {
     return this.getPolls().subscribe(
       polls => {
@@ -43,25 +62,6 @@ export class VoteService {
       },
       err => {}
     );
-  }
-
-  start() {
-    if (this.pollsWatcher || this.votesWatcher) {
-      this.stop();
-    }
-    this.pollsWatcher = this.watchPolls();
-    this.votesWatcher = this.watchVotes();
-  }
-
-  stop() {
-    if (this.pollsWatcher) {
-      this.pollsWatcher.unsubscribe();
-      this.pollsWatcher = null;
-    }
-    if (this.votesWatcher) {
-      this.votesWatcher.unsubscribe();
-      this.votesWatcher = null;
-    }
   }
 
   getPoll(id: string): Observable<Poll> {

@@ -1,3 +1,9 @@
+<!-- Loading -->
+<mat-card *ngIf="!results" class="spinner-wraper">
+  <mat-spinner class="spinner"></mat-spinner>
+</mat-card>
+
+<!-- Results display -->
 <mat-card *ngIf="results">
   <div *ngFor="let choice of choices">
     <h2>

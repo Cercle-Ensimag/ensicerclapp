@@ -1,17 +1,29 @@
-<div *ngIf="vote.polls && isPoll()">
-  <div *ngFor="let poll of vote.polls">
-    <button mat-raised-button
-      *ngIf="poll.started"
-      [disabled]="vote.votes[poll.id] || false"
-      routerLink="/vote/poll/{{ poll.id }}"
-    >
-      <h2>{{ poll.title }}</h2>
-    </button>
+<!-- Loading -->
+<mat-card *ngIf="!vote.polls" class="spinner-wraper">
+  <mat-spinner class="spinner"></mat-spinner>
+</mat-card>
+
+<!-- Polls -->
+<div *ngIf="vote.polls">
+
+  <!-- Polls display -->
+  <div *ngIf="isPoll()">
+    <div *ngFor="let poll of vote.polls">
+      <button mat-raised-button
+        *ngIf="poll.started"
+        [disabled]="vote.votes[poll.id] || false"
+        routerLink="/vote/poll/{{ poll.id }}"
+      >
+        <h2>{{ poll.title }}</h2>
+      </button>
+    </div>
   </div>
-</div>
-<div *ngIf="vote.polls && !isPoll()">
-  <mat-card>
-    <h3>{{ d.l.noPoll }}</h3>
-    <button class="item" mat-raised-button routerLink='/home' color="primary">{{ d.l.backLabel }}</button>
-  </mat-card>
+
+  <!-- No Poll -->
+  <div *ngIf="!isPoll()">
+    <mat-card>
+      <h3>{{ d.l.noPoll }}</h3>
+      <button class="item" mat-raised-button routerLink='/home' color="primary">{{ d.l.backLabel }}</button>
+    </mat-card>
+  </div>
 </div>
