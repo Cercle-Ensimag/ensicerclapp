@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { HttpClientModule } from '@angular/common/http';
+import { DatePipe } from '@angular/common';
 
 // angularfire modules
 import { AngularFireModule } from 'angularfire2';
@@ -137,7 +138,7 @@ import { environment } from '../environments/environment';
     AuthService, VoteService, AdminService, CafetService, EventsService, ActusService, CalService,
     AppModulesService, DeviceSizeService, ListService, ToolsService,
     CanActivateHome, CanActivateVoteAdmin, CanActivateAssessor, CanActivateEventsAdmin, CanActivateComResp, CanActivateEventsEdit, CanActivateActusAdmin, CanActivateJournalist, CanActivateActusEdit, CanActivateAdmin, CanActivateCafetAdmin, EmailVerifGuard, AccountGuard,
-    DicoService
+    DicoService, DatePipe
   ],
   entryComponents: [
     VoteSnackbarComponent,

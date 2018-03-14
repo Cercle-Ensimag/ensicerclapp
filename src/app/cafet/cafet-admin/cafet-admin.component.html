@@ -128,7 +128,8 @@
 
       <!-- Print accounts -->
       <mat-card class="accounts-card">
-        <button mat-raised-button (click)="cafet.accountsToPdf(users)" color="primary">{{ d.l.printAccountsToPdf }}</button>
+        <button mat-raised-button (click)="cafet.printAccountsPdf(users)" color="primary">{{ d.l.printAccountsToPdf }}</button>
+        <button mat-raised-button (click)="cafet.saveAccountsPdf(users)" color="primary">{{ d.l.saveAccountsToPdf }}</button>
       </mat-card>
 
       <!-- Create account -->

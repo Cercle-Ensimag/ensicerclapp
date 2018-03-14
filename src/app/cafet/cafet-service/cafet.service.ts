@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
+import { DatePipe } from '@angular/common';
+import { DicoService } from '../../language/dico.service';
 
 import { AuthService } from '../../auth/auth-service/auth.service';
 import { ToolsService } from '../../providers/tools.service';
@@ -41,7 +43,9 @@ export class CafetService {
   constructor(
     private db: AngularFireDatabase,
     private tools: ToolsService,
-    private auth: AuthService
+    private auth: AuthService,
+    public datepipe: DatePipe,
+    public d: DicoService
   ) { }
 
   start() {
@@ -113,39 +117,108 @@ export class CafetService {
   }
 
   accountsToPdf(users: CafetUser[]) {
-    var columns = ["Nom", "Prenom", "Solde", "-", "-", "-", "-", "-", "-", "+", "+"];
+    var columns = [
+      { title: "Prenom", dataKey: "firstname" },
+      { title: "Nom", dataKey: "lastname" },
+      { title: "Solde", dataKey: "credit" },
+      { title: "-", dataKey: "minus"},
+      { title: "-", dataKey: "minus"},
+      { title: "-", dataKey: "minus"},
+      { title: "-", dataKey: "minus"},
+      { title: "-", dataKey: "minus"},
+      { title: "-", dataKey: "minus"},
+      { title: "", dataKey: "div" },
+      { title: "+", dataKey: "plus"},
+      { title: "+", dataKey: "plus"}
+    ];
+
     var rows = [];
     for (let user of users) {
-      let prenom = this.tools.titleCase(user.emailId.split('|')[0]);
-      let nom = this.tools.titleCase(user.emailId.split('|')[1]);
-      rows.push([prenom, nom, user.credit.toFixed(2) + "€", "    ", "    ", "    ", "    ", "    ", "    ", "    ", "    "]);
+      rows.push({
+        firstname: this.tools.titleCase(user.emailId.split('|')[0]),
+        lastname: this.tools.titleCase(user.emailId.split('|')[1]),
+        credit: user.credit.toFixed(2) + "€"
+      });
+      // for (var i=0; i<50; i++) {
+      //   rows.push({
+      //     firstname: this.tools.titleCase(user.emailId.split('|')[0]),
+      //     lastname: this.tools.titleCase(user.emailId.split('|')[1]),
+      //     credit: (-67.45).toFixed(2) + "€"
+      //   });
+      // }
     }
 
     var pdf = new jsPDF('p', 'pt');
+    var totalPagesExp = "%";
+
+    var date = this.datepipe.transform((new Date()).getTime(), 'fullDate', '', this.d.l.locale);
 
     pdf.setProperties({
-      title: 'comptes_cafet_' + (new Date()).toString().replace(/ /g, '_').replace(/_GMT\+0100_\(CET\)/, '')
+      title: `comptes_cafet_${ date.replace(/ /g, '_') }`
     });
+
+    var pageContent = function (data) {
+      var str, txtWidth, x;
+
+      // HEADER
+      pdf.setFontSize(16);
+      pdf.setTextColor(40);
+      pdf.setFontStyle('normal');
+
+      str = `Comptes cafet du ${ date }`;
+      txtWidth = pdf.getStringUnitWidth(str)*pdf.internal.getFontSize()/pdf.internal.scaleFactor;
+      x = (pdf.internal.pageSize.width - txtWidth) / 2;
+
+      pdf.text(str, x, 50);
+
+      // FOOTER
+      pdf.setFontSize(8);
+
+      str = "Page " + data.pageCount + " / " + totalPagesExp;
+      txtWidth = pdf.getStringUnitWidth(str)*pdf.internal.getFontSize()/pdf.internal.scaleFactor;
+      x = pdf.internal.pageSize.width - txtWidth - 20;
+
+      pdf.text(str, x, pdf.internal.pageSize.height - 20);
+
+    };
 
     pdf.autoTable(columns, rows, {
       headerStyles: {
         fillColor: 50,
         textColor: 250,
         lineWidth: 0.1,
-        lineColor: 100,
+        lineColor: 100
       },
       bodyStyles: {
         lineColor: 150,
         lineWidth: 0.1
       },
       alternateRowStyles: {
-        fillColor: 240
-      }
+        fillColor: 245
+      },
+      columnStyles: {
+        credit: { columnWidth: 60, halign: 'right', cellPadding: { right: 15 } },
+        minus: { columnWidth: 33 },
+        div: { columnWidth: 1, fillColor: 50 },
+        plus: { columnWidth: 33 }
+      },
+      margin: { top: 60 },
+      addPageContent: pageContent
     });
 
-    // pdf.autoPrint();
+    pdf.putTotalPages(totalPagesExp);
+    return pdf;
+  }
+
+  printAccountsPdf(users: CafetUser[]) {
+    var pdf = this.accountsToPdf(users);
+    pdf.autoPrint();
     pdf.output("dataurlnewwindow");
-    // pdf.save('comptes_' + (new Date()).toString().replace(' ', '_') + '.pdf');
+  }
+
+  saveAccountsPdf(users: CafetUser[]) {
+    var pdf = this.accountsToPdf(users);
+    pdf.save(`comptes_cafet_${ this.datepipe.transform((new Date()).getTime(), 'fullDate', '', this.d.l.locale).replace(/ /g, '_') }.pdf`);
   }
 
 }

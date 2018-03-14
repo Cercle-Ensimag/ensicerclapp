@@ -175,6 +175,7 @@ export class French {
   public static readonly negativeCreditError = "T'ES EN NEGATIF !!<br><small>Tu devrais mettre de l'argent sur ton compte</small>";
   public static readonly cafetAccountsLabel = "Comptes";
   public static readonly printAccountsToPdf = "Imprimer les comptes";
+  public static readonly saveAccountsToPdf = "Enregistrer les comptes";
   public static readonly cafetAccountsMatch = "{0} compte existe déjà";
 
   // Calendar
