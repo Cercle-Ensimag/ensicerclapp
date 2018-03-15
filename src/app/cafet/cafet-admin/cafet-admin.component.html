@@ -1,4 +1,4 @@
-<mat-tab-group>
+<mat-tab-group (selectedTabChange)="cafet.pdf = null">
 
   <!-- Clients tab -->
   <mat-tab label="{{ d.l.clientListLabel }}">
@@ -128,12 +128,15 @@
 
       <!-- Print accounts -->
       <mat-card class="accounts-card">
-        <button mat-raised-button (click)="cafet.printAccountsPdf(users)" color="primary">{{ d.l.printAccountsToPdf }}</button>
+        <button *ngIf="!cafet.pdf" mat-raised-button (click)="cafet.printAccountsPdf(users)" color="primary">{{ d.l.printAccountsToPdf }}</button>
+        <button *ngIf="cafet.pdf" mat-raised-button (click)="cafet.pdf = null" color="primary">{{ d.l.leaveAccountsToPdfPreview }}</button>
         <button mat-raised-button (click)="cafet.saveAccountsPdf(users)" color="primary">{{ d.l.saveAccountsToPdf }}</button>
+
+        <iframe *ngIf="cafet.pdf" width='100%' height='50vh'  style="height: 60vh;" type="application/pdf" name="cafet.pdfName" [src]="cafet.pdf"></iframe>
       </mat-card>
 
       <!-- Create account -->
-      <mat-card>
+      <mat-card *ngIf="!cafet.pdf">
         <form [formGroup]="accountCtrl">
 
           <span *ngIf="error" class="error">{{ error }}</span>

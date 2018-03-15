@@ -3,6 +3,7 @@ import { AngularFireDatabase } from 'angularfire2/database';
 import { Observable } from 'rxjs/Observable';
 import { DatePipe } from '@angular/common';
 import { DicoService } from '../../language/dico.service';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 import { AuthService } from '../../auth/auth-service/auth.service';
 import { ToolsService } from '../../providers/tools.service';
@@ -40,12 +41,16 @@ export class CafetService {
   userWatcher: any;
   ingrGroupsWatcher: any;
 
+  pdf: SafeResourceUrl;
+  pdfName: string;
+
   constructor(
     private db: AngularFireDatabase,
     private tools: ToolsService,
     private auth: AuthService,
     public datepipe: DatePipe,
-    public d: DicoService
+    public d: DicoService,
+    public sanitizer: DomSanitizer
   ) { }
 
   start() {
@@ -125,8 +130,6 @@ export class CafetService {
       { title: "-", dataKey: "minus"},
       { title: "-", dataKey: "minus"},
       { title: "-", dataKey: "minus"},
-      { title: "-", dataKey: "minus"},
-      { title: "-", dataKey: "minus"},
       { title: "", dataKey: "div" },
       { title: "+", dataKey: "plus"},
       { title: "+", dataKey: "plus"}
@@ -139,13 +142,6 @@ export class CafetService {
         lastname: this.tools.titleCase(user.emailId.split('|')[1]),
         credit: user.credit.toFixed(2) + "€"
       });
-      // for (var i=0; i<50; i++) {
-      //   rows.push({
-      //     firstname: this.tools.titleCase(user.emailId.split('|')[0]),
-      //     lastname: this.tools.titleCase(user.emailId.split('|')[1]),
-      //     credit: (-67.45).toFixed(2) + "€"
-      //   });
-      // }
     }
 
     var pdf = new jsPDF('p', 'pt');
@@ -198,9 +194,9 @@ export class CafetService {
       },
       columnStyles: {
         credit: { columnWidth: 60, halign: 'right', cellPadding: { right: 15 } },
-        minus: { columnWidth: 33 },
+        minus: { columnWidth: 46 },
         div: { columnWidth: 1, fillColor: 50 },
-        plus: { columnWidth: 33 }
+        plus: { columnWidth: 46 }
       },
       margin: { top: 60 },
       addPageContent: pageContent
@@ -213,12 +209,17 @@ export class CafetService {
   printAccountsPdf(users: CafetUser[]) {
     var pdf = this.accountsToPdf(users);
     pdf.autoPrint();
-    pdf.output("dataurlnewwindow");
+    this.pdf = this.sanitizer.bypassSecurityTrustResourceUrl(pdf.output('datauristring'));
+    this.pdfName = this.getAccountsPdfName();
   }
 
   saveAccountsPdf(users: CafetUser[]) {
     var pdf = this.accountsToPdf(users);
-    pdf.save(`comptes_cafet_${ this.datepipe.transform((new Date()).getTime(), 'fullDate', '', this.d.l.locale).replace(/ /g, '_') }.pdf`);
+    pdf.save(this.getAccountsPdfName());
+  }
+
+  getAccountsPdfName() {
+    return `comptes_cafet_${ this.datepipe.transform((new Date()).getTime(), 'fullDate', '', this.d.l.locale).replace(/ /g, '_') }.pdf`
   }
 
 }
