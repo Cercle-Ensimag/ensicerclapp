@@ -7,12 +7,12 @@
         <span *ngIf="auth.error" class="error">{{ auth.error }}</span>
 
         <mat-form-field>
-          <input matInput type="email" placeholder="{{ d.l.askForExistingEmailLabel }}" formControlName="email">
+          <input matInput type="email" placeholder="{{ d.l.askForExistingEmailLabel }}" formControlName="email" autocomplete="off">
           <mat-error *ngIf="loginCtrl.get('email').invalid">{{ auth.getEmailErrorMessage(loginCtrl.get('email')) }}</mat-error>
         </mat-form-field>
 
         <mat-form-field>
-          <input matInput placeholder="{{ d.l.askForExistingPwdLabel }}" formControlName="password" [type]="hide ? 'password' : 'text'">
+          <input matInput placeholder="{{ d.l.askForExistingPwdLabel }}" formControlName="password" [type]="hide ? 'password' : 'text'" autocomplete="off">
           <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
           <mat-error *ngIf="loginCtrl.get('password').invalid">{{ d.l.passwordTooShortError }}</mat-error>
         </mat-form-field>

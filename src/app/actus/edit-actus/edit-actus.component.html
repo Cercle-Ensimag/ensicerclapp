@@ -10,7 +10,7 @@
     <span *ngIf="error" class="error">{{ error }}</span>
 
     <mat-form-field>
-      <input matInput placeholder="{{ d.l.actuTitleLabel }}" formControlName="title">
+      <input matInput placeholder="{{ d.l.actuTitleLabel }}" formControlName="title" autocomplete="off">
       <mat-error *ngIf="actuCtrl.get('title').invalid">{{ d.l.actuTitleTooShortError }}</mat-error>
     </mat-form-field>
 
@@ -20,19 +20,19 @@
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput placeholder="{{ d.l.actuImageLabel }}" formControlName="image">
+      <input matInput placeholder="{{ d.l.actuImageLabel }}" formControlName="image" autocomplete="off">
       <mat-error *ngIf="actuCtrl.get('image').invalid">{{ d.l.actuImageError }}</mat-error>
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput [matDatepicker]="picker" placeholder="{{ d.l.actuDateLabel }}" formControlName="date">
+      <input matInput [matDatepicker]="picker" placeholder="{{ d.l.actuDateLabel }}" formControlName="date" autocomplete="off">
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
       <mat-error *ngIf="actuCtrl.get('date').invalid">{{ d.l.actuDateError }}</mat-error>
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput placeholder="{{ d.l.actuAuthorLabel }}" formControlName="author">
+      <input matInput placeholder="{{ d.l.actuAuthorLabel }}" formControlName="author" autocomplete="off">
       <mat-error *ngIf="actuCtrl.get('author').invalid">{{ d.l.actuAuthorError }}</mat-error>
     </mat-form-field>
 

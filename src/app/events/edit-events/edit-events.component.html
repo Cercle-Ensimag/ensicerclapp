@@ -10,7 +10,7 @@
     <span *ngIf="error" class="error">{{ error }}</span>
 
     <mat-form-field>
-      <input matInput placeholder="{{ d.l.eventTitleLabel }}" formControlName="title">
+      <input matInput placeholder="{{ d.l.eventTitleLabel }}" formControlName="title" autocomplete="off">
       <mat-error *ngIf="eventCtrl.get('title').invalid">{{ d.l.eventTitleTooShortError }}</mat-error>
     </mat-form-field>
 
@@ -20,38 +20,38 @@
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput placeholder="{{ d.l.eventImageLabel }}" formControlName="image">
+      <input matInput placeholder="{{ d.l.eventImageLabel }}" formControlName="image" autocomplete="off">
       <mat-error *ngIf="eventCtrl.get('image').invalid">{{ d.l.eventImageError }}</mat-error>
     </mat-form-field>
 
     <div class="grid-container">
         <mat-form-field style="max-width: 200px">
-          <input matInput [matDatepicker]="picker1" placeholder="{{ d.l.eventStartLabel }}" formControlName="start">
+          <input matInput [matDatepicker]="picker1" placeholder="{{ d.l.eventStartLabel }}" formControlName="start" autocomplete="off">
           <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
           <mat-datepicker #picker1></mat-datepicker>
           <mat-error *ngIf="eventCtrl.get('start').invalid">{{ d.l.eventStartError }}</mat-error>
         </mat-form-field>
 
         <mat-form-field style="max-width: 200px">
-          <input matInput type='time' placeholder="{{ d.l.eventStartTimeLabel }}" formControlName="startTime">
+          <input matInput type='time' placeholder="{{ d.l.eventStartTimeLabel }}" formControlName="startTime" autocomplete="off">
           <mat-error *ngIf="eventCtrl.get('startTime').invalid">{{ d.l.eventStartTimeError }}</mat-error>
         </mat-form-field>
 
         <mat-form-field style="max-width: 200px">
-          <input matInput [matDatepicker]="picker2" placeholder="{{ d.l.eventEndLabel }}" formControlName="end">
+          <input matInput [matDatepicker]="picker2" placeholder="{{ d.l.eventEndLabel }}" formControlName="end" autocomplete="off">
           <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
           <mat-datepicker #picker2></mat-datepicker>
           <mat-error *ngIf="eventCtrl.get('end').invalid">{{ d.l.eventEndError }}</mat-error>
         </mat-form-field>
 
         <mat-form-field style="max-width: 200px">
-          <input matInput type='time' placeholder="{{ d.l.eventEndTimeLabel }}" formControlName="endTime">
+          <input matInput type='time' placeholder="{{ d.l.eventEndTimeLabel }}" formControlName="endTime" autocomplete="off">
           <mat-error *ngIf="eventCtrl.get('endTime').invalid">{{ d.l.eventEndTimeError }}</mat-error>
         </mat-form-field>
     </div>
 
     <mat-form-field>
-      <input matInput placeholder="{{ d.l.eventLocationLabel }}" formControlName="location">
+      <input matInput placeholder="{{ d.l.eventLocationLabel }}" formControlName="location" autocomplete="off">
       <mat-error *ngIf="eventCtrl.get('location').invalid">{{ d.l.eventLocationError }}</mat-error>
     </mat-form-field>
 
