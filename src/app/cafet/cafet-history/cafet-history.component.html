@@ -6,21 +6,42 @@
   </div>
 
   <!-- History -->
-  <mat-list>
-    <div *ngIf="history">
-      <mat-list-item *ngFor="let trans of history">
-        <span>
-          <label><i>{{ trans.date | date:d.l.shortDateFormat:'':d.l.locale }}</i>&nbsp;:</label>
-        </span>
-        <span>
-          <label>&emsp;<b>{{ trans.value.toFixed(2) }}€</b></label>
-          <label>&emsp;<small>{{ trans.newCredit.toFixed(2) }}€</small></label>
-        </span>
-      </mat-list-item>
+  <div *ngIf="history">
+    <!-- <div class="grid-container">
+      <div *ngFor="let trans of history">
+        <i>{{ trans.date | date:d.l.shortDateFormat:'':d.l.locale }}</i>&nbsp;:
+      </div>
+      <div *ngFor="let trans of history">
+        &emsp;<b>{{ trans.value.toFixed(2) }}€</b>
+      </div>
+      <div>
+        <i>{{ user.creationDate | date:d.l.shortDateFormat:'':d.l.locale }}</i>&nbsp;:
+      </div>
+      <div>
+        &emsp;Creation du compte
+      </div>
     </div>
-    <mat-list-item>
-      <label><i>{{ user.creationDate | date:d.l.shortDateFormat:'':d.l.locale }}</i>&nbsp;:</label>
-      <label>&emsp;Creation du compte</label>
-    </mat-list-item>
-  </mat-list>
+  </div> -->
+  <mat-table #table [dataSource]="history">
+
+    <!-- Date -->
+    <ng-container matColumnDef="date">
+      <mat-header-cell *matHeaderCellDef>Date</mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{ element.date | date:d.l.shortDateFormat:'':d.l.locale }} &emsp;</mat-cell>
+    </ng-container>
+
+    <!-- Value -->
+    <ng-container matColumnDef="value">
+      <mat-header-cell *matHeaderCellDef>Montant</mat-header-cell>
+      <mat-cell *matCellDef="let element" [class.plus]="isPlus(element)" [class.minus]="isMinus(element)"> {{ element.value }} </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="['date', 'value']"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: ['date', 'value'];"></mat-row>
+
+  </mat-table>
+
+  <mat-paginator #paginator [pageSize]="20">
+  </mat-paginator>
+
 </div>

@@ -1,8 +1,13 @@
-import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { Component, Inject, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA, MatPaginator, MatTableDataSource } from '@angular/material';
 
 import { CafetService, CafetUser, Transaction } from '../cafet-service/cafet.service';
 import { DicoService } from '../../language/dico.service';
+
+class Element {
+  date: number;
+  value: string;
+}
 
 @Component({
   selector: 'app-cafet-history',
@@ -11,8 +16,10 @@ import { DicoService } from '../../language/dico.service';
 })
 export class CafetHistoryComponent {
 
-  history: Transaction[];
+  history: MatTableDataSource<Element> = new MatTableDataSource<Element>([]);
   historyWatcher: any;
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public user: CafetUser,
@@ -35,6 +42,10 @@ export class CafetHistoryComponent {
     }
   }
 
+  ngAfterViewInit() {
+    this.history.paginator = this.paginator;
+  }
+
   onNoClick(): void {
     this.dialogRef.close();
   }
@@ -42,8 +53,28 @@ export class CafetHistoryComponent {
   watchHistory() {
     return this.cafet.getHistory(this.user).subscribe(
       history => {
-        this.history = history.reverse() || [];
+        let elements: Element[] = [];
+        history.reverse().forEach(trans => {
+          elements.push({
+            date: trans.date,
+            value: trans.value.toFixed(2) + '€'
+          })
+        })
+        elements.push({
+          date: this.user.creationDate,
+          value: 'Création'
+        })
+        this.history.data = elements;
+        // this.history.paginator.length = elements.length;
       }
     )
+  }
+
+  isPlus(element: Element) {
+    return element.value.match(/^[0-9]/);
+  }
+
+  isMinus(element: Element) {
+    return element.value.match(/^-/);
   }
 }

@@ -1,3 +1,16 @@
 .history {
   max-height: 40vh !important;
 }
+
+mat-paginator {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.plus {
+  color: green;
+}
+
+.minus {
+  color: red;
+}

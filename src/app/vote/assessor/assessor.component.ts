@@ -146,10 +146,12 @@ export class AssessorComponent implements OnInit, OnDestroy {
   }
 
   stopWatchingUsers() {
-    for (let poll of this.polls) {
-      if (this.usersWatchers[poll.id]) {
-        this.usersWatchers[poll.id].unsubscribe();
-        this.usersWatchers[poll.id] = null;
+    if (this.polls) {
+      for (let poll of this.polls) {
+        if (this.usersWatchers[poll.id]) {
+          this.usersWatchers[poll.id].unsubscribe();
+          this.usersWatchers[poll.id] = null;
+        }
       }
     }
   }
