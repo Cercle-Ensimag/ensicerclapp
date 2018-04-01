@@ -16,6 +16,7 @@ class Element {
 })
 export class CafetHistoryComponent {
 
+  isHistory: boolean;
   history: MatTableDataSource<Element> = new MatTableDataSource<Element>([]);
   historyWatcher: any;
 
@@ -65,7 +66,7 @@ export class CafetHistoryComponent {
           value: 'Création'
         })
         this.history.data = elements;
-        // this.history.paginator.length = elements.length;
+        this.isHistory = true;
       }
     )
   }
