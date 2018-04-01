@@ -146,6 +146,15 @@
           "activated": { ".validate": "newData.isBoolean()" },
           "credit": { ".validate": "newData.isNumber()" },
           "creationDate": { ".validate": "newData.isNumber()" },
+          "profile": {
+            ".validate": "newData.hasChildren(['firstName', 'lastName'])",
+            
+            "firstName": { ".validate": "newData.isString()" },
+            "lastName": { ".validate": "newData.isString()" },
+            "login": { ".validate": "newData.isString()" },
+
+            "$other": { ".validate": false }
+          },
 
           "$other": { ".validate": false }
         },
