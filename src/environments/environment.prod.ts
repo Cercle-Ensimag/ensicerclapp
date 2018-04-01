@@ -10,5 +10,8 @@ export const environment = {
   },
   proxy: {
     domain: "https://cercle-ensimag.fr/proxy.php?"
+  },
+  host: {
+    domain: "https://cercle-ensimag.fr/"
   }
 };

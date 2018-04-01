@@ -14,6 +14,8 @@ import { ComResp } from '../../events/event-admin/event-admin.component';
 import { Journalist } from '../../actus/actu-admin/actu-admin.component';
 import { Assessor } from '../../vote/vote-admin/vote-admin.component';
 
+import { environment } from '../../../environments/environment';
+
 export const ENSIDOMAIN = "ensimag.fr";
 export const PHELMADOMAIN = "phelma.grenoble-inp.fr";
 
@@ -84,28 +86,28 @@ export class AuthService {
         this.currentUser = null;
         this.router.navigateByUrl('/login');
       } else {
-        this.redirectOnTokenChange(user);
+        // this.redirectOnTokenChange(user);
         this.currentUser = user;
         this.startServices();
       }
     });
   }
 
-  redirectOnTokenChange(user: any) {
-    if (!user) {
-      return;
-    }
-    const path = this.location.path();
-
-    if (!this.getCurrentUser()) {
-      this.goToHome();
-      return;
-    }
-    if (path === "/email_verif" && this.getCurrentUser().emailVerified) {
-      this.goToHome();
-      return;
-    }
-  }
+  // redirectOnTokenChange(user: any) {
+  //   if (!user) {
+  //     return;
+  //   }
+  //   const path = this.location.path();
+  //
+  //   if (!this.getCurrentUser()) {
+  //     this.goToHome();
+  //     return;
+  //   }
+  //   if (path === "/email_verif" && this.getCurrentUser().emailVerified) {
+  //     this.goToHome();
+  //     return;
+  //   }
+  // }
 
   start() {
     this.userWatcher = this.watchUser();
@@ -117,12 +119,14 @@ export class AuthService {
 
   logout() {
     this.afAuth.auth.signOut();
-    this.modules.appModules = null;
   }
 
   login(email: string, password: string) {
     this.afAuth.auth.signInWithEmailAndPassword(email, password)
-    .catch((err) => { this.onLoginError(err); })
+    .then(
+      (success) => { this.goToHome() },
+      (err) => { this.onLoginError(err) }
+    );
   }
 
   createAccount(
@@ -155,6 +159,10 @@ export class AuthService {
     this.router.navigateByUrl('/login');
   }
 
+  goToEmailVerif() {
+    this.router.navigateByUrl('/email_verif');
+  }
+
   goToHome() {
     this.router.navigateByUrl('/home');
   }
@@ -170,10 +178,6 @@ export class AuthService {
     } else {
       this.error = null;
     }
-  }
-
-  private onEmailVerification() {
-    this.router.navigateByUrl('/home');
   }
 
   emailDomainValidator(control: FormControl) {
@@ -196,6 +200,10 @@ export class AuthService {
 
   getCurrentUser() {
     return this.currentUser;
+  }
+
+  getAuthState() {
+    return this.afAuth.authState;
   }
 
   setProfile(user: any, firstName: string, lastName: string) {
@@ -227,10 +235,15 @@ export class AuthService {
   }
 
   sendEmailVerification(user: any) {
-    // TODO: this.getCurrentUser().sendEmailVerification({ url: '/home'})
+    // user.sendEmailVerification({ url: environment.host.domain + '#/home'})
     user.sendEmailVerification()
-    .then(() => { console.log('Verification email sent to '+user.email)})
-    .catch((err) => { console.log(err) });
+    .then(
+      () => {
+        this.goToEmailVerif();
+        console.log('Verification email sent to ' + user.email);
+      },
+      (err) => { console.log(err) }
+    );
   }
 
   sendPasswordResetEmail(email: string) {

@@ -15,5 +15,8 @@ export const environment = {
   },
   proxy: {
     domain: "http://localhost:8080/proxy.php?"
+  },
+  host: {
+    domain: "http://localhost:4200/"
   }
 };

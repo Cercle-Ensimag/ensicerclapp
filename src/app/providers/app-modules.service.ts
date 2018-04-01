@@ -23,8 +23,7 @@ export class AppModulesService {
     .subscribe(
       modules => {
         this.appModules = modules;
-      },
-      err => {}
+      }
     );
   }
 
@@ -40,6 +39,7 @@ export class AppModulesService {
       this.modulesWatcher.unsubscribe();
       this.modulesWatcher = null;
     }
+    this.appModules = null;
   }
 
   getAppModules(): AppModule[] {

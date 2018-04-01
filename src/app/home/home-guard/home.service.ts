@@ -3,6 +3,10 @@ import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot} from 
 
 import { AuthService } from '../../auth/auth-service/auth.service';
 
+import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/take';
+
 @Injectable()
 export class CanActivateHome implements CanActivate {
 
@@ -12,17 +16,20 @@ export class CanActivateHome implements CanActivate {
   ) { }
 
   canActivate(
-    route: ActivatedRouteSnapshot,
+    next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): boolean {
-    if (!this.auth.getCurrentUser()) {
-      this.router.navigateByUrl('/login');
-      return false;
-    }
-    if (!this.auth.getCurrentUser().emailVerified) {
-      this.router.navigateByUrl('/email_verif');
-      return false;
-    }
-    return true;
+  ) {
+    return this.auth.getAuthState()
+    .take(1)
+    .map(authState => !!authState)
+    .do(authenticated => {
+      if (!authenticated) {
+        this.router.navigateByUrl('/login');
+        return;
+      }
+      if (!this.auth.getCurrentUser().emailVerified) {
+        this.router.navigateByUrl('/email_verif');
+      }
+    });
   }
 }
