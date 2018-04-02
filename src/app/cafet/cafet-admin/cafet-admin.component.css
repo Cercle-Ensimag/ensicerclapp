@@ -1,3 +1,7 @@
+mat-form-field {
+  width: 100%;
+}
+
 .client-group {
   margin-top: 4px;
 }
@@ -11,7 +15,7 @@
   display: grid;
   grid-template-columns: 30% 20% 25% 25%;
   text-align: left;
-  vertical-align: center;
+  vertical-align: middle;
 }
 
 .client-large mat-form-field {
@@ -27,10 +31,6 @@
 .client-large button {
   margin-left: 4px;
   margin-right: 4px;
-}
-
-.client-large .text {
-  margin-top: 19px;
 }
 
 .client-large .history {
@@ -51,13 +51,66 @@
 
 .accounts-search {
   display: grid;
-  grid-template-columns: 50% 25% 25%;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 12px;
+  grid-template-areas:
+    "a b d e"
+    "c c d e";
+}
+
+.accounts-search-md {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 12px;
+  grid-template-areas:
+    "a b"
+    "c c"
+    "d e";
+}
+
+.accounts-search-sm {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-gap: 12px;
+  grid-template-areas:
+    "a"
+    "b"
+    "c"
+    "d"
+    "e";
+}
+
+.sitem1 {
+  grid-area: a;
+}
+
+.sitem2 {
+  grid-area: b;
+}
+
+.sitem3 {
+  grid-area: c;
+}
+
+.sitem4 {
+  grid-area: d;
+  align-self: center;
+}
+
+.sitem5 {
+  grid-area: e;
+  align-self: center;
+}
+
+.accounts-search span {
+  margin-left: 24px;
+  margin-right: 24px;
 }
 
 .accounts-search button {
   margin-top: 12px;
 }
 
-.accounts-input-width {
-  width: 300px;
+.error button {
+  margin: 4px;
 }

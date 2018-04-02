@@ -15,6 +15,14 @@ export class CafetUser {
   activated: boolean;
   emailId: string;
   creationDate: number;
+  profile: CafetProfile;
+}
+
+export class CafetProfile {
+  firstName: string;
+  lastName: string;
+  email: string;
+  exte: boolean;
 }
 
 export class Transaction {
@@ -138,8 +146,8 @@ export class CafetService {
     var rows = [];
     for (let user of users) {
       rows.push({
-        firstname: this.tools.titleCase(user.emailId.split('|')[0]),
-        lastname: this.tools.titleCase(user.emailId.split('|')[1]),
+        firstname: user.profile.firstName,
+        lastname: user.profile.lastName,
         credit: user.credit.toFixed(2) + "€"
       });
     }

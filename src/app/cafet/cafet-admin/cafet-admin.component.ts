@@ -42,6 +42,7 @@ export class CafetAdminComponent implements OnInit, OnDestroy {
 
   error: string;
   message: string;
+  exte: boolean;
 
   constructor(
     public cafet: CafetService,
@@ -146,43 +147,70 @@ export class CafetAdminComponent implements OnInit, OnDestroy {
     });
   }
 
+  openEditor(user: CafetUser): void {
+    // TODO
+  }
+
   // Accounts
 
-  createCafetAccount() {
+  tryCreateCafetAccount() {
     let emailId = this.tools.getEmailIdFromEmail(this.getAccountEmail());
     let name = this.tools.titleCase(emailId.replace('|', ' ').replace('  ', ' '));
+
     if (this.list.authUsers[emailId] !== this.getAccountEmail()) {
       this.error = this.d.format(this.d.l.notOnTheList, name);
+      this.exte = true;
     } else {
-      let user = {
-        credit: 0,
-        activated: true,
-        emailId: emailId,
-        creationDate: (new Date()).getTime()
-      };
-      this.cafet.setUserAccount(user).then(
-        () => {
-          this.cafet.newTransaction(user, this.getAccountCredit()).then(
-            () => {
-              let value = this.getAccountCredit();
-              this.accountCtrl.get('email').setValue("");
-              this.accountCtrl.get('credit').setValue(0);
-              this.error = this.d.format(this.d.l.informAboutCafetCreation, name, value.toFixed(2));
-            },
-            (err) => {
-              this.error = err.toSring();
-            }
-          );
-        },
-        (err) => {
-          this.error = err.toSring();
-        }
-      );
+      this.createCafetAccount(false);
     }
+  }
+
+  createCafetAccount(exte: boolean) {
+    let user = {
+      credit: 0,
+      activated: true,
+      emailId: (exte ? "%exte%": "") +  this.tools.getEmailIdFromEmail(this.getAccountEmail()),
+      creationDate: (new Date()).getTime(),
+      profile: {
+        firstName: this.tools.titleCase(this.getAccountFirstname()),
+        lastName: this.tools.titleCase(this.getAccountLastName()),
+        email: this.getAccountEmail(),
+        exte: exte
+      }
+    };
+    this.cafet.setUserAccount(user).then(
+      () => {
+        this.cafet.newTransaction(user, this.getAccountCredit()).then(
+          () => {
+            let value = this.getAccountCredit();
+            this.clearAccountCreation()
+            this.error = this.d.format(this.d.l.informAboutCafetCreation, this.getUserName(user), value.toFixed(2));
+          },
+          (err) => {
+            this.error = err;
+          }
+        );
+      },
+      (err) => {
+        this.error = err;
+      }
+    );
+  }
+
+  clearAccountCreation() {
+    this.accountCtrl.reset({
+      firstName: '',
+      lastName: '',
+      email: '',
+      credit: 0
+    });
+    this.exte = false;
   }
 
   createAccountForm() {
     this.accountCtrl = this.fb.group({
+      firstName: ['', [Validators.required, Validators.minLength(3)]],
+      lastName: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.email]],
       credit: [0, []]
     });
@@ -200,6 +228,14 @@ export class CafetAdminComponent implements OnInit, OnDestroy {
     });
   }
 
+  getAccountFirstname() {
+    return this.accountCtrl.get('firstName').value;
+  }
+
+  getAccountLastName() {
+    return this.accountCtrl.get('lastName').value;
+  }
+
   getAccountEmail() {
     return this.accountCtrl.get('email').value;
   }
@@ -213,6 +249,14 @@ export class CafetAdminComponent implements OnInit, OnDestroy {
     this.matchUsers = this.users.filter(
       user => user.emailId.includes(emailId)
     );
+  }
+
+  getUserName(user: CafetUser) {
+    if (!user.profile) {
+      return this.tools.titleCase(user.emailId.split('|').join(' '))
+    } else {
+      return this.tools.titleCase(user.profile.firstName + " " + user.profile.lastName);
+    }
   }
 
 }

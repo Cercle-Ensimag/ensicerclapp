@@ -32,7 +32,7 @@
         <mat-expansion-panel *ngFor="let user of displayedUsers | slice:pageIndex*pageSize:(pageIndex+1)*pageSize">
           <mat-expansion-panel-header>
             <mat-panel-title>
-              {{ tools.titleCase(user.emailId.split('|').join(' ')) }}
+              {{ getUserName(user) }}
             </mat-panel-title>
             <mat-panel-description>
               {{ user.credit }}€
@@ -63,6 +63,7 @@
               >{{ d.l.addButtonLabel }}</button>
             </span>
           </form>
+          <button mat-icon-button (click)="openEditor(user)" matSuffix><mat-icon>edit</mat-icon></button>
           <button mat-icon-button (click)="openHistory(user)" matSuffix><mat-icon>history</mat-icon></button>
         </mat-expansion-panel>
       </mat-accordion>
@@ -71,7 +72,10 @@
       <div *ngIf="media.largeSize" class="client-group">
         <mat-card *ngFor="let user of displayedUsers | slice:pageIndex*pageSize:(pageIndex+1)*pageSize">
           <div class="client-large">
-            <span class="text">{{ tools.titleCase(user.emailId.split('|').join(' ')) }}</span>
+            <span>
+              <button mat-icon-button (click)="openEditor(user)" class="history" matSuffix><mat-icon>edit</mat-icon></button>
+              <span>{{ getUserName(user) }}</span>
+            </span>
             <span>
               <button mat-icon-button (click)="openHistory(user)" class="history" matSuffix><mat-icon>history</mat-icon></button>
               <span>{{ user.credit.toFixed(2) }}€</span>
@@ -139,27 +143,58 @@
       <mat-card *ngIf="!cafet.pdf">
         <form [formGroup]="accountCtrl">
 
-          <span *ngIf="error" class="error">{{ error }}</span>
+          <span *ngIf="error" class="error">
+            {{ error }}
+            <div *ngIf="exte">
+              <button mat-raised-button
+                (click)="createCafetAccount(true)"
+                color="warn"
+              >{{ d.l.confirmExteCafetAccount }}</button>
+              <button mat-raised-button
+                (click)="clearAccountCreation()"
+                color="primary"
+              >{{ d.l.cancelLabel }}</button>
+            </div>
+          </span>
 
-          <div [class.accounts-search]="media.largeSize">
-            <mat-form-field [class.account-inputs-width]="!media.largeSize">
-              <input matInput placeholder="{{ d.l.cafetEmailInfo }}" formControlName="email" autocomplete="off">
-              <mat-hint *ngIf="accountCtrl.get('email').valid && matchUsers.length > 0">{{ d.format(d.l.cafetAccountsMatch, matchUsers.length) }}</mat-hint>
-            </mat-form-field>
+          <div [class.accounts-search]="media.largeSize" [class.accounts-search-md]="!media.largeSize && ! media.mobileSize" [class.accounts-search-sm]="media.mobileSize">
 
-            <span>
+            <span class="sitem1">
+              <mat-form-field>
+                <input matInput placeholder="{{ d.l.firstNameLabel }}" formControlName="firstName" autocomplete="off">
+                <mat-error *ngIf="accountCtrl.get('firstName').invalid">{{ d.l.firstNameError }}</mat-error>
+              </mat-form-field>
+            </span>
+
+            <span class="sitem2">
+              <mat-form-field>
+                <input matInput placeholder="{{ d.l.lastNameLabel }}" formControlName="lastName" autocomplete="off">
+                <mat-error *ngIf="accountCtrl.get('lastName').invalid">{{ d.l.lastNameError }}</mat-error>
+              </mat-form-field>
+            </span>
+
+            <span class="sitem3">
+              <mat-form-field>
+                <input matInput placeholder="{{ d.l.emailLabel }}" formControlName="email" autocomplete="off">
+                <mat-hint *ngIf="accountCtrl.get('email').valid && matchUsers.length > 0">{{ d.format(d.l.cafetAccountsMatch, matchUsers.length) }}</mat-hint>
+              </mat-form-field>
+            </span>
+
+            <span class="sitem4">
               <mat-form-field>
                 <input matInput type="number" placeholder="{{ d.l.creditLabel }}" formControlName="credit" autocomplete="off">
               </mat-form-field>
             </span>
-            <span>
+
+            <span class="sitem5">
               <button mat-raised-button
-                type="submit"
-                (click)="createCafetAccount()"
-                [disabled]="accountCtrl.invalid || matchUsers.length != 0"
-                color="primary"
+              type="submit"
+              (click)="tryCreateCafetAccount()"
+              [disabled]="accountCtrl.invalid || matchUsers.length != 0"
+              color="primary"
               >{{ d.l.createAccountLabel }}</button>
             </span>
+
           </div>
         </form>
       </mat-card>
