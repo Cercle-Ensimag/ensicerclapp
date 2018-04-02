@@ -12,13 +12,13 @@
 
       <!-- Date -->
       <ng-container matColumnDef="date">
-        <mat-header-cell *matHeaderCellDef>Date</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef>{{ d.l.transactionDateLabel }}</mat-header-cell>
         <mat-cell *matCellDef="let element"> {{ element.date | date:d.l.shortDateFormat:'':d.l.locale }} &emsp;</mat-cell>
       </ng-container>
 
       <!-- Value -->
       <ng-container matColumnDef="value">
-        <mat-header-cell *matHeaderCellDef>Montant</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef>{{ d.l.transactionValueLabel }}</mat-header-cell>
         <mat-cell *matCellDef="let element" [class.plus]="isPlus(element)" [class.minus]="isMinus(element)"> {{ element.value }} </mat-cell>
       </ng-container>
 

@@ -63,7 +63,7 @@ export class CafetHistoryComponent {
         })
         elements.push({
           date: this.user.creationDate,
-          value: 'Création'
+          value: this.d.l.cafetAccountCreationDateLabel
         })
         this.history.data = elements;
         this.isHistory = true;

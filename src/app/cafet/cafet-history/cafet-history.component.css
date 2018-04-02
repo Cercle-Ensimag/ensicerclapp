@@ -14,3 +14,7 @@ mat-paginator {
 .minus {
   color: red;
 }
+
+.mat-column-date {
+  min-width: 120px;
+}

@@ -178,6 +178,10 @@ export class French {
   public static readonly leaveAccountsToPdfPreview = "Quitter l'aperçu";
   public static readonly saveAccountsToPdf = "Enregistrer les comptes";
   public static readonly cafetAccountsMatch = "{0} compte existe déjà";
+  public static readonly confirmExteCafetAccount = "Créer le compte quand même";
+  public static readonly cafetAccountCreationDateLabel = "Création du compte";
+  public static readonly transactionDateLabel = "Date";
+  public static readonly transactionValueLabel = "Montant";
 
   // Calendar
   public static readonly calSettingsRessourcesLabel = "Ressources ADE";
