@@ -128,6 +128,7 @@ export class French {
   public static readonly eventStartTimeLabel = "Heure de début (HH:mm)";
   public static readonly eventEndTimeLabel = "Heure de fin (HH:mm)";
   public static readonly eventLocationLabel = "Lieu";
+  public static readonly eventPriceLabel = "PAF";
   public static readonly eventTitleTooShortError = "Titre trop court";
   public static readonly eventDescriptionError = "";
   public static readonly eventImageError = "";
@@ -135,9 +136,13 @@ export class French {
   public static readonly eventEndError = "Date de fin requise";
   public static readonly eventStartTimeError = "Heure de début requise";
   public static readonly eventEndTimeError = "Heure de fin requise";
+  public static readonly eventLocationError = "Lieu requis";
+  public static readonly eventPriceError = "Prix requis";
   public static readonly eventStart = "Début : {0}";
   public static readonly eventEnd = "Fin : {0}";
   public static readonly eventLocation = "Lieu : {0}";
+  public static readonly eventPrice = "PAF : {0}";
+  public static readonly free = "Gratuit";
 
   // Actus
   public static readonly actus = "Actualités";

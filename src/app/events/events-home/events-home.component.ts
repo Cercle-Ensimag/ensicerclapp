@@ -3,16 +3,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { EventsService } from '../events-service/events.service';
 import { DicoService } from '../../language/dico.service';
 
-export class Event {
-  id: string;
-  title: string;
-  description: string;
-  image: string;
-  start: number;
-  end: number;
-  location: string;
-  groupId: string;
-}
+import { Event } from '../events-service/events.service';
 
 @Component({
   selector: 'app-events-home',

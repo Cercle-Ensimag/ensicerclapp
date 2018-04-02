@@ -8,15 +8,7 @@ import { ListService } from '../../providers/list.service';
 import { ToolsService } from '../../providers/tools.service';
 import { DicoService } from '../../language/dico.service';
 
-export class ComResp {
-  emailId: string;
-  groupId: string;
-}
-
-export class Group {
-  groupId: string;
-  displayName: string;
-}
+import { ComResp, Group } from '../events-service/events.service';
 
 @Component({
   selector: 'app-event-admin',

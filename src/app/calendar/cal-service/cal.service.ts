@@ -5,7 +5,7 @@ import { FormControl } from '@angular/forms';
 
 import { AuthService } from '../../auth/auth-service/auth.service';
 import { EventsService } from '../../events/events-service/events.service';
-import { Event } from '../../events/events-home/events-home.component';
+import { Event } from '../../events/events-service/events.service';
 
 import * as parseICS from 'ics-parser';
 

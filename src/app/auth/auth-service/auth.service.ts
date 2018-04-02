@@ -10,7 +10,7 @@ import { AppModulesService } from '../../providers/app-modules.service';
 import { ToolsService } from '../../providers/tools.service';
 import { DicoService } from '../../language/dico.service';
 
-import { ComResp } from '../../events/event-admin/event-admin.component';
+import { ComResp } from '../../events/events-service/events.service';
 import { Journalist } from '../../actus/actu-admin/actu-admin.component';
 import { Assessor } from '../../vote/vote-admin/vote-admin.component';
 

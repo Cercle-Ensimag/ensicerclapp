@@ -10,7 +10,8 @@
     <h4>
       {{ d.format(d.l.eventStart, event.start | date:d.l.longDateTimeFormat:'':d.l.locale) }}<br>
       {{ d.format(d.l.eventEnd, event.end | date:d.l.longDateTimeFormat:'':d.l.locale) }}<br>
-      {{ d.format(d.l.eventLocation, event.location || "") }}
+      {{ d.format(d.l.eventLocation, event.location || "") }}<br>
+      {{ d.format(d.l.eventPrice, event.price || d.l.free) }}
     </h4>
     <button mat-icon-button [color]="isInCalendar ? 'primary': ''" (click)="events.addEventToCalendar(event.id)"><mat-icon>event_available</mat-icon></button>
     <button mat-icon-button [color]="isInCalendar ? '': 'primary'" (click)="events.removeEventFromCalendar(event.id)"><mat-icon>event_busy</mat-icon></button>

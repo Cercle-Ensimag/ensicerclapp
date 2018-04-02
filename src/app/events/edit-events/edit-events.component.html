@@ -55,6 +55,11 @@
       <mat-error *ngIf="eventCtrl.get('location').invalid">{{ d.l.eventLocationError }}</mat-error>
     </mat-form-field>
 
+    <mat-form-field>
+      <input matInput placeholder="{{ d.l.eventPriceLabel }}" formControlName="price" autocomplete="off">
+      <mat-error *ngIf="eventCtrl.get('price').invalid">{{ d.l.eventPriceError }}</mat-error>
+    </mat-form-field>
+
     <button mat-raised-button
       (click)="onSubmit()" color="primary"
       [disabled]="eventCtrl.invalid"

@@ -3,8 +3,28 @@ import { AngularFireDatabase } from 'angularfire2/database';
 
 import { ToolsService } from '../../providers/tools.service';
 import { AuthService } from '../../auth/auth-service/auth.service';
-import { Event } from '../events-home/events-home.component';
-import { ComResp, Group } from '../event-admin/event-admin.component';
+
+export class Event {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  start: number;
+  end: number;
+  location: string;
+  price: string;
+  groupId: string;
+}
+
+export class ComResp {
+  emailId: string;
+  groupId: string;
+}
+
+export class Group {
+  groupId: string;
+  displayName: string;
+}
 
 @Injectable()
 export class EventsService {

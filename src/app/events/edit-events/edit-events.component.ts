@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { Event } from '../events-home/events-home.component';
+import { Event } from '../events-service/events.service';
 
 import { AuthService } from '../../auth/auth-service/auth.service';
 import { ToolsService } from '../../providers/tools.service';
@@ -58,7 +58,8 @@ export class EditEventsComponent implements OnInit, OnDestroy {
         startTime: [this.tools.getTimeFromDate(this.event.start), [Validators.required, this.tools.timeValidator]],
         end: [new Date(this.event.end) || "", [Validators.required, this.tools.dateValidator]],
         endTime: [this.tools.getTimeFromDate(this.event.end), [Validators.required, this.tools.timeValidator]],
-        location: [this.event.location || "", [Validators.required]]
+        location: [this.event.location || "", [Validators.required]],
+        price: [this.event.price || this.d.l.free, [Validators.required]]
       })
       if (this.eventCtrlWatcher) {
         this.eventCtrlWatcher.unsubscribe();
@@ -89,6 +90,9 @@ export class EditEventsComponent implements OnInit, OnDestroy {
   getLocation(): string {
     return this.eventCtrl.get('location').value;
   }
+  getPrice(): string {
+    return this.eventCtrl.get('price').value;
+  }
 
   onSubmit() {
     if (!this.eventCtrl.invalid) {
@@ -100,6 +104,7 @@ export class EditEventsComponent implements OnInit, OnDestroy {
         start: this.getStart(),
         end: this.getEnd(),
         location: this.getLocation(),
+        price: this.getPrice(),
         groupId: this.auth.comRespGroupId
       };
       this.events.setEvent(event).then(() => {

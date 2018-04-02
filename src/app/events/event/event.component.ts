@@ -5,7 +5,7 @@ import { Location } from '@angular/common';
 import { DicoService } from '../../language/dico.service';
 import { EventsService } from '../events-service/events.service';
 
-import { Event } from '../events-home/events-home.component';
+import { Event } from '../events-service/events.service';
 
 @Component({
   selector: 'app-event',
