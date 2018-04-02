@@ -33,13 +33,13 @@
             "name": {
               ".validate": "newData.hasChildren(['firstName', 'lastName'])",
 
-              "firstName": { ".validate": "newData.isString()" },
-              "lastName": { ".validate": "newData.isString()" },
-              "login": { ".validate": "newData.isString()" },
+              "firstName": { ".validate": "newData.isString() && newData.val().length <= 30" },
+              "lastName": { ".validate": "newData.isString() && newData.val().length <= 30" },
+              "login": { ".validate": "newData.isString() && newData.val().length <= 30" },
 
               "$other": { ".validate": false }
             },
-            "photoURL": { ".validate": "newData.isString()" },
+            "photoURL": { ".validate": "newData.isString() && newData.val().length <= 500" },
 
             "$other": { ".validate": false }
           },
@@ -54,7 +54,7 @@
 
         "modules": {
           "$module": {
-            "name": { ".validate": "newData.isString()" },
+            "name": { ".validate": "newData.isString() && newData.val().length <= 30" },
             "disabled": {".validate": "newData.isBoolean()" },
 
             "$other": { ".validate": false }
@@ -91,8 +91,8 @@
                    auth != null && auth.token.email_verified == true",
         "groups": {
           "$groupId": {
-            "groupId": { ".validate": "newData.isString()" },
-            "displayName": { ".validate": "newData.isString()" }
+            "groupId": { ".validate": "newData.isString() && newData.val().length <= 30" },
+            "displayName": { ".validate": "newData.isString() && newData.val().length <= 30" }
           }
         },
         "users": {
@@ -115,11 +115,11 @@
                       !newData.exists())",
 
           "id": { ".validate": "newData.val() === $actuId" },
-          "title": { ".validate": "newData.isString()" },
-          "description": { ".validate": "newData.isString()" },
-          "image": { ".validate": "newData.isString()" },
-          "date": { ".validate": "newData.isString()" },
-          "author": { ".validate": "newData.isString()" },
+          "title": { ".validate": "newData.isString() && newData.val().length <= 30" },
+          "description": { ".validate": "newData.isString() && newData.val().length <= 2000" },
+          "image": { ".validate": "newData.isString() && newData.val().length <= 500" },
+          "date": { ".validate": "newData.isString() && newData.val().length <= 50" },
+          "author": { ".validate": "newData.isString() && newData.val().length <= 50" },
           "groupId": {
             ".validate": "root.child('actus/journalists/users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/groupId').val() === data.val() ||
                           !data.exists()"
@@ -149,9 +149,9 @@
           "profile": {
             ".validate": "newData.hasChildren(['firstName', 'lastName'])",
 
-            "firstName": { ".validate": "newData.isString()" },
-            "lastName": { ".validate": "newData.isString()" },
-            "email": { ".validate": "newData.isString()" },
+            "firstName": { ".validate": "newData.isString() && newData.val().length <= 30" },
+            "lastName": { ".validate": "newData.isString() && newData.val().length <= 30" },
+            "email": { ".validate": "newData.isString() && newData.val().length <= 50" },
             "exte": { ".validate": "newData.isBoolean()" },
 
             "$other": { ".validate": false }
@@ -180,29 +180,29 @@
 
         "ingredients": {
           "groups": {
-            "$group": { ".validate": "newData.isString()" }
+            "$group": { ".validate": "newData.isString() && newData.val().length <= 30" }
           },
           "individual": {
             "$ingredient" : {
-              "name": { ".validate": "newData.isString()" },
-              "group": { ".validate": "newData.isString()" },
-              "alias": { ".validate": "newData.isString()" },
-              "image": { ".validate": "newData.isString()" },
+              "name": { ".validate": "newData.isString() && newData.val().length <= 30" },
+              "group": { ".validate": "newData.isString() && newData.val().length <= 30" },
+              "alias": { ".validate": "newData.isString() && newData.val().length <= 30" },
+              "image": { ".validate": "newData.isString() && newData.val().length <= 500" },
 
               "$other": { ".validate": false }
             }
           },
           "recipes": {
             "$recipe": {
-              "$ingredient": { ".validate": "newData.isString()" }
+              "$ingredient": { ".validate": "newData.isString() && newData.val().length <= 30" }
             }
           }
         },
         "info": {
           "service-opened": { ".validate": "newData.isBoolean()" },
           "service-canceled": { ".validate": "newData.isBoolean()" },
-          "cancel-message": { ".validate": "newData.isString()" },
-          "day": { ".validate": "newData.isString()" },
+          "cancel-message": { ".validate": "newData.isString() && newData.val().length <= 200" },
+          "day": { ".validate": "newData.isNumber()" },
 
           "$other": { ".validate": false }
         },
@@ -241,12 +241,12 @@
               ".write": "auth != null && auth.token.email_verified == true &&
                          root.child('list/users/'+$emailId).val() === auth.token.email",
 
-              "id": { ".validate": "newData.isString()" },
-              "title": { ".validate": "newData.isString()" },
+              "id": { ".validate": "newData.isString() && newData.val().length <= 30" },
+              "title": { ".validate": "newData.isString() && newData.val().length <= 50" },
               "start": { ".validate": "newData.isNumber()" },
               "end": { ".validate": "newData.isNumber()" },
-              "location": { ".validate": "newData.isString()" },
-              "type": { ".validate": "newData.isString()" },
+              "location": { ".validate": "newData.isString() && newData.val().length <= 30" },
+              "type": { ".validate": "newData.isString() && newData.val().length <= 30" },
 
               "$other": { ".validate": false }
             }
@@ -272,8 +272,8 @@
                    auth != null && auth.token.email_verified == true",
         "groups": {
           "$groupId": {
-            "groupId": { ".validate": "newData.isString()" },
-            "displayName": { ".validate": "newData.isString()" }
+            "groupId": { ".validate": "newData.isString() && newData.val().length <= 30" },
+            "displayName": { ".validate": "newData.isString() && newData.val().length <= 30" }
           }
         },
         "resps": {
@@ -297,12 +297,12 @@
           ".indexOn": ["start"],
 
           "id": { ".validate": "newData.val() === $eventId" },
-          "title": { ".validate": "newData.isString()" },
-          "description": { ".validate": "newData.isString()" },
-          "image": { ".validate": "newData.isString()" },
+          "title": { ".validate": "newData.isString() && newData.val().length <= 30" },
+          "description": { ".validate": "newData.isString() && newData.val().length <= 2000" },
+          "image": { ".validate": "newData.isString() && newData.val().length <= 500" },
           "start": { ".validate": "newData.isNumber()" },
           "end": { ".validate": "newData.isNumber()" },
-          "location": { ".validate": "newData.isString()" },
+          "location": { ".validate": "newData.isString() && newData.val().length <= 30" },
           "groupId": {
             ".validate": "root.child('events/com-resps/resps/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/groupId').val() === data.val() ||
                           !data.exists()"
@@ -341,17 +341,17 @@
           ".validate": "newData.hasChildren(['title', 'description'])",
 
           "id": { ".validate": "newData.val() === $poll_id" },
-          "title": { ".validate": "newData.isString()" },
-          "description": { ".validate": "newData.isString()" },
+          "title": { ".validate": "newData.isString() && newData.val().length <= 30" },
+          "description": { ".validate": "newData.isString() && newData.val().length <= 500" },
           "started": { ".validate": "newData.isBoolean()" },
           "choices": {
             "$choice_id": {
               ".validate": "newData.hasChildren(['id', 'label'])",
 
               "id": { ".validate": "newData.val() === $choice_id" },
-              "label": { ".validate": "newData.isString()" },
-              "short": { ".validate": "newData.isString()" },
-              "image": { ".validate": "newData.isString()" },
+              "label": { ".validate": "newData.isString() && newData.val().length <= 30" },
+              "short": { ".validate": "newData.isString() && newData.val().length <= 30" },
+              "image": { ".validate": "newData.isString() && newData.val().length <= 30" },
 
               "$other": { ".validate": false }
             }
@@ -457,7 +457,7 @@
                        root.child('users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/'+auth.uid+'/admin/vote-admin').val() == true ||
                        root.child('users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/'+auth.uid+'/admin/cafet-admin').val() == true) ||
                        root.child('vote/assessors/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')).exists()",
-            "$emailId": { ".validate": "newData.isString()" }
+            "$emailId": { ".validate": "newData.isString() && newData.val().length <= 50" }
         }
     },
 
