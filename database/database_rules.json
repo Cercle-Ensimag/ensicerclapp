@@ -148,10 +148,11 @@
           "creationDate": { ".validate": "newData.isNumber()" },
           "profile": {
             ".validate": "newData.hasChildren(['firstName', 'lastName'])",
-            
+
             "firstName": { ".validate": "newData.isString()" },
             "lastName": { ".validate": "newData.isString()" },
-            "login": { ".validate": "newData.isString()" },
+            "email": { ".validate": "newData.isString()" },
+            "exte": { ".validate": "newData.isBoolean()" },
 
             "$other": { ".validate": false }
           },
