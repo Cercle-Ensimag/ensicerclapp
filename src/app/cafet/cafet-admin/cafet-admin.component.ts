@@ -9,6 +9,7 @@ import { CafetService, CafetUser } from '../cafet-service/cafet.service';
 import { DicoService } from '../../language/dico.service';
 
 import { CafetHistoryComponent } from '../cafet-history/cafet-history.component';
+import { EditCafetUserComponent } from '../edit-cafet-user/edit-cafet-user.component';
 
 @Component({
   selector: 'app-cafet-admin',
@@ -148,7 +149,10 @@ export class CafetAdminComponent implements OnInit, OnDestroy {
   }
 
   openEditor(user: CafetUser): void {
-    // TODO
+    let dialogRef = this.dialog.open(EditCafetUserComponent, {
+      data: user,
+      width: '450px'
+    });
   }
 
   // Accounts

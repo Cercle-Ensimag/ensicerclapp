@@ -9,6 +9,7 @@ export class French {
   public static readonly confirmLabel = "Confimer";
   public static readonly cancelLabel = "Annuler";
   public static readonly applyChangesLabel = "Appliquer";
+  public static readonly okLabel = "Ok";
   public static readonly changesApplied = "Changements appliqués avec succès";
   public static readonly search = "recherche";
   public static readonly locale = "fr";

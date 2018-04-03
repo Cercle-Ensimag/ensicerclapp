@@ -125,6 +125,10 @@ export class CafetService {
     });
   }
 
+  setUserProfile(emailId: string, profile: CafetProfile) {
+    return this.db.object<CafetProfile>("cafet/users/"+emailId+"/profile").set(profile);
+  }
+
   getHistory(user: CafetUser) {
     return this.db.list<Transaction>("cafet/history/"+user.emailId).valueChanges();
   }

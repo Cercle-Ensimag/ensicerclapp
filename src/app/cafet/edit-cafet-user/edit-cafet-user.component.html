@@ -1,0 +1,24 @@
+<form [formGroup]="profileCtrl" (ngSubmit)="onSubmit()" class="container">
+  <h2 [innerHTML]="d.l.profilePageTitle"></h2>
+
+  <span *ngIf="error" class="error">{{ error }}</span>
+
+  <mat-form-field>
+    <input matInput placeholder="{{ d.l.firstNameLabel }}" formControlName="firstName" autocomplete="off">
+    <mat-error *ngIf="profileCtrl.get('firstName').invalid">{{ d.l.firstNameError }}</mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput placeholder="{{ d.l.lastNameLabel }}" formControlName="lastName" autocomplete="off">
+    <mat-error *ngIf="profileCtrl.get('lastName').invalid">{{ d.l.lastNameError }}</mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput type="email" placeholder="{{ d.l.emailLabel }}" formControlName="email" autocomplete="off">
+    <mat-error *ngIf="profileCtrl.get('email').invalid">{{ d.l.emailFormatError }}</mat-error>
+  </mat-form-field>
+
+  <button mat-raised-button type="submit" color="primary"
+    [disabled]="profileCtrl.invalid"
+  >{{ d.l.okLabel }}</button>
+</form>
