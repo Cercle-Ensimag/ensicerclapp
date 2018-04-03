@@ -166,7 +166,7 @@
                     root.child('list/users/'+$emailId).val() === auth.token.email",
 
           "$transaction": {
-            "value": { ".validate": "newData.isNumber()" },
+            "value": { ".validate": "newData.isNumber() && newData.val() <= 1000 && newData.val() >= -1000" },
             "newCredit": { ".validate": "newData.isNumber()" },
             "oldCredit": { ".validate": "newData.isNumber()" },
             "date": { ".validate": "newData.isNumber()" },

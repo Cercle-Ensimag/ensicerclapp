@@ -73,8 +73,8 @@ export class CafetAdminComponent implements OnInit, OnDestroy {
       this.expanded = {};
       for (let user of users) {
         this.controls[user.emailId] = {
-          add: new FormControl("", [Validators.required]),
-          sub: new FormControl("", [Validators.required])
+          add: new FormControl("", [Validators.required, Validators.max(1000), Validators.min(0)]),
+          sub: new FormControl("", [Validators.required, Validators.max(1000), Validators.min(0)])
         };
         this.expanded[user.emailId] = false;
       }
@@ -157,7 +157,7 @@ export class CafetAdminComponent implements OnInit, OnDestroy {
     let emailId = this.tools.getEmailIdFromEmail(this.getAccountEmail());
     let name = this.tools.titleCase(emailId.replace('|', ' ').replace('  ', ' '));
 
-    if (this.list.authUsers[emailId] !== this.getAccountEmail()) {
+    if (this.list.authUsers[emailId] !== this.getAccountEmail().toLowerCase()) {
       this.error = this.d.format(this.d.l.notOnTheList, name);
       this.exte = true;
     } else {
