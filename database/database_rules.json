@@ -303,7 +303,7 @@
           "start": { ".validate": "newData.isNumber()" },
           "end": { ".validate": "newData.isNumber()" },
           "location": { ".validate": "newData.isString() && newData.val().length <= 30" },
-          "price": { ".validate": "newData.isNumber()" },
+          "price": { ".validate": "newData.isString() && newData.val().length <= 30" },
           "groupId": {
             ".validate": "root.child('events/com-resps/resps/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/groupId').val() === data.val() ||
                           !data.exists()"
