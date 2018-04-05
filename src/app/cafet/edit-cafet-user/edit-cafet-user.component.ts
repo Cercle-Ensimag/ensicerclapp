@@ -75,7 +75,11 @@ export class EditCafetUserComponent {
   }
 
   delete() {
-
+    this.cafet.deleteUser(this.user).then(() => {
+      this.dialogRef.close();
+    }).catch((err) => {
+      this.error = err;
+    });
   }
 
 }

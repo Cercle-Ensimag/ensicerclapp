@@ -108,6 +108,10 @@ export class CafetService {
     return this.db.list<CafetUser>("cafet/users").valueChanges();
   }
 
+  getArchivesUsers(): Observable<CafetUser[]> {
+    return this.db.list<CafetUser>("cafet/archives/users").valueChanges();
+  }
+
   setUserAccount(user: CafetUser) {
     user.activated = true;
     return this.db.object<CafetUser>("cafet/users/"+user.emailId).set(user);
@@ -127,6 +131,13 @@ export class CafetService {
     .then(() => {
         return this.db.object<CafetUser>("cafet/archives/users/"+user.emailId).remove();
     });
+  }
+
+  deleteUser(user: CafetUser) {
+    return this.db.object<any>("cafet/history/"+user.emailId).remove()
+    .then(() => {
+      return this.db.object<CafetUser>("cafet/archives/users/"+user.emailId).remove();
+    })
   }
 
   newTransaction(user: CafetUser, value: number) {

@@ -1,0 +1,44 @@
+<!-- Loading -->
+<mat-card *ngIf="!users" class="spinner-wraper">
+  <mat-spinner class="spinner"></mat-spinner>
+</mat-card>
+
+<div *ngIf="users">
+  <!-- Header -->
+  <mat-card>
+    <form [formGroup]="searchCtrl">
+
+      <span *ngIf="error" class="error">{{ error }}</span>
+
+      <div class="container">
+        <mat-form-field>
+          <input matInput placeholder="{{ d.l.cafetSearchInfo }}" formControlName="email" autocomplete="off">
+          <button mat-icon-button matSuffix><mat-icon>search</mat-icon></button>
+        </mat-form-field>
+      </div>
+
+    </form>
+  </mat-card>
+
+  <!-- Users display, large screens -->
+  <mat-card *ngIf="displayedUsers.length > 0">
+    <mat-list>
+      <mat-list-item *ngFor="let user of displayedUsers | slice:pageIndex*pageSize:(pageIndex+1)*pageSize">
+        <div class="grid">
+          <span>{{ cafet.getUserName(user) }}</span>
+          <span>{{ user.credit.toFixed(2) }}€</span>
+          <button mat-icon-button (click)="openEditor(user)" class="history" matSuffix><mat-icon>edit</mat-icon></button>
+          <button mat-icon-button (click)="openHistory(user)" class="history" matSuffix><mat-icon>history</mat-icon></button>
+        </div>
+      </mat-list-item>
+    </mat-list>
+  </mat-card>
+
+  <!-- Paginator -->
+  <mat-paginator
+    [length]="displayedUsers.length"
+    [pageSize]="pageSize"
+    (page)="updateList($event)"
+    class="client-group"
+  ></mat-paginator>
+<div>
