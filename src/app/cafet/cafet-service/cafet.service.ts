@@ -15,6 +15,7 @@ export class CafetUser {
   activated: boolean;
   emailId: string;
   creationDate: number;
+  lastTransactionDate: number;
   profile: CafetProfile;
 }
 
@@ -131,13 +132,14 @@ export class CafetService {
   newTransaction(user: CafetUser, value: number) {
     let oldCredit = user.credit;
     let newCredit = this.tools.round(oldCredit + value, 2);
-    return this.db.object<number>("cafet/users/"+user.emailId+"/credit").set(newCredit)
-    .then(() => {
+    user.credit = newCredit;
+    user.lastTransactionDate = (new Date()).getTime();
+    return this.setUserAccount(user).then(() => {
       return this.db.list<Transaction>("cafet/history/"+user.emailId).push({
         value: value,
         oldCredit: oldCredit,
         newCredit: newCredit,
-        date: (new Date()).getTime()
+        date: user.lastTransactionDate
       });
     });
   }

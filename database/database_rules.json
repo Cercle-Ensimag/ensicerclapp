@@ -146,6 +146,7 @@
           "activated": { ".validate": "newData.isBoolean()" },
           "credit": { ".validate": "newData.isNumber()" },
           "creationDate": { ".validate": "newData.isNumber()" },
+          "lastTransactionDate": { ".validate": "newData.isNumber()" },
           "profile": {
             ".validate": "newData.hasChildren(['firstName', 'lastName'])",
 
@@ -170,6 +171,7 @@
             "activated": { ".validate": "newData.isBoolean()" },
             "credit": { ".validate": "newData.isNumber()" },
             "creationDate": { ".validate": "newData.isNumber()" },
+            "lastTransactionDate": { ".validate": "newData.isNumber()" },
             "profile": {
               ".validate": "newData.hasChildren(['firstName', 'lastName'])",
 

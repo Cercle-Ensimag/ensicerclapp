@@ -175,6 +175,7 @@ export class CafetAdminComponent implements OnInit, OnDestroy {
       activated: true,
       emailId: (exte ? "%exte%": "") +  this.tools.getEmailIdFromEmail(this.getAccountEmail()),
       creationDate: (new Date()).getTime(),
+      lastTransactionDate: (new Date()).getTime(),
       profile: {
         firstName: this.tools.titleCase(this.getAccountFirstname()),
         lastName: this.tools.titleCase(this.getAccountLastName()),
