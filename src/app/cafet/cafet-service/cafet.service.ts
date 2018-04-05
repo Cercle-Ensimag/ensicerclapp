@@ -41,6 +41,10 @@ export class Ingredient {
   ofTheWeek: boolean;
 }
 
+export class CafetResp {
+  emailId: string;
+}
+
 @Injectable()
 export class CafetService {
 
@@ -157,6 +161,18 @@ export class CafetService {
 
   setUserProfile(emailId: string, profile: CafetProfile) {
     return this.db.object<CafetProfile>("cafet/users/"+emailId+"/profile").set(profile);
+  }
+
+  getCafetResps() {
+    return this.db.list<CafetResp>('cafet/cafetResps/users').valueChanges();
+  }
+
+  removeCafetResp(emailId: string) {
+    return this.db.object<CafetResp>('cafet/cafetResps/users/'+emailId).remove();
+  }
+
+  addCafetResp(resp: CafetResp) {
+    return this.db.object<CafetResp>('cafet/cafetResps/users/'+resp.emailId).set(resp);
   }
 
   getUserName(user: CafetUser) {

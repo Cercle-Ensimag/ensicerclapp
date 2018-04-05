@@ -61,8 +61,8 @@ export class CafetAdminUsersComponent implements OnInit {
       this.expanded = {};
       for (let user of users) {
         this.controls[user.emailId] = {
-          add: new FormControl("", [Validators.required, Validators.max(1000), Validators.min(0)]),
-          sub: new FormControl("", [Validators.required, Validators.max(1000), Validators.min(0)])
+          add: new FormControl("", [Validators.required, Validators.max(1000), Validators.min(0.1)]),
+          sub: new FormControl("", [Validators.required, Validators.max(1000), Validators.min(0.1)])
         };
         this.expanded[user.emailId] = false;
       }

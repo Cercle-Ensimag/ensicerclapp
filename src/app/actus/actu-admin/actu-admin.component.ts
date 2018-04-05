@@ -31,9 +31,9 @@ export class ActuAdminComponent implements OnInit, OnDestroy {
   emailCtrl: FormControl;
   emailWatcher: any;
 
-  comResps: Journalist[];
+  journalists: Journalist[];
   displayedUsers: Journalist[];
-  comRespsWatcher: any;
+  journalistsWatcher: any;
 
   error: string;
 
@@ -50,8 +50,8 @@ export class ActuAdminComponent implements OnInit, OnDestroy {
 
   ngOnInit () {
     this.actus.start();
-    this.comRespsWatcher = this.actus.getJournalists().subscribe(comResp => {
-      this.comResps = comResp;
+    this.journalistsWatcher = this.actus.getJournalists().subscribe(journalist => {
+      this.journalists = journalist;
       this.sortUsers(this.emailCtrl.value);
     });
     this.createSearchForm();
@@ -60,7 +60,7 @@ export class ActuAdminComponent implements OnInit, OnDestroy {
 
   ngOnDestroy () {
     this.actus.stop();
-    this.comRespsWatcher.unsubscribe();
+    this.journalistsWatcher.unsubscribe();
     this.list.stop();
   }
 
@@ -88,7 +88,7 @@ export class ActuAdminComponent implements OnInit, OnDestroy {
 
   sortUsers(email: string) {
     let emailId = this.tools.getEmailIdFromEmail(email.split('@')[0]);
-    this.displayedUsers = this.comResps.filter(
+    this.displayedUsers = this.journalists.filter(
       user => user.emailId.includes(emailId)
     );
   }

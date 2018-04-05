@@ -39,12 +39,12 @@
   <mat-tab label="{{ d.l.journalistPlLabel }}">
 
     <!-- Loading -->
-    <mat-card *ngIf="!comResps" class="spinner-wraper">
+    <mat-card *ngIf="!journalists" class="spinner-wraper">
       <mat-spinner class="spinner"></mat-spinner>
     </mat-card>
 
     <!-- Com resps -->
-    <div *ngIf="comResps">
+    <div *ngIf="journalists">
 
       <!-- Header display -->
       <mat-card>

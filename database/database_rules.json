@@ -137,6 +137,18 @@
       ".write": "auth != null && auth.token.email_verified == true &&
                  root.child('users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/'+auth.uid+'/admin/cafet-admin').val() == true",
 
+      "cafetResps": {
+        ".read": "root.child('cafet/cafetResps/users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')).exists() &&
+             auth != null && auth.token.email_verified == true",
+
+        "users": {
+          "$emailId": {
+            "emailId": { ".validate": "newData.val() === $emailId || !newData.exists()" }
+          }
+        },
+
+        "$other": { ".validate": false }
+      },
       "users": {
         "$emailId": {
           ".read": "auth != null && auth.token.email_verified == true &&
