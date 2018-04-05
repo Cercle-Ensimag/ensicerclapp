@@ -63,4 +63,16 @@ export class EditCafetUserComponent {
     });
   }
 
+  restore() {
+    this.cafet.restoreUser(this.user).then(() => {
+      this.dialogRef.close();
+    }).catch((err) => {
+      this.error = err;
+    });
+  }
+
+  delete() {
+
+  }
+
 }

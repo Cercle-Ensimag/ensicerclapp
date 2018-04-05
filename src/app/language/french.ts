@@ -188,7 +188,10 @@ export class French {
   public static readonly cafetAccountCreationDateLabel = "Création du compte";
   public static readonly transactionDateLabel = "Date";
   public static readonly transactionValueLabel = "Montant";
-  public static readonly achiveUserButtonLabel = "Archiver";
+  public static readonly achiveCafetUserButtonLabel = "Archiver";
+  public static readonly restoreCafetUserButtonLabel = "Restaurer";
+  public static readonly deleteCafetUserButtonLabel = "Supprimer";
+  public static readonly deleteCafetUserWarning = "Le compte de {0} va être définitivement supprimé.";
 
   // Calendar
   public static readonly calSettingsRessourcesLabel = "Ressources ADE";

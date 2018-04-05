@@ -2,7 +2,17 @@
 
 <span *ngIf="user.activated">
   <button mat-icon-button (click)="archive()"><mat-icon>archive</mat-icon></button>
-  <label>{{ d.l.achiveUserButtonLabel }}</label>
+  <label>{{ d.l.achiveCafetUserButtonLabel }}</label>
+</span>
+
+<span *ngIf="!user.activated">
+  <button mat-icon-button (click)="restore()"><mat-icon>restore</mat-icon></button>
+  <label>{{ d.l.restoreCafetUserButtonLabel }}</label>
+</span>
+
+<span *ngIf="!user.activated">
+  <button mat-icon-button (click)="delete()"><mat-icon>delete</mat-icon></button>
+  <label>{{ d.l.deleteCafetUserButtonLabel }}</label>
 </span>
 
 <form [formGroup]="profileCtrl" (ngSubmit)="onSubmit()" class="container">

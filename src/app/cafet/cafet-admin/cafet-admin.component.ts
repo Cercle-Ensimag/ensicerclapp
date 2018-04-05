@@ -102,7 +102,7 @@ export class CafetAdminComponent implements OnInit, OnDestroy {
         this.error = this.d.format(this.d.l.informAboutTransaction, name, value.toFixed(2));
       },
       (err) => {
-        this.error = err.toSring();
+        this.error = err;
       }
     );
   }
