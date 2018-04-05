@@ -55,4 +55,12 @@ export class EditCafetUserComponent {
     });
   }
 
+  archive() {
+    this.cafet.archiveUser(this.user).then(() => {
+      this.dialogRef.close();
+    }).catch((err) => {
+      this.error = err;
+    });
+  }
+
 }

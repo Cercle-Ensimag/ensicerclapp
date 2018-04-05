@@ -188,6 +188,7 @@ export class French {
   public static readonly cafetAccountCreationDateLabel = "Création du compte";
   public static readonly transactionDateLabel = "Date";
   public static readonly transactionValueLabel = "Montant";
+  public static readonly achiveUserButtonLabel = "Archiver";
 
   // Calendar
   public static readonly calSettingsRessourcesLabel = "Ressources ADE";

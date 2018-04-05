@@ -1,7 +1,11 @@
-<form [formGroup]="profileCtrl" (ngSubmit)="onSubmit()" class="container">
-  <h2 [innerHTML]="d.l.profilePageTitle"></h2>
+<span *ngIf="error" class="error">{{ error }}</span>
 
-  <span *ngIf="error" class="error">{{ error }}</span>
+<span *ngIf="user.activated">
+  <button mat-icon-button (click)="archive()"><mat-icon>archive</mat-icon></button>
+  <label>{{ d.l.achiveUserButtonLabel }}</label>
+</span>
+
+<form [formGroup]="profileCtrl" (ngSubmit)="onSubmit()" class="container">
 
   <mat-form-field>
     <input matInput placeholder="{{ d.l.firstNameLabel }}" formControlName="firstName" autocomplete="off">

@@ -108,7 +108,24 @@ export class CafetService {
   }
 
   setUserAccount(user: CafetUser) {
+    user.activated = true;
     return this.db.object<CafetUser>("cafet/users/"+user.emailId).set(user);
+  }
+
+  archiveUser(user: CafetUser) {
+    user.activated = false;
+    return this.db.object<CafetUser>("cafet/archives/users/"+user.emailId).set(user)
+    .then(() => {
+        return this.db.object<CafetUser>("cafet/users/"+user.emailId).remove();
+    });
+  }
+
+  restoreUser(user: CafetUser) {
+    user.activated = true;
+    return this.db.object<CafetUser>("cafet/users/"+user.emailId).set(user)
+    .then(() => {
+        return this.db.object<CafetUser>("cafet/archives/users/"+user.emailId).remove();
+    });
   }
 
   newTransaction(user: CafetUser, value: number) {
