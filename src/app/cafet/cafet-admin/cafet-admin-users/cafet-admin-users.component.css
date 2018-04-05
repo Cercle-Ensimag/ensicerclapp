@@ -1,0 +1,38 @@
+mat-form-field {
+  width: 100%;
+}
+
+.client-group {
+  margin-top: 4px;
+}
+
+.client-group button {
+  margin-left: 16px;
+  margin-right: 16px;
+}
+
+.client-large {
+  display: grid;
+  grid-template-columns: 30% 20% 25% 25%;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.client-large mat-form-field {
+  max-width: 100px;
+}
+
+.client-large span {
+  margin-left: 4px;
+  margin-right: 4px;
+  margin-top: 0;
+}
+
+.client-large button {
+  margin-left: 4px;
+  margin-right: 4px;
+}
+
+.client-large .history {
+  margin-top: 8px;
+}

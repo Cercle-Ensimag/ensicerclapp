@@ -1,0 +1,81 @@
+mat-form-field {
+  width: 100%;
+}
+
+.error button {
+  margin: 4px;
+}
+
+.accounts-card {
+  margin-bottom: 4px;
+}
+
+.accounts-card button {
+  margin: 4px;
+}
+
+.accounts-card iframe {
+  margin-top: 12px;
+}
+
+.accounts-search {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 12px;
+  grid-template-areas:
+    "a b d e"
+    "c c d e";
+}
+
+.accounts-search-md {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 12px;
+  grid-template-areas:
+    "a b"
+    "c c"
+    "d e";
+}
+
+.accounts-search-sm {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-gap: 12px;
+  grid-template-areas:
+    "a"
+    "b"
+    "c"
+    "d"
+    "e";
+}
+
+.sitem1 {
+  grid-area: a;
+}
+
+.sitem2 {
+  grid-area: b;
+}
+
+.sitem3 {
+  grid-area: c;
+}
+
+.sitem4 {
+  grid-area: d;
+  align-self: center;
+}
+
+.sitem5 {
+  grid-area: e;
+  align-self: center;
+}
+
+.accounts-search span {
+  margin-left: 24px;
+  margin-right: 24px;
+}
+
+.accounts-search button {
+  margin-top: 12px;
+}

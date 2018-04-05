@@ -11,83 +11,9 @@
   <!-- Accounts tab -->
   <mat-tab label="{{ d.l.cafetAccountsLabel }}">
 
-    <!-- Loading -->
-    <mat-card *ngIf="!users" class="spinner-wraper">
-      <mat-spinner class="spinner"></mat-spinner>
-    </mat-card>
+    <!-- Accounts -->
+    <app-cafet-admin-accounts></app-cafet-admin-accounts>
 
-    <!-- Accounts management -->
-    <div *ngIf="users">
-
-      <!-- Print accounts -->
-      <mat-card class="accounts-card">
-        <button *ngIf="!cafet.pdf" mat-raised-button (click)="cafet.printAccountsPdf(users)" color="primary">{{ d.l.printAccountsToPdf }}</button>
-        <button *ngIf="cafet.pdf" mat-raised-button (click)="cafet.pdf = null" color="primary">{{ d.l.leaveAccountsToPdfPreview }}</button>
-        <button mat-raised-button (click)="cafet.saveAccountsPdf(users)" color="primary">{{ d.l.saveAccountsToPdf }}</button>
-
-        <iframe *ngIf="cafet.pdf" width='100%' height='50vh'  style="height: 60vh;" type="application/pdf" name="cafet.pdfName" [src]="cafet.pdf"></iframe>
-      </mat-card>
-
-      <!-- Create account -->
-      <mat-card *ngIf="!cafet.pdf">
-        <form [formGroup]="accountCtrl">
-
-          <span *ngIf="error" class="error">
-            {{ error }}
-            <div *ngIf="exte">
-              <button mat-raised-button
-                (click)="createCafetAccount(true)"
-                color="warn"
-              >{{ d.l.confirmExteCafetAccount }}</button>
-              <button mat-raised-button
-                (click)="clearAccountCreation()"
-                color="primary"
-              >{{ d.l.cancelLabel }}</button>
-            </div>
-          </span>
-
-          <div [class.accounts-search]="media.largeSize" [class.accounts-search-md]="!media.largeSize && ! media.mobileSize" [class.accounts-search-sm]="media.mobileSize">
-
-            <span class="sitem1">
-              <mat-form-field>
-                <input matInput placeholder="{{ d.l.firstNameLabel }}" formControlName="firstName" autocomplete="off">
-                <mat-error *ngIf="accountCtrl.get('firstName').invalid">{{ d.l.firstNameError }}</mat-error>
-              </mat-form-field>
-            </span>
-
-            <span class="sitem2">
-              <mat-form-field>
-                <input matInput placeholder="{{ d.l.lastNameLabel }}" formControlName="lastName" autocomplete="off">
-                <mat-error *ngIf="accountCtrl.get('lastName').invalid">{{ d.l.lastNameError }}</mat-error>
-              </mat-form-field>
-            </span>
-
-            <span class="sitem3">
-              <mat-form-field>
-                <input matInput placeholder="{{ d.l.emailLabel }}" formControlName="email" autocomplete="off">
-                <mat-hint *ngIf="accountCtrl.get('email').valid && matchUsers.length > 0">{{ d.format(d.l.cafetAccountsMatch, matchUsers.length) }}</mat-hint>
-              </mat-form-field>
-            </span>
-
-            <span class="sitem4">
-              <mat-form-field>
-                <input matInput type="number" placeholder="{{ d.l.creditLabel }}" formControlName="credit" autocomplete="off">
-              </mat-form-field>
-            </span>
-
-            <span class="sitem5">
-              <button mat-raised-button
-              type="submit"
-              (click)="tryCreateCafetAccount()"
-              [disabled]="accountCtrl.invalid || matchUsers.length != 0"
-              color="primary"
-              >{{ d.l.createAccountLabel }}</button>
-            </span>
-
-          </div>
-        </form>
-      </mat-card>
-    </div>
   </mat-tab>
 
 </mat-tab-group>

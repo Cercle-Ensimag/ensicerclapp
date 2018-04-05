@@ -28,6 +28,7 @@ import { CafetComponent } from './cafet/cafet-home/cafet.component';
 import { CafetInfoComponent } from './cafet/cafet-info/cafet-info.component';
 import { CafetAdminComponent } from './cafet/cafet-admin/cafet-admin.component';
 import { CafetAdminUsersComponent } from './cafet/cafet-admin/cafet-admin-users/cafet-admin-users.component';
+import { CafetAdminAccountsComponent } from './cafet/cafet-admin/cafet-admin-accounts/cafet-admin-accounts.component';
 import { CafetHistoryComponent } from './cafet/cafet-history/cafet-history.component';
 import { EditCafetUserComponent } from './cafet/edit-cafet-user/edit-cafet-user.component';
 
@@ -118,7 +119,7 @@ import { environment } from '../environments/environment';
     AdminUsersComponent,
     HomeComponent, DashboardComponent,
     LoginComponent, SignUpComponent, EmailVerifComponent, PasswordResetComponent,
-    CafetComponent, CafetInfoComponent, CafetAdminComponent, CafetAdminUsersComponent, CafetHistoryComponent, EditCafetUserComponent,
+    CafetComponent, CafetInfoComponent, CafetAdminComponent, CafetAdminUsersComponent, CafetAdminAccountsComponent, CafetHistoryComponent, EditCafetUserComponent,
     VoteComponent, PollComponent, VoteSnackbarComponent, VoteAdminComponent, EditPollComponent, ResultsComponent, VoteUsersComponent, AssessorComponent,
     CalendarComponent, EditCalComponent, CalSettingsComponent,
     EventsHomeComponent, EventComponent, EventAdminComponent, ComRespComponent, EditEventsComponent,

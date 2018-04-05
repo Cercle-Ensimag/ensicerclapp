@@ -13,6 +13,8 @@ import { DicoService } from '../../language/dico.service';
 export class EditCafetUserComponent {
 
   profileCtrl: FormGroup;
+  activated: boolean;
+
   error: string;
 
   constructor(
@@ -22,6 +24,7 @@ export class EditCafetUserComponent {
     private fb: FormBuilder,
     public d: DicoService
   ) {
+    this.activated = user.activated;
     this.profileCtrl = this.fb.group({
       firstName: [this.user.profile.firstName, [Validators.required]],
       lastName: [this.user.profile.lastName, [Validators.required]],
@@ -29,7 +32,7 @@ export class EditCafetUserComponent {
         Validators.required,
         Validators.email
       ]]
-    })
+    });
   }
 
   getFirstName(): string {
