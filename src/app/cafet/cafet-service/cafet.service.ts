@@ -148,6 +148,14 @@ export class CafetService {
     return this.db.object<CafetProfile>("cafet/users/"+emailId+"/profile").set(profile);
   }
 
+  getUserName(user: CafetUser) {
+    if (!user.profile) {
+      return this.tools.titleCase(user.emailId.split('|').join(' '))
+    } else {
+      return this.tools.titleCase(user.profile.firstName + " " + user.profile.lastName);
+    }
+  }
+
   getHistory(user: CafetUser) {
     return this.db.list<Transaction>("cafet/history/"+user.emailId).valueChanges();
   }
