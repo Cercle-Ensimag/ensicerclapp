@@ -31,6 +31,7 @@ import { CafetAdminUsersComponent } from './cafet/cafet-admin/cafet-admin-users/
 import { CafetAdminAccountsComponent } from './cafet/cafet-admin/cafet-admin-accounts/cafet-admin-accounts.component';
 import { CafetAdminArchivesComponent } from './cafet/cafet-admin/cafet-admin-archives/cafet-admin-archives.component';
 import { CafetAdminRespsComponent } from './cafet/cafet-admin/cafet-admin-resps/cafet-admin-resps.component';
+import { CafetRespComponent } from './cafet/cafet-resp/cafet-resp.component';
 import { CafetHistoryComponent } from './cafet/cafet-history/cafet-history.component';
 import { EditCafetUserComponent } from './cafet/edit-cafet-user/edit-cafet-user.component';
 
@@ -87,6 +88,7 @@ import { CanActivateJournalist } from './actus/actus-guard/journalist.service';
 import { CanActivateActusEdit } from './actus/actus-guard/actus-edit.service';
 import { CanActivateAdmin } from './admin/guard/admin-guard.service';
 import { CanActivateCafetAdmin } from './cafet/cafet-guard/cafet-admin.service';
+import { CanActivateCafetResp } from './cafet/cafet-guard/cafet-resp.guard';
 import { EmailVerifGuard } from './auth/email-verif/email-verif-guard/email-verif.guard';
 import { AccountGuard } from './account/account-guard/account.guard';
 
@@ -121,7 +123,7 @@ import { environment } from '../environments/environment';
     AdminUsersComponent,
     HomeComponent, DashboardComponent,
     LoginComponent, SignUpComponent, EmailVerifComponent, PasswordResetComponent,
-    CafetComponent, CafetInfoComponent, CafetAdminComponent, CafetAdminUsersComponent, CafetAdminAccountsComponent, CafetAdminArchivesComponent, CafetAdminRespsComponent, CafetHistoryComponent, EditCafetUserComponent,
+    CafetComponent, CafetInfoComponent, CafetAdminComponent, CafetAdminUsersComponent, CafetAdminAccountsComponent, CafetAdminArchivesComponent, CafetAdminRespsComponent, CafetRespComponent, CafetHistoryComponent, EditCafetUserComponent,
     VoteComponent, PollComponent, VoteSnackbarComponent, VoteAdminComponent, EditPollComponent, ResultsComponent, VoteUsersComponent, AssessorComponent,
     CalendarComponent, EditCalComponent, CalSettingsComponent,
     EventsHomeComponent, EventComponent, EventAdminComponent, ComRespComponent, EditEventsComponent,
@@ -142,7 +144,7 @@ import { environment } from '../environments/environment';
   providers: [
     AuthService, VoteService, AdminService, CafetService, EventsService, ActusService, CalService,
     AppModulesService, DeviceSizeService, ListService, ToolsService,
-    CanActivateHome, CanActivateVoteAdmin, CanActivateAssessor, CanActivateEventsAdmin, CanActivateComResp, CanActivateEventsEdit, CanActivateActusAdmin, CanActivateJournalist, CanActivateActusEdit, CanActivateAdmin, CanActivateCafetAdmin, EmailVerifGuard, AccountGuard,
+    CanActivateHome, CanActivateVoteAdmin, CanActivateAssessor, CanActivateEventsAdmin, CanActivateComResp, CanActivateEventsEdit, CanActivateActusAdmin, CanActivateJournalist, CanActivateCafetResp, CanActivateActusEdit, CanActivateAdmin, CanActivateCafetAdmin, EmailVerifGuard, AccountGuard,
     DicoService, DatePipe
   ],
   entryComponents: [

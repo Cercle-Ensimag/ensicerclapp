@@ -13,6 +13,7 @@ import { DicoService } from '../../language/dico.service';
 import { ComResp } from '../../events/events-service/events.service';
 import { Journalist } from '../../actus/actu-admin/actu-admin.component';
 import { Assessor } from '../../vote/vote-admin/vote-admin.component';
+import { CafetResp } from '../../cafet/cafet-service/cafet.service';
 
 import { environment } from '../../../environments/environment';
 
@@ -53,6 +54,7 @@ export class AuthService {
   isActusAdmin: boolean = false;
   isJournalist: boolean = false;
   isCafetAdmin: boolean = false;
+  isCafetResp: boolean = false;
   cafetActivated: boolean = false;
   comRespGroupId: string = null;
   journalistGroupId: string = null;
@@ -64,6 +66,7 @@ export class AuthService {
   assessorWatcher: any;
   comRespsWatcher: any;
   journalistsWatcher: any;
+  cafetRespsWatcher: any;
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -273,6 +276,7 @@ export class AuthService {
     this.assessorWatcher = this.watchIsAssessor();
     this.comRespsWatcher = this.watchIsComResp();
     this.journalistsWatcher = this.watchIsJournalist();
+    this.cafetRespsWatcher = this.watchIsCafetResp();
   }
 
   watchProfile() {
@@ -368,6 +372,21 @@ export class AuthService {
     )
   }
 
+  watchIsCafetResp() {
+    return this.adminOtherWatcher = this.db.object<CafetResp>('cafet/cafetResps/resps/'+this.getEmailId()).valueChanges()
+    .subscribe(
+      user => {
+        this.isCafetResp = user != null;
+        if (user != null) {
+          this.isCafetResp = true;
+        } else {
+          this.isCafetResp = false;
+        }
+      },
+      err => {}
+    )
+  }
+
   stopWatchingUserProfile() {
     if (this.profileWatcher) {
       this.profileWatcher.unsubscribe();
@@ -392,6 +411,10 @@ export class AuthService {
     if (this.journalistsWatcher) {
       this.journalistsWatcher.unsubscribe();
       this.journalistsWatcher = null;
+    }
+    if (this.cafetRespsWatcher) {
+      this.cafetRespsWatcher.unsubscribe();
+      this.cafetRespsWatcher = null;
     }
   }
 

@@ -13,6 +13,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 
 import { CafetComponent } from './cafet/cafet-home/cafet.component';
 import { CafetAdminComponent } from './cafet/cafet-admin/cafet-admin.component';
+import { CafetRespComponent } from './cafet/cafet-resp/cafet-resp.component';
 
 import { VoteComponent } from './vote/vote-all/vote.component';
 import { PollComponent } from './vote/poll/poll.component';
@@ -52,6 +53,7 @@ import { CanActivateJournalist } from './actus/actus-guard/journalist.service';
 import { CanActivateActusEdit } from './actus/actus-guard/actus-edit.service';
 import { CanActivateAdmin } from './admin/guard/admin-guard.service';
 import { CanActivateCafetAdmin } from './cafet/cafet-guard/cafet-admin.service';
+import { CanActivateCafetResp } from './cafet/cafet-guard/cafet-resp.guard';
 import { EmailVerifGuard } from './auth/email-verif/email-verif-guard/email-verif.guard';
 import { AccountGuard } from './account/account-guard/account.guard';
 
@@ -68,6 +70,7 @@ const routes: Routes = [
   { path: 'home', component: DashboardComponent, canActivate: [CanActivateHome] },
   { path: 'cafet', component: CafetComponent, canActivate: [CanActivateHome] },
   { path: 'cafet-admin', component: CafetAdminComponent, canActivate: [CanActivateHome, CanActivateCafetAdmin]},
+  { path: 'cafet-resp', component: CafetRespComponent, canActivate: [CanActivateHome, CanActivateCafetResp] },
 
   { path: 'vote', component: VoteComponent, canActivate: [CanActivateHome] },
   { path: 'vote/poll/:id', component: PollComponent, canActivate: [CanActivateHome] },

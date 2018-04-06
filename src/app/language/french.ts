@@ -68,8 +68,8 @@ export class French {
 
   public static readonly cafetAdminLabel = "Master cafet";
   public static readonly cafetAdminPlLabel = "Masters cafet";
-  public static readonly cafetRespsLabel = "Respo cafet";
-  public static readonly cafetRespsPlLabel = "Respos cafet";
+  public static readonly cafetRespLabel = "Respo cafet";
+  public static readonly cafetRespPlLabel = "Respos cafet";
   public static readonly addCafetRespInfo = "Entrer l'e-mail d'un respo cafet";
   public static readonly addCafetRespButtonLabel = "Ajouter";
 

@@ -141,37 +141,38 @@
         ".read": "root.child('cafet/cafetResps/users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')).exists() &&
              auth != null && auth.token.email_verified == true",
 
-        "users": {
+        "resps": {
           "$emailId": {
             "emailId": { ".validate": "newData.val() === $emailId || !newData.exists()" }
           }
         },
+        "dayTransactions": {
+          "users": {
+            "$emailId": {
+              "emailId": { ".validate": "newData.val() === $emailId" },
+              "credit": { ".validate": "newData.isNumber()" },
+              "lastTransactionDate": { ".validate": "newData.isNumber()" },
 
-        "$other": { ".validate": false }
-      },
-      "users": {
-        "$emailId": {
-          ".read": "auth != null && auth.token.email_verified == true &&
-                    root.child('list/users/'+$emailId).val() === auth.token.email",
+              "$other": { ".validate": false }
+            }
+          },
+          "history": {
+            "$emailId": {
+              "$transaction": {
+                "value": { ".validate": "newData.isNumber() && newData.val() <= 1000 && newData.val() >= -1000" },
+                "newCredit": { ".validate": "newData.isNumber()" },
+                "oldCredit": { ".validate": "newData.isNumber()" },
+                "date": { ".validate": "newData.isNumber()" },
 
-          "emailId": { ".validate": "newData.val() === $emailId" },
-          "activated": { ".validate": "newData.isBoolean()" },
-          "credit": { ".validate": "newData.isNumber()" },
-          "creationDate": { ".validate": "newData.isNumber()" },
-          "lastTransactionDate": { ".validate": "newData.isNumber()" },
-          "profile": {
-            ".validate": "newData.hasChildren(['firstName', 'lastName'])",
-
-            "firstName": { ".validate": "newData.isString() && newData.val().length <= 30" },
-            "lastName": { ".validate": "newData.isString() && newData.val().length <= 30" },
-            "email": { ".validate": "newData.isString() && newData.val().length <= 50" },
-            "exte": { ".validate": "newData.isBoolean()" },
-
-            "$other": { ".validate": false }
+                "$other": { ".validate": false }
+              }
+            }
           },
 
           "$other": { ".validate": false }
-        }
+        },
+
+        "$other": { ".validate": false }
       },
       "archives": {
         "users": {
@@ -200,6 +201,30 @@
         },
 
         "$other": { ".validate": false }
+      },
+      "users": {
+        "$emailId": {
+          ".read": "auth != null && auth.token.email_verified == true &&
+                    root.child('list/users/'+$emailId).val() === auth.token.email",
+
+          "emailId": { ".validate": "newData.val() === $emailId" },
+          "activated": { ".validate": "newData.isBoolean()" },
+          "credit": { ".validate": "newData.isNumber()" },
+          "creationDate": { ".validate": "newData.isNumber()" },
+          "lastTransactionDate": { ".validate": "newData.isNumber()" },
+          "profile": {
+            ".validate": "newData.hasChildren(['firstName', 'lastName'])",
+
+            "firstName": { ".validate": "newData.isString() && newData.val().length <= 30" },
+            "lastName": { ".validate": "newData.isString() && newData.val().length <= 30" },
+            "email": { ".validate": "newData.isString() && newData.val().length <= 50" },
+            "exte": { ".validate": "newData.isBoolean()" },
+
+            "$other": { ".validate": false }
+          },
+
+          "$other": { ".validate": false }
+        }
       },
       "history": {
         "$emailId": {

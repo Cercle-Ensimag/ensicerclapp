@@ -164,15 +164,15 @@ export class CafetService {
   }
 
   getCafetResps() {
-    return this.db.list<CafetResp>('cafet/cafetResps/users').valueChanges();
+    return this.db.list<CafetResp>('cafet/cafetResps/resps').valueChanges();
   }
 
   removeCafetResp(emailId: string) {
-    return this.db.object<CafetResp>('cafet/cafetResps/users/'+emailId).remove();
+    return this.db.object<CafetResp>('cafet/cafetResps/resps/'+emailId).remove();
   }
 
   addCafetResp(resp: CafetResp) {
-    return this.db.object<CafetResp>('cafet/cafetResps/users/'+resp.emailId).set(resp);
+    return this.db.object<CafetResp>('cafet/cafetResps/resps/'+resp.emailId).set(resp);
   }
 
   getUserName(user: CafetUser) {
