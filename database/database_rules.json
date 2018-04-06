@@ -138,8 +138,8 @@
                  root.child('users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/'+auth.uid+'/admin/cafet-admin').val() == true",
 
       "cafetResps": {
-        ".read": "root.child('cafet/cafetResps/users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')).exists() &&
-             auth != null && auth.token.email_verified == true",
+        ".read": "root.child('cafet/cafetResps/resps/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')).exists() &&
+                  auth != null && auth.token.email_verified == true",
 
         "resps": {
           "$emailId": {
@@ -147,29 +147,18 @@
           }
         },
         "dayTransactions": {
-          "users": {
-            "$emailId": {
-              "emailId": { ".validate": "newData.val() === $emailId" },
-              "credit": { ".validate": "newData.isNumber()" },
-              "lastTransactionDate": { ".validate": "newData.isNumber()" },
+          ".write": "root.child('cafet/cafetResps/resps/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')).exists() &&
+                     auth != null && auth.token.email_verified == true",
+
+          "$emailId": {
+            "$transaction": {
+              "value": { ".validate": "newData.isNumber() && newData.val() <= 1000 && newData.val() >= -1000" },
+              "date": { ".validate": "newData.isNumber()" },
+              "resp": { ".validate": "root.child('cafet/cafetResps/resps/'+newData.val()).exists()" },
 
               "$other": { ".validate": false }
             }
-          },
-          "history": {
-            "$emailId": {
-              "$transaction": {
-                "value": { ".validate": "newData.isNumber() && newData.val() <= 1000 && newData.val() >= -1000" },
-                "newCredit": { ".validate": "newData.isNumber()" },
-                "oldCredit": { ".validate": "newData.isNumber()" },
-                "date": { ".validate": "newData.isNumber()" },
-
-                "$other": { ".validate": false }
-              }
-            }
-          },
-
-          "$other": { ".validate": false }
+          }
         },
 
         "$other": { ".validate": false }
@@ -203,6 +192,9 @@
         "$other": { ".validate": false }
       },
       "users": {
+        ".read": "root.child('cafet/cafetResps/resps/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')).exists() &&
+                  auth != null && auth.token.email_verified == true",
+
         "$emailId": {
           ".read": "auth != null && auth.token.email_verified == true &&
                     root.child('list/users/'+$emailId).val() === auth.token.email",

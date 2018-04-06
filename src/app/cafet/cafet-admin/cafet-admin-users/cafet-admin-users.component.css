@@ -11,6 +11,10 @@ mat-form-field {
   margin-right: 16px;
 }
 
+.client-group mat-form-field {
+  max-width: 100px;
+}
+
 .client-large {
   display: grid;
   grid-template-columns: 30% 20% 25% 25%;

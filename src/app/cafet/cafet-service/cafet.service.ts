@@ -8,6 +8,9 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { AuthService } from '../../auth/auth-service/auth.service';
 import { ToolsService } from '../../providers/tools.service';
 
+import 'rxjs/add/operator/first';
+import "rxjs/add/observable/zip";
+
 declare var jsPDF: any;
 
 export class CafetUser {
@@ -121,42 +124,101 @@ export class CafetService {
     return this.db.object<CafetUser>("cafet/users/"+user.emailId).set(user);
   }
 
+  updateUserAccount(user: CafetUser) {
+    let refs = {
+      credit: user.credit,
+      lastTransactionDate: user.lastTransactionDate
+    }
+    return this.db.object<any>("cafet/users/"+user.emailId).update(refs);
+  }
+
   archiveUser(user: CafetUser) {
     user.activated = false;
-    return this.db.object<CafetUser>("cafet/archives/users/"+user.emailId).set(user)
-    .then(() => {
-        return this.db.object<CafetUser>("cafet/users/"+user.emailId).remove();
-    });
+
+    let updates = {};
+    updates["users/"+user.emailId] = null;
+    updates["archives/users/"+user.emailId] = user;
+
+    return this.db.object<any>("cafet").update(updates);
   }
 
   restoreUser(user: CafetUser) {
     user.activated = true;
-    return this.db.object<CafetUser>("cafet/users/"+user.emailId).set(user)
-    .then(() => {
-        return this.db.object<CafetUser>("cafet/archives/users/"+user.emailId).remove();
-    });
+
+    let updates = {};
+    updates["users/"+user.emailId] = user;
+    updates["archives/users/"+user.emailId] = null;
+
+    return this.db.object<any>("cafet").update(updates);
   }
 
   deleteUser(user: CafetUser) {
-    return this.db.object<any>("cafet/history/"+user.emailId).remove()
-    .then(() => {
-      return this.db.object<CafetUser>("cafet/archives/users/"+user.emailId).remove();
-    })
+    let updates = {};
+    updates["history/"+user.emailId] = null;
+    updates["archives/users/"+user.emailId] = null;
+
+    return this.db.object<any>("cafet").update(updates);
   }
 
   newTransaction(user: CafetUser, value: number) {
     let oldCredit = user.credit;
     let newCredit = this.tools.round(oldCredit + value, 2);
-    user.credit = newCredit;
-    user.lastTransactionDate = (new Date()).getTime();
-    return this.setUserAccount(user).then(() => {
-      return this.db.list<Transaction>("cafet/history/"+user.emailId).push({
-        value: value,
-        oldCredit: oldCredit,
-        newCredit: newCredit,
-        date: user.lastTransactionDate
-      });
+
+    let updates = {};
+    let date = (new Date()).getTime();
+
+    updates['users/'+user.emailId+'/credit'] = newCredit;
+    updates['users/'+user.emailId+'/lastTransactionDate'] = date;
+    updates['history/'+user.emailId+'/'+date] = {
+      value: value,
+      oldCredit: oldCredit,
+      newCredit: newCredit,
+      date: date
+    };
+    return this.db.object<any>('cafet').update(updates);
+  }
+
+  newDayTransaction(user: CafetUser, value: number) {
+    return this.db.list<any>("cafet/cafetResps/dayTransactions/"+user.emailId).push({
+      value: value,
+      date: (new Date()).getTime(),
+      resp: this.auth.getEmailId()
     });
+  }
+
+  getDayTransactions() {
+    return this.db.object<any>("cafet/cafetResps/dayTransactions").valueChanges();
+  }
+
+  validateDayTransactions() {
+    Observable.zip(
+      this.db.object<any>("cafet/users").valueChanges(),
+      this.getDayTransactions()
+    ).first().subscribe(
+      ([users, dayTr]) => {
+        let updates = {};
+        if (users != null && dayTr != null) {
+          Object.getOwnPropertyNames(dayTr).forEach(emailId => {
+            updates['users/'+emailId+'/credit'] = users[emailId].credit;
+            Object.getOwnPropertyNames(dayTr[emailId]).forEach(transId => {
+              updates['users/'+emailId+'/lastTransactionDate'] = dayTr[emailId][transId].date;
+              updates['history/'+emailId+'/'+transId] = {
+                value: dayTr[emailId][transId].value,
+                oldCredit: updates['users/'+emailId+'/credit'],
+                newCredit: updates['users/'+emailId+'/credit'] + dayTr[emailId][transId].value,
+                date: dayTr[emailId][transId].date
+              }
+              updates['users/'+emailId+'/credit'] += dayTr[emailId][transId].value;
+              updates['cafetResps/dayTransactions/'+emailId+'/'+transId] = null
+            });
+          });
+          this.db.object<any>('cafet').update(updates);
+        }
+      },
+      (err) => {
+        console.log(err)
+      }
+    );
   }
 
   setUserProfile(emailId: string, profile: CafetProfile) {

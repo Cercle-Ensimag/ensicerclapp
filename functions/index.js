@@ -12,7 +12,6 @@ admin.initializeApp({
 
 const db = admin.database();
 
-// List of authorised emails { $emailID: email }
 const usersEmailIds = require("./users_emails.json");
 const usersEmailExteIds = require("./users_emails_exte.json");
 
@@ -73,11 +72,13 @@ exports.onCreateAccount = functions.auth.user().onCreate(event => {
 
   if (!verifyEmail(user.email)) {
     return admin.auth().deleteUser(user.uid).then(() => {
-      return db.ref("/logs/errors/account").push().set(user.email+' pushed back');
+      return db.ref("users/"+emailId).set(null).then(() => {
+        return db.ref("/logs/errors/account").push().set(user.email+' pushed back');
+      });
     });
   } else {
     return db.ref("/users/"+emailId).once("value").then(function(snapshot) {
-        if (snapshot.child('uid').exists() &&
+      if (snapshot.child('uid').exists() &&
         snapshot.child('uid').val() != null &&
         snapshot.child('uid').val() != user.uid
       ){

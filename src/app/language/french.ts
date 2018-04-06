@@ -40,7 +40,7 @@ export class French {
   public static readonly beforePwdRstEmailInfo = "Un e-mail de réinitialisation de mot de passe va être envoyé à l'adresse donnée";
   public static readonly sendPwdResetEmailLabel = "Envoyer l'e-mail";
   public static readonly afterPwdRstEmailInfo = "Ouvre le lien contenu dans l'email envoyé à {0}";
-  public static readonly verificationEmailSentInfo = "Un e-mail de confirmation a été envoyé.<br>Consulte tes e-mails<br>Pour recevoir un nouvel e-mail ou être redirigé sur la page de connexion, choisis ci-dessous :";
+  public static readonly verificationEmailSentInfo = "Un e-mail de confirmation a probablement été envoyé.<br>Consulte tes e-mails.<br><br>Si ton adresse est incorrecte, aucun email n'a été envoyé et ton compte a été supprimé.<br><br>Pour tenter de recevoir un nouvel e-mail ou être redirigé sur la page de connexion, choisis ci-dessous :";
   public static readonly sendEmailAgainLabel = "Renvoyer l'email";
   public static readonly passwordTooShortError = "Mot de passe trop court";
   public static readonly toSignInLabel = "Crée-toi un compte !";
