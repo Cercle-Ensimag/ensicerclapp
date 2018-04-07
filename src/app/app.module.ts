@@ -33,7 +33,7 @@ import { CafetAdminArchivesComponent } from './cafet/cafet-admin/cafet-admin-arc
 import { CafetAdminRespsComponent } from './cafet/cafet-admin/cafet-admin-resps/cafet-admin-resps.component';
 import { CafetRespComponent } from './cafet/cafet-resp/cafet-resp.component';
 import { CafetHistoryComponent } from './cafet/cafet-history/cafet-history.component';
-import { EditCafetUserComponent } from './cafet/edit-cafet-user/edit-cafet-user.component';
+import { EditCafetUserComponent } from './cafet/cafet-admin/edit-cafet-user/edit-cafet-user.component';
 import { CafetDayHistoryComponent } from './cafet/cafet-resp/cafet-day-history/cafet-day-history.component';
 
 import { VoteComponent } from './vote/vote-all/vote.component';

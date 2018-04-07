@@ -8,7 +8,7 @@ import { DeviceSizeService } from '../../../providers/device-size.service';
 import { DicoService } from '../../../language/dico.service';
 
 import { CafetHistoryComponent } from '../../cafet-history/cafet-history.component';
-import { EditCafetUserComponent } from '../../edit-cafet-user/edit-cafet-user.component';
+import { EditCafetUserComponent } from '../edit-cafet-user/edit-cafet-user.component';
 
 
 @Component({

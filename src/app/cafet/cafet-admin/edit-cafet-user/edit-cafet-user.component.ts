@@ -2,8 +2,8 @@ import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { CafetService, CafetUser } from '../cafet-service/cafet.service';
-import { DicoService } from '../../language/dico.service';
+import { CafetService, CafetUser } from '../../cafet-service/cafet.service';
+import { DicoService } from '../../../language/dico.service';
 
 @Component({
   selector: 'app-edit-cafet-user',
