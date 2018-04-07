@@ -5,7 +5,71 @@ mat-form-field {
 .search-box {
   display: grid;
   grid-template-columns: auto 40px;
+  margin: 0;
 }
+
+.accounts-search-lg {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 12px;
+  grid-template-areas:
+    "e e e e"
+    "a b c d";
+}
+
+.accounts-search-md {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 12px;
+  grid-template-areas:
+    "e e"
+    "a b"
+    "c d";
+}
+
+.accounts-search-sm {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-gap: 12px;
+  grid-template-areas:
+    "e"
+    "a"
+    "b"
+    "c"
+    "d";
+}
+
+.accounts-search .item0 {
+  grid-area: e;
+}
+
+.accounts-search .item1 {
+  grid-area: a;
+}
+
+.accounts-search .item2 {
+  grid-area: b;
+}
+
+.accounts-search .item3 {
+  grid-area: c;
+  align-self: center;
+}
+
+.accounts-search .item4 {
+  grid-area: d;
+  align-self: center;
+}
+
+.accounts-search span {
+  margin-left: 24px;
+  margin-right: 24px;
+}
+
+.accounts-search button {
+  margin-top: 12px;
+}
+
 
 .client-group {
   margin-top: 4px;

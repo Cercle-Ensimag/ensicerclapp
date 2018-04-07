@@ -6,21 +6,67 @@
 <div *ngIf="users">
   <!-- Header -->
   <mat-card>
-    <form [formGroup]="searchCtrl">
-
-      <span *ngIf="error" class="error">{{ error }}</span>
-
-      <div class="container">
-        <span class="search-box">
-          <mat-form-field>
-            <input matInput placeholder="{{ d.l.cafetSearchInfo }}" formControlName="email" autocomplete="off">
-          </mat-form-field>
-          <button *ngIf="!edit" mat-icon-button (click)="edit=true"><mat-icon>edit</mat-icon></button>
-          <button *ngIf="edit" mat-icon-button (click)="edit=false"><mat-icon>close</mat-icon></button>
-        </span>
+    <span *ngIf="error" class="error">
+      {{ error }}
+      <div *ngIf="exte">
+        <button mat-raised-button
+        (click)="createCafetAccount(true)"
+        color="warn"
+        >{{ d.l.confirmExteCafetAccount }}</button>
+        <button mat-raised-button
+        (click)="clearAccountCreation()"
+        color="primary"
+        >{{ d.l.cancelLabel }}</button>
       </div>
+    </span>
 
+    <!-- Search account -->
+    <form [formGroup]="accountCtrl">
+
+      <div class="accounts-search" [class.accounts-search-lg]="media.largeSize" [class.accounts-search-md]="!media.largeSize && ! media.mobileSize" [class.accounts-search-sm]="media.mobileSize">
+
+        <div class="item0">
+          <span class="search-box">
+            <mat-form-field>
+              <input matInput placeholder="{{ d.l.emailLabel }}" formControlName="email" autocomplete="off">
+              <mat-hint *ngIf="accountCtrl.get('email').valid && matchUsers.length > 0">{{ d.format(d.l.cafetAccountsMatch, matchUsers.length) }}</mat-hint>
+            </mat-form-field>
+            <button *ngIf="!edit" mat-icon-button (click)="edit=true"><mat-icon>edit</mat-icon></button>
+            <button *ngIf="edit" mat-icon-button (click)="edit=false"><mat-icon>close</mat-icon></button>
+          </span>
+        </div>
+
+        <span *ngIf="edit" class="item1">
+          <mat-form-field>
+            <input matInput placeholder="{{ d.l.firstNameLabel }}" formControlName="firstName" autocomplete="off">
+            <mat-error *ngIf="accountCtrl.get('firstName').invalid">{{ d.l.firstNameError }}</mat-error>
+          </mat-form-field>
+        </span>
+
+        <span *ngIf="edit" class="item2">
+          <mat-form-field>
+            <input matInput placeholder="{{ d.l.lastNameLabel }}" formControlName="lastName" autocomplete="off">
+            <mat-error *ngIf="accountCtrl.get('lastName').invalid">{{ d.l.lastNameError }}</mat-error>
+          </mat-form-field>
+        </span>
+
+        <span *ngIf="edit" class="item3">
+          <mat-form-field>
+            <input matInput type="number" placeholder="{{ d.l.creditLabel }}" formControlName="credit" autocomplete="off">
+          </mat-form-field>
+        </span>
+
+        <span *ngIf="edit" class="item4">
+          <button mat-raised-button
+            (click)="tryCreateCafetAccount(); edit=false"
+            [disabled]="accountCtrl.invalid || matchUsers.length != 0"
+            color="primary"
+          >{{ d.l.createAccountLabel }}</button>
+        </span>
+
+      </div>
     </form>
+
   </mat-card>
 
   <!-- Users display, small screens -->
