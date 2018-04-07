@@ -17,7 +17,6 @@ class Element {
 export class CafetDayHistoryComponent implements OnInit {
 
   history: MatTableDataSource<Element> = new MatTableDataSource<Element>([]);
-  isHistory: boolean = false;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public dayTr: any,
