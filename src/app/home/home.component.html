@@ -49,13 +49,13 @@
             routerLink="/journalist"
           >{{ d.l.journalistLabel }}</a>
           <a mat-list-item
-            *ngIf="auth.isCafetResp"
-            routerLink="/cafet-resp"
-          >{{ d.l.cafetRespLabel }}</a>
-          <a mat-list-item
             *ngIf="auth.isCafetAdmin"
             routerLink="/cafet-admin"
           >{{ d.l.cafetAdminLabel }}</a>
+          <a mat-list-item
+            *ngIf="auth.isCafetResp"
+            routerLink="/cafet-resp"
+          >{{ d.l.cafetRespLabel }}</a>
           <a mat-list-item (click)="snav.toggle(); auth.logout()">{{ d.l.logOutLabel }}</a>
         </mat-nav-list>
       </div>
