@@ -1,0 +1,15 @@
+.history {
+  max-height: 40vh !important;
+}
+
+.plus {
+  color: green;
+}
+
+.minus {
+  color: red;
+}
+
+.mat-column-date {
+  min-width: 120px;
+}

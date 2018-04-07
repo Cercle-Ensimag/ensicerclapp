@@ -7,7 +7,7 @@ import { ToolsService } from '../../providers/tools.service';
 import { DeviceSizeService } from '../../providers/device-size.service';
 import { DicoService } from '../../language/dico.service';
 
-// import { CafetHistoryComponent } from '../cafet-history/cafet-history.component';
+import { CafetDayHistoryComponent } from './cafet-day-history/cafet-day-history.component';
 
 @Component({
   selector: 'app-cafet-resp',
@@ -146,10 +146,12 @@ export class CafetRespComponent implements OnInit {
   }
 
   openHistory(user: CafetUser): void {
-    // let dialogRef = this.dialog.open(CafetHistoryComponent, {
-    //   data: user,
-    //   width: '450px'
-    // });
+    if (this.dayTransactions[user.emailId]) {
+      let dialogRef = this.dialog.open(CafetDayHistoryComponent, {
+        data: this.dayTransactions[user.emailId],
+        width: '450px'
+      });
+    }
   }
 
 }

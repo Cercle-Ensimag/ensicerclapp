@@ -56,7 +56,7 @@
           >{{ d.l.addButtonLabel }}</button>
         </span>
       </form>
-      <button mat-icon-button (click)="openHistory(user)" matSuffix><mat-icon>history</mat-icon></button>
+      <button mat-icon-button (click)="openHistory(user)" [disabled]="dayTransactions[user.emailId] == null" matSuffix><mat-icon>history</mat-icon></button>
     </mat-expansion-panel>
   </mat-accordion>
 
@@ -68,7 +68,7 @@
           <span>{{ cafet.getUserName(user) }}</span>
         </span>
         <span>
-          <button mat-icon-button (click)="openHistory(user)" class="history" matSuffix><mat-icon>history</mat-icon></button>
+          <button mat-icon-button (click)="openHistory(user)" class="history" [disabled]="dayTransactions[user.emailId] == null" matSuffix><mat-icon>history</mat-icon></button>
           <span>{{ getUserCredit(user).toFixed(2) }}€</span>
         </span>
         <span>
