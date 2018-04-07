@@ -179,9 +179,10 @@ export class CafetService {
   }
 
   newDayTransaction(user: CafetUser, value: number) {
-    return this.db.list<any>("cafet/cafetResps/dayTransactions/"+user.emailId).push({
+    let date = (new Date()).getTime();
+    return this.db.object<any>("cafet/cafetResps/dayTransactions/"+user.emailId+"/"+date).set({
       value: value,
-      date: (new Date()).getTime(),
+      date: date,
       resp: this.auth.getEmailId()
     });
   }
