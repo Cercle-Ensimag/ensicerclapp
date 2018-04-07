@@ -2,7 +2,7 @@ button {
   max-width: 200px;
 }
 
-span {
+.button {
   display: inline-block;
   margin: 8px;
   margin-top: 0;

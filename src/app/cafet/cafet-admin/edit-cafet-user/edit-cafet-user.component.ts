@@ -62,7 +62,7 @@ export class EditCafetUserComponent {
     this.cafet.archiveUser(this.user).then(() => {
       this.dialogRef.close();
     }).catch((err) => {
-      this.error = err;
+      this.error = this.d.l.achiveUserPermissionDenied;
     });
   }
 

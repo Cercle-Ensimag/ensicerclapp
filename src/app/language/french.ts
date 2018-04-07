@@ -197,6 +197,8 @@ export class French {
   public static readonly restoreCafetUserButtonLabel = "Restaurer";
   public static readonly deleteCafetUserButtonLabel = "Supprimer";
   public static readonly deleteCafetUserWarning = "Le compte de {0} va être définitivement supprimé.";
+  public static readonly validateDayTransactionsButtonLabel = "Valider les transactions du jour";
+  public static readonly achiveUserPermissionDenied = "Action refusée, le client a des transactions non validées";
 
   // Calendar
   public static readonly calSettingsRessourcesLabel = "Ressources ADE";

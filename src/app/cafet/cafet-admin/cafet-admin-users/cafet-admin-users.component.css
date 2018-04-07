@@ -2,6 +2,11 @@ mat-form-field {
   width: 100%;
 }
 
+.search-box {
+  display: grid;
+  grid-template-columns: auto 40px;
+}
+
 .client-group {
   margin-top: 4px;
 }
@@ -30,6 +35,10 @@ mat-form-field {
   margin-left: 4px;
   margin-right: 4px;
   margin-top: 0;
+}
+
+.client-large .text {
+  margin-top: 18px;
 }
 
 .client-large button {

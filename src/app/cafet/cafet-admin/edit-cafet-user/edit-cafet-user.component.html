@@ -1,19 +1,21 @@
 <span *ngIf="error" class="error">{{ error }}</span>
 
-<span *ngIf="activated && user.activated">
-  <button mat-icon-button (click)="archive()"><mat-icon>archive</mat-icon></button>
-  <label>{{ d.l.achiveCafetUserButtonLabel }}</label>
-</span>
+<form>
+  <span class="button" *ngIf="activated && user.activated">
+    <button mat-icon-button (click)="archive()"><mat-icon>archive</mat-icon></button>
+    <label>{{ d.l.achiveCafetUserButtonLabel }}</label>
+  </span>
 
-<span *ngIf="!activated && !user.activated">
-  <button mat-icon-button (click)="restore()"><mat-icon>restore</mat-icon></button>
-  <label>{{ d.l.restoreCafetUserButtonLabel }}</label>
-</span>
+  <span class="button" *ngIf="!activated && !user.activated">
+    <button mat-icon-button (click)="restore()"><mat-icon>restore</mat-icon></button>
+    <label>{{ d.l.restoreCafetUserButtonLabel }}</label>
+  </span>
 
-<span *ngIf="!activated && !user.activated">
-  <button mat-icon-button (click)="delete()"><mat-icon>delete</mat-icon></button>
-  <label>{{ d.l.deleteCafetUserButtonLabel }}</label>
-</span>
+  <span class="button" *ngIf="!activated && !user.activated">
+    <button mat-icon-button (click)="delete()"><mat-icon>delete</mat-icon></button>
+    <label>{{ d.l.deleteCafetUserButtonLabel }}</label>
+  </span>
+</form>
 
 <form [formGroup]="profileCtrl" (ngSubmit)="onSubmit()" class="container">
 

@@ -11,10 +11,13 @@
       <span *ngIf="error" class="error">{{ error }}</span>
 
       <div class="container">
-        <mat-form-field>
-          <input matInput placeholder="{{ d.l.cafetSearchInfo }}" formControlName="email" autocomplete="off">
-          <button mat-icon-button matSuffix><mat-icon>search</mat-icon></button>
-        </mat-form-field>
+        <span class="search-box">
+          <mat-form-field>
+            <input matInput placeholder="{{ d.l.cafetSearchInfo }}" formControlName="email" autocomplete="off">
+          </mat-form-field>
+          <button *ngIf="!edit" mat-icon-button (click)="edit=true"><mat-icon>edit</mat-icon></button>
+          <button *ngIf="edit" mat-icon-button (click)="edit=false"><mat-icon>close</mat-icon></button>
+        </span>
       </div>
 
     </form>
@@ -56,7 +59,7 @@
           >{{ d.l.addButtonLabel }}</button>
         </span>
       </form>
-      <button mat-icon-button (click)="openEditor(user)" matSuffix><mat-icon>edit</mat-icon></button>
+      <button *ngIf="edit" mat-icon-button (click)="openEditor(user)" matSuffix><mat-icon>edit</mat-icon></button>
       <button mat-icon-button (click)="openHistory(user)" matSuffix><mat-icon>history</mat-icon></button>
     </mat-expansion-panel>
   </mat-accordion>
@@ -65,8 +68,8 @@
   <div *ngIf="media.largeSize" class="client-group">
     <mat-card *ngFor="let user of displayedUsers | slice:pageIndex*pageSize:(pageIndex+1)*pageSize">
       <div class="client-large">
-        <span>
-          <button mat-icon-button (click)="openEditor(user)" class="history" matSuffix><mat-icon>edit</mat-icon></button>
+        <span [class.text]="!edit">
+          <button *ngIf="edit" mat-icon-button (click)="openEditor(user)" class="history" matSuffix><mat-icon>edit</mat-icon></button>
           <span>{{ cafet.getUserName(user) }}</span>
         </span>
         <span>
