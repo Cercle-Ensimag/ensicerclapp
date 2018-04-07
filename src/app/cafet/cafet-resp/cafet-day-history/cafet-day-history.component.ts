@@ -35,7 +35,6 @@ export class CafetDayHistoryComponent implements OnInit {
         });
       });
       this.history.data = elements;
-      this.isHistory = true;
     }
   }
 
