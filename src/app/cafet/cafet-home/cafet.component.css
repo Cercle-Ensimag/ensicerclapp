@@ -3,3 +3,7 @@ mat-card {
   margin-bottom: 4px;
   max-width: 500px;
 }
+
+mat-error {
+  display: block;
+}

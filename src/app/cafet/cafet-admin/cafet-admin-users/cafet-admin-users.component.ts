@@ -213,7 +213,14 @@ export class CafetAdminUsersComponent implements OnInit {
     this.pageIndex = 0;
     this.displayedUsers = this.users.filter(
       user => user.emailId.includes(emailId)
-    );
+    ).sort((user1, user2) => {
+      let firsts = user1.profile.firstName.localeCompare(user2.profile.firstName);
+      if (firsts == 0) {
+        return user1.profile.lastName.localeCompare(user2.profile.lastName);
+      } else {
+        return firsts;
+      }
+    });
   }
 
   updateList(event) {

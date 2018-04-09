@@ -3,14 +3,14 @@
   <mat-spinner class="spinner"></mat-spinner>
 </mat-card>
 
-<!-- Compte --> 
+<!-- Compte -->
 <div *ngIf="cafet.user">
   <div *ngIf="cafet.user.activated">
     <!-- Credit -->
     <mat-card>
       <h2>{{ d.l.creditLabel }}: {{ cafet.user.credit.toFixed(2) }}€</h2>
       <mat-error *ngIf="isCreditError()" [innerHTML]="getCreditError()"></mat-error>
-      <button mat-icon-button (click)="openHistory()" matSuffix><mat-icon>history</mat-icon></button>
+      <button mat-icon-button (click)="openHistory()"><mat-icon>history</mat-icon></button>
     </mat-card>
     <!-- Week ingredient -->
     <!-- <mat-card *ngIf="ingredients">

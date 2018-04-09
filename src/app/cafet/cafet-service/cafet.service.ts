@@ -255,7 +255,7 @@ export class CafetService {
       { title: "Prenom", dataKey: "firstname" },
       { title: "Nom", dataKey: "lastname" },
       { title: "Solde", dataKey: "credit" },
-      { title: "-", dataKey: "minus"},
+      { title: "-", dataKey: "minus1"},
       { title: "-", dataKey: "minus"},
       { title: "-", dataKey: "minus"},
       { title: "-", dataKey: "minus"},
@@ -265,11 +265,20 @@ export class CafetService {
     ];
 
     var rows = [];
+    users = users.sort((user1, user2) => {
+      let firsts = user1.profile.firstName.localeCompare(user2.profile.firstName);
+      if (firsts == 0) {
+        return user1.profile.lastName.localeCompare(user2.profile.lastName);
+      } else {
+        return firsts;
+      }
+    });
     for (let user of users) {
       rows.push({
         firstname: user.profile.firstName,
         lastname: user.profile.lastName,
-        credit: user.credit.toFixed(2) + "€"
+        credit: user.credit.toFixed(2) + "€",
+        minus1: user.credit < 0 ? "*********" : ""
       });
     }
 
@@ -323,6 +332,7 @@ export class CafetService {
       },
       columnStyles: {
         credit: { columnWidth: 60, halign: 'right', cellPadding: { right: 15 } },
+        minus1: { columnWidth: 46 },
         minus: { columnWidth: 46 },
         div: { columnWidth: 1, fillColor: 50 },
         plus: { columnWidth: 46 }
