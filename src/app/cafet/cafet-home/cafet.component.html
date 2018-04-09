@@ -9,7 +9,7 @@
     <!-- Credit -->
     <mat-card>
       <h2>{{ d.l.creditLabel }}: {{ cafet.user.credit.toFixed(2) }}€</h2>
-      <mat-error *ngIf="isCreditError()" [innerHTML]="getCreditError()"></mat-error>
+      <div><mat-error *ngIf="isCreditError()" [innerHTML]="getCreditError()"></mat-error></div>
       <button mat-icon-button (click)="openHistory()"><mat-icon>history</mat-icon></button>
     </mat-card>
     <!-- Week ingredient -->

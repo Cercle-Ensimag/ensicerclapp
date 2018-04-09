@@ -28,8 +28,8 @@ export class EditCafetUserComponent {
   ) {
     this.activated = user.activated;
     this.profileCtrl = this.fb.group({
-      firstName: [this.user.profile.firstName, [Validators.required]],
-      lastName: [this.user.profile.lastName, [Validators.required]],
+      firstName: [this.user.profile.firstName, [Validators.required, Validators.minLength(2)]],
+      lastName: [this.user.profile.lastName, [Validators.required, Validators.minLength(2)]],
       email: [this.user.profile.email, [
         Validators.required,
         Validators.email
@@ -53,13 +53,14 @@ export class EditCafetUserComponent {
       lastName: this.getLastName(),
       email: this.getEmail(),
       exte: !this.list.isInList(this.getEmail())
-    }).subscribe(
-      () => {
-        this.dialogRef.close();
+    }, this.user.activated).subscribe(
+      res => {
+        res.then(
+          () => { this.dialogRef.close() },
+          err => { this.error = err }
+        )
       },
-      (err) => {
-        this.error = err;
-      }
+      err => { this.error = err }
     );
   }
 
@@ -67,7 +68,7 @@ export class EditCafetUserComponent {
     this.cafet.archiveUser(this.user).then(() => {
       this.dialogRef.close();
     }).catch((err) => {
-      this.error = this.d.l;
+      this.error = this.d.l.achiveUserPermissionDenied;
     });
   }
 

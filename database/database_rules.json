@@ -168,12 +168,16 @@
           "$emailId": {
             ".read": "auth != null && auth.token.email_verified == true &&
                       root.child('list/users/'+$emailId).val() === auth.token.email",
-            ".validate": "!root.child('cafet/cafetResps/dayTransactions/'+$emailId).exists()",
+            ".validate": "(data.exists() && newData.exists())
+                          || (!data.exists() && (!root.child('cafet/history/'+$emailId).exists()
+                                                 || (root.child('cafet/users/'+$emailId+'/credit').val() === newData.child('credit').val()
+                                                     && root.child('cafet/users/'+$emailId+'/creationDate').val() === newData.child('creationDate').val())))
+                          || (!newData.exists() && !root.child('cafet/cafetResps/dayTransactions/'+$emailId).exists())",
 
             "emailId": { ".validate": "newData.val() === $emailId" },
             "activated": { ".validate": "newData.isBoolean()" },
             "credit": { ".validate": "newData.isNumber()" },
-            "creationDate": { ".validate": "newData.isNumber()" },
+            "creationDate": { ".validate": "newData.isNumber() && (!data.exists() || newData.val() === data.val())" },
             "lastTransactionDate": { ".validate": "newData.isNumber()" },
             "profile": {
               ".validate": "newData.hasChildren(['firstName', 'lastName'])",
@@ -199,12 +203,16 @@
         "$emailId": {
           ".read": "auth != null && auth.token.email_verified == true &&
                     root.child('list/users/'+$emailId).val() === auth.token.email",
-          ".validate": "newData.exists() || !root.child('cafet/cafetResps/dayTransactions/'+$emailId).exists()",
+          ".validate": "(data.exists() && newData.exists())
+                        || (!data.exists() && (!root.child('cafet/history/'+$emailId).exists()
+                                               || (root.child('cafet/archives/users/'+$emailId+'/credit').val() === newData.child('credit').val()
+                                                   && root.child('cafet/archives/users/'+$emailId+'/creationDate').val() === newData.child('creationDate').val())))
+                        || (!newData.exists() && !root.child('cafet/cafetResps/dayTransactions/'+$emailId).exists())",
 
           "emailId": { ".validate": "newData.val() === $emailId" },
           "activated": { ".validate": "newData.isBoolean()" },
           "credit": { ".validate": "newData.isNumber()" },
-          "creationDate": { ".validate": "newData.isNumber()" },
+          "creationDate": { ".validate": "newData.isNumber() && (!data.exists() || newData.val() === data.val())" },
           "lastTransactionDate": { ".validate": "newData.isNumber()" },
           "profile": {
             ".validate": "newData.hasChildren(['firstName', 'lastName'])",

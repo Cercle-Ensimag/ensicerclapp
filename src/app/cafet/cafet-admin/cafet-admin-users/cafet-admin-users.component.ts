@@ -142,8 +142,8 @@ export class CafetAdminUsersComponent implements OnInit {
 
   createAccountForm() {
     this.accountCtrl = this.fb.group({
-      firstName: ['', [Validators.required, Validators.minLength(3)]],
-      lastName: ['', [Validators.required, Validators.minLength(3)]],
+      firstName: ['', [Validators.required, Validators.minLength(2)]],
+      lastName: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.email]],
       credit: [0, []]
     });
@@ -212,15 +212,11 @@ export class CafetAdminUsersComponent implements OnInit {
     let emailId = this.tools.getEmailIdFromEmail(email);
     this.pageIndex = 0;
     this.displayedUsers = this.users.filter(
-      user => user.emailId.includes(emailId)
-    ).sort((user1, user2) => {
-      let firsts = user1.profile.firstName.localeCompare(user2.profile.firstName);
-      if (firsts == 0) {
-        return user1.profile.lastName.localeCompare(user2.profile.lastName);
-      } else {
-        return firsts;
-      }
-    });
+      user => (
+        user.emailId.includes(emailId)
+        || this.cafet.getUserName(user).includes(this.tools.titleCase(email))
+      )
+    );
   }
 
   updateList(event) {

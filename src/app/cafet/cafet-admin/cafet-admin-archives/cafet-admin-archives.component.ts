@@ -80,7 +80,10 @@ export class CafetAdminArchivesComponent implements OnInit {
     let emailId = this.tools.getEmailIdFromEmail(email);
     this.pageIndex = 0;
     this.displayedUsers = this.users.filter(
-      user => user.emailId.includes(emailId)
+      user => (
+        user.emailId.includes(emailId)
+        || this.cafet.getUserName(user).includes(this.tools.titleCase(email))
+      )
     );
   }
 

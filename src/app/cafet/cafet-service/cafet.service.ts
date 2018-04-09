@@ -10,6 +10,7 @@ import { ToolsService } from '../../providers/tools.service';
 
 import 'rxjs/add/operator/first';
 import "rxjs/add/observable/zip";
+import "rxjs/add/operator/map";
 
 declare var jsPDF: any;
 
@@ -107,21 +108,36 @@ export class CafetService {
     });
   }
 
-  getUser(emailId): Observable<CafetUser> {
+  getUser(emailId: string): Observable<CafetUser> {
     return this.db.object<CafetUser>("cafet/users/"+emailId).valueChanges();
   }
 
   getUsers(): Observable<CafetUser[]> {
-    return this.db.list<CafetUser>("cafet/users").valueChanges();
+    return this.db.list<CafetUser>("cafet/users").valueChanges().map(users => this.sortUsers(users));
+  }
+
+  getArchivesUser(emailId: string): Observable<CafetUser> {
+    return this.db.object<CafetUser>("cafet/archives/users/"+emailId).valueChanges();
   }
 
   getArchivesUsers(): Observable<CafetUser[]> {
-    return this.db.list<CafetUser>("cafet/archives/users").valueChanges();
+    return this.db.list<CafetUser>("cafet/archives/users").valueChanges().map(users => this.sortUsers(users));
   }
 
   setUserAccount(user: CafetUser) {
     user.activated = true;
     return this.db.object<CafetUser>("cafet/users/"+user.emailId).set(user);
+  }
+
+  sortUsers(users: CafetUser[]): CafetUser[] {
+    return users.sort((user1, user2) => {
+      let firsts = user1.profile.firstName.localeCompare(user2.profile.firstName);
+      if (firsts == 0) {
+        return user1.profile.lastName.localeCompare(user2.profile.lastName);
+      } else {
+        return firsts;
+      }
+    });
   }
 
   getUserEmailId(email: string, exte: boolean) {
@@ -230,22 +246,23 @@ export class CafetService {
     );
   }
 
-  setUserProfile(emailId: string, profile: CafetProfile) {
+  setUserProfile(emailId: string, profile: CafetProfile, activated: boolean) {
     return Observable.zip(
-      this.getUser(emailId),
+      activated ? this.getUser(emailId) : this.getArchivesUser(emailId),
       this.getHistory(emailId)
     ).first().map(
       ([user, history]) => {
+        let prefix = activated ? "": "archives/";
         let updates = {};
-        updates["users/"+emailId] = null;
+        updates[prefix + "users/"+emailId] = null;
         updates["history/"+emailId] = null;
 
         user.emailId = this.getUserEmailId(profile.email, profile.exte);
         user.profile = profile;
-        updates["users/"+user.emailId] = user;
+        updates[prefix + "users/"+user.emailId] = user;
         updates["history/"+user.emailId] = history;
 
-        this.db.object<any>("cafet").update(updates);
+        return this.db.object<any>("cafet").update(updates);
       },
       (err) => {
         console.log(err)
@@ -266,10 +283,11 @@ export class CafetService {
   }
 
   getUserName(user: CafetUser) {
+    let exte = user.profile.exte ? " *": "";
     if (!user.profile) {
-      return this.tools.titleCase(user.emailId.split('|').join(' '))
+      return this.tools.titleCase(user.emailId.split('|').join(' ')) + exte;
     } else {
-      return this.tools.titleCase(user.profile.firstName + " " + user.profile.lastName);
+      return this.tools.titleCase(user.profile.firstName + " " + user.profile.lastName) + exte;
     }
   }
 
@@ -292,18 +310,10 @@ export class CafetService {
     ];
 
     var rows = [];
-    users = users.sort((user1, user2) => {
-      let firsts = user1.profile.firstName.localeCompare(user2.profile.firstName);
-      if (firsts == 0) {
-        return user1.profile.lastName.localeCompare(user2.profile.lastName);
-      } else {
-        return firsts;
-      }
-    });
     for (let user of users) {
       rows.push({
         firstname: user.profile.firstName,
-        lastname: user.profile.lastName,
+        lastname: user.profile.lastName + (user.profile.exte ? " *": ""),
         credit: user.credit.toFixed(2) + "€",
         minus1: user.credit < 0 ? "*********" : ""
       });
