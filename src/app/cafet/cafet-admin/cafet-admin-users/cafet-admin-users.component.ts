@@ -89,7 +89,7 @@ export class CafetAdminUsersComponent implements OnInit {
     let emailId = this.tools.getEmailIdFromEmail(this.getAccountEmail());
     let name = this.tools.titleCase(emailId.replace('|', ' ').replace('  ', ' '));
 
-    if (this.list.authUsers[emailId] !== this.getAccountEmail().toLowerCase()) {
+    if (!this.list.isInList(this.getAccountEmail())) {
       this.error = this.d.format(this.d.l.notOnTheList, name);
       this.exte = true;
     } else {

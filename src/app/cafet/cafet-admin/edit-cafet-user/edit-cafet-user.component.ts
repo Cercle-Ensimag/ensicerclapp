@@ -4,6 +4,7 @@ import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
 
 import { CafetService, CafetUser } from '../../cafet-service/cafet.service';
 import { DicoService } from '../../../language/dico.service';
+import { ListService } from '../../../providers/list.service';
 
 @Component({
   selector: 'app-edit-cafet-user',
@@ -21,6 +22,7 @@ export class EditCafetUserComponent {
     @Inject(MAT_DIALOG_DATA) public user: CafetUser,
     public dialogRef: MatDialogRef<EditCafetUserComponent>,
     public cafet: CafetService,
+    private list: ListService,
     private fb: FormBuilder,
     public d: DicoService
   ) {
@@ -50,19 +52,22 @@ export class EditCafetUserComponent {
       firstName: this.getFirstName(),
       lastName: this.getLastName(),
       email: this.getEmail(),
-      exte: this.user.profile.exte
-    }).then(() => {
-      this.dialogRef.close();
-    }).catch((err) => {
-      this.error = err;
-    });
+      exte: !this.list.isInList(this.getEmail())
+    }).subscribe(
+      () => {
+        this.dialogRef.close();
+      },
+      (err) => {
+        this.error = err;
+      }
+    );
   }
 
   archive() {
     this.cafet.archiveUser(this.user).then(() => {
       this.dialogRef.close();
     }).catch((err) => {
-      this.error = this.d.l.achiveUserPermissionDenied;
+      this.error = this.d.l;
     });
   }
 

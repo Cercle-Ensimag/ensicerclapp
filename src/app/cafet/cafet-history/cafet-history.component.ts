@@ -52,7 +52,7 @@ export class CafetHistoryComponent {
   }
 
   watchHistory() {
-    return this.cafet.getHistory(this.user).subscribe(
+    return this.cafet.getHistory(this.user.emailId).subscribe(
       history => {
         let elements: Element[] = [];
         history.reverse().forEach(trans => {

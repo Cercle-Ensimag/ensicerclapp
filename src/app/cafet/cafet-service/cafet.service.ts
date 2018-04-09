@@ -124,6 +124,14 @@ export class CafetService {
     return this.db.object<CafetUser>("cafet/users/"+user.emailId).set(user);
   }
 
+  getUserEmailId(email: string, exte: boolean) {
+    if (exte) {
+      return "%exte%" + this.tools.getEmailIdFromEmail(email);
+    } else {
+      return this.tools.getEmailIdFromEmail(email);
+    }
+  }
+
   updateUserAccount(user: CafetUser) {
     let refs = {
       credit: user.credit,
@@ -223,7 +231,26 @@ export class CafetService {
   }
 
   setUserProfile(emailId: string, profile: CafetProfile) {
-    return this.db.object<CafetProfile>("cafet/users/"+emailId+"/profile").set(profile);
+    return Observable.zip(
+      this.getUser(emailId),
+      this.getHistory(emailId)
+    ).first().map(
+      ([user, history]) => {
+        let updates = {};
+        updates["users/"+emailId] = null;
+        updates["history/"+emailId] = null;
+
+        user.emailId = this.getUserEmailId(profile.email, profile.exte);
+        user.profile = profile;
+        updates["users/"+user.emailId] = user;
+        updates["history/"+user.emailId] = history;
+
+        this.db.object<any>("cafet").update(updates);
+      },
+      (err) => {
+        console.log(err)
+      }
+    );
   }
 
   getCafetResps() {
@@ -246,8 +273,8 @@ export class CafetService {
     }
   }
 
-  getHistory(user: CafetUser) {
-    return this.db.list<Transaction>("cafet/history/"+user.emailId).valueChanges();
+  getHistory(emailId: string) {
+    return this.db.list<Transaction>("cafet/history/"+emailId).valueChanges();
   }
 
   accountsToPdf(users: CafetUser[]) {

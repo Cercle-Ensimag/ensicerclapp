@@ -199,6 +199,7 @@
         "$emailId": {
           ".read": "auth != null && auth.token.email_verified == true &&
                     root.child('list/users/'+$emailId).val() === auth.token.email",
+          ".validate": "newData.exists() || !root.child('cafet/cafetResps/dayTransactions/'+$emailId).exists()",
 
           "emailId": { ".validate": "newData.val() === $emailId" },
           "activated": { ".validate": "newData.isBoolean()" },
