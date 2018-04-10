@@ -124,6 +124,10 @@ export class CafetService {
     return this.db.list<CafetUser>("cafet/archives/users").valueChanges().map(users => this.sortUsers(users));
   }
 
+  getTrezAccounts(): Observable<CafetUser[]> {
+    return this.db.list<CafetUser>("cafet/trezo/accounts").valueChanges();
+  }
+
   setUserAccount(user: CafetUser) {
     user.activated = true;
     return this.db.object<CafetUser>("cafet/users/"+user.emailId).set(user);
@@ -193,6 +197,24 @@ export class CafetService {
 
     updates['users/'+user.emailId+'/credit'] = newCredit;
     updates['users/'+user.emailId+'/lastTransactionDate'] = date;
+    updates['history/'+user.emailId+'/'+date] = {
+      value: value,
+      oldCredit: oldCredit,
+      newCredit: newCredit,
+      date: date
+    };
+    return this.db.object<any>('cafet').update(updates);
+  }
+
+  newTrezoTransaction(user: CafetUser, value: number) {
+    let oldCredit = user.credit;
+    let newCredit = this.tools.round(oldCredit + value, 2);
+
+    let updates = {};
+    let date = (new Date()).getTime();
+
+    updates['trezo/accounts/'+user.emailId+'/credit'] = newCredit;
+    updates['trezo/accounts/'+user.emailId+'/lastTransactionDate'] = date;
     updates['history/'+user.emailId+'/'+date] = {
       value: value,
       oldCredit: oldCredit,
@@ -283,10 +305,10 @@ export class CafetService {
   }
 
   getUserName(user: CafetUser) {
-    let exte = user.profile.exte ? " *": "";
     if (!user.profile) {
-      return this.tools.titleCase(user.emailId.split('|').join(' ')) + exte;
+      return this.tools.titleCase(user.emailId.split('|').join(' ').replace(/^%[a-z]+%/, ""));
     } else {
+      let exte = user.profile.exte ? " *": "";
       return this.tools.titleCase(user.profile.firstName + " " + user.profile.lastName) + exte;
     }
   }

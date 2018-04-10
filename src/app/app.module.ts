@@ -32,6 +32,7 @@ import { CafetAdminAccountsComponent } from './cafet/cafet-admin/cafet-admin-acc
 import { CafetAdminArchivesComponent } from './cafet/cafet-admin/cafet-admin-archives/cafet-admin-archives.component';
 import { CafetAdminRespsComponent } from './cafet/cafet-admin/cafet-admin-resps/cafet-admin-resps.component';
 import { CafetRespComponent } from './cafet/cafet-resp/cafet-resp.component';
+import { TrezoComponent } from './cafet/cafet-admin/trezo/trezo.component';
 import { CafetHistoryComponent } from './cafet/cafet-history/cafet-history.component';
 import { EditCafetUserComponent } from './cafet/cafet-admin/edit-cafet-user/edit-cafet-user.component';
 import { CafetDayHistoryComponent } from './cafet/cafet-resp/cafet-day-history/cafet-day-history.component';
@@ -124,7 +125,7 @@ import { environment } from '../environments/environment';
     AdminUsersComponent,
     HomeComponent, DashboardComponent,
     LoginComponent, SignUpComponent, EmailVerifComponent, PasswordResetComponent,
-    CafetComponent, CafetInfoComponent, CafetAdminComponent, CafetAdminUsersComponent, CafetAdminAccountsComponent, CafetAdminArchivesComponent, CafetAdminRespsComponent, CafetRespComponent, CafetHistoryComponent, EditCafetUserComponent, CafetDayHistoryComponent,
+    CafetComponent, CafetInfoComponent, CafetAdminComponent, CafetAdminUsersComponent, CafetAdminAccountsComponent, CafetAdminArchivesComponent, CafetAdminRespsComponent, TrezoComponent, CafetRespComponent, CafetHistoryComponent, EditCafetUserComponent, CafetDayHistoryComponent,
     VoteComponent, PollComponent, VoteSnackbarComponent, VoteAdminComponent, EditPollComponent, ResultsComponent, VoteUsersComponent, AssessorComponent,
     CalendarComponent, EditCalComponent, CalSettingsComponent,
     EventsHomeComponent, EventComponent, EventAdminComponent, ComRespComponent, EditEventsComponent,

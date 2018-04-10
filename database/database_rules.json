@@ -163,6 +163,26 @@
 
         "$other": { ".validate": false }
       },
+      "trezo": {
+        "accounts": {
+          "$emailId": {
+            ".read": "auth != null && auth.token.email_verified == true &&
+                      root.child('list/users/'+$emailId).val() === auth.token.email",
+            ".validate": "data.exists() && newData.exists()",
+
+            "emailId": { ".validate": "newData.val() === $emailId" },
+            "activated": { ".validate": "newData.isBoolean()" },
+            "credit": { ".validate": "newData.isNumber()" },
+            "creationDate": { ".validate": "newData.isNumber() && (!data.exists() || newData.val() === data.val())" },
+            "lastTransactionDate": { ".validate": "newData.isNumber()" },
+            "profile": { ".validate": "!newData.exists()" },
+
+            "$other": { ".validate": false }
+          }
+        },
+
+        "$other": { ".validate": false }
+      },
       "archives": {
         "users": {
           "$emailId": {

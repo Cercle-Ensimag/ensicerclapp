@@ -176,6 +176,7 @@ export class French {
   public static readonly informAboutTransaction = "Le solde du compte de {0} a bien été modifié de {1}€";
   public static readonly informAboutCafetCreation = "Le compte de {0} a bien été créé et crédité de {1}€";
   public static readonly clientListLabel = "Clients";
+  public static readonly cafetTrezoLabel = "Trezo";
   public static readonly createAccountLabel = "Créer le compte";
   public static readonly cafetEmailInfo = "Entrer l'e-mail d'un client";
   public static readonly cafetSearchInfo = "Chercher un client";
