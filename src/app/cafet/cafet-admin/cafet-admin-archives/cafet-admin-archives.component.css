@@ -1,6 +1,6 @@
 .grid {
   display: grid;
-  grid-template-columns: 40% 30% 15% 15%;
+  grid-template-columns: 50% 20% 15% 15%;
   text-align: left;
   width: 100%;
 }

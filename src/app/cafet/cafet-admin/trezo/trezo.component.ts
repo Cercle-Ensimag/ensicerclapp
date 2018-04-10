@@ -16,9 +16,11 @@ import { CafetHistoryComponent } from '../../cafet-history/cafet-history.compone
 })
 export class TrezoComponent implements OnInit {
 
+  trezo: CafetUser[];
   users: CafetUser[];
   displayedUsers: CafetUser[] = [];
   usersWatcher: any;
+  trezoWatcher: any;
 
   controls: {[emailId: string]: {
     add: FormControl,
@@ -26,6 +28,13 @@ export class TrezoComponent implements OnInit {
   }};
 
   expanded: {[emailId: string]: boolean};
+
+  totalOfPositive = 0;
+  totalOfNegative = 0;
+  totalOnAccounts = 0;
+  nbOfPosAccounts = 0;
+  nbOfNegAccounts = 0;
+  nbOfAllAccounts = 0;
 
   error: string;
 
@@ -38,25 +47,33 @@ export class TrezoComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.trezoWatcher = this.watchTrezo();
     this.usersWatcher = this.watchUsers();
   }
 
   ngOnDestroy() {
+    this.trezoWatcher.unsubscribe();
     this.usersWatcher.unsubscribe();
   }
 
-  watchUsers() {
-    return this.cafet.getTrezAccounts().subscribe(users => {
-      this.users = users;
+  watchTrezo() {
+    return this.cafet.getTrezAccounts().subscribe(trezo => {
+      this.trezo = trezo;
       this.controls = {};
       this.expanded = {};
-      for (let user of users) {
+      for (let user of trezo) {
         this.controls[user.emailId] = {
           add: new FormControl("", [Validators.required, Validators.max(1000), Validators.min(0.1)]),
           sub: new FormControl("", [Validators.required, Validators.max(1000), Validators.min(0.1)])
         };
         this.expanded[user.emailId] = false;
       }
+    })
+  }
+
+  watchUsers() {
+    return this.cafet.getUsers().subscribe(users => {
+        this.processAccounts(users);
     })
   }
 
@@ -87,5 +104,28 @@ export class TrezoComponent implements OnInit {
       data: user,
       width: '450px'
     });
+  }
+
+
+  // Credits
+
+  processAccounts(users: CafetUser[]) {
+    this.totalOfPositive = 0;
+    this.totalOfNegative = 0;
+    this.totalOnAccounts = 0;
+    this.nbOfPosAccounts = 0;
+    this.nbOfNegAccounts = 0;
+    this.nbOfAllAccounts = 0;
+    users.forEach(user => {
+      if (user.credit < 0) {
+        this.totalOfNegative += user.credit;
+        this.nbOfNegAccounts += 1;
+      } else {
+        this.totalOfPositive += user.credit;
+        this.nbOfPosAccounts += 1;
+      }
+      this.totalOnAccounts += user.credit;
+      this.nbOfAllAccounts += 1;
+    })
   }
 }

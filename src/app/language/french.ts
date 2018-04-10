@@ -176,7 +176,6 @@ export class French {
   public static readonly informAboutTransaction = "Le solde du compte de {0} a bien été modifié de {1}€";
   public static readonly informAboutCafetCreation = "Le compte de {0} a bien été créé et crédité de {1}€";
   public static readonly clientListLabel = "Clients";
-  public static readonly cafetTrezoLabel = "Trezo";
   public static readonly createAccountLabel = "Créer le compte";
   public static readonly cafetEmailInfo = "Entrer l'e-mail d'un client";
   public static readonly cafetSearchInfo = "Chercher un client";
@@ -188,16 +187,20 @@ export class French {
   public static readonly printAccountsToPdf = "Imprimer les comptes";
   public static readonly leaveAccountsToPdfPreview = "Quitter l'aperçu";
   public static readonly saveAccountsToPdf = "Enregistrer les comptes";
+
   public static readonly cafetAccountsMatch = "{0} compte existe déjà";
   public static readonly confirmExteCafetAccount = "Créer le compte quand même";
-  public static readonly cafetArchivesLabel = "Archives";
   public static readonly cafetAccountCreationDateLabel = "Création du compte";
+
   public static readonly transactionDateLabel = "Date";
   public static readonly transactionValueLabel = "Montant";
+
+  public static readonly cafetArchivesLabel = "Archives";
   public static readonly achiveCafetUserButtonLabel = "Archiver";
   public static readonly restoreCafetUserButtonLabel = "Restaurer";
   public static readonly deleteCafetUserButtonLabel = "Supprimer";
   public static readonly deleteCafetUserWarning = "Le compte de {0} va être définitivement supprimé.";
+
   public static readonly validateDayTransactionsButtonLabel = "Valider les transactions du jour";
   public static readonly achiveUserPermissionDenied = "Action refusée, le client a des transactions non validées";
 
@@ -207,4 +210,11 @@ export class French {
   public static readonly calSettingsTitle = "Paramètres du calendrier";
   public static readonly noCalEvent = "Rien de prévu";
 
+  public static readonly cafetTrezoLabel = "Trezo";
+  public static readonly numberOfAllAccountsLabel = "Nombre de comptes total : {0}";
+  public static readonly totalOfAllAccountsLabel = "Total sur les comptes : {0}€";
+  public static readonly numberOfNegAccountsLabel = "Nombre de comptes en négatif : {0}";
+  public static readonly totalOfNegativeAccountsLabel = "Total sur les comptes en négatif : {0}€";
+  public static readonly numberOfPosAccountsLabel = "Nombre de comptes en positif : {0}";
+  public static readonly totalOfPositiveAccountsLabel = "Total sur les comptes en positif : {0}€";
 }
