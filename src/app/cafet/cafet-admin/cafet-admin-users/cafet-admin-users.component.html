@@ -34,6 +34,9 @@
             <button *ngIf="!edit" mat-icon-button (click)="edit=true"><mat-icon>edit</mat-icon></button>
             <button *ngIf="edit" mat-icon-button (click)="edit=false"><mat-icon>close</mat-icon></button>
           </span>
+          <mat-checkbox *ngIf="!edit" [disabled]="orderByLastTransactionDate" color="primary" formControlName="byCredit">{{ d.l.orderByCreditLabel }}</mat-checkbox>
+          <mat-checkbox *ngIf="!edit" [disabled]="orderByCredit" color="primary" formControlName="byDate">{{ d.l.orderByLastTransactionDateLabel }}</mat-checkbox>
+
         </div>
 
         <span *ngIf="edit" class="item1">

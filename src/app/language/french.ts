@@ -183,6 +183,9 @@ export class French {
   public static readonly substractButtonLabel = "Débiter";
   public static readonly weekIngredientLabel = "Ingrédient de la semaine";
   public static readonly negativeCreditError = "T'ES EN NEGATIF !!<br><small>Tu devrais mettre de l'argent sur ton compte</small>";
+  public static readonly orderByCreditLabel = "par solde";
+  public static readonly orderByLastTransactionDateLabel = "par date";
+  
   public static readonly cafetAccountsLabel = "Comptes";
   public static readonly printAccountsToPdf = "Imprimer les comptes";
   public static readonly leaveAccountsToPdfPreview = "Quitter l'aperçu";

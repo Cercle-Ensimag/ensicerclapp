@@ -24,13 +24,11 @@ export class CafetAdminUsersComponent implements OnInit {
   matchUsers: CafetUser[] = [];
   usersWatcher: any;
 
-  searchCtrl: FormGroup;
-  searchWatcher1: any;
-  searchWatcher2: any;
-
   accountCtrl: FormGroup;
   accountWatcher1: any;
   accountWatcher2: any;
+  accountWatcher3: any;
+  accountWatcher4: any;
 
   controls: {[emailId: string]: {
     add: FormControl,
@@ -43,6 +41,9 @@ export class CafetAdminUsersComponent implements OnInit {
   error: string;
   exte: boolean;
   edit: boolean;
+
+  orderByCredit: boolean;
+  orderByLastTransactionDate: boolean;
 
   constructor(
     public cafet: CafetService,
@@ -145,7 +146,9 @@ export class CafetAdminUsersComponent implements OnInit {
       firstName: ['', [Validators.required, Validators.minLength(2)]],
       lastName: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.email]],
-      credit: [0, []]
+      credit: [0, []],
+      byCredit: [],
+      byDate: []
     });
     if (this.accountWatcher1) {
       this.accountWatcher1.unsubscribe();
@@ -159,6 +162,20 @@ export class CafetAdminUsersComponent implements OnInit {
     }
     this.accountWatcher2 = this.accountCtrl.valueChanges.subscribe(() => {
       this.error = null;
+    });
+    if (this.accountWatcher3) {
+      this.accountWatcher3.unsubscribe();
+    }
+    this.accountWatcher3 = this.accountCtrl.get('byCredit').valueChanges.subscribe((checked) => {
+      this.orderByCredit = checked;
+      this.sortUsers(this.getAccountEmail());
+    });
+    if (this.accountWatcher4) {
+      this.accountWatcher4.unsubscribe();
+    }
+    this.accountWatcher4 = this.accountCtrl.get('byDate').valueChanges.subscribe((checked) => {
+      this.orderByLastTransactionDate = checked;
+      this.sortUsers(this.getAccountEmail());
     });
   }
 
@@ -216,6 +233,20 @@ export class CafetAdminUsersComponent implements OnInit {
         || this.cafet.getUserName(user).includes(this.tools.titleCase(email))
       )
     );
+    if (this.orderByLastTransactionDate) {
+      this.displayedUsers = this.displayedUsers.sort(
+        (u1, u2) => {
+          return u1.lastTransactionDate - u2.lastTransactionDate;
+        }
+      );
+    }
+    if (this.orderByCredit) {
+      this.displayedUsers = this.displayedUsers.sort(
+        (u1, u2) => {
+          return u1.credit - u2.credit;
+        }
+      );
+    }
   }
 
   updateList(event) {

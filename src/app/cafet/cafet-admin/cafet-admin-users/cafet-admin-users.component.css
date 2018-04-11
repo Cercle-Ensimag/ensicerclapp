@@ -2,6 +2,11 @@ mat-form-field {
   width: 100%;
 }
 
+mat-checkbox {
+  margin-left: 12px;
+  margin-right: 12px;
+}
+
 .search-box {
   display: grid;
   grid-template-columns: auto 40px;
