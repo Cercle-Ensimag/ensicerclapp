@@ -144,6 +144,7 @@ export class CalService {
   watchCoursesEvents(resources: string) {
     if (this.getCoursesURL(resources) == null) {
       this.courses = [];
+      this.concatEvents();
       return;
     }
     return this.http.get(this.getCoursesURL(resources), { responseType: 'text' }).subscribe(
