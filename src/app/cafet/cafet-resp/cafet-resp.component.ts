@@ -98,12 +98,11 @@ export class CafetRespComponent implements OnInit {
     } else {
       value = -this.controls[user.emailId].sub.value;
     }
-    let name = this.tools.titleCase(user.emailId.replace('|', ' ').replace('  ', ' '));
     this.controls[user.emailId].add.setValue("");
     this.controls[user.emailId].sub.setValue("");
     this.cafet.newDayTransaction(user, value).then(
       () => {
-        this.error = this.d.format(this.d.l.informAboutTransaction, name, value.toFixed(2));
+        this.error = this.d.format(this.d.l.informAboutTransaction, this.cafet.getUserName(user), value.toFixed(2));
       },
       (err) => {
         this.error = err;
