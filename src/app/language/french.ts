@@ -8,6 +8,7 @@ export class French {
   public static readonly backLabel = "Retour";
   public static readonly confirmLabel = "Confimer";
   public static readonly cancelLabel = "Annuler";
+  public static readonly modifyLabel = "Modifier";
   public static readonly applyChangesLabel = "Appliquer";
   public static readonly okLabel = "Ok";
   public static readonly changesApplied = "Changements appliqués avec succès";
@@ -185,11 +186,17 @@ export class French {
   public static readonly negativeCreditError = "T'ES EN NEGATIF !!<br><small>Tu devrais mettre de l'argent sur ton compte</small>";
   public static readonly orderByCreditLabel = "par solde";
   public static readonly orderByLastTransactionDateLabel = "par date";
-  
+
   public static readonly cafetAccountsLabel = "Comptes";
   public static readonly printAccountsToPdf = "Imprimer les comptes";
   public static readonly leaveAccountsToPdfPreview = "Quitter l'aperçu";
   public static readonly saveAccountsToPdf = "Enregistrer les comptes";
+
+  public static readonly displayDayAccountsPreview = "Verifier les transactions du jour";
+  public static readonly leaveDayAccountsPreview = "Quitter l'aperçu";
+  public static readonly validateDayTransactionsButtonLabel = "Valider les transactions du jour";
+  public static readonly noDayTransactions = "Aucune transaction en attente de validation";
+  public static readonly achiveUserPermissionDenied = "Action refusée, le client a des transactions non validées";
 
   public static readonly cafetAccountsMatch = "{0} compte existe déjà";
   public static readonly confirmExteCafetAccount = "Créer le compte quand même";
@@ -204,8 +211,6 @@ export class French {
   public static readonly deleteCafetUserButtonLabel = "Supprimer";
   public static readonly deleteCafetUserWarning = "Le compte de {0} va être définitivement supprimé.";
 
-  public static readonly validateDayTransactionsButtonLabel = "Valider les transactions du jour";
-  public static readonly achiveUserPermissionDenied = "Action refusée, le client a des transactions non validées";
 
   // Calendar
   public static readonly calSettingsRessourcesLabel = "Ressources ADE";

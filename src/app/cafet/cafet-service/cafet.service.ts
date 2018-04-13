@@ -268,6 +268,10 @@ export class CafetService {
     );
   }
 
+  deleteDayTransaction(emailId: string, transId: string) {
+    return this.db.object<any>("cafet/cafetResps/dayTransactions/"+emailId+"/"+transId).remove();
+  }
+
   setUserProfile(emailId: string, profile: CafetProfile, activated: boolean) {
     return Observable.zip(
       activated ? this.getUser(emailId) : this.getArchivesUser(emailId),
