@@ -167,15 +167,29 @@ export class CafetAdminUsersComponent implements OnInit {
       this.accountWatcher3.unsubscribe();
     }
     this.accountWatcher3 = this.accountCtrl.get('byCredit').valueChanges.subscribe((checked) => {
-      this.orderByCredit = checked;
-      this.sortUsers(this.getAccountEmail());
+      if (checked != this.orderByCredit) {
+        if (checked) {
+          this.accountCtrl.get('byDate').disable();
+        } else {
+          this.accountCtrl.get('byDate').enable();
+        }
+        this.orderByCredit = checked;
+        this.sortUsers(this.getAccountEmail());
+      }
     });
     if (this.accountWatcher4) {
       this.accountWatcher4.unsubscribe();
     }
     this.accountWatcher4 = this.accountCtrl.get('byDate').valueChanges.subscribe((checked) => {
-      this.orderByLastTransactionDate = checked;
-      this.sortUsers(this.getAccountEmail());
+      if (checked != this.orderByLastTransactionDate) {
+        if (checked) {
+          this.accountCtrl.get('byCredit').disable();
+        } else {
+          this.accountCtrl.get('byCredit').enable();
+        }
+        this.orderByLastTransactionDate = checked;
+        this.sortUsers(this.getAccountEmail());
+      }
     });
   }
 
