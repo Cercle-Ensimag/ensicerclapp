@@ -6,8 +6,8 @@ import { DicoService } from '../../language/dico.service';
 import { DeviceSizeService } from '../../providers/device-size.service'
 
 const DAY_TIME = 24 * 60 * 60* 1000;
-const MAX_DAY_OFFSET = 30;
-const MIN_DAY_OFFSET = -20;
+const MAX_DAY_OFFSET = 300;
+const MIN_DAY_OFFSET = -200;
 
 @Component({
   selector: 'app-calendar',
@@ -41,12 +41,19 @@ export class CalendarComponent implements OnInit {
   }
 
   getToday() {
-    return this.tools.setDayTime((new Date()).getTime(), "00:00:00");
+    return this.tools.setDayTime((new Date()).getTime(), "06:12:42");
+  }
+
+  getDay(dayOffset: number) {
+    return this.tools.setDayTime(
+      this.getToday() + DAY_TIME * dayOffset,
+      "00:00:00"
+    )
   }
 
   isToday(event: CalEvent) {
-    let currentDay = this.getToday() + this.getTimeOffset();
-    let nextDay = currentDay + DAY_TIME;
+    let currentDay = this.getDay(this.dayOffset);
+    let nextDay = this.getDay(this.dayOffset + 1);
     return (
       (event.start >= currentDay && event.start < nextDay) ||
       (event.end >= currentDay && event.end < nextDay) ||

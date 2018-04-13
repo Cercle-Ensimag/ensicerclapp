@@ -5,14 +5,14 @@
   <button mat-icon-button *ngIf="edit" (click)="edit=false"><mat-icon>close</mat-icon></button>
   <span *ngIf="!media.mobileSize">
     <button mat-icon-button (click)="previousDay()"><mat-icon>navigate_before</mat-icon></button>
-    <label>{{ (getToday() + getTimeOffset()) | date:d.l.shortDateFormat:'':d.l.locale | uppercase }}</label>
+    <label>{{ getDay(dayOffset) | date:d.l.shortDateFormat:'':d.l.locale | uppercase }}</label>
     <button mat-icon-button (click)="nextDay()"><mat-icon>navigate_next</mat-icon></button>
   </span>
   <button mat-icon-button [disabled]="edit" routerLink="/calendar/settings"><mat-icon>settings</mat-icon></button>
   <button mat-icon-button (click)="setToToday()"><mat-icon>today</mat-icon></button>
   <div *ngIf="media.mobileSize">
     <button mat-icon-button (click)="previousDay()"><mat-icon>navigate_before</mat-icon></button>
-    <label>{{ (getToday() + getTimeOffset()) | date:d.l.shortDateFormat:'':d.l.locale | uppercase }}</label>
+    <label>{{ getDay(dayOffset) | date:d.l.shortDateFormat:'':d.l.locale | uppercase }}</label>
     <button mat-icon-button (click)="nextDay()"><mat-icon>navigate_next</mat-icon></button>
   </div>
 </mat-card>
