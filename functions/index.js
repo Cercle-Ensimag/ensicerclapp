@@ -26,7 +26,7 @@ function getEmailId(email) {
  * Local function that verifies that the email used is correct
  */
 function verifyEmail(email) {
-  return usersEmailIds[getEmailId(email)] === email;
+  return usersEmailIds[getEmailId(email)] === email || usersEmailExteIds[getEmailId(email)] === email;
 }
 
 /**
