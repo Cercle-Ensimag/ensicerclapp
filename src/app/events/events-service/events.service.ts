@@ -103,15 +103,15 @@ export class EventsService {
   }
 
   addEventToCalendar(eventId: string) {
-    return this.db.object('calendar/users/'+this.auth.getEmailId()+'/assos/'+eventId).set(eventId);
+    return this.db.object('calendar/users/'+this.auth.getCurrentUser().uid+'/assos/'+eventId).set(eventId);
   }
 
   removeEventFromCalendar(eventId: string) {
-    return this.db.object('calendar/users/'+this.auth.getEmailId()+'/assos/'+eventId).set(null);
+    return this.db.object('calendar/users/'+this.auth.getCurrentUser().uid+'/assos/'+eventId).set(null);
   }
 
   getEventInCalendar(eventId: string) {
-    return this.db.object('calendar/users/'+this.auth.getEmailId()+'/assos/'+eventId).valueChanges();
+    return this.db.object('calendar/users/'+this.auth.getCurrentUser().uid+'/assos/'+eventId).valueChanges();
   }
 
 }
