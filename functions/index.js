@@ -77,7 +77,7 @@ exports.onCreateAccount = functions.auth.user().onCreate(event => {
   var refs = {uid: user.uid};
   refs[user.uid+"/admin/email"] = user.email;
 
-  var updates {};
+  var updates = {};
 
   if (!verifyEmail(user.email)) {
     return admin.auth().deleteUser(user.uid).then(() => {
