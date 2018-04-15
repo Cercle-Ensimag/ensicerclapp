@@ -30,6 +30,13 @@ function verifyEmail(email) {
 }
 
 /**
+ * Local function that return the current date
+ */
+function getTime() {
+  return (new Date()).getTime();
+}
+
+/**
  * On vote asserted, move a named enveloppe from "buffer" to an anonimous ballot
  * in "ballot_box"
  */
@@ -70,28 +77,27 @@ exports.onCreateAccount = functions.auth.user().onCreate(event => {
   var refs = {uid: user.uid};
   refs[user.uid+"/admin/email"] = user.email;
 
+  var updates {};
+
   if (!verifyEmail(user.email)) {
     return admin.auth().deleteUser(user.uid).then(() => {
-      return db.ref("users/"+emailId).set(null).then(() => {
-        return db.ref("/logs/errors/account").push().set(user.email+' pushed back');
-      });
+      updates["users/"+emailId] = null;
+      updates["logs/errors/account/"+getTime()] = user.email+' pushed back';
+      return db.ref("/").update(updates);
     });
   } else {
     return db.ref("/users/"+emailId).once("value").then(function(snapshot) {
+      updates["users/"+emailId+"/uid"] = user.uid;
+      updates["users/"+emailId+"/"+user.uid+"/admin/email"] = user.email;
       if (snapshot.child('uid').exists() &&
         snapshot.child('uid').val() != null &&
         snapshot.child('uid').val() != user.uid
       ){
-        return db.ref("/logs/errors/account").push().set('User '+emailId+' created a new account')
-        .then(() => {
-          return db.ref("/users/"+emailId).update(refs);
-        });
+        updates["logs/errors/account/"+getTime()] = 'User '+emailId+' created a new account';
       } else {
-        return db.ref("/logs/account").push().set('User '+emailId+' created a first account')
-        .then(() => {
-          return db.ref("/users/"+emailId).update(refs);
-        });
+        updates["logs/errors/account/"+getTime()] = 'User '+emailId+' created a first account';
       }
+      return db.ref("/").update(updates);
     });
   }
 });
@@ -102,10 +108,11 @@ exports.onCreateAccount = functions.auth.user().onCreate(event => {
 exports.onDeleteAccount = functions.auth.user().onDelete(event => {
   const user = event.data;
   const emailId = getEmailId(user.email);
-  return db.ref("/logs/account").push().set('User '+emailId+' deleted his account')
-  .then(() => {
-    return db.ref("/users/"+emailId+"/"+user.uid).remove();
-  });
+  var updates = {};
+  updates["users/"+emailId+"/"+user.uid] = null;
+  updates["calendar/users/"+emailId] = null;
+  updates["logs/account/"+getTime()] = 'User '+emailId+' deleted his account';
+  return db.ref("/").update(updates);
 });
 
 /**
