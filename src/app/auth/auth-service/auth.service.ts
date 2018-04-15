@@ -89,28 +89,28 @@ export class AuthService {
         this.currentUser = null;
         this.router.navigateByUrl('/login');
       } else {
-        // this.redirectOnTokenChange(user);
+        this.redirectOnTokenChange(user);
         this.currentUser = user;
         this.startServices();
       }
     });
   }
 
-  // redirectOnTokenChange(user: any) {
-  //   if (!user) {
-  //     return;
-  //   }
-  //   const path = this.location.path();
-  //
-  //   if (!this.getCurrentUser()) {
-  //     this.goToHome();
-  //     return;
-  //   }
-  //   if (path === "/email_verif" && this.getCurrentUser().emailVerified) {
-  //     this.goToHome();
-  //     return;
-  //   }
-  // }
+  redirectOnTokenChange(user: any) {
+    if (!user) {
+      return;
+    }
+    const path = this.location.path();
+
+    if (path === "/login") {
+      this.goToHome();
+      return;
+    }
+    if (path === "/email_verif" && this.getCurrentUser().emailVerified) {
+      this.goToHome();
+      return;
+    }
+  }
 
   start() {
     this.userWatcher = this.watchUser();

@@ -7,7 +7,7 @@
                 auth != null && auth.token.email_verified == true",
 
       "$emailId": {
-        "uid": { ".validate": "newData.val() === auth.uid" },
+        "uid": { ".validate": false },
         "$user": {
           ".read": "$user === auth.uid",
 
@@ -302,32 +302,26 @@
     },
     "calendar": {
       "users": {
-        "$emailId": {
+        "$userId": {
           "settings": {
-            ".read": "auth != null && auth.token.email_verified == true &&
-                      root.child('list/users/'+$emailId).val() === auth.token.email",
-            ".write": "auth != null && auth.token.email_verified == true &&
-                       root.child('list/users/'+$emailId).val() === auth.token.email",
-            "resources": { ".validate": "newData.val().matches(/^[0-9]+(,[0-9])*/)" },
+            ".read": "$userId === auth.uid",
+            ".write": "$userId === auth.uid",
+            "resources": { ".validate": "newData.val().matches(/^[0-9]*(,[0-9]+)*$/)" },
 
             "$other": { ".validate": false }
           },
           "assos": {
-            ".read": "auth != null && auth.token.email_verified == true &&
-                      root.child('list/users/'+$emailId).val() === auth.token.email",
+            ".read": "$userId === auth.uid",
             "$eventId": {
-              ".write": "auth != null && auth.token.email_verified == true &&
-                         root.child('list/users/'+$emailId).val() === auth.token.email",
+              ".write": "$userId === auth.uid",
               "eventId": { ".validate": "newData.val() === $eventId" },
               "$other": { ".validate": false }
             }
           },
           "perso": {
-            ".read": "auth != null && auth.token.email_verified == true &&
-                      root.child('list/users/'+$emailId).val() === auth.token.email",
+            ".read": "$userId === auth.uid",
             "$eventId": {
-              ".write": "auth != null && auth.token.email_verified == true &&
-                         root.child('list/users/'+$emailId).val() === auth.token.email",
+              ".write": "$userId === auth.uid",
 
               "id": { ".validate": "newData.isString() && newData.val().length <= 30" },
               "title": { ".validate": "newData.isString() && newData.val().length <= 50" },

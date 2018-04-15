@@ -175,7 +175,7 @@ export class CalService {
   }
 
   watchAssosEventsIds() {
-    return this.db.object<AssoEventIds>('calendar/users/'+this.auth.getEmailId()+'/assos').valueChanges().subscribe(
+    return this.db.object<AssoEventIds>('calendar/users/'+this.auth.getCurrentUser().uid+'/assos').valueChanges().subscribe(
       ids => {
         this.assosEventsIds = ids || {};
         this.concatEvents();
@@ -185,7 +185,7 @@ export class CalService {
   }
 
   watchPersoEvents() {
-    return this.db.list<CalEvent>('calendar/users/'+this.auth.getEmailId()+'/perso').valueChanges().subscribe(
+    return this.db.list<CalEvent>('calendar/users/'+this.auth.getCurrentUser().uid+'/perso').valueChanges().subscribe(
       events => {
         this.persos = events
         .map(event => {
@@ -201,27 +201,27 @@ export class CalService {
   }
 
   getSettings() {
-    return this.db.object<Settings>('calendar/users/'+this.auth.getEmailId()+'/settings').valueChanges();
+    return this.db.object<Settings>('calendar/users/'+this.auth.getCurrentUser().uid+'/settings').valueChanges();
   }
 
   setSettings(settings: Settings) {
-    return this.db.object<Settings>('calendar/users/'+this.auth.getEmailId()+'/settings').set(settings);
+    return this.db.object<Settings>('calendar/users/'+this.auth.getCurrentUser().uid+'/settings').set(settings);
   }
 
   getEvent(eventId: string) {
-    return this.db.object<CalEvent>('calendar/users/'+this.auth.getEmailId()+'/perso/'+eventId).valueChanges();
+    return this.db.object<CalEvent>('calendar/users/'+this.auth.getCurrentUser().uid+'/perso/'+eventId).valueChanges();
   }
 
   getEventId() {
-    return this.db.list<CalEvent>('calendar/users/'+this.auth.getEmailId()+'/perso/').push(null).key;
+    return this.db.list<CalEvent>('calendar/users/'+this.auth.getCurrentUser().uid+'/perso/').push(null).key;
   }
 
   setEvent(event: CalEvent) {
-    return this.db.object<CalEvent>('calendar/users/'+this.auth.getEmailId()+'/perso/'+event.id).set(event);
+    return this.db.object<CalEvent>('calendar/users/'+this.auth.getCurrentUser().uid+'/perso/'+event.id).set(event);
   }
 
   removeEvent(eventId: string) {
-    return this.db.object<CalEvent>('calendar/users/'+this.auth.getEmailId()+'/perso/'+eventId).remove();
+    return this.db.object<CalEvent>('calendar/users/'+this.auth.getCurrentUser().uid+'/perso/'+eventId).remove();
   }
 
   concatEvents() {
@@ -242,7 +242,7 @@ export class CalService {
   }
 
   resourcesValidator(control: FormControl) {
-    if (!control.value.match(/^[0-9]+(,[0-9]+)*$/)) {
+    if (!control.value.match(/^[0-9]*(,[0-9]+)*$/)) {
       return { error: true };
     }
     return null;

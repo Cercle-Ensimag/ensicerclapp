@@ -80,15 +80,37 @@ exports.onCreateAccount = functions.auth.user().onCreate(event => {
   var updates = {};
 
   if (!verifyEmail(user.email)) {
+    // invalid email, delete account
     return admin.auth().deleteUser(user.uid).then(() => {
-      updates["users/"+emailId] = null;
+
+      // /!\ Any information deleted here must refer to user.uid /!\
+      // because this function is called when deleting unauthorised users
+      // that could have the same emailId as authorised user
+
+      // delete user profile as he was authorised to edit it
+      updates["users/"+emailId+"/"+user.uid] = null;
+
+      // log
       updates["logs/errors/account/"+getTime()] = user.email+' pushed back';
+
+      // db request
       return db.ref("/").update(updates);
     });
   } else {
+    // valid email
     return db.ref("/users/"+emailId).once("value").then(function(snapshot) {
+
+      // /!\ Only one user per emailId is authorised to have an account /!\
+      // This relies on the unicity of nodes in JSON when verifying the email
+      // Referencing the uid of the authorised user allows to access its profile
+
+      // Sets the uid of the authorised user
       updates["users/"+emailId+"/uid"] = user.uid;
+
+      // Stores the email where the user can't write, just in case
       updates["users/"+emailId+"/"+user.uid+"/admin/email"] = user.email;
+
+      // log
       if (snapshot.child('uid').exists() &&
         snapshot.child('uid').val() != null &&
         snapshot.child('uid').val() != user.uid
@@ -97,6 +119,8 @@ exports.onCreateAccount = functions.auth.user().onCreate(event => {
       } else {
         updates["logs/errors/account/"+getTime()] = 'User '+emailId+' created a first account';
       }
+
+      // db request
       return db.ref("/").update(updates);
     });
   }
@@ -109,9 +133,21 @@ exports.onDeleteAccount = functions.auth.user().onDelete(event => {
   const user = event.data;
   const emailId = getEmailId(user.email);
   var updates = {};
+
+  // /!\ Any information deleted here must refer to user.uid /!\
+  // because this function is called when deleting unauthorised users
+  // that could have the same emailId as authorised user
+
+  // delete user profile
   updates["users/"+emailId+"/"+user.uid] = null;
-  updates["calendar/users/"+emailId] = null;
-  updates["logs/account/"+getTime()] = 'User '+emailId+' deleted his account';
+
+  // delete calendar data
+  updates["calendar/users/"+user.uid] = null;
+
+  // log
+  updates["logs/account/"+getTime()] = emailId+"'s account has been deleted";
+
+  // db request
   return db.ref("/").update(updates);
 });
 
