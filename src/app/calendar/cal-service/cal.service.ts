@@ -136,6 +136,9 @@ export class CalService {
         }
         if (settings != null){
           this.coursesWatcher = this.watchCoursesEvents(settings.resources);
+        } else {
+          this.courses = [];
+          this.concatEvents();
         }
       }
     )
