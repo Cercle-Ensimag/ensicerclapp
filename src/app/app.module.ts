@@ -63,6 +63,9 @@ import { EditCalComponent } from './calendar/edit-cal/edit-cal.component';
 import { CalSettingsComponent } from './calendar/cal-settings/cal-settings.component';
 
 import { AccountComponent } from './account/account.component';
+
+import { InfoComponent } from './info/info.component';
+import { LegalNoticeComponent } from './info/legal-notice/legal-notice.component';
 import { ReadmeComponent } from './info/readme/readme.component';
 
 // services
@@ -130,7 +133,7 @@ import { environment } from '../environments/environment';
     CalendarComponent, EditCalComponent, CalSettingsComponent,
     EventsHomeComponent, EventComponent, EventAdminComponent, ComRespComponent, EditEventsComponent,
     ActusHomeComponent, ActuComponent, ActuAdminComponent, JournalistComponent, EditActusComponent,
-    ReadmeComponent,
+    InfoComponent, ReadmeComponent, LegalNoticeComponent,
     AccountComponent
   ],
   imports: [

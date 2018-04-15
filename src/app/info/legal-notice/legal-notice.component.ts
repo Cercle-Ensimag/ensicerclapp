@@ -5,11 +5,11 @@ import { AuthService } from '../../auth/auth-service/auth.service';
 import { DicoService } from '../../language/dico.service';
 
 @Component({
-  selector: 'app-readme',
-  templateUrl: './readme.component.html',
+  selector: 'app-legal-notice',
+  templateUrl: './legal-notice.component.html',
   styleUrls: ['../info.component.css']
 })
-export class ReadmeComponent implements OnInit {
+export class LegalNoticeComponent implements OnInit {
 
   constructor(
     private location: Location,
@@ -23,5 +23,4 @@ export class ReadmeComponent implements OnInit {
   back() {
     this.location.back();
   }
-
 }

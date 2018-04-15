@@ -225,4 +225,9 @@ export class French {
   public static readonly totalOfNegativeAccountsLabel = "Total sur les comptes en négatif : {0}€";
   public static readonly numberOfPosAccountsLabel = "Nombre de comptes en positif : {0}";
   public static readonly totalOfPositiveAccountsLabel = "Total sur les comptes en positif : {0}€";
+
+  // Info
+  public static readonly legalNoticeLabel = "Mentions légales";
+  public static readonly userGuideLabel = "Détail des fonctionnalités";
+
 }

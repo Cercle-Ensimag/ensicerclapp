@@ -40,7 +40,8 @@ import { EditCalComponent } from './calendar/edit-cal/edit-cal.component';
 import { CalSettingsComponent } from './calendar/cal-settings/cal-settings.component';
 
 import { AccountComponent } from './account/account.component';
-import { ReadmeComponent } from './info/readme/readme.component';
+
+import { InfoComponent } from './info/info.component';
 
 import { CanActivateHome } from './home/home-guard/home.service';
 import { CanActivateVoteAdmin } from './vote/vote-guard/vote-admin.service';
@@ -62,6 +63,7 @@ const routes: Routes = [
 
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignUpComponent },
+  { path: 'info', component: InfoComponent },
   { path: 'password_reset', component: PasswordResetComponent },
 
   { path: 'email_verif', component: EmailVerifComponent, canActivate: [EmailVerifGuard] },
@@ -96,7 +98,6 @@ const routes: Routes = [
   { path: 'calendar/settings', component: CalSettingsComponent, canActivate: [CanActivateHome] },
   { path: 'calendar/edit/:id', component: EditCalComponent, canActivate: [CanActivateHome] },
 
-  { path: 'z-moi', component: ReadmeComponent, canActivate: [CanActivateHome] },
   { path: 'admin', component: AdminUsersComponent, canActivate: [CanActivateHome, CanActivateAdmin] }
 
 ];
