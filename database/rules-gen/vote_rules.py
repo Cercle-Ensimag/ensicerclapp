@@ -163,7 +163,7 @@ class NamedEnveloppesRules (BufferRules):
         self.label = self.emailId
         self.write = doAnd([
             verifyEmailId(self.emailId),
-            doNot(pollStarted(self.pollId)),
+            pollStarted(self.pollId),
             "root.child('vote/users/'+" + self.pollId + "+'/'+" + self.emailId + "+'/voted').val() != true",
             "!data.exists()"
         ])

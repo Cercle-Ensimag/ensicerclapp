@@ -343,7 +343,7 @@
 					".validate" : "root.child('vote/polls/'+$poll_id).exists()",
 					"buffer": {
 						"$emailId": {
-							".write" : "((auth != null && auth.token.email_verified == true) && (root.child('users/'+$emailId+'/'+auth.uid).exists()) && (auth.token.email === root.child('list/users/'+$emailId).val())) && (!(root.child('vote/polls/'+$poll_id+'/started').val() == true)) && (root.child('vote/users/'+$poll_id+'/'+$emailId+'/voted').val() != true) && (!data.exists())",
+							".write" : "((auth != null && auth.token.email_verified == true) && (root.child('users/'+$emailId+'/'+auth.uid).exists()) && (auth.token.email === root.child('list/users/'+$emailId).val())) && (root.child('vote/polls/'+$poll_id+'/started').val() == true) && (root.child('vote/users/'+$poll_id+'/'+$emailId+'/voted').val() != true) && (!data.exists())",
 							".validate" : "root.child('vote/polls/'+$poll_id+'/choices/'+newData.val()).exists()",
 						},
 					},
