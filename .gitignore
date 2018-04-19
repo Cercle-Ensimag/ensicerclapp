@@ -17,6 +17,10 @@ users_emails.json
 users_ensimag/
 calendar_dl/
 
+# python
+__pycache__
+old_db_rules.json
+
 # IDEs and editors
 /.idea
 .project
