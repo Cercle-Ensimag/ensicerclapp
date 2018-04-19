@@ -40,7 +40,7 @@ function getTime() {
  * On vote asserted, move a named enveloppe from "buffer" to an anonimous ballot
  * in "ballot_box"
  */
-exports.onVote = functions.database.ref('/vote/users/{pollId}/{emailId}/voted')
+exports.onVote = functions.database.ref('/vote/votes/{pollId}/{emailId}/voted')
 .onWrite(event => {
   if (!event.data.exists()) {
     return null;
