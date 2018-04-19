@@ -46,7 +46,7 @@
 			"private": {
 				".read" : "((auth.token.email === root.child('admin/private/admins/admin1').val()) || (auth.token.email === root.child('admin/private/admins/admin2').val()) || (auth.token.email === root.child('admin/private/admins/admin3').val())) && (auth != null && auth.token.email_verified == true)",
 				"admins": {
-					"$email": { ".validate" : "newData.isString() && newData.val().endsWith('@ensimag.fr')" },
+					"$email": { ".validate" : "(newData.isString()) && (newData.val().endsWith('@ensimag.fr'))" },
 				},
 				"$other": { ".validate" : "false" },
 			},

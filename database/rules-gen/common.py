@@ -59,18 +59,37 @@ def doNot(cond):
     return "!(" + cond + ")"
 
 def computeEmailId():
+    """
+    Returns a string that evalutes to the user emailId
+    """
     return "auth.token.email.replace('@ensimag.fr', '').replace('.', '|')"
 
 def isMember():
+    """
+    Returns a condition that is true if a user can have access to public data
+    in the app
+    """
     return "auth != null && auth.token.email_verified == true"
 
-def hasEnsimagEmail():
-    return "newData.isString() && newData.val().endsWith('@ensimag.fr')"
+def hasAllowedEmail(email):
+    """
+    Returns a condition that is true if the given email is authorized to have an
+    account
+    """
+    return email + ".endsWith('@ensimag.fr')"
 
 def validateUid(uid):
+    """
+    Returns a condition that is true if the given uid is the same as
+    the one of user identified
+    """
     return uid + " === auth.uid"
 
 def verifyEmailId(emailId):
+    """
+    Returns a condition that is true if the given emailId actually belong to
+    the user identified
+    """
     return doAnd([
         isMember(),
         "root.child('users/'+" + emailId + "+'/'+auth.uid).exists()",
@@ -78,9 +97,15 @@ def verifyEmailId(emailId):
     ])
 
 def verifyEmailInList(emailId, email):
+    """
+    Returns a condition that is true if the given emailId and email are a match
+    """
     return email + " === root.child('list/users/'+{0}).val()".replace("{0}", emailId)
 
 def isAdmin():
+    """
+    Returns a condition that is true if the user identified is an admin
+    """
     adminEmail = "auth.token.email === root.child('admin/private/admins/admin{0}').val()"
     rule = doOr([adminEmail.replace("{0}", str(i)) for i in range(1, 4)])
     rule = doAnd([ rule, isMember() ])

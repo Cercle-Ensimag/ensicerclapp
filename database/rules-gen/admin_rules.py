@@ -1,5 +1,5 @@
 from RulesPattern import RulesPattern
-from common import OtherRules, StringRules, BooleanRules, isAdmin, isMember, hasEnsimagEmail
+from common import OtherRules, StringRules, BooleanRules, doAnd, isAdmin, isMember, hasAllowedEmail
 
 class AdminRules (RulesPattern):
     def build(self):
@@ -50,5 +50,5 @@ class AdminsRules (PrivateRules):
 class AdminEmailsRules (AdminsRules):
     def build(self):
         self.label = "$email"
-        self.validate = hasEnsimagEmail()
+        self.validate = doAnd([ "newData.isString()", hasAllowedEmail("newData.val()") ])
         self.inLine = True
