@@ -1,4 +1,4 @@
-<div class="infos">
+<div *ngIf="auth.getCurrentUser()" class="infos">
   <mat-accordion>
     <mat-expansion-panel>
       <mat-expansion-panel-header>
@@ -17,4 +17,10 @@
       <app-readme></app-readme>
     </mat-expansion-panel>
   </mat-accordion>
+</div>
+
+<div *ngIf="!auth.getCurrentUser()" class="infos">
+    <mat-card>
+        <app-legal-notice></app-legal-notice>
+    </mat-card>
 </div>
