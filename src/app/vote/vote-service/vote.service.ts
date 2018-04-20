@@ -102,6 +102,7 @@ export class VoteService {
     this.db.object('vote/results/'+pollId).remove();
   }
 
+  // TODO
   sendVote(pollId: string, choiceId: string) {
     return this.db.object('vote/results/'+pollId+'/buffer/'+this.auth.getEmailId())
     .set(choiceId).then(() => {
@@ -112,6 +113,7 @@ export class VoteService {
     });
   }
 
+  // TODO
   markAsVoted(pollId: string, email: string) {
     let emailId = this.tools.getEmailIdFromEmail(email);
     let refs = {

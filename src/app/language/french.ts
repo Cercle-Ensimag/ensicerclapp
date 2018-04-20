@@ -8,6 +8,7 @@ export class French {
   public static readonly backLabel = "Retour";
   public static readonly confirmLabel = "Confimer";
   public static readonly cancelLabel = "Annuler";
+  public static readonly agreeLabel = "Accepter";
   public static readonly modifyLabel = "Modifier";
   public static readonly applyChangesLabel = "Appliquer";
   public static readonly okLabel = "Ok";
