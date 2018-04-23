@@ -151,6 +151,7 @@
 			},
 			"users": {
 				"$emailId": {
+					".read" : "(auth != null && auth.token.email_verified == true) && (root.child('users/'+$emailId+'/'+auth.uid).exists()) && (auth.token.email === root.child('list/users/'+$emailId).val())",
 					".validate" : "(data.exists() && newData.exists()) || ((!data.exists()) && ((!root.child('cafet/history/'+$emailId).exists()) || ((root.child('cafet/archives/users/'+$emailId+'/credit').val() === newData.child('credit').val()) && (root.child('cafet/archives/users/'+$emailId+'/creationDate').val() === newData.child('creationDate').val())))) || (!newData.exists() && !root.child('cafet/cafetResps/dayTransactions/'+$emailId).exists())",
 					"emailId": { ".validate" : "newData.val() === $emailId" },
 					"activated": { ".validate" : "newData.isBoolean()" },

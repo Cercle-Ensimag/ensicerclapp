@@ -188,6 +188,7 @@ class ActiveUserRules (UserRules):
         deleteUser = "!newData.exists() && !root.child('cafet/cafetResps/dayTransactions/'+" + self.label + ").exists()"
 
         self.validate = doOr([modifUser, newUser, deleteUser])
+        self.read = verifyEmailId(self.label);
 
 
 # history node
