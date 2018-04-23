@@ -18,9 +18,13 @@ class CafetRules (RulesPattern):
 
 # common
 class UserRules (CafetRules):
+    def __init__(self):
+        self.emailId = "$emailId"
+        super().__init__()
+
     def build(self):
-        self.label = "$emailId"
-        self.add(IdRules("emailId", self.label))
+        self.label = self.emailId
+        self.add(IdRules("emailId", self.emailId))
         self.add(BooleanRules("activated"))
         self.add(NumberRules("credit"))
         self.add(CreationDateRules())
@@ -154,8 +158,8 @@ class ArchivedUserRules (UserRules):
         noHistory = "!root.child('cafet/history/'+$emailId).exists()"
 
         # when archiving a user, writen user should be the same as the one that was active
-        sameCredit = "root.child('cafet/users/'+" + self.label + "+'/credit').val() === newData.child('credit').val()"
-        sameCreation = "root.child('cafet/users/'+" + self.label + "+'/creationDate').val() === newData.child('creationDate').val()"
+        sameCredit = "root.child('cafet/users/'+" + self.emailId + "+'/credit').val() === newData.child('credit').val()"
+        sameCreation = "root.child('cafet/users/'+" + self.emailId + "+'/creationDate').val() === newData.child('creationDate').val()"
         sameUser = "(" + sameCredit + ") && (" + sameCreation + ")"
 
         newUser = doAnd([ "!data.exists()", doOr([ noHistory, sameUser ])])
@@ -178,8 +182,8 @@ class ActiveUserRules (UserRules):
         noHistory = "!root.child('cafet/history/'+$emailId).exists()"
 
         # when restoring a user, writen user should be the same as the one that was archived
-        sameCredit = "root.child('cafet/archives/users/'+" + self.label + "+'/credit').val() === newData.child('credit').val()"
-        sameCreation = "root.child('cafet/archives/users/'+" + self.label + "+'/creationDate').val() === newData.child('creationDate').val()"
+        sameCredit = "root.child('cafet/archives/users/'+" + self.emailId + "+'/credit').val() === newData.child('credit').val()"
+        sameCreation = "root.child('cafet/archives/users/'+" + self.emailId + "+'/creationDate').val() === newData.child('creationDate').val()"
         sameUser = "(" + sameCredit + ") && (" + sameCreation + ")"
 
         newUser = doAnd([ "!data.exists()", doOr([ noHistory, sameUser ])])
@@ -188,7 +192,7 @@ class ActiveUserRules (UserRules):
         deleteUser = "!newData.exists() && !root.child('cafet/cafetResps/dayTransactions/'+" + self.label + ").exists()"
 
         self.validate = doOr([modifUser, newUser, deleteUser])
-        self.read = verifyEmailId(self.label);
+        self.read = verifyEmailId(self.emailId);
 
 
 # history node
