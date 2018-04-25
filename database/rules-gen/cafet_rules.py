@@ -1,5 +1,5 @@
 from RulesPattern import RulesPattern
-from common import OtherRules, StringRules, NumberRules, BooleanRules, IdRules, doAnd, doOr, isOneAdmin, isCafetResp, verifyEmailId, isMember
+from common import OtherRules, StringRules, NumberRules, BornedNumberRules, BooleanRules, IdRules, doAnd, doOr, isOneAdmin, isCafetResp, verifyEmailId, isMember
 
 class CafetRules (RulesPattern):
     def build(self):
@@ -100,16 +100,6 @@ class DayTransactionRules (DayUserRules):
         self.add(NumberRules("date"))
         self.add(CafetRespRefRules())
         self.add(OtherRules())
-
-class BornedNumberRules (NumberRules):
-    def __init__(self, label, minV, maxV):
-        self.minV = minV
-        self.maxV = maxV
-        super().__init__(label)
-
-    def build(self):
-        super().build()
-        self.validate = "newData.isNumber() && newData.val() >= " + str(self.minV) + " && newData.val() <= " + str(self.maxV)
 
 class CafetRespRefRules (CafetRespsRules):
     def build(self):

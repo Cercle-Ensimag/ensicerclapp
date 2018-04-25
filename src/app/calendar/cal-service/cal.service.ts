@@ -20,18 +20,21 @@ export class CalEvent {
   title: string;
   start: number;
   end: number;
+  occurences: number;
   location: string;
   type: string;
   // description: string;
   // end: string;
 
   constructor(
-    id: string, name: string, start: any, end: any, loc: string, type: string
+    id: string, name: string, start: any, end: any, occurences: number,
+    loc: string, type: string
   ) {
     this.id = id;
     this.title = name;
     this.start = (new Date(start)).getTime();
     this.end = (new Date(end)).getTime();
+    this.occurences = occurences;
     this.location = loc;
     this.type = type;
   }
@@ -153,7 +156,7 @@ export class CalService {
     return this.http.get(this.getCoursesURL(resources), { responseType: 'text' }).subscribe(
       cal => {
         this.courses = parseICS(cal).map(event => new CalEvent(
-          "", event.name.replace(/\\,/g, ','), event.startDate, event.endDate, event.location, COURSE
+          "", event.name.replace(/\\,/g, ','), event.startDate, event.endDate, 1, event.location, COURSE
         )) || [];
         this.concatEvents();
       },
@@ -167,7 +170,7 @@ export class CalService {
         this.assos = events
         .map(event => {
           let calEvent = new CalEvent(
-            event.id, event.title, event.start, event.end, event.location, ASSOS
+            event.id, event.title, event.start, 1, event.end, event.location, ASSOS
           );
           return calEvent;
         }) || [];
@@ -193,7 +196,7 @@ export class CalService {
         this.persos = events
         .map(event => {
           let calEvent = new CalEvent(
-            event.id, event.title, event.start, event.end, event.location, PERSOS
+            event.id, event.title, event.start, event.end, event.occurences, event.location, PERSOS
           );
           return calEvent;
         }) || [];

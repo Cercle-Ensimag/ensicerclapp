@@ -51,6 +51,11 @@
     </div>
 
     <mat-form-field>
+      <input matInput type="number" placeholder="{{ d.l.eventOccurencesLabel }}" formControlName="occurences" autocomplete="off">
+      <mat-error *ngIf="eventCtrl.get('occurences').invalid">{{ d.l.eventOccurencesError }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
       <input matInput placeholder="{{ d.l.eventLocationLabel }}" formControlName="location" autocomplete="off">
       <mat-error *ngIf="eventCtrl.get('location').invalid">{{ d.l.eventLocationError }}</mat-error>
     </mat-form-field>

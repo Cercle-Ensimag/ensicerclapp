@@ -43,7 +43,7 @@ export class EditCalComponent implements OnInit, OnDestroy {
       if (event) {
         this.event = event;
       } else {
-        this.event = new CalEvent(this.cal.getEventId(), "", "", "", "", PERSOS);
+        this.event = new CalEvent(this.cal.getEventId(), "", "", "", 1, "", PERSOS);
       }
       this.eventCtrl = this.fb.group({
         title: [this.event.title || "", [Validators.required, Validators.minLength(3)]],
@@ -52,6 +52,7 @@ export class EditCalComponent implements OnInit, OnDestroy {
         start: [new Date(this.event.start) || "", [Validators.required, this.tools.dateValidator]],
         startTime: [this.tools.getTimeFromDate(this.event.start), [Validators.required, this.tools.timeValidator]],
         end: [new Date(this.event.end) || "", [Validators.required, this.tools.dateValidator]],
+        occurences: [this.event.occurences || 1, [Validators.required, Validators.min(1), Validators.max(42)]],
         endTime: [this.tools.getTimeFromDate(this.event.end), [Validators.required, this.tools.timeValidator]],
         location: [this.event.location || "", [Validators.required]]
       });
@@ -81,6 +82,9 @@ export class EditCalComponent implements OnInit, OnDestroy {
     let time = this.eventCtrl.get('endTime').value;
     return this.tools.setDayTime(this.eventCtrl.get('end').value.getTime(), time + ':00');
   }
+  getOccurences(): number {
+    return this.eventCtrl.get('occurences').value;
+  }
   getLocation(): string {
     return this.eventCtrl.get('location').value;
   }
@@ -93,6 +97,7 @@ export class EditCalComponent implements OnInit, OnDestroy {
           this.getTitle(),
           this.getStart(),
           this.getEnd(),
+          this.getOccurences(),
           this.getLocation(),
           this.event.type
         )

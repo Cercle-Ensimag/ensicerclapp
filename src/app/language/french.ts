@@ -218,6 +218,8 @@ export class French {
   public static readonly calSettingsRessourcesError = "ex: '1234,5678,1479'";
   public static readonly calSettingsTitle = "Paramètres du calendrier";
   public static readonly noCalEvent = "Rien de prévu";
+  public static readonly eventOccurencesLabel = "Occurences";
+  public static readonly eventOccurencesError = "";
 
   public static readonly cafetTrezoLabel = "Trezo";
   public static readonly numberOfAllAccountsLabel = "Nombre de comptes total : {0}";

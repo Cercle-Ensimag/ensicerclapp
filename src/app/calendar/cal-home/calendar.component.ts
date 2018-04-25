@@ -6,6 +6,7 @@ import { DicoService } from '../../language/dico.service';
 import { DeviceSizeService } from '../../providers/device-size.service'
 
 const DAY_TIME = 24 * 60 * 60* 1000;
+const WEEK_LENGTH = 7;
 const MAX_DAY_OFFSET = 300;
 const MIN_DAY_OFFSET = -200;
 
@@ -52,13 +53,18 @@ export class CalendarComponent implements OnInit {
   }
 
   isToday(event: CalEvent) {
-    let currentDay = this.getDay(this.dayOffset);
-    let nextDay = this.getDay(this.dayOffset + 1);
-    return (
-      (event.start >= currentDay && event.start < nextDay) ||
-      (event.end >= currentDay && event.end < nextDay) ||
-      (event.start < currentDay && event.end >= nextDay)
-    );
+    for (var index=0; index<event.occurences; index++) {
+      let currentDay = this.getDay(this.dayOffset - index*WEEK_LENGTH);
+      let nextDay = this.getDay(this.dayOffset + 1 - index*WEEK_LENGTH);
+      if (
+        (event.start >= currentDay && event.start < nextDay) ||
+        (event.end >= currentDay && event.end < nextDay) ||
+        (event.start < currentDay && event.end >= nextDay)
+      ) {
+        return true;
+      }
+    }
+    return false;
   }
 
   isNow(event: CalEvent) {

@@ -27,6 +27,16 @@ class NumberRules (RulesPattern):
         self.validate = "newData.isNumber()"
         self.inLine = True
 
+class BornedNumberRules (NumberRules):
+    def __init__(self, label, minV, maxV):
+        self.minV = minV
+        self.maxV = maxV
+        super().__init__(label)
+
+    def build(self):
+        super().build()
+        self.validate = "newData.isNumber() && newData.val() >= " + str(self.minV) + " && newData.val() <= " + str(self.maxV)
+
 class BooleanRules (RulesPattern):
     def __init__(self, label):
         self.superLabel = label

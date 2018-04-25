@@ -1,5 +1,5 @@
 from RulesPattern import RulesPattern
-from common import StringRules, NumberRules, OtherRules, IdRules, validateUid
+from common import StringRules, NumberRules, BornedNumberRules, OtherRules, IdRules, validateUid
 
 class CalendarRules (RulesPattern):
     def build(self):
@@ -79,6 +79,7 @@ class PersoEventRules (PersoEventsRules):
         self.add(StringRules("title", 50))
         self.add(NumberRules("start"))
         self.add(NumberRules("end"))
+        self.add(BornedNumberRules("occurences", 1, 42))
         self.add(StringRules("location", 30))
         self.add(StringRules("type", 30))
         self.add(OtherRules())

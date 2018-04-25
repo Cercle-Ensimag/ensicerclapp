@@ -239,6 +239,7 @@
 							"title": { ".validate" : "newData.isString() && newData.val().length <= 50" },
 							"start": { ".validate" : "newData.isNumber()" },
 							"end": { ".validate" : "newData.isNumber()" },
+							"occurences": { ".validate" : "newData.isNumber() && newData.val() >= 1 && newData.val() <= 42" },
 							"location": { ".validate" : "newData.isString() && newData.val().length <= 30" },
 							"type": { ".validate" : "newData.isString() && newData.val().length <= 30" },
 							"$other": { ".validate" : "false" },
