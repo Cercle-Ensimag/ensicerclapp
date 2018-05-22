@@ -4,5 +4,8 @@
   },
   "database": {
     "rules": "database/database_rules.json"
+  },
+  "storage": {
+    "rules": "storage/storage_rules"
   }
 }
