@@ -170,13 +170,13 @@ export class CalService {
         this.assos = events
         .map(event => {
           let calEvent = new CalEvent(
-            event.id, event.title, event.start, 1, event.end, event.location, ASSOS
+            event.id, event.title, event.start, event.end, 1, event.location, ASSOS
           );
           return calEvent;
         }) || [];
         this.concatEvents();
       },
-      err => {}
+      err => { console.log(err); }
     );
   }
 
@@ -186,7 +186,7 @@ export class CalService {
         this.assosEventsIds = ids || {};
         this.concatEvents();
       },
-      err => {}
+      err => { console.log(err); }
     )
   }
 
@@ -202,7 +202,7 @@ export class CalService {
         }) || [];
         this.concatEvents();
       },
-      err => {}
+      err => { console.log(err); }
     )
   }
 

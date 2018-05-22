@@ -1,5 +1,5 @@
 from RulesPattern import RulesPattern
-from common import OtherRules, StringRules, NumberRules, IdRules, doAnd, doOr, isAdmin, isMember, isComResp, comRespGroupExists, isOneAdmin
+from common import OtherRules, StringRules, NumberRules, IdRules, doAnd, doOr, isAdmin, isMember, isComResp, comRespGroupExists, comRespGroupTheSame, isOneAdmin
 
 class EventsRules (RulesPattern):
     def build(self):
@@ -65,7 +65,7 @@ class EventRules (EventsListRules):
 
     def build(self):
         self.label = self.eventId
-        self.write = doOr([ isOneAdmin("events"), doAnd([ isComResp(), comRespGroupExists() ])])
+        self.write = doOr([ isOneAdmin("events"), doAnd([ isComResp(), comRespGroupTheSame() ])])
         self.indexOn = ["start"]
 
         self.add(IdRules("id", self.eventId))

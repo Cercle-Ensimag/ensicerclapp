@@ -79,7 +79,7 @@ def isMember():
     Returns a condition that is true if a user can have access to public data
     in the app
     """
-    return "auth != null && auth.token.email_verified == true"
+    return "auth !== null && auth.token.email_verified == true"
 
 def hasAllowedEmail(email):
     """
@@ -151,6 +151,10 @@ def isComResp():
 def comRespGroupExists():
     groupPath = getComRespPath() + "+'/groupId'"
     return "root.child(" + groupPath + ").val() === newData.val()"
+
+def comRespGroupTheSame():
+    groupPath = getComRespPath() + "+'/groupId'"
+    return "root.child(" + groupPath + ").val() === newData.child('groupId').val()"
 
 def getAssessorPath():
     return "'vote/assessors/'+" + computeEmailId()

@@ -63,7 +63,9 @@ export class EventsService {
         this.events = events || [];
         this.activeEvents = events.filter(event => event.end > Date.now()) || [];
       },
-      err => {}
+      err => {
+				console.log(err);
+			}
     );
   }
 
