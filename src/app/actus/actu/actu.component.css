@@ -9,6 +9,6 @@ mat-card {
 }
 
 iframe {
-	width: 600px;
+	width: 100%;
 	height: 50vh;
 }
