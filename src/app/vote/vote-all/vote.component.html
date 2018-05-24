@@ -1,7 +1,7 @@
 <!-- Loading -->
-<mat-card *ngIf="!vote.polls" class="spinner-wraper">
+<div *ngIf="!vote.polls" class="spinner-wraper loading">
   <mat-spinner class="spinner"></mat-spinner>
-</mat-card>
+</div>
 
 <!-- Polls -->
 <div *ngIf="vote.polls">

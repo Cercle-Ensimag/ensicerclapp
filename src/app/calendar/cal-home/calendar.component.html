@@ -18,9 +18,9 @@
 </mat-card>
 
 <!-- Loading -->
-<mat-card *ngIf="!dayEvents" class="spinner-wraper event">
+<div *ngIf="!dayEvents" class="spinner-wraper loading">
   <mat-spinner class="spinner"></mat-spinner>
-</mat-card>
+</div>
 
 <!-- Day events -->
 <div *ngIf="dayEvents && dayEvents.length > 0">

@@ -1,7 +1,7 @@
 <!-- Loading -->
-<mat-card *ngIf="!actus.actus" class="spinner-wraper">
+<div *ngIf="!actus.actus" class="spinner-wraper loading">
   <mat-spinner class="spinner"></mat-spinner>
-</mat-card>
+</div>
 
 <!-- Actus -->
 <div *ngIf="actus.actus && actus.actus.length > 0">

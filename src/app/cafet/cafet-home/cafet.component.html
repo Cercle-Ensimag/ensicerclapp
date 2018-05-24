@@ -1,7 +1,7 @@
 <!-- Loading -->
-<mat-card *ngIf="!cafet.user" class="spinner-wraper">
+<div *ngIf="!cafet.user" class="spinner-wraper loading">
   <mat-spinner class="spinner"></mat-spinner>
-</mat-card>
+</div>
 
 <!-- Compte -->
 <div *ngIf="cafet.user">
