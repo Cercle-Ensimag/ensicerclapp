@@ -8,6 +8,10 @@
 
   <!-- Event display -->
   <div *ngIf="!deleteEventId">
+		<mat-card>
+			<h2>{{ d.l.addEventLabel }}</h2>
+			<button mat-icon-button routerLink="/events-admin/edit/-"><mat-icon>add</mat-icon></button>
+		</mat-card>
     <div *ngFor="let event of events.events">
       <mat-card *ngIf="event.groupId === auth.comRespGroupId">
         <h2>{{ event.title }}</h2>
@@ -16,10 +20,6 @@
         <button mat-icon-button (click)="delete(event.id, event.title)"><mat-icon>delete</mat-icon></button>
       </mat-card>
     </div>
-    <mat-card>
-      <h2>{{ d.l.addEventLabel }}</h2>
-      <button mat-icon-button routerLink="/events-admin/edit/-"><mat-icon>add</mat-icon></button>
-    </mat-card>
   </div>
 
   <!-- Delete event -->

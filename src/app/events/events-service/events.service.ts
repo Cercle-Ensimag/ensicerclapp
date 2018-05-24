@@ -62,7 +62,7 @@ export class EventsService {
     return this.getEvents().subscribe(
       events => {
         this.events = events.reverse() || [];
-        this.activeEvents = events.filter(event => event.end > Date.now()) || [];
+        this.activeEvents = events.filter(event => event.end > Date.now()).reverse() || [];
       },
       err => {
 				console.log(err);

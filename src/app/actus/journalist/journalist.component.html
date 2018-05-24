@@ -8,6 +8,10 @@
 
   <!-- Actus display -->
   <div *ngIf="!deleteActuId">
+		<mat-card>
+			<h2>{{ d.l.addActuLabel }}</h2>
+			<button mat-icon-button routerLink="/actus-admin/edit/-"><mat-icon>add</mat-icon></button>
+		</mat-card>
     <div *ngFor="let actu of actus.actus">
       <mat-card *ngIf="actu.journalistGroupId === auth.groupId">
         <h2>{{ actu.title }}</h2>
@@ -16,10 +20,6 @@
         <button mat-icon-button (click)="delete(actu.id, actu.title)"><mat-icon>delete</mat-icon></button>
       </mat-card>
     </div>
-    <mat-card>
-      <h2>{{ d.l.addActuLabel }}</h2>
-      <button mat-icon-button routerLink="/actus-admin/edit/-"><mat-icon>add</mat-icon></button>
-    </mat-card>
   </div>
 
   <!-- Delete actu -->
