@@ -59,6 +59,7 @@ export class EditEventsComponent implements OnInit, OnDestroy {
         end: [new Date(this.event.end) || "", [Validators.required, this.tools.dateValidator]],
         endTime: [this.tools.getTimeFromDate(this.event.end), [Validators.required, this.tools.timeValidator]],
         location: [this.event.location || "", [Validators.required]],
+        asso: [this.event.asso || "", [Validators.required]],
         price: [this.event.price || this.d.l.free, [Validators.required]]
       })
       if (this.eventCtrlWatcher) {
@@ -90,6 +91,9 @@ export class EditEventsComponent implements OnInit, OnDestroy {
   getLocation(): string {
     return this.eventCtrl.get('location').value;
   }
+  getAsso(): string {
+    return this.eventCtrl.get('asso').value;
+  }
   getPrice(): string {
     return this.eventCtrl.get('price').value;
   }
@@ -104,6 +108,7 @@ export class EditEventsComponent implements OnInit, OnDestroy {
         start: this.getStart(),
         end: this.getEnd(),
         location: this.getLocation(),
+        asso: this.getAsso(),
         price: this.getPrice(),
         groupId: this.auth.comRespGroupId
       };

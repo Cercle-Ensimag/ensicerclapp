@@ -13,14 +13,19 @@
 
       <!-- Actus display -->
       <div *ngIf="!deleteActuId">
-          <mat-card *ngFor="let actu of actus.actus">
-            <h2>{{ actu.title }}</h2>
-            <button mat-icon-button routerLink="/actus/actu/{{ actu.id }}"><mat-icon>search</mat-icon></button>
-            <button mat-icon-button (click)="delete(actu.id, actu.title)"><mat-icon>delete</mat-icon></button>
-          </mat-card>
-          <mat-card *ngIf="actus.actus.length == 0">
-            <h3>{{ d.l.noActu }}</h3>
-          </mat-card>
+        <mat-card *ngFor="let actu of actus.actus | slice:pageIndex*pageSize:(pageIndex+1)*pageSize">
+          <h2>{{ actu.title }}</h2>
+					<label>{{ d.format(d.l.actuAuthor, actu.author) }}</label><br>
+          <button mat-icon-button routerLink="/actus/actu/{{ actu.id }}"><mat-icon>search</mat-icon></button>
+          <button mat-icon-button (click)="delete(actu.id, actu.title)"><mat-icon>delete</mat-icon></button>
+        </mat-card>
+        <mat-card *ngIf="actus.actus.length == 0">
+          <h3>{{ d.l.noActu }}</h3>
+        </mat-card>
+		    <mat-paginator [length]="actus.actus.length"
+		                  [pageSize]="pageSize"
+		                  (page)="updateList($event)">
+		    </mat-paginator>
       </div>
 
       <!-- Delete actu -->

@@ -56,6 +56,11 @@
     </mat-form-field>
 
     <mat-form-field>
+      <input matInput placeholder="{{ d.l.eventAssoLabel }}" formControlName="asso" autocomplete="off">
+      <mat-error *ngIf="eventCtrl.get('asso').invalid">{{ d.l.eventAssoError }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
       <input matInput placeholder="{{ d.l.eventPriceLabel }}" formControlName="price" autocomplete="off">
       <mat-error *ngIf="eventCtrl.get('price').invalid">{{ d.l.eventPriceError }}</mat-error>
     </mat-form-field>

@@ -10,6 +10,7 @@
     <h4>
       {{ d.format(d.l.eventStart, event.start | date:d.l.longDateTimeFormat:'':d.l.locale) }}<br>
       {{ d.format(d.l.eventEnd, event.end | date:d.l.longDateTimeFormat:'':d.l.locale) }}<br>
+			{{ d.format(d.l.eventOrganizer, event.asso) }}<br>
       {{ d.format(d.l.eventLocation, event.location || "") }}<br>
       {{ d.format(d.l.eventPrice, event.price || d.l.free) }}
     </h4>

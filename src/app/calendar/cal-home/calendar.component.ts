@@ -79,6 +79,10 @@ export class CalendarComponent implements OnInit {
     }
   }
 
+	singleDay(event: CalEvent) {
+		return this.tools.setDayTime(event.start, "00:00:00") == this.tools.setDayTime(event.end, "00:00:00")
+	}
+
   getDayEvents() {
     if (!this.cal.calEvents) {
       return null;

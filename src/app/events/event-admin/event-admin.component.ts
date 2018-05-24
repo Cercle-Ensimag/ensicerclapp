@@ -29,6 +29,9 @@ export class EventAdminComponent implements OnInit, OnDestroy {
 
   error: string;
 
+  pageIndex: number = 0;
+  pageSize: number = 5;
+
   constructor(
     private auth: AuthService,
     private events: EventsService,
@@ -83,6 +86,10 @@ export class EventAdminComponent implements OnInit, OnDestroy {
     this.displayedUsers = this.comResps.filter(
       user => user.emailId.includes(emailId)
     );
+  }
+
+  updateList(event) {
+    this.pageIndex = event.pageIndex;
   }
 
   addComResp() {

@@ -13,6 +13,7 @@ export class Event {
   end: number;
   location: string;
   price: string;
+	asso: string;
   groupId: string;
 }
 
@@ -60,7 +61,7 @@ export class EventsService {
   watchEvents() {
     return this.getEvents().subscribe(
       events => {
-        this.events = events || [];
+        this.events = events.reverse() || [];
         this.activeEvents = events.filter(event => event.end > Date.now()) || [];
       },
       err => {

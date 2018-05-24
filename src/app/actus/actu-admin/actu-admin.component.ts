@@ -37,6 +37,9 @@ export class ActuAdminComponent implements OnInit, OnDestroy {
 
   error: string;
 
+  pageIndex: number = 0;
+  pageSize: number = 5;
+
   constructor(
     private auth: AuthService,
     public tools: ToolsService,
@@ -91,6 +94,10 @@ export class ActuAdminComponent implements OnInit, OnDestroy {
     this.displayedUsers = this.journalists.filter(
       user => user.emailId.includes(emailId)
     );
+  }
+
+  updateList(event) {
+    this.pageIndex = event.pageIndex;
   }
 
   addJournalist() {

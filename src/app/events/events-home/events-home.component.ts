@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { EventsService } from '../events-service/events.service';
 import { DicoService } from '../../language/dico.service';
+import { ToolsService } from '../../providers/tools.service'
 
 import { Event } from '../events-service/events.service';
 
@@ -16,7 +17,8 @@ export class EventsHomeComponent implements OnInit, OnDestroy {
 
   constructor(
     public events: EventsService,
-    public d: DicoService
+    public d: DicoService,
+		private tools: ToolsService
   ) { }
 
   ngOnInit() {
@@ -42,5 +44,9 @@ export class EventsHomeComponent implements OnInit, OnDestroy {
           return "";
       }
   }
+
+	singleDay(event: Event) {
+		return this.tools.setDayTime(event.start, "00:00:00") == this.tools.setDayTime(event.end, "00:00:00")
+	}
 
 }

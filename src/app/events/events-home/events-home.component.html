@@ -8,13 +8,16 @@
   <div *ngFor="let event of events.activeEvents">
     <button mat-raised-button *ngIf="isNotPassed(event)" [color]="color(event)"routerLink="/events/event/{{ event.id }}">
       <h2>{{ event.title }}</h2>
-      <label>
-        {{ d.format(
-          d.l.periodFormat,
-          event.start | date:d.l.shortDateTimeFormat:'':d.l.locale,
-          event.end | date:d.l.shortDateTimeFormat:'':d.l.locale
-        ) }}
-      </label>
+			<label>
+				{{ d.format(d.l.eventOrganizer, event.asso) }}
+			</label><br>
+			<label *ngIf="singleDay(event)">
+		    {{ event.start | date:d.l.shortDateFormat:'':d.l.locale }}, {{ event.start | date:d.l.timeFormat:'':d.l.locale }} - {{ event.end | date:d.l.timeFormat:'':d.l.locale }}
+			</label>
+			<label *ngIf="!singleDay(event)">
+		    {{ event.start | date:d.l.shortDateTimeFormat:'':d.l.locale }} - {{ event.end | date:d.l.shortDateTimeFormat:'':d.l.locale }}
+			</label>
+			<br>
     </button>
   </div>
 </div>
