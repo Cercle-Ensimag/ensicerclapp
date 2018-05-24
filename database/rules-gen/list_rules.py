@@ -17,4 +17,9 @@ class UpdateRules (ListRules):
 class UsersRules (ListRules):
     def build(self):
         self.label = "users"
-        self.read = doOr([ isAdmin(), isOneAdmin("vote"), isOneAdmin("cafet"), isAssessor() ])
+        self.read = doOr([
+			isAdmin(),
+			isOneAdmin("vote"), isOneAdmin("cafet"),
+			isOneAdmin("events"), isOneAdmin("actus"), 
+			isAssessor()
+		]);
