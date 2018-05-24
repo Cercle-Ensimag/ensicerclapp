@@ -71,6 +71,7 @@ class ArticleRules (ArticlesRules):
         self.add(StringRules("title", 30))
         self.add(StringRules("description", 2000))
         self.add(StringRules("image", 500))
+        self.add(StringRules("pdfLink", 500))
         self.add(StringRules("date", 50))
         self.add(StringRules("author", 50))
         self.add(ArticleGroupIdRules())

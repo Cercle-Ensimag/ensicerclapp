@@ -2,8 +2,18 @@ import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
 
 import { ToolsService } from '../../providers/tools.service';
-import { Actu } from '../actus-home/actus-home.component';
 import { Journalist, Group } from '../actu-admin/actu-admin.component';
+
+export class Actu {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  pdfLink: string;
+  date: string;
+  author: string;
+  groupId: string;
+}
 
 @Injectable()
 export class ActusService {

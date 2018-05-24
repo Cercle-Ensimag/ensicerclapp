@@ -25,6 +25,11 @@
     </mat-form-field>
 
     <mat-form-field>
+      <input matInput placeholder="{{ d.l.actuPdfLinkLabel }}" formControlName="pdfLink" autocomplete="off">
+      <mat-error *ngIf="actuCtrl.get('pdfLink').invalid">{{ d.l.actuPdfLinkError }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
       <input matInput [matDatepicker]="picker" placeholder="{{ d.l.actuDateLabel }}" formControlName="date" autocomplete="off">
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>

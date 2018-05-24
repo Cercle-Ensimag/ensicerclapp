@@ -7,3 +7,8 @@ mat-card {
   max-width: 600px;
   margin: auto;
 }
+
+iframe {
+	width: 600px;
+	height: 50vh;
+}

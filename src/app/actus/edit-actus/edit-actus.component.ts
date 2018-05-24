@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { Actu } from '../actus-home/actus-home.component';
+import { Actu } from '../actus-service/actus.service';
 
 import { AuthService } from '../../auth/auth-service/auth.service';
 import { ActusService } from '../actus-service/actus.service';
@@ -52,6 +52,7 @@ export class EditActusComponent implements OnInit, OnDestroy {
         title: [this.actu.title || "", [Validators.required, Validators.minLength(3)]],
         description: [this.actu.description || "", []],
         image: [this.actu.image || "", []],
+        pdfLink: [this.actu.pdfLink || "", []],
         date: [new Date(this.actu.date) || "", [Validators.required]],
         author: [this.actu.author || "", [Validators.required]]
       });
@@ -73,6 +74,9 @@ export class EditActusComponent implements OnInit, OnDestroy {
   getImage(): string {
     return this.actuCtrl.get('image').value;
   }
+  getPdfLink(): string {
+    return this.actuCtrl.get('pdfLink').value;
+  }
   getWDate(): string {
     return this.actuCtrl.get('date').value.toString();
   }
@@ -87,6 +91,7 @@ export class EditActusComponent implements OnInit, OnDestroy {
         title: this.getTitle(),
         description: this.getDescription(),
         image: this.getImage(),
+		pdfLink: this.getPdfLink(),
         date: this.getWDate(),
         author: this.getAuthor(),
         groupId: this.auth.journalistGroupId

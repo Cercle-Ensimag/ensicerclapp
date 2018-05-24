@@ -162,11 +162,13 @@ export class French {
   public static readonly actuTitleLabel = "Titre";
   public static readonly actuDescriptionLabel = "Description (Utiliser des balises HTML pour la mise en forme)";
   public static readonly actuImageLabel = "URL de l'image";
+  public static readonly actuPdfLinkLabel = "URL du document pdf";
   public static readonly actuDateLabel = "Date";
   public static readonly actuAuthorLabel = "Auteur";
   public static readonly actuTitleTooShortError = "Titre trop court";
   public static readonly actuDescriptionError = "";
   public static readonly actuImageError = "";
+  public static readonly actuPdfLinkError = "";
   public static readonly actuDateError = "Date requise";
   public static readonly actuAuthorError = "Auteur requis";
   public static readonly actuDate = "Date : {0}";

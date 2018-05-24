@@ -8,11 +8,12 @@
   <h2>{{ actu.title }}</h2>
   <mat-card-content style="text-align:left">
     <h4 [innerHTML]="actu.description"></h4>
+	<iframe *ngIf="actu.pdfLink !== ''"  [src]="this.safeUrl"></iframe><br>
+	<img *ngIf="actu.image !== ''" mat-card-image src="{{ actu.image }}"><br>
     <h4>
       {{ d.format(d.l.actuDate, actu.date | date:'fullDate':'':d.l.locale) }}<br>
       {{ d.format(d.l.actuAuthor, actu.author) }}
     </h4>
   </mat-card-content>
-  <img *ngIf="actu.image !== ''" mat-card-image src="{{ actu.image }}">
   <button mat-raised-button color="primary" (click)='back()'>{{ d.l.backLabel }}</button>
 </mat-card>
