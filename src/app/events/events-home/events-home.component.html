@@ -1,12 +1,12 @@
 <!-- Loading -->
-<div *ngIf="!events.activeEvents" class="spinner-wraper loading">
+<div *ngIf="!events.activeEvents" class="spinner-wrapper loading">
   <mat-spinner class="spinner"></mat-spinner>
 </div>
 
 <!-- Events list -->
 <div *ngIf="events.activeEvents && events.activeEvents.length > 0">
   <div *ngFor="let event of events.activeEvents">
-    <button mat-raised-button *ngIf="isNotPassed(event)" [color]="color(event)"routerLink="/events/event/{{ event.id }}">
+    <button mat-raised-button *ngIf="isNotPassed(event)" [color]="color(event)" routerLink="/events/event/{{ event.id }}">
       <h2>{{ event.title }}</h2>
 			<label>
 				{{ d.format(d.l.eventOrganizer, event.asso) }}

@@ -1,5 +1,5 @@
 <!-- Loading -->
-<mat-card *ngIf="!polls" class="spinner-wraper">
+<mat-card *ngIf="!polls" class="spinner-wrapper">
   <mat-spinner class="spinner"></mat-spinner>
 </mat-card>
 
@@ -39,7 +39,7 @@
       <mat-panel-title>{{ d.l.pollChoiceLabel }}</mat-panel-title>
     </mat-expansion-panel-header>
 
-    <mat-nav-list style="text-align=right">
+    <mat-nav-list style="text-align: right">
       <div *ngFor="let poll of polls">
         <a mat-list-item *ngIf="poll.started">
           <mat-checkbox (change)="change(poll.id, $event.checked)" color="primary">{{ poll.title }}</mat-checkbox>
@@ -49,7 +49,7 @@
   </mat-expansion-panel>
 
   <!-- Loading -->
-  <mat-card *ngIf="!displayedUsers" class="spinner-wraper">
+  <mat-card *ngIf="!displayedUsers" class="spinner-wrapper">
     <mat-spinner class="spinner"></mat-spinner>
   </mat-card>
 

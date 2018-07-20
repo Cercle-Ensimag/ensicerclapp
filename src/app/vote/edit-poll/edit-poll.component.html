@@ -1,5 +1,5 @@
 <!-- Loading -->
-<mat-card *ngIf="!poll" class="spinner-wraper">
+<mat-card *ngIf="!poll" class="spinner-wrapper">
   <mat-spinner class="spinner"></mat-spinner>
 </mat-card>
 
@@ -21,7 +21,7 @@
 
     <div class="grid-container">
       <div *ngFor="let choice of newChoices">
-        <div class="wraper border">
+        <div class="wrapper border">
           <form [formGroup]="choice.ctrl" class="container">
             <mat-form-field>
               <input matInput placeholder="{{ d.l.choiceLabelLabel }}" formControlName="label" autocomplete="off">

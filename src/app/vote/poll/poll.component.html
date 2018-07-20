@@ -1,5 +1,5 @@
 <!-- Loading -->
-<mat-card *ngIf="!poll" class="spinner-wraper">
+<mat-card *ngIf="!poll" class="spinner-wrapper">
   <mat-spinner class="spinner"></mat-spinner>
 </mat-card>
 
@@ -11,7 +11,7 @@
 
   <div *ngIf='!selectedChoice' class="grid-container">
     <div *ngFor="let choice of choices">
-      <mat-card class="wraper">
+      <mat-card class="wrapper">
         <mat-card-title>{{ choice.label }}</mat-card-title>
         <img mat-card-image src="{{ choice.image }}" alt="{{ choice.label }} - image" class="image">
         <mat-card-actions>

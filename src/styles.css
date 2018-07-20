@@ -28,7 +28,7 @@ body {
   width: 100%;
 }
 
-.wraper {
+.wrapper {
   margin: 2px;
 }
 
@@ -41,7 +41,7 @@ body {
   margin-left: -1em;
 }
 
-.spinner-wraper {
+.spinner-wrapper {
   text-align: center !important;
 }
 
