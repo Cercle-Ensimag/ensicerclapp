@@ -22,16 +22,9 @@ h1.app-name {
   margin-left: 8px;
 }
 
-.accountbtn {
+.right-btns {
   position: absolute;
   right: 8px;
-  margin-left: 8px;
-}
-
-.infobtn {
-  position: absolute;
-  right: 48px;
-  margin-left: 8px;
 }
 
 .sidenav-container {

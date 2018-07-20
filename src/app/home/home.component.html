@@ -1,11 +1,13 @@
 <div class="home-container" [class.is-mobile]="media.mobileSize">
 
   <mat-toolbar color="primary" class="toolbar">
-    <button mat-icon-button (click)="snav.toggle()" [disabled]="!auth.getCurrentUser()"><mat-icon>menu</mat-icon></button>
-    <button mat-icon-button routerLink='/home' class="homebtn" [disabled]="!auth.getCurrentUser()"><mat-icon>home</mat-icon></button>
-    <h1 class="app-name">{{ d.l.appName }}</h1>
-    <button mat-icon-button routerLink='/info' class="infobtn"><mat-icon>info</mat-icon></button>
-    <button mat-icon-button routerLink='/account' class="accountbtn" [disabled]="!auth.getCurrentUser()"><mat-icon>account_circle</mat-icon></button>
+    <button mat-icon-button (click)="snav.toggle()" *ngIf="auth.getCurrentUser()"><mat-icon>menu</mat-icon></button>
+    <!-- <button mat-icon-button routerLink='/home' class="homebtn" [disabled]="!auth.getCurrentUser()"><mat-icon>home</mat-icon></button> -->
+    <h1 class="app-name" routerLink='/home'>{{ d.l.appName }}</h1>
+    <div class="right-btns">
+      <button mat-icon-button routerLink='/info' class="infobtn"><mat-icon>info</mat-icon></button>
+      <button mat-icon-button routerLink='/account' class="accountbtn" *ngIf="auth.getCurrentUser()"><mat-icon>account_circle</mat-icon></button>
+    </div>
   </mat-toolbar>
 
   <!-- Side navigation bar & content -->

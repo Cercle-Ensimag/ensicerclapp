@@ -4,7 +4,7 @@ registerLocaleData(localeFr);
 
 export class French {
   // Common
-  public static readonly appName = "Ensicerclapp";
+  public static readonly appName = "Cercle Ensimag";
   public static readonly backLabel = "Retour";
   public static readonly confirmLabel = "Confimer";
   public static readonly cancelLabel = "Annuler";
