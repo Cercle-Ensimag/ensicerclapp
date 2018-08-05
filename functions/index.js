@@ -2,7 +2,7 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 
 // Fetch the service account key JSON file contents
-var serviceAccount = require("./ensicerclapp-firebase-adminsdk-87izp-f7073412f3.json");
+var serviceAccount = require("./ensicerclapp-admin-sdk-credential.json");
 
 // Initialize the app with a service account, granting admin privileges
 admin.initializeApp({
