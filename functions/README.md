@@ -20,4 +20,6 @@ The format of these files is the following :
   "[id2]": "[email2]"
 }`
 
+See function `getEmailId` in `index.js` to know how ids are generated from emails. /!\ This function is also defined in the front end and must have the same output.
+
 To actually update the list in the database, a callback function must be triggered by writing the number of the update in the database at `/list/update`. The can be done manually from the firebase console.
