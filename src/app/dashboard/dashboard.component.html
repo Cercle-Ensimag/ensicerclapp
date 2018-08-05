@@ -6,13 +6,15 @@
 <!-- Modules display -->
 <div *ngIf="modules.appModules" class="grid-container">
   <div *ngFor="let module of modules.appModules">
-    <div class="wrapper">
-      <button mat-raised-button
-        [disabled]="module.disabled"
-        routerLink="/{{ module.name }}"
-      >
-        <h2>{{ module.displayName }}</h2>
-      </button>
-    </div>
+      <mat-card routerLink="/{{ module.name }}" *ngIf="!module.disabled">
+        <mat-card-header>
+          <img mat-card-avatar src="assets/img/icons/{{ module.name }}.png">
+          <mat-card-title>{{ module.displayName }}</mat-card-title>
+          <mat-card-subtitle> {{ module.fullName }} </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{ module.description }}</p>
+        </mat-card-content>
+      </mat-card>
   </div>
 </div>
