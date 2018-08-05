@@ -24,7 +24,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 The database and the server side operations are using firebase.
 The files in the `src/environments/` directory contain firebase configurations.
-The file `firabase.json` configures the following commands.
+The file `firebase.json` configures the following commands.
 
 ### Database
 
