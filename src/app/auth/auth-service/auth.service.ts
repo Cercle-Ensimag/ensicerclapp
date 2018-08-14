@@ -54,6 +54,8 @@ export class AuthService {
   isActusAdmin: boolean = false;
   isJournalist: boolean = false;
   isCafetAdmin: boolean = false;
+  isNsigmaAdmin: boolean = false;
+  isAnnoncesAdmin: boolean = false;
   isCafetResp: boolean = false;
   cafetActivated: boolean = false;
   comRespGroupId: string = null;
@@ -295,13 +297,7 @@ export class AuthService {
     return this.adminWatcher = this.db.list<string>('admin/private/admins').valueChanges()
     .subscribe(
       admins => {
-        for (let admin of admins) {
-          if (admin === this.currentUser.email) {
-            this.isAdmin = true;
-            return;
-          }
-        }
-        this.isAdmin = false;
+        this.isAdmin = admins.includes(this.currentUser.email);
       },
       err => {}
     );
@@ -316,11 +312,16 @@ export class AuthService {
           this.isCafetAdmin = data["cafet-admin"] || false;
           this.isEventsAdmin = data["events-admin"] || false;
           this.isActusAdmin = data["actus-admin"] || false;
+          this.isAnnoncesAdmin = data["annonces-admin"] || false;
+          this.isNsigmaAdmin = data["nsigma-admin"] || false;
           this.cafetActivated = data["cafet-activated"] || false;
         } else {
           this.isVoteAdmin = false;
           this.isCafetAdmin = false;
           this.isEventsAdmin = false;
+          this.isActusAdmin = false;
+          this.isAnnoncesAdmin = false;
+          this.isNsigmaAdmin = false;
           this.cafetActivated = false;
         }
       },

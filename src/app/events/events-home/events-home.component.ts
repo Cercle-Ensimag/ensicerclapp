@@ -5,6 +5,8 @@ import { DicoService } from '../../language/dico.service';
 import { ToolsService } from '../../providers/tools.service'
 
 import { Event } from '../events-service/events.service';
+import { Location } from '@angular/common';
+
 
 @Component({
   selector: 'app-events-home',
@@ -18,6 +20,7 @@ export class EventsHomeComponent implements OnInit, OnDestroy {
   constructor(
     public events: EventsService,
     public d: DicoService,
+    public location: Location,
 		private tools: ToolsService
   ) { }
 

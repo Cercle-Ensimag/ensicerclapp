@@ -5,7 +5,7 @@
 
 <!-- Compte -->
 <div *ngIf="cafet.user">
-  <div *ngIf="cafet.user.activated">
+  <div *ngIf="cafet.user.activated" class="center">
     <!-- Credit -->
     <mat-card>
       <h2>{{ d.l.creditLabel }}: {{ cafet.user.credit.toFixed(2) }}€</h2>

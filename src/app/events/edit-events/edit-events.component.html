@@ -69,7 +69,10 @@
       (click)="onSubmit()" color="primary"
       [disabled]="eventCtrl.invalid"
     >{{ d.l.applyChangesLabel }}</button>
-
-    <button mat-raised-button (click)="back()">{{ d.l.backLabel }}</button>
   </form>
 </mat-card>
+
+<button mat-fab class="mat-fab-bottom-right" color="primary"
+        (click)="location.back()">
+  <mat-icon>arrow_back</mat-icon>
+</button>

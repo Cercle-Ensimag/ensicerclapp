@@ -82,6 +82,12 @@ export class French {
   public static readonly addComRespInfo = "Entrer l'e-mail d'un respo com";
   public static readonly addComRespButtonLabel = "Ajouter";
 
+  public static readonly nsigmaAdminLabel = 'Admin Nsigma';
+  public static readonly nsigmaAdminPlLabel = 'Admins Nsigma';
+
+  public static readonly annoncesAdminLabel = 'Admin annonces';
+  public static readonly annoncesAdminPlLabel = 'Admins annonces';
+
   public static readonly actusAdminLabel = "Admin actus";
   public static readonly actusAdminPlLabel = "Admins actus";
   public static readonly journalistLabel = "Journaliste";
@@ -233,6 +239,32 @@ export class French {
   public static readonly totalOfNegativeAccountsLabel = "Total sur les comptes en négatif : {0}€";
   public static readonly numberOfPosAccountsLabel = "Nombre de comptes en positif : {0}";
   public static readonly totalOfPositiveAccountsLabel = "Total sur les comptes en positif : {0}€";
+
+  // Nsigma
+
+  public static readonly noNsigmaAnnonce = `Aucune annonce Nsigma n'est disponible pour le moment, reviens plus tard.`;
+  public static readonly confirmNsigmaAnnonceDeleteInfo = "Voulez-vous vraiment supprimer cette annonce ?";
+  public static readonly confirmNsigmaAnnonceDeleteLabel = "Confirmer la suppression";
+  public static readonly nsigmaTitleLabel = 'Titre';
+  public static readonly nsigmaTitleTooShortError = 'Titre trop court';
+  public static readonly nsigmaDescriptionLabel = 'Description';
+  public static readonly nsigmaDescriptionError = 'Description trop courte';
+  public static readonly nsigmaTypeLabel = 'Type de l\'étude';
+  public static readonly nsigmaTypeError = 'Type invalide';
+  public static readonly nsigmaStartLabel = 'Début';
+  public static readonly nsigmaStartError = 'Début invalide';
+  public static readonly nsigmaEndLabel = 'Fin';
+  public static readonly nsigmaEndError = 'Fin invalide';
+  public static readonly nsigmaTechnologiesLabel = 'Technologies';
+  public static readonly nsigmaTechnologiesError = 'Technologies invalides';
+  public static readonly nsigmaRemunerationLabel = 'Rémunération';
+  public static readonly nsigmaRemunerationError = 'Rémunération invalide';
+  public static readonly nsigmaDifficultyLabel = 'Difficulté';
+  public static readonly nsigmaDifficultyError = 'Difficulté invalide';
+  public static readonly nsigmaFormLabel = 'Formulaire Google de contact';
+  public static readonly nsigmaFormError = 'Formulaire invalide';
+  public static readonly nsigmaEnCours = 'En cours';
+  public static readonly nsigmaFinie = 'Finie';
 
   // Info
   public static readonly legalNoticeLabel = "Mentions légales";

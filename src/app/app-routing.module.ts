@@ -57,6 +57,14 @@ import { CanActivateCafetAdmin } from './cafet/cafet-guard/cafet-admin.service';
 import { CanActivateCafetResp } from './cafet/cafet-guard/cafet-resp.guard';
 import { EmailVerifGuard } from './auth/email-verif/email-verif-guard/email-verif.guard';
 import { AccountGuard } from './account/account-guard/account.guard';
+import {NsigmaHomeComponent} from './nsigma/nsigma-home/nsigma-home.component';
+import {NsigmaAdminComponent} from './nsigma/nsigma-admin/nsigma-admin.component';
+import {NsigmaGuard} from './nsigma/nsigma.guard';
+import {AnnoncesHomeComponent} from './annonces/annonces-home/annonces-home.component';
+import {AnnoncesAdminComponent} from './annonces/annonces-admin/annonces-admin.component';
+import {AnnoncesGuard} from './annonces/annonces.guard';
+import {NsigmaAnnonceComponent} from './nsigma/nsigma-annonce/nsigma-annonce.component';
+import {NsigmaEditComponent} from './nsigma/nsigma-edit/nsigma-edit.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -97,6 +105,14 @@ const routes: Routes = [
   { path: 'calendar', component: CalendarComponent, canActivate: [CanActivateHome] },
   { path: 'calendar/settings', component: CalSettingsComponent, canActivate: [CanActivateHome] },
   { path: 'calendar/edit/:id', component: EditCalComponent, canActivate: [CanActivateHome] },
+
+  { path: 'nsigma', component: NsigmaHomeComponent, canActivate: [CanActivateHome] },
+  { path: 'nsigma/annonce/:id', component: NsigmaAnnonceComponent, canActivate: [CanActivateHome] },
+  { path: 'nsigma-admin', component: NsigmaAdminComponent, canActivate: [NsigmaGuard] },
+  { path: 'nsigma/edit/:id', component: NsigmaEditComponent, canActivate: [NsigmaGuard] },
+
+  { path: 'annonces', component: AnnoncesHomeComponent, canActivate: [CanActivateHome] },
+  { path: 'annonces-admin', component: AnnoncesAdminComponent, canActivate: [AnnoncesGuard] },
 
   { path: 'admin', component: AdminUsersComponent, canActivate: [CanActivateHome, CanActivateAdmin] }
 

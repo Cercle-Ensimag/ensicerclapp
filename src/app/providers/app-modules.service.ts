@@ -19,7 +19,7 @@ export class AppModulesService {
   ) { }
 
   watchModules() {
-    return this.db.list<AppModule>('admin/public/modules').valueChanges()
+    return this.db.list<AppModule>('admin/public/modules', ref => ref.orderByChild('order')).valueChanges()
     .subscribe(
       modules => {
         this.appModules = modules;

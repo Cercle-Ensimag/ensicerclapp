@@ -13,6 +13,11 @@ body {
   margin: auto;
 }
 
+.grid-container > div > mat-card {
+  min-height: 94%;
+  box-sizing: border-box;
+}
+
 @media only screen and (max-width: 768px) {
   /* For mobile phones: */
   .grid-container {
@@ -25,8 +30,7 @@ body {
 }
 
 .container {
-  padding: 4px 4px 4px 4px;
-  text-align: center;
+  padding: 10px;
   max-width: 1000px;
   margin: auto;
 }
@@ -48,10 +52,30 @@ body {
   margin-left: -1em;
 }
 
+.center {
+  text-align: center;
+}
+
 .spinner-wrapper {
   text-align: center !important;
 }
 
 .spinner {
   display: inline-block !important;
+}
+
+div.mat-fab-bottom-right {
+  position: absolute !important;
+  bottom: 28px;
+  right: 28px;
+}
+
+div.mat-fab-bottom-right button:not(:last-child) {
+  margin-right: 14px;
+}
+
+button.mat-fab-bottom-right {
+  position: absolute !important;
+  bottom: 28px;
+  right: 28px;
 }

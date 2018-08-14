@@ -4,6 +4,8 @@ import { CalService, CalEvent, PERSOS, ASSOS, COURSE } from '../cal-service/cal.
 import { ToolsService } from '../../providers/tools.service';
 import { DicoService } from '../../language/dico.service';
 import { DeviceSizeService } from '../../providers/device-size.service'
+import {Location} from '@angular/common';
+
 
 const DAY_TIME = 24 * 60 * 60* 1000;
 const WEEK_LENGTH = 7;
@@ -25,6 +27,7 @@ export class CalendarComponent implements OnInit {
     public cal: CalService,
     public media: DeviceSizeService,
     private tools: ToolsService,
+    public location: Location,
     public d: DicoService
   ) {}
 

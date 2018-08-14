@@ -4,17 +4,24 @@
   <form [formGroup]="settingsCtrl" class="container">
 
     <span *ngIf="error" class="error">{{ error }}</span>
-
     <mat-form-field>
       <textarea matInput placeholder="{{ d.l.calSettingsRessourcesLabel }}" formControlName="resources"></textarea>
       <mat-error *ngIf="settingsCtrl.get('resources').invalid">{{ d.l.calSettingsRessourcesError }}</mat-error>
     </mat-form-field>
-
-    <button mat-raised-button
-      (click)="onSubmit()" color="primary"
-      [disabled]="settingsCtrl.invalid || settingsCtrl.pristine"
-    >{{ d.l.applyChangesLabel }}</button>
-
-    <button mat-raised-button (click)="back()">{{ d.l.backLabel }}</button>
+    <mat-divider></mat-divider>
+    <div style="text-align: center">
+      <br><b>Kézako ?</b><br><br>Laissez cette application récupérer automatiquement cette information depuis votre espace ADE.
+      <br>
+      <button mat-raised-button color="secondary" (click)="gatherFromAde()">Récupérer via ADE</button>
+    </div>
   </form>
 </mat-card>
+
+<div class="mat-fab-bottom-right">
+  <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
+  <button mat-fab color="primary"
+          (click)="submit()"
+          [disabled]="settingsCtrl.invalid || settingsCtrl.pristine">
+    <mat-icon>save</mat-icon>
+  </button>
+</div>

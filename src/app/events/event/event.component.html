@@ -19,5 +19,9 @@
     <h4 [innerHTML]="event.description"></h4>
   </mat-card-content>
   <img *ngIf="event.image !== ''" mat-card-image src="{{ event.image }}">
-  <button mat-raised-button color="primary" (click)='back()'>{{ d.l.backLabel }}</button>
 </mat-card>
+
+<button mat-fab class="mat-fab-bottom-right" color="primary"
+        (click)="location.back()">
+  <mat-icon>arrow_back</mat-icon>
+</button>

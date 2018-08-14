@@ -14,8 +14,12 @@
 
 <!-- No actus -->
 <div *ngIf="actus.actus && actus.actus.length == 0">
-  <mat-card>
+  <mat-card class="center">
     <h3>{{ d.l.noActu }}</h3>
-    <button class="item" mat-raised-button routerLink='/home' color="primary">{{ d.l.backLabel }}</button>
   </mat-card>
 </div>
+
+<button mat-fab class="mat-fab-bottom-right" color="primary"
+        (click)="location.back()">
+  <mat-icon>arrow_back</mat-icon>
+</button>

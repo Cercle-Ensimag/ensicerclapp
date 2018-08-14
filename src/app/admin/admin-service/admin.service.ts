@@ -51,4 +51,12 @@ export class AdminService {
     this.db.object('users/'+this.tools.getEmailIdFromEmail(email)+'/'+uid+'/admin/cafet-admin').set(checked);
   }
 
+  setNsigmaAdmin(email: string, uid: string, checked: boolean) {
+    this.db.object('users/'+this.tools.getEmailIdFromEmail(email)+'/'+uid+'/admin/nsigma-admin').set(checked);
+  }
+
+  setAnnoncesAdmin(email: string, uid: string, checked: boolean) {
+    this.db.object('users/'+this.tools.getEmailIdFromEmail(email)+'/'+uid+'/admin/annonces-admin').set(checked);
+  }
+
 }

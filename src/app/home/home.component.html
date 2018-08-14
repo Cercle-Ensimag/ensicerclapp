@@ -20,45 +20,53 @@
           <div *ngFor="let module of modules.appModules">
             <a mat-list-item
               *ngIf="!module.disabled"
-              routerLink="/{{ module.name }}">{{ module.displayName }}</a>
+              routerLink="/{{ module.name }}"><img mat-list-avatar src="assets/img/icons/{{module.name}}.png">{{ module.displayName }}</a>
           </div>
           <a mat-list-item
             *ngIf="auth.isAdmin"
             routerLink="/admin"
-          >{{ d.l.adminLabel }}</a>
+          > <img mat-list-avatar src="assets/img/icons/admin.png"> {{ d.l.adminLabel }}</a>
           <a mat-list-item
             *ngIf="auth.isVoteAdmin"
             routerLink="/vote-admin"
-          >{{ d.l.voteAdminLabel }}</a>
+          > <img mat-list-avatar src="assets/img/icons/admin.png"> {{ d.l.voteAdminLabel }}</a>
           <a mat-list-item
             *ngIf="auth.isAssessor"
             routerLink="/assessor"
-          >{{ d.l.assessorLabel }}</a>
+          > <img mat-list-avatar src="assets/img/icons/admin.png"> {{ d.l.assessorLabel }}</a>
           <a mat-list-item
             *ngIf="auth.isEventsAdmin"
             routerLink="/events-admin"
-          >{{ d.l.eventsAdminLabel }}</a>
+          > <img mat-list-avatar src="assets/img/icons/admin.png"> {{ d.l.eventsAdminLabel }}</a>
           <a mat-list-item
             *ngIf="auth.isComResp"
             routerLink="/com-resp"
-          >{{ d.l.comRespLabel }}</a>
+          > <img mat-list-avatar src="assets/img/icons/admin.png"> {{ d.l.comRespLabel }}</a>
           <a mat-list-item
             *ngIf="auth.isActusAdmin"
             routerLink="/actus-admin"
-          >{{ d.l.actusAdminLabel }}</a>
+          > <img mat-list-avatar src="assets/img/icons/admin.png"> {{ d.l.actusAdminLabel }}</a>
           <a mat-list-item
             *ngIf="auth.isJournalist"
             routerLink="/journalist"
-          >{{ d.l.journalistLabel }}</a>
+          > <img mat-list-avatar src="assets/img/icons/admin.png">{{ d.l.journalistLabel }}</a>
+          <a mat-list-item
+             *ngIf="auth.isNsigmaAdmin"
+             routerLink="/nsigma-admin"
+          > <img mat-list-avatar src="assets/img/icons/admin.png">{{ d.l.nsigmaAdminLabel }}</a>
+          <a mat-list-item
+             *ngIf="auth.isAnnoncesAdmin"
+             routerLink="/annonces-admin"
+          > <img mat-list-avatar src="assets/img/icons/admin.png">{{ d.l.annoncesAdminLabel }}</a>
           <a mat-list-item
             *ngIf="auth.isCafetAdmin"
             routerLink="/cafet-admin"
-          >{{ d.l.cafetAdminLabel }}</a>
+          > <img mat-list-avatar src="assets/img/icons/admin.png">{{ d.l.cafetAdminLabel }}</a>
           <a mat-list-item
             *ngIf="auth.isCafetResp"
             routerLink="/cafet-resp"
-          >{{ d.l.cafetRespLabel }}</a>
-          <a mat-list-item (click)="snav.toggle(); auth.logout()">{{ d.l.logOutLabel }}</a>
+          > <img mat-list-avatar src="assets/img/icons/admin.png">{{ d.l.cafetRespLabel }}</a>
+          <a mat-list-item (click)="snav.toggle(); auth.logout()"> <img mat-list-avatar src="assets/img/icons/logout.png"> {{ d.l.logOutLabel }}</a>
         </mat-nav-list>
       </div>
     </mat-sidenav>

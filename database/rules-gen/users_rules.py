@@ -50,6 +50,8 @@ class AdminPartRules (UserRules):
         self.add(BooleanRules("events-admin"))
         self.add(BooleanRules("actus-admin"))
         self.add(BooleanRules("vote-admin"))
+        self.add(BooleanRules("nsigma-admin"))
+        self.add(BooleanRules("annonces-admin"))
         self.add(OtherRules())
 
 class EmailRules (AdminPartRules):

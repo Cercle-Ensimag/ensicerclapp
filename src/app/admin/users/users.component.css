@@ -5,7 +5,7 @@ mat-slide-toggle {
 }
 
 .width {
-  max-width: 800px;
+  max-width: 1000px;
   margin: auto
 }
 
@@ -24,4 +24,8 @@ mat-checkbox {
 
 mat-paginator {
   margin-top: 4px;
+}
+
+.mat-expansion-panel-header-title {
+  max-width: 300px;
 }

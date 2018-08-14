@@ -244,7 +244,7 @@ export class CalService {
     if (resources == null || resources === "") {
       return null;
     }
-    return environment.proxy.domain + "resources=" + resources;
+    return environment.proxy.domain + "action=fetch_edt&resources=" + resources;
   }
 
   resourcesValidator(control: FormControl) {

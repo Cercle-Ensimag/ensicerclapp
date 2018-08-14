@@ -4,6 +4,12 @@ import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
 
 import { CalService, Settings } from '../cal-service/cal.service';
 import { DicoService } from '../../language/dico.service';
+import {MatDialog, MatSnackBar} from '@angular/material';
+import {DeleteDialogComponent} from '../../shared-components/delete-dialog/delete-dialog.component';
+import {LoginDialogComponent} from '../../shared-components/login-dialog/login-dialog.component';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {environment} from '../../../environments/environment';
+import {text} from 'body-parser';
 
 @Component({
   selector: 'app-cal-settings',
@@ -22,7 +28,10 @@ export class CalSettingsComponent implements OnInit, OnDestroy {
     private cal: CalService,
     private location: Location,
     private fb: FormBuilder,
-    public d: DicoService
+    public d: DicoService,
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog,
+    private http: HttpClient
   ) { }
 
   ngOnInit() {
@@ -47,19 +56,32 @@ export class CalSettingsComponent implements OnInit, OnDestroy {
     })
   }
 
-  onSubmit() {
+  submit() {
     if (!this.settingsCtrl.invalid) {
       this.cal.setSettings(
         new Settings(
           this.settingsCtrl.get('resources').value
         )
       ).then(() => {
-        this.error = this.d.l.changesApplied;
+        this.snackBar.open("Ressources mises à jour", 'ok', {duration: 2000});
       });
     }
   }
 
-  back() {
-    this.location.back();
+  gatherFromAde() {
+    this.dialog.open(LoginDialogComponent, {
+      data: {
+        title: "Connexion à ADE",
+        content: `Identifiants de connexion à ADE`
+      }
+    }).afterClosed().subscribe(credentials => {
+      if (!credentials) return;
+      this.snackBar.open('Connexion à ADE...');
+      this.http.post(environment.proxy.domain + 'action=fetch_ade', credentials, { responseType: 'text'}).subscribe( (text: string) => {
+        if (text.startsWith('invalid')) return this.snackBar.open(`Identifiants incorrects`, 'ok', {duration: 2000});
+        this.settingsCtrl.get('resources').setValue(text);
+        this.submit();
+      });
+    });
   }
 }

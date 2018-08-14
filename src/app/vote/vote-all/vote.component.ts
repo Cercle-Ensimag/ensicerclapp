@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-
 import { VoteService } from '../vote-service/vote.service';
-
 import { DicoService } from '../../language/dico.service';
+import {Location} from '@angular/common';
+
 
 @Component({
   selector: 'app-vote',
@@ -15,7 +15,8 @@ export class VoteComponent {
 
   constructor(
     public vote: VoteService,
-    public d: DicoService
+    public d: DicoService,
+    public location: Location
   ) {
     this.noPoll = true;
   }

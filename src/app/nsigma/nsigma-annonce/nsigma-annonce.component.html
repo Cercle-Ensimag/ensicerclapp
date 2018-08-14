@@ -1,0 +1,30 @@
+<!-- Loading -->
+<div *ngIf="!annonce" class="spinner-wrapper loading">
+  <mat-spinner class="spinner"></mat-spinner>
+</div>
+
+<!-- Nsigma annonces display -->
+<mat-card *ngIf="annonce">
+  <mat-card-header>
+    <img mat-card-avatar src="assets/img/nsigma-types/{{ annonce.type }}.png">
+    <mat-card-title>{{ annonce.done ? '[Recrutement terminé] ' : ''}}{{ annonce.title }}</mat-card-title>
+    <mat-card-subtitle> Rémunération : {{ annonce.remuneration }} €</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <p><b>Technologies : </b>{{ annonce.technologies}}</p>
+    <p><b>Difficulté : </b>{{ annonce.difficulty }}</p>
+    <p><b>{{ d.format(annonce.start | date:d.l.longDateFormat:'':d.l.locale) }} -
+      {{ d.format(annonce.end | date:d.l.longDateFormat:'':d.l.locale) }}</b></p>
+    <p>{{ annonce.description }}</p>
+  </mat-card-content>
+  <mat-card-actions>
+    <a mat-raised-button color="primary"	target="_blank" href="{{annonce.form}}" [disabled]="annonce.done">
+      Candidater
+    </a>
+  </mat-card-actions>
+</mat-card>
+
+<button mat-fab class="mat-fab-bottom-right" color="primary"
+        (click)="location.back()">
+  <mat-icon>arrow_back</mat-icon>
+</button>

@@ -52,8 +52,4 @@ export class EventComponent implements OnInit, OnDestroy {
       this.isInCalendar = eventId != null;
     })
   }
-
-  back() {
-    this.location.back();
-  }
 }

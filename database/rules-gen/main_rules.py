@@ -3,6 +3,8 @@ from users_rules import UsersRules
 from admin_rules import AdminRules
 from actus_rules import ActusRules
 from cafet_rules import CafetRules
+from nsigma_rules import NsigmaRules
+from annonces_rules import AnnoncesRules
 from calendar_rules import CalendarRules
 from events_rules import EventsRules
 from vote_rules import VoteRules
@@ -16,6 +18,8 @@ class MainRules (RulesPattern):
         self.add(AdminRules())
         self.add(ActusRules())
         self.add(CafetRules())
+        self.add(NsigmaRules())
+        self.add(AnnoncesRules())
         self.add(CalendarRules())
         self.add(EventsRules())
         self.add(VoteRules())

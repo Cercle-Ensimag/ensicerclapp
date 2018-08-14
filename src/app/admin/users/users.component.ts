@@ -17,6 +17,8 @@ export class AdminUsersComponent implements OnInit {
   eventsAdmin: {[uid: string]: boolean};
   actusAdmin: {[uid: string]: boolean};
   cafetAdmin: {[uid: string]: boolean};
+  nsigmaAdmin: {[uid: string]: boolean};
+  annoncesAdmin: {[uid: string]: boolean};
 
   displayedUsers: any[];
   search: FormControl;
@@ -24,10 +26,14 @@ export class AdminUsersComponent implements OnInit {
   eventsAdminCtrl: FormControl;
   actusAdminCtrl: FormControl;
   cafetAdminCtrl: FormControl;
+  nsigmaAdminCtrl: FormControl;
+  annoncesAdminCtrl: FormControl;
   voteAdminChecked: boolean;
   eventsAdminChecked: boolean;
   actusAdminChecked: boolean;
   cafetAdminChecked: boolean;
+  nsigmaAdminChecked: boolean;
+  annoncesAdminChecked: boolean;
 
   pageIndex: number = 0;
   pageSize: number = 20;
@@ -42,6 +48,8 @@ export class AdminUsersComponent implements OnInit {
     this.eventsAdmin = {};
     this.actusAdmin = {};
     this.cafetAdmin = {};
+    this.nsigmaAdmin = {};
+    this.annoncesAdmin = {};
   }
 
   ngOnInit() {
@@ -59,23 +67,33 @@ export class AdminUsersComponent implements OnInit {
     this.eventsAdminCtrl = new FormControl();
     this.actusAdminCtrl = new FormControl();
     this.cafetAdminCtrl = new FormControl();
+    this.nsigmaAdminCtrl = new FormControl();
+    this.annoncesAdminCtrl = new FormControl();
     this.search.valueChanges.subscribe(name => {
       this.sortUsers(name);
-    })
+    });
     this.voteAdminCtrl.valueChanges.subscribe(checked => {
       this.voteAdminChecked = checked;
       this.sortUsers(this.search.value || "");
-    })
+    });
     this.eventsAdminCtrl.valueChanges.subscribe(checked => {
       this.eventsAdminChecked = checked;
       this.sortUsers(this.search.value || "");
-    })
+    });
     this.actusAdminCtrl.valueChanges.subscribe(checked => {
       this.actusAdminChecked = checked;
       this.sortUsers(this.search.value || "");
-    })
+    });
     this.cafetAdminCtrl.valueChanges.subscribe(checked => {
       this.cafetAdminChecked = checked;
+      this.sortUsers(this.search.value || "");
+    });
+    this.nsigmaAdminCtrl.valueChanges.subscribe(checked => {
+      this.nsigmaAdminChecked = checked;
+      this.sortUsers(this.search.value || "");
+    });
+    this.annoncesAdminCtrl.valueChanges.subscribe(checked => {
+      this.annoncesAdminChecked = checked;
       this.sortUsers(this.search.value || "");
     })
   }
@@ -129,6 +147,16 @@ export class AdminUsersComponent implements OnInit {
     this.admin.setCafetAdmin(email, uid, checked);
   }
 
+  setNsigmaAdmin(email: string, uid: string, checked: boolean) {
+    this.nsigmaAdmin[uid] = checked;
+    this.admin.setNsigmaAdmin(email, uid, checked);
+  }
+
+  setAnnoncesAdmin(email: string, uid: string, checked: boolean) {
+    this.annoncesAdmin[uid] = checked;
+    this.admin.setAnnoncesAdmin(email, uid, checked);
+  }
+
   voteChecked(user: any) {
     if (typeof this.voteAdmin[user.uid] === 'undefined'){
       return user[user.uid]['admin']['vote-admin'] || false;
@@ -158,11 +186,26 @@ export class AdminUsersComponent implements OnInit {
     }
   }
 
+  nsigmaChecked(user: any) {
+    if (typeof this.nsigmaAdmin[user.uid] === 'undefined'){
+      return user[user.uid]['admin']['nsigma-admin'] || false;
+    } else {
+      return this.nsigmaAdmin[user.uid];
+    }
+  }
+  annoncesChecked(user: any) {
+    if (typeof this.annoncesAdmin[user.uid] === 'undefined'){
+      return user[user.uid]['admin']['annonces-admin'] || false;
+    } else {
+      return this.annoncesAdmin[user.uid];
+    }
+  }
+
   getName(user: any): string {
     return this.tools.titleCase(
       user[user.uid].admin.email
       .split('@')[0].split('.').join(' ')
-      .replace('1', '').replace('2', '').replace('3', '')
+      .replace('1', '').replace(/[0-9]/g, "")
     );
   }
 

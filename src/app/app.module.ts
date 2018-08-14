@@ -76,6 +76,8 @@ import { AdminService } from './admin/admin-service/admin.service';
 import { CafetService } from './cafet/cafet-service/cafet.service';
 import { EventsService } from './events/events-service/events.service';
 import { ActusService } from './actus/actus-service/actus.service';
+import { NsigmaService } from './nsigma/nsigma.service';
+import { AnnoncesService } from './annonces/annonces.service';
 import { CalService } from './calendar/cal-service/cal.service';
 
 import { AppModulesService } from './providers/app-modules.service';
@@ -122,6 +124,16 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTableModule } from '@angular/material/table';
 import { environment } from '../environments/environment';
+import { AnnoncesHomeComponent } from './annonces/annonces-home/annonces-home.component';
+import { AnnoncesAdminComponent } from './annonces/annonces-admin/annonces-admin.component';
+import { NsigmaHomeComponent } from './nsigma/nsigma-home/nsigma-home.component';
+import { NsigmaAnnonceComponent } from './nsigma/nsigma-annonce/nsigma-annonce.component';
+import { NsigmaAdminComponent } from './nsigma/nsigma-admin/nsigma-admin.component';
+import { NsigmaEditComponent } from './nsigma/nsigma-edit/nsigma-edit.component';
+import { NsigmaGuard } from './nsigma/nsigma.guard';
+import { AnnoncesGuard } from './annonces/annonces.guard';
+import { DeleteDialogComponent } from './shared-components/delete-dialog/delete-dialog.component';
+import { LoginDialogComponent } from './shared-components/login-dialog/login-dialog.component';
 
 @NgModule({
   declarations: [
@@ -135,7 +147,15 @@ import { environment } from '../environments/environment';
     EventsHomeComponent, EventComponent, EventAdminComponent, ComRespComponent, EditEventsComponent,
     ActusHomeComponent, ActuComponent, ActuAdminComponent, JournalistComponent, EditActusComponent,
     InfoComponent, ReadmeComponent, LegalNoticeComponent,
-    AccountComponent
+    AccountComponent,
+    AnnoncesHomeComponent,
+    AnnoncesAdminComponent,
+    NsigmaAdminComponent,
+    NsigmaHomeComponent,
+    NsigmaAnnonceComponent,
+    NsigmaEditComponent,
+    DeleteDialogComponent,
+    LoginDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -148,7 +168,7 @@ import { environment } from '../environments/environment';
     FlexLayoutModule
   ],
   providers: [
-    AuthService, VoteService, AdminService, CafetService, EventsService, ActusService, CalService,
+    AuthService, VoteService, AdminService, CafetService, EventsService, ActusService, NsigmaService, NsigmaGuard, AnnoncesService, AnnoncesGuard, CalService,
     AppModulesService, DeviceSizeService, ListService, ToolsService,
     CanActivateHome, CanActivateVoteAdmin, CanActivateAssessor, CanActivateEventsAdmin, CanActivateComResp, CanActivateEventsEdit, CanActivateActusAdmin, CanActivateJournalist, CanActivateCafetResp, CanActivateActusEdit, CanActivateAdmin, CanActivateCafetAdmin, EmailVerifGuard, AccountGuard,
     DicoService, DatePipe
@@ -157,7 +177,9 @@ import { environment } from '../environments/environment';
     VoteSnackbarComponent,
     CafetHistoryComponent,
     EditCafetUserComponent,
-    CafetDayHistoryComponent
+    CafetDayHistoryComponent,
+    DeleteDialogComponent,
+    LoginDialogComponent
   ],
   bootstrap: [AppComponent]
 })

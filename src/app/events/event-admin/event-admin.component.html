@@ -11,7 +11,7 @@
 
       <!-- Display events -->
       <div *ngIf="events.events">
-        <mat-card *ngFor="let event of events.events | slice:pageIndex*pageSize:(pageIndex+1)*pageSize">
+        <mat-card *ngFor="let event of events.events | slice:(pageIndex*pageSize):(pageIndex+1)*pageSize">
           <h2>{{ event.title }}</h2>
 					<label>{{ d.format(d.l.eventOrganizer, event.asso) }}</label><br>
           <button mat-icon-button routerLink="/events/event/{{ event.id }}"><mat-icon>search</mat-icon></button>
