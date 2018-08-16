@@ -1,19 +1,19 @@
 <!-- Loading -->
-<mat-card *ngIf="!actu" class="spinner-wrapper">
-  <mat-spinner class="spinner"></mat-spinner>
-</mat-card>
+<div class="loading-indicator" *ngIf="!actu">
+  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
 
 <!-- Actu display -->
 <mat-card *ngIf="actu">
-  <h2>{{ actu.title }}</h2>
-  <mat-card-content style="text-align:left">
-    <h4 [innerHTML]="actu.description"></h4>
-	<iframe *ngIf="actu.pdfLink !== ''"  [src]="this.safeUrl"></iframe><br>
-	<img *ngIf="actu.image !== ''" mat-card-image src="{{ actu.image }}"><br>
-    <h4>
-      {{ d.format(d.l.actuDate, actu.date | date:'fullDate':'':d.l.locale) }}<br>
-      {{ d.format(d.l.actuAuthor, actu.author) }}
-    </h4>
+  <mat-card-header>
+    <img mat-card-avatar src="assets/img/icons/actus.png">
+    <mat-card-title>{{ actu.title }}</mat-card-title>
+    <mat-card-subtitle> {{ actu.date | date:'fullDate':'':d.l.locale }} - <i>{{ actu.author }}</i> </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <p [innerHTML]="actu.description"></p>
+    <iframe *ngIf="actu.pdfLink !== ''"  [src]="this.safeUrl"></iframe><br>
+    <img *ngIf="actu.image !== ''" mat-card-image src="{{ actu.image }}"><br>
   </mat-card-content>
 </mat-card>
 

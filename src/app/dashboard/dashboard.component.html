@@ -1,6 +1,6 @@
 <!-- Loading -->
-<div *ngIf="!modules.appModules" class="spinner-wrapper loading">
-  <mat-spinner class="spinner"></mat-spinner>
+<div class="loading-indicator" *ngIf="!modules.appModules">
+  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
 </div>
 
 <!-- Modules display -->

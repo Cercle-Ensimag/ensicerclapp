@@ -1,52 +1,42 @@
-<mat-tab-group>
+<div class="loading-indicator" *ngIf="tabGroup.selectedIndex ? !journalists : !actus.actus">
+  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
+
+<mat-tab-group #tabGroup>
 
   <!-- Actus tab -->
   <mat-tab label="{{ d.l.actus }}">
 
-    <!-- Loading -->
-    <mat-card *ngIf="!actus.actus" class="spinner-wrapper">
-      <mat-spinner class="spinner"></mat-spinner>
-    </mat-card>
-
     <!-- Actus -->
-    <div *ngIf="actus.actus">
-
-      <!-- Actus display -->
-      <div *ngIf="!deleteActuId">
-        <mat-card *ngFor="let actu of actus.actus | slice:pageIndex*pageSize:(pageIndex+1)*pageSize">
-          <h2>{{ actu.title }}</h2>
-					<label>{{ d.format(d.l.actuAuthor, actu.author) }}</label><br>
-          <button mat-icon-button routerLink="/actus/actu/{{ actu.id }}"><mat-icon>search</mat-icon></button>
-          <button mat-icon-button (click)="delete(actu.id, actu.title)"><mat-icon>delete</mat-icon></button>
-        </mat-card>
-        <mat-card *ngIf="actus.actus.length == 0">
-          <h3>{{ d.l.noActu }}</h3>
-        </mat-card>
-		    <mat-paginator [length]="actus.actus.length"
-		                  [pageSize]="pageSize"
-		                  (page)="updateList($event)">
-		    </mat-paginator>
-      </div>
-
-      <!-- Delete actu -->
-      <div *ngIf="deleteActuId">
-        <mat-card class="message">
-          <h3 [innerHTML]="d.format(d.l.confirmActuDeleteInfo, deleteActuTitle)"></h3>
-          <button mat-raised-button (click)="confirmDelete()" color="warn">{{ d.l.confirmActuDeleteLabel }}</button>
-          <button mat-raised-button (click)="back()" color="primary">{{ d.l.backLabel }}</button>
+    <div *ngIf="actus.actus && actus.actus.length > 0" class="grid-container">
+      <div *ngFor="let actu of actus.actus">
+        <mat-card routerLink="/actus/actu/{{ actu.id }}">
+          <mat-card-header>
+            <img mat-card-avatar src="assets/img/icons/actus.png">
+            <mat-card-title>{{ actu.title }}</mat-card-title>
+            <mat-card-subtitle> {{ actu.date | date:'fullDate':'':d.l.locale }} - <i>{{ actu.author }}</i> </mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p>{{ actus.getTaglessDesciption(actu).slice(0,100) }} {{actus.getTaglessDesciption(actu).length > 100 ? '...' : '' }}</p>
+          </mat-card-content>
+          <mat-card-actions style="text-align: center">
+            <button mat-icon-button routerLink="/actus/actu/{{ actu.id }}"><mat-icon>search</mat-icon></button>
+            <button mat-icon-button routerLink="/actus/actu/{{ actu.id }}/edit"><mat-icon>edit</mat-icon></button>
+            <button mat-icon-button (click)="delete(annonce.id, annonce.title)"><mat-icon>delete</mat-icon></button>
+          </mat-card-actions>
         </mat-card>
       </div>
-
+    </div>
+    <!-- No actus -->
+    <div *ngIf="actus.actus && actus.actus.length == 0">
+      <mat-card class="center">
+        <h3>{{ d.l.noActu }}</h3>
+      </mat-card>
     </div>
   </mat-tab>
 
   <!-- Journalists tab -->
   <mat-tab label="{{ d.l.journalistPlLabel }}">
-
-    <!-- Loading -->
-    <mat-card *ngIf="!journalists" class="spinner-wrapper">
-      <mat-spinner class="spinner"></mat-spinner>
-    </mat-card>
 
     <!-- Com resps -->
     <div *ngIf="journalists">
@@ -78,3 +68,7 @@
     </div>
   </mat-tab>
 </mat-tab-group>
+
+<div class="mat-fab-bottom-right">
+  <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
+</div>

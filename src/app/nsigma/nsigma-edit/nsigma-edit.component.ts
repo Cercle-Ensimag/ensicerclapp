@@ -21,7 +21,6 @@ export class NsigmaEditComponent implements OnInit, OnDestroy {
   nsigmaAnnonceCtrlWatcher: any;
   error: string;
   defaultType: string;
-  changes: boolean = false;
 
   constructor(
     private auth: AuthService,
@@ -68,9 +67,7 @@ export class NsigmaEditComponent implements OnInit, OnDestroy {
       if (this.nsigmaAnnonceCtrlWatcher) {
         this.nsigmaAnnonceCtrlWatcher.unsubscribe();
       }
-      this.nsigmaAnnonceCtrlWatcher = this.nsigmaAnnonceCtrl.valueChanges.subscribe(changes => {
-        this.changes = !this.nsigmaAnnonceCtrl.pristine;
-      });
+      this.nsigmaAnnonceCtrlWatcher = this.nsigmaAnnonceCtrl.valueChanges.subscribe(changes => {});
     });
   }
 
@@ -92,7 +89,6 @@ export class NsigmaEditComponent implements OnInit, OnDestroy {
       this.nsigmaAnnonces.setNsigmaAnnonce(nsigmaAnnonce).then(() => {
         this.snackBar.open(this.d.l.changesApplied, 'ok', {duration: 2000});
       });
-      this.changes = false;
     }
   }
 }

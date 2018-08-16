@@ -2,11 +2,13 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 
 import { DeviceSizeService } from '../../providers/device-size.service';
-import { ActusService } from '../actus-service/actus.service';
+import {Actu, ActusService} from '../actus-service/actus.service';
 import { AuthService } from '../../auth/auth-service/auth.service';
 import { ListService } from '../../providers/list.service';
 import { ToolsService } from '../../providers/tools.service';
 import { DicoService } from '../../language/dico.service';
+import {DeleteDialogComponent} from '../../shared-components/delete-dialog/delete-dialog.component';
+import {MatDialog, MatSnackBar} from '@angular/material';
 
 export class Journalist {
   emailId: string;
@@ -24,9 +26,6 @@ export class Group {
   styleUrls: ['./actu-admin.component.css']
 })
 export class ActuAdminComponent implements OnInit, OnDestroy {
-
-  deleteActuId: string;
-  deleteActuTitle: string;
 
   emailCtrl: FormControl;
   emailWatcher: any;
@@ -46,10 +45,10 @@ export class ActuAdminComponent implements OnInit, OnDestroy {
     public actus: ActusService,
     public media: DeviceSizeService,
     private list: ListService,
-    public d: DicoService
-  ) {
-    this.deleteActuId = null;
-  }
+    public d: DicoService,
+    public dialog: MatDialog,
+    private snackBar: MatSnackBar
+  ) {}
 
   ngOnInit () {
     this.actus.start();
@@ -67,18 +66,18 @@ export class ActuAdminComponent implements OnInit, OnDestroy {
     this.list.stop();
   }
 
-  delete(actuId: string, actuTitle: string) {
-    this.deleteActuId = actuId;
-    this.deleteActuTitle = actuTitle;
-  }
-
-  back() {
-    this.deleteActuId = null;
-  }
-
-  confirmDelete() {
-    this.actus.deleteActu(this.deleteActuId);
-    this.back();
+  delete(actu: Actu) {
+    this.dialog.open(DeleteDialogComponent, {
+      data: {
+        title: "Confirmation de la suppression",
+        content: `Êtes-vous certain de vouloir supprimer ${actu.title} ?`
+      }
+    }).afterClosed().subscribe(result => {
+      if (result){
+        this.actus.deleteActu(actu.id);
+        this.snackBar.open("Actu supprimée", 'ok', {duration: 2000});
+      }
+    });
   }
 
   createSearchForm() {

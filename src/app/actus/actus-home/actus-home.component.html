@@ -1,14 +1,22 @@
 <!-- Loading -->
-<div *ngIf="!actus.actus" class="spinner-wrapper loading">
-  <mat-spinner class="spinner"></mat-spinner>
+
+<div class="loading-indicator" *ngIf="!actus.actus">
+  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
 </div>
 
 <!-- Actus -->
-<div *ngIf="actus.actus && actus.actus.length > 0">
+<div *ngIf="actus.actus && actus.actus.length > 0" class="grid-container">
   <div *ngFor="let actu of actus.actus">
-    <button mat-raised-button routerLink="/actus/actu/{{ actu.id }}">
-      <h2>{{ actu.title }}</h2>
-    </button>
+    <mat-card routerLink="/actus/actu/{{ actu.id }}">
+      <mat-card-header>
+        <img mat-card-avatar src="assets/img/icons/actus.png">
+        <mat-card-title>{{ actu.title }}</mat-card-title>
+        <mat-card-subtitle> {{ actu.date | date:'fullDate':'':d.l.locale }} - <i>{{ actu.author }}</i> </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>{{ actus.getTaglessDesciption(actu).slice(0,100) }} {{actus.getTaglessDesciption(actu).length > 100 ? '...' : '' }}</p>
+      </mat-card-content>
+    </mat-card>
   </div>
 </div>
 

@@ -1,6 +1,6 @@
 <!-- Loading -->
-<div *ngIf="!events.activeEvents" class="spinner-wrapper loading">
-  <mat-spinner class="spinner"></mat-spinner>
+<div class="loading-indicator" *ngIf="!events.activeEvents">
+  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
 </div>
 
 <!-- Events list -->

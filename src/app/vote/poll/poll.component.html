@@ -1,7 +1,7 @@
 <!-- Loading -->
-<mat-card *ngIf="!poll" class="spinner-wrapper">
-  <mat-spinner class="spinner"></mat-spinner>
-</mat-card>
+<div class="loading-indicator" *ngIf="!poll">
+  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
 
 <div *ngIf="poll">
   <div>

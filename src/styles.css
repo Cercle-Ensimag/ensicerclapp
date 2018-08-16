@@ -18,6 +18,16 @@ body {
   box-sizing: border-box;
 }
 
+.grid-container mat-card {
+  text-align: left;
+  margin: 5px;
+}
+
+mat-card[ng-reflect-router-link] {
+  cursor: pointer;
+}
+
+
 @media only screen and (max-width: 768px) {
   /* For mobile phones: */
   .grid-container {
@@ -52,7 +62,12 @@ body {
   margin-left: -1em;
 }
 
-.center {
+.grid-container mat-card {
+  text-align: left;
+  margin: 5px;
+}
+
+.center, mat-card-actions {
   text-align: center;
 }
 
@@ -75,7 +90,33 @@ div.mat-fab-bottom-right button:not(:last-child) {
 }
 
 button.mat-fab-bottom-right {
-  position: absolute !important;
+  position: fixed !important;
   bottom: 28px;
   right: 28px;
+}
+
+/* Absolute Center Spinner */
+.loading-indicator {
+  position: fixed;
+  z-index: 999;
+  height: 2em;
+  width: 2em;
+  margin: auto;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  transform: translateX(-70%);
+}
+
+/* Transparent Overlay */
+.loading-indicator:before {
+  content: '';
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /*background-color: rgba(0,0,0,0.3);*/
 }

@@ -83,7 +83,7 @@
 					"description": { ".validate" : "newData.isString() && newData.val().length <= 2000" },
 					"image": { ".validate" : "newData.isString() && newData.val().length <= 500" },
 					"pdfLink": { ".validate" : "newData.isString() && newData.val().length <= 500" },
-					"date": { ".validate" : "newData.isString() && newData.val().length <= 50" },
+					"date": { ".validate" : "newData.isNumber()" },
 					"author": { ".validate" : "newData.isString() && newData.val().length <= 50" },
 					"groupId": { ".validate" : "root.child('actus/journalists/users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/groupId').val() === newData.val()" },
 					"$other": { ".validate" : "false" },

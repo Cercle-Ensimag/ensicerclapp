@@ -1,27 +1,25 @@
 <!-- Loading -->
-<div *ngIf="!nsigma.annonces" class="spinner-wrapper loading">
-  <mat-spinner class="spinner"></mat-spinner>
+<div class="loading-indicator" *ngIf="!nsigma.annonces">
+  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
 </div>
 
 <!-- Nsigma annonces display -->
 <div *ngIf="nsigma.annonces && nsigma.annonces.length > 0" class="grid-container">
-  <div *ngFor="let annonce of nsigma.annonces | slice:(pageIndex*pageSize):(pageIndex+1)*pageSize">
-    <mat-card>
-      <mat-card-header>
-        <img mat-card-avatar src="assets/img/nsigma-types/{{ annonce.type }}.png">
-        <mat-card-title>{{ annonce.done ? '[Recrutement terminé] ' : ''}}{{ annonce.title }}</mat-card-title>
-        <mat-card-subtitle> {{ annonce.remuneration }} € - {{ annonce.technologies }} - difficulté : {{ annonce.difficulty }} </mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <p>{{ annonce.description.slice(0,100) }} {{annonce.description.length > 100 ? '...' : '' }}</p>
-      </mat-card-content>
-      <mat-card-actions style="text-align: center">
-        <button mat-icon-button routerLink="/nsigma/annonce/{{ annonce.id }}"><mat-icon>search</mat-icon></button>
-        <button mat-icon-button routerLink="/nsigma/edit/{{ annonce.id }}"><mat-icon>edit</mat-icon></button>
-        <button mat-icon-button (click)="delete(annonce.id, annonce.title)"><mat-icon>delete</mat-icon></button>
-      </mat-card-actions>
-    </mat-card>
-  </div>
+  <mat-card *ngFor="let annonce of nsigma.annonces | slice:(pageIndex*pageSize):(pageIndex+1)*pageSize">
+    <mat-card-header>
+      <img mat-card-avatar src="assets/img/nsigma-types/{{ annonce.type }}.png">
+      <mat-card-title>{{ annonce.done ? '[Recrutement terminé] ' : ''}}{{ annonce.title }}</mat-card-title>
+      <mat-card-subtitle> {{ annonce.remuneration }} € - {{ annonce.technologies }} - difficulté : {{ annonce.difficulty }} </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p>{{ annonce.description.slice(0,100) }}{{annonce.description.length > 100 ? '...' : '' }}</p>
+    </mat-card-content>
+    <mat-card-actions style="text-align: center">
+      <button mat-icon-button routerLink="/nsigma/annonce/{{ annonce.id }}"><mat-icon>search</mat-icon></button>
+      <button mat-icon-button routerLink="/nsigma/edit/{{ annonce.id }}"><mat-icon>edit</mat-icon></button>
+      <button mat-icon-button (click)="delete(annonce.id, annonce.title)"><mat-icon>delete</mat-icon></button>
+    </mat-card-actions>
+  </mat-card>
 </div>
 
 <div *ngIf="nsigma.annonces">

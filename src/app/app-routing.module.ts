@@ -71,7 +71,7 @@ const routes: Routes = [
 
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignUpComponent },
-  { path: 'info', component: InfoComponent },
+  { path: 'infos', component: InfoComponent },
   { path: 'password_reset', component: PasswordResetComponent },
 
   { path: 'email_verif', component: EmailVerifComponent, canActivate: [EmailVerifGuard] },
@@ -79,40 +79,40 @@ const routes: Routes = [
 
   { path: 'home', component: DashboardComponent, canActivate: [CanActivateHome] },
   { path: 'cafet', component: CafetComponent, canActivate: [CanActivateHome] },
-  { path: 'cafet-admin', component: CafetAdminComponent, canActivate: [CanActivateHome, CanActivateCafetAdmin]},
-  { path: 'cafet-resp', component: CafetRespComponent, canActivate: [CanActivateHome, CanActivateCafetResp] },
+  { path: 'cafet/admin', component: CafetAdminComponent, canActivate: [CanActivateHome, CanActivateCafetAdmin]},
+  { path: 'cafet/resp', component: CafetRespComponent, canActivate: [CanActivateHome, CanActivateCafetResp] },
 
-  { path: 'vote', component: VoteComponent, canActivate: [CanActivateHome] },
-  { path: 'vote/poll/:id', component: PollComponent, canActivate: [CanActivateHome] },
-  { path: 'vote-admin', component: VoteAdminComponent, canActivate: [CanActivateHome, CanActivateVoteAdmin] },
-  { path: 'vote-admin/edit/:id', component: EditPollComponent, canActivate: [CanActivateHome, CanActivateVoteAdmin] },
-  { path: 'vote-admin/results/:id', component: ResultsComponent, canActivate: [CanActivateHome, CanActivateVoteAdmin] },
-  { path: 'vote-admin/users/:id', component: VoteUsersComponent, canActivate: [CanActivateHome, CanActivateVoteAdmin] },
-  { path: 'assessor', component: AssessorComponent, canActivate: [CanActivateHome, CanActivateAssessor] },
+  { path: 'votes', component: VoteComponent, canActivate: [CanActivateHome] },
+  { path: 'votes/poll/:id', component: PollComponent, canActivate: [CanActivateHome] },
+  { path: 'votes/admin', component: VoteAdminComponent, canActivate: [CanActivateHome, CanActivateVoteAdmin] },
+  { path: 'votes/poll/:id/edit', component: EditPollComponent, canActivate: [CanActivateHome, CanActivateVoteAdmin] },
+  { path: 'votes/poll/:id/results', component: ResultsComponent, canActivate: [CanActivateHome, CanActivateVoteAdmin] },
+  { path: 'votes/poll/:id/users', component: VoteUsersComponent, canActivate: [CanActivateHome, CanActivateVoteAdmin] },
+  { path: 'votes/assessor', component: AssessorComponent, canActivate: [CanActivateHome, CanActivateAssessor] },
 
   { path: 'events', component: EventsHomeComponent, canActivate: [CanActivateHome] },
   { path: 'events/event/:id', component: EventComponent, canActivate: [CanActivateHome] },
-  { path: 'events-admin', component: EventAdminComponent, canActivate: [CanActivateHome, CanActivateEventsAdmin] },
-  { path: 'com-resp', component: ComRespComponent, canActivate: [CanActivateHome, CanActivateComResp] },
-  { path: 'events-admin/edit/:id', component: EditEventsComponent, canActivate: [CanActivateHome, CanActivateEventsEdit] },
+  { path: 'events/admin', component: EventAdminComponent, canActivate: [CanActivateHome, CanActivateEventsAdmin] },
+  { path: 'events/com-resp', component: ComRespComponent, canActivate: [CanActivateHome, CanActivateComResp] },
+  { path: 'events/event/:id/edit', component: EditEventsComponent, canActivate: [CanActivateHome, CanActivateEventsEdit] },
 
   { path: 'actus', component: ActusHomeComponent, canActivate: [CanActivateHome] },
   { path: 'actus/actu/:id', component: ActuComponent, canActivate: [CanActivateHome] },
-  { path: 'actus-admin', component: ActuAdminComponent, canActivate: [CanActivateHome, CanActivateActusAdmin] },
-  { path: 'journalist', component: JournalistComponent, canActivate: [CanActivateHome, CanActivateJournalist] },
-  { path: 'actus-admin/edit/:id', component: EditActusComponent, canActivate: [CanActivateHome, CanActivateActusEdit] },
+  { path: 'actus/admin', component: ActuAdminComponent, canActivate: [CanActivateHome, CanActivateActusAdmin] },
+  { path: 'actus/journalist', component: JournalistComponent, canActivate: [CanActivateHome, CanActivateJournalist] },
+  { path: 'actus/actu/:id/edit', component: EditActusComponent, canActivate: [CanActivateHome, CanActivateActusEdit] },
 
-  { path: 'calendar', component: CalendarComponent, canActivate: [CanActivateHome] },
-  { path: 'calendar/settings', component: CalSettingsComponent, canActivate: [CanActivateHome] },
-  { path: 'calendar/edit/:id', component: EditCalComponent, canActivate: [CanActivateHome] },
+  { path: 'calendrier', component: CalendarComponent, canActivate: [CanActivateHome] },
+  { path: 'calendrier/settings', component: CalSettingsComponent, canActivate: [CanActivateHome] },
+  { path: 'calendrier/event/:id/edit', component: EditCalComponent, canActivate: [CanActivateHome] },
 
   { path: 'nsigma', component: NsigmaHomeComponent, canActivate: [CanActivateHome] },
   { path: 'nsigma/annonce/:id', component: NsigmaAnnonceComponent, canActivate: [CanActivateHome] },
-  { path: 'nsigma-admin', component: NsigmaAdminComponent, canActivate: [NsigmaGuard] },
-  { path: 'nsigma/edit/:id', component: NsigmaEditComponent, canActivate: [NsigmaGuard] },
+  { path: 'nsigma/admin', component: NsigmaAdminComponent, canActivate: [NsigmaGuard] },
+  { path: 'nsigma/annonce/:id/edit', component: NsigmaEditComponent, canActivate: [NsigmaGuard] },
 
   { path: 'annonces', component: AnnoncesHomeComponent, canActivate: [CanActivateHome] },
-  { path: 'annonces-admin', component: AnnoncesAdminComponent, canActivate: [AnnoncesGuard] },
+  { path: 'annonces/admin', component: AnnoncesAdminComponent, canActivate: [AnnoncesGuard] },
 
   { path: 'admin', component: AdminUsersComponent, canActivate: [CanActivateHome, CanActivateAdmin] }
 

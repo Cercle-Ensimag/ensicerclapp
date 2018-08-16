@@ -1,7 +1,7 @@
 <!-- Loading -->
-<mat-card *ngIf="!nsigmaAnnonce" class="spinner-wrapper">
-  <mat-spinner class="spinner"></mat-spinner>
-</mat-card>
+<div class="loading-indicator" *ngIf="!nsigmaAnnonce">
+  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
 
 <!-- Nsigma annonce display -->
 <mat-card *ngIf="nsigmaAnnonce">
@@ -79,7 +79,7 @@
   <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
   <button *ngIf="nsigmaAnnonce" mat-fab color="primary"
           (click)="submit()"
-          [disabled]="nsigmaAnnonceCtrl.invalid || !changes">
+          [disabled]="nsigmaAnnonceCtrl.invalid || nsigmaAnnonceCtrl.pristine">
     <mat-icon>save</mat-icon>
   </button>
 </div>

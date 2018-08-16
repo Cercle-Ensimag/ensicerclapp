@@ -1,7 +1,7 @@
 <!-- Loading -->
-<mat-card *ngIf="!actu" class="spinner-wrapper">
-  <mat-spinner class="spinner"></mat-spinner>
-</mat-card>
+<div class="loading-indicator" *ngIf="!actu">
+  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
 
 <!-- Actu display -->
 <mat-card *ngIf="actu">
@@ -40,12 +40,14 @@
       <input matInput placeholder="{{ d.l.actuAuthorLabel }}" formControlName="author" autocomplete="off">
       <mat-error *ngIf="actuCtrl.get('author').invalid">{{ d.l.actuAuthorError }}</mat-error>
     </mat-form-field>
-
-    <button mat-raised-button
-      (click)="onSubmit()" color="primary"
-      [disabled]="actuCtrl.invalid"
-    >{{ d.l.applyChangesLabel }}</button>
-
-    <button mat-raised-button (click)="back()">{{ d.l.backLabel }}</button>
   </form>
 </mat-card>
+
+<div class="mat-fab-bottom-right">
+  <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
+  <button *ngIf="actu" mat-fab color="primary"
+          (click)="submit()"
+          [disabled]="actuCtrl.invalid || actuCtrl.pristine">
+    <mat-icon>save</mat-icon>
+  </button>
+</div>

@@ -1,6 +1,6 @@
 <!-- Loading -->
-<div *ngIf="!nsigma.annonces" class="spinner-wrapper loading">
-  <mat-spinner class="spinner"></mat-spinner>
+<div class="loading-indicator" *ngIf="!nsigma.annonces">
+  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
 </div>
 
 <!-- Nsigma annonces display -->
@@ -13,7 +13,7 @@
         <mat-card-subtitle> {{ annonce.remuneration }} € - {{ annonce.technologies }} - difficulté : {{ annonce.difficulty }} </mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
-        <p>{{ annonce.description.slice(0,100) }} {{annonce.description.length > 100 ? '...' : '' }}</p>
+        <p>{{ annonce.description.slice(0,100) }}{{ annonce.description.length > 100 ? '...' : '' }}</p>
       </mat-card-content>
     </mat-card>
   </div>

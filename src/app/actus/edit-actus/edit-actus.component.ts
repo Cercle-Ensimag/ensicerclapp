@@ -8,6 +8,7 @@ import { Actu } from '../actus-service/actus.service';
 import { AuthService } from '../../auth/auth-service/auth.service';
 import { ActusService } from '../actus-service/actus.service';
 import { DicoService } from '../../language/dico.service';
+import {MatSnackBar} from '@angular/material';
 
 @Component({
   selector: 'app-edit-actus',
@@ -28,7 +29,8 @@ export class EditActusComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private location: Location,
     private fb: FormBuilder,
-    public d: DicoService
+    public d: DicoService,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
@@ -65,45 +67,24 @@ export class EditActusComponent implements OnInit, OnDestroy {
     });
   }
 
-  getTitle(): string {
-    return this.actuCtrl.get('title').value;
-  }
-  getDescription(): string {
-    return this.actuCtrl.get('description').value;
-  }
-  getImage(): string {
-    return this.actuCtrl.get('image').value;
-  }
-  getPdfLink(): string {
-    return this.actuCtrl.get('pdfLink').value;
-  }
-  getWDate(): string {
-    return this.actuCtrl.get('date').value.toString();
-  }
-  getAuthor(): string {
-    return this.actuCtrl.get('author').value;
-  }
-
-  onSubmit() {
+  submit() {
     if (!this.actuCtrl.invalid) {
-      let actu = {
+      const actu = {
         id: this.actu.id,
-        title: this.getTitle(),
-        description: this.getDescription(),
-        image: this.getImage(),
-		pdfLink: this.getPdfLink(),
-        date: this.getWDate(),
-        author: this.getAuthor(),
+        title: this.actuCtrl.get('title').value,
+        description: this.actuCtrl.get('description').value,
+        image: this.actuCtrl.get('image').value,
+		    pdfLink: this.actuCtrl.get('pdfLink').value,
+        date: this.actuCtrl.get('date').value.getTime(),
+        author: this.actuCtrl.get('author').value,
         groupId: this.auth.journalistGroupId
       };
+      console.log(actu);
       this.actus.setActu(actu).then(() => {
-        this.error = this.d.l.changesApplied;
+        this.snackBar.open(this.d.l.changesApplied, 'ok', {duration: 2000});
+      }).catch(reason => {
+        this.snackBar.open(reason, 'ok', {duration: 2000});
       });
     }
   }
-
-  back() {
-    this.location.back();
-  }
-
 }

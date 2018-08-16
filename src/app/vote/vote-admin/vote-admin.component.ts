@@ -7,6 +7,9 @@ import { AuthService } from '../../auth/auth-service/auth.service';
 import { ListService } from '../../providers/list.service';
 import { ToolsService } from '../../providers/tools.service';
 import { DicoService } from '../../language/dico.service';
+import {MatDialog, MatSnackBar} from '@angular/material';
+import {DeleteDialogComponent} from '../../shared-components/delete-dialog/delete-dialog.component';
+import {Poll} from '../poll/poll.component';
 
 export class Assessor {
   emailId: string;
@@ -18,9 +21,6 @@ export class Assessor {
   styleUrls: ['./vote-admin.component.css']
 })
 export class VoteAdminComponent implements OnInit, OnDestroy {
-
-  deletePollId: string;
-  deletePollTitle: string;
 
   emailCtrl: FormControl;
   emailWatcher: any;
@@ -37,10 +37,10 @@ export class VoteAdminComponent implements OnInit, OnDestroy {
     public media: DeviceSizeService,
     private list: ListService,
     private tools: ToolsService,
-    public d: DicoService
-  ) {
-    this.deletePollId = null;
-  }
+    public d: DicoService,
+  public dialog: MatDialog,
+  private snackBar: MatSnackBar
+  ) { }
 
   ngOnInit () {
     this.vote.start();
@@ -58,18 +58,18 @@ export class VoteAdminComponent implements OnInit, OnDestroy {
     this.list.stop();
   }
 
-  delete(pollId: string, pollTitle: string) {
-    this.deletePollId = pollId;
-    this.deletePollTitle = pollTitle;
-  }
-
-  back() {
-    this.deletePollId = null;
-  }
-
-  confirmDelete() {
-    this.vote.deletePoll(this.deletePollId);
-    this.back();
+  delete(poll: Poll) {
+    this.dialog.open(DeleteDialogComponent, {
+      data: {
+        title: "Confirmation de la suppression",
+        content: `Êtes-vous certain de vouloir supprimer ${poll.title} ?`
+      }
+    }).afterClosed().subscribe(result => {
+      if (result){
+        this.vote.deletePoll(poll.id);
+        this.snackBar.open("Vote supprimé", 'ok', {duration: 2000});
+      }
+    });
   }
 
   setStarted(pollId: string, started: boolean) {
@@ -104,4 +104,7 @@ export class VoteAdminComponent implements OnInit, OnDestroy {
     }
   }
 
+  choicesString(poll: Poll): string{
+    return Object.keys(poll.choices).map(choice => poll.choices[choice].label).join(' - ');
+  }
 }

@@ -1,6 +1,6 @@
 <!-- Loading -->
-<div *ngIf="!cafet.user" class="spinner-wrapper loading">
-  <mat-spinner class="spinner"></mat-spinner>
+<div class="loading-indicator" *ngIf="!cafet.user">
+  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
 </div>
 
 <!-- Compte -->
