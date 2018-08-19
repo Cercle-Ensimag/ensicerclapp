@@ -65,7 +65,7 @@ export class NsigmaService {
     return this.db.object<NsigmaAnnonce>('nsigma/annonces/' + nsigmaAnnonce.id).set(nsigmaAnnonce);
   }
 
-  deleteNsigmaAnnonce(nsigmaAnnonceId: number) {
+  deleteNsigmaAnnonce(nsigmaAnnonceId: string) {
     return this.db.object<NsigmaAnnonce>('nsigma/annonces/' + nsigmaAnnonceId).set(null);
   }
 }

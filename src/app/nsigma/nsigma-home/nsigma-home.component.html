@@ -1,32 +1,9 @@
-<!-- Loading -->
-<div class="loading-indicator" *ngIf="!nsigma.annonces">
-  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
-</div>
+<app-paged-grid [list]="nsigma.annonces" #pages>
+  <app-nsigma-annonce-card *ngFor="let annonce of pages.truncatedList()"
+                           [annonce]="annonce">
+  </app-nsigma-annonce-card>
+</app-paged-grid>
 
-<!-- Nsigma annonces display -->
-<div *ngIf="nsigma.annonces && nsigma.annonces.length > 0" class="grid-container">
-  <div *ngFor="let annonce of nsigma.annonces">
-    <mat-card routerLink="/nsigma/annonce/{{ annonce.id }}">
-      <mat-card-header>
-        <img mat-card-avatar src="assets/img/nsigma-types/{{ annonce.type }}.png">
-        <mat-card-title>{{ annonce.done ? '[Recrutement terminé] ' : ''}}{{ annonce.title }}</mat-card-title>
-        <mat-card-subtitle> {{ annonce.remuneration }} € - {{ annonce.technologies }} - difficulté : {{ annonce.difficulty }} </mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <p>{{ annonce.description.slice(0,100) }}{{ annonce.description.length > 100 ? '...' : '' }}</p>
-      </mat-card-content>
-    </mat-card>
-  </div>
+<div class="mat-fab-bottom-right">
+  <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
 </div>
-
-<!-- No event -->
-<div *ngIf="nsigma.annonces && nsigma.annonces.length == 0">
-  <mat-card>
-    <h3>{{ d.l.noNsigmaAnnonce }}</h3>
-  </mat-card>
-</div>
-
-<button mat-fab class="mat-fab-bottom-right" color="primary"
-        (click)="location.back()">
-  <mat-icon>arrow_back</mat-icon>
-</button>

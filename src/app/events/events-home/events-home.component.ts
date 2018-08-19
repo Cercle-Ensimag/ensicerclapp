@@ -31,25 +31,4 @@ export class EventsHomeComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.events.stop();
   }
-
-  isNotPassed(event: Event) {
-    return event.end > Date.now();
-  }
-
-  isNow(event: Event) {
-    return event.start < Date.now() && this.isNotPassed(event);
-  }
-
-  color(event: Event) {
-      if (this.isNow(event)) {
-          return "primary";
-      } else {
-          return "";
-      }
-  }
-
-	singleDay(event: Event) {
-		return this.tools.setDayTime(event.start, "00:00:00") == this.tools.setDayTime(event.end, "00:00:00")
-	}
-
 }

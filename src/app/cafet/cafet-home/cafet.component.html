@@ -1,7 +1,4 @@
-<!-- Loading -->
-<div class="loading-indicator" *ngIf="!cafet.user">
-  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
-</div>
+<app-loading [loading]="cafet.user"></app-loading>
 
 <!-- Compte -->
 <div *ngIf="cafet.user">

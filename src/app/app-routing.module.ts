@@ -65,6 +65,8 @@ import {AnnoncesAdminComponent} from './annonces/annonces-admin/annonces-admin.c
 import {AnnoncesGuard} from './annonces/annonces.guard';
 import {NsigmaAnnonceComponent} from './nsigma/nsigma-annonce/nsigma-annonce.component';
 import {NsigmaEditComponent} from './nsigma/nsigma-edit/nsigma-edit.component';
+import {AnnoncesEditComponent} from './annonces/annonces-edit/annonces-edit.component';
+import {AnnoncesAnnonceComponent} from './annonces/annonces-annonce/annonces-annonce.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -112,7 +114,9 @@ const routes: Routes = [
   { path: 'nsigma/annonce/:id/edit', component: NsigmaEditComponent, canActivate: [NsigmaGuard] },
 
   { path: 'annonces', component: AnnoncesHomeComponent, canActivate: [CanActivateHome] },
+  { path: 'annonces/annonce/:id', component: AnnoncesAnnonceComponent, canActivate: [CanActivateHome] },
   { path: 'annonces/admin', component: AnnoncesAdminComponent, canActivate: [AnnoncesGuard] },
+  { path: 'annonces/annonce/:id/edit', component: AnnoncesEditComponent, canActivate: [AnnoncesGuard] },
 
   { path: 'admin', component: AdminUsersComponent, canActivate: [CanActivateHome, CanActivateAdmin] }
 

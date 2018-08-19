@@ -37,9 +37,9 @@ export class NsigmaAnnonceComponent implements OnInit, OnDestroy {
     }
   }
 
-  watchNsigmaAnnonce(nsigmaAnnonceId: string) {
-    return this.nsigma.getNsigmaAnnonce(nsigmaAnnonceId).subscribe((nsigmaAnnonce) => {
-      this.annonce = nsigmaAnnonce;
+  watchNsigmaAnnonce(annonceId: string) {
+    return this.nsigma.getNsigmaAnnonce(annonceId).subscribe((annonce) => {
+      this.annonce = annonce;
     });
   }
 

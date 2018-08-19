@@ -256,6 +256,7 @@
 					"technologies": { ".validate" : "newData.isString() && newData.val().length <= 100" },
 					"contact": { ".validate" : "newData.isString() && newData.val().length <= 200" },
 					"author": { ".validate" : "newData.isString() && newData.val().length <= 30" },
+					"done": { ".validate" : "newData.isBoolean()" },
 					"$other": { ".validate" : "false" },
 				},
 			},

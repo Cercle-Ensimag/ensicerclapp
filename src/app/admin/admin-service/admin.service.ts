@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { ToolsService } from '../../providers/tools.service';
+import {Subscription} from '../../../../node_modules/rxjs';
 
 @Injectable()
 export class AdminService {
 
   users: any;
 
-  usersWatcher: any;
+  public usersWatcher: Subscription;
 
   constructor(
     private db: AngularFireDatabase,
@@ -29,34 +30,17 @@ export class AdminService {
   }
 
   watchUsers() {
-    return this.db.list<any>('users').valueChanges()
-    .subscribe(users => {
+    return this.getUsers().subscribe(users => {
       this.users = users.filter(user => user[user.uid]);
     })
   }
 
-  setVoteAdmin(email: string, uid: string, checked: boolean) {
-    this.db.object('users/'+this.tools.getEmailIdFromEmail(email)+'/'+uid+'/admin/vote-admin').set(checked);
+  getUsers() {
+    return this.db.list<any>('users').valueChanges();
   }
 
-  setEventsAdmin(email: string, uid: string, checked: boolean) {
-    this.db.object('users/'+this.tools.getEmailIdFromEmail(email)+'/'+uid+'/admin/events-admin').set(checked);
-  }
-
-  setActusAdmin(email: string, uid: string, checked: boolean) {
-    this.db.object('users/'+this.tools.getEmailIdFromEmail(email)+'/'+uid+'/admin/actus-admin').set(checked);
-  }
-
-  setCafetAdmin(email: string, uid: string, checked: boolean) {
-    this.db.object('users/'+this.tools.getEmailIdFromEmail(email)+'/'+uid+'/admin/cafet-admin').set(checked);
-  }
-
-  setNsigmaAdmin(email: string, uid: string, checked: boolean) {
-    this.db.object('users/'+this.tools.getEmailIdFromEmail(email)+'/'+uid+'/admin/nsigma-admin').set(checked);
-  }
-
-  setAnnoncesAdmin(email: string, uid: string, checked: boolean) {
-    this.db.object('users/'+this.tools.getEmailIdFromEmail(email)+'/'+uid+'/admin/annonces-admin').set(checked);
+  setUserAdminOf(email: string, uid: string, of: string, checked: boolean) {
+    this.db.object('users/'+this.tools.getEmailIdFromEmail(email)+'/'+uid+'/admin/'+ of +'-admin').set(checked);
   }
 
 }

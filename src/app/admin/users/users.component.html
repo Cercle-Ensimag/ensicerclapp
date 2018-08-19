@@ -1,25 +1,20 @@
-<mat-card *ngIf="!admin.users" class="spinner-wrapper">
-  <mat-spinner class="spinner"></mat-spinner>
-</mat-card>
+<app-loading [loading]="users"></app-loading>
 
 <div class="width">
   <!-- Header display -->
-  <mat-card *ngIf="admin.users" class="group">
-    <h3 *ngIf="admin.users">{{ d.format(d.l.nbMembersLabel, admin.users.length) }}</h3>
-    <mat-form-field class="search">
-      <input matInput placeholder="{{ d.l.search }}" [formControl]="search" autocomplete="off">
-      <button mat-icon-button matSuffix><mat-icon>search</mat-icon></button>
-    </mat-form-field>
-    <mat-checkbox [formControl]="voteAdminCtrl" color="primary">{{ d.l.voteAdminLabel }}</mat-checkbox>
-    <mat-checkbox [formControl]="eventsAdminCtrl" color="primary">{{ d.l.eventsAdminLabel }}</mat-checkbox>
-    <mat-checkbox [formControl]="actusAdminCtrl" color="primary">{{ d.l.actusAdminLabel }}</mat-checkbox>
-    <mat-checkbox [formControl]="cafetAdminCtrl" color="primary">{{ d.l.cafetAdminLabel }}</mat-checkbox>
-    <mat-checkbox [formControl]="nsigmaAdminCtrl" color="primary">{{ d.l.nsigmaAdminLabel }}</mat-checkbox>
-    <mat-checkbox [formControl]="annoncesAdminCtrl" color="primary">{{ d.l.annoncesAdminLabel }}</mat-checkbox>
+  <mat-card *ngIf="users" class="group">
+    <h3>{{ d.format(d.l.nbMembersLabel, users.length) }}</h3>
+    <form [formGroup]="usersCtrl">
+      <mat-form-field class="search">
+        <input matInput placeholder="{{ d.l.search }}" formControlName="search" autocomplete="off">
+        <button mat-icon-button matSuffix><mat-icon>search</mat-icon></button>
+      </mat-form-field>
+      <mat-checkbox *ngFor="let adminString of adminsStrings" [formControlName]="adminString + 'Admins'" color="primary">{{ d.l[adminString + 'AdminLabel'] }}</mat-checkbox>
+    </form>
   </mat-card>
 
   <!-- Users display -->
-  <div *ngIf="isReady()">
+  <div *ngIf="displayedUsers">
     <mat-accordion>
       <div *ngFor="let user of displayedUsers | slice:(pageIndex*pageSize):(pageIndex+1)*pageSize">
         <mat-expansion-panel *ngIf="user[user.uid]">
@@ -33,13 +28,8 @@
           </mat-expansion-panel-header>
 
           <div style="text-align: right">
-            <mat-slide-toggle [checked]="voteChecked(user)" (change)="setVoteAdmin(user[user.uid].admin.email, user.uid, $event.checked)" color="primary">{{ d.l.voteAdminLabel }}</mat-slide-toggle>
-            <mat-slide-toggle [checked]="eventsChecked(user)" (change)="setEventsAdmin(user[user.uid].admin.email, user.uid, $event.checked)" color="primary">{{ d.l.eventsAdminLabel }}</mat-slide-toggle>
-            <mat-slide-toggle [checked]="actusChecked(user)" (change)="setActusAdmin(user[user.uid].admin.email, user.uid, $event.checked)" color="primary">{{ d.l.actusAdminLabel }}</mat-slide-toggle>
-            <mat-slide-toggle [checked]="cafetChecked(user)" (change)="setCafetAdmin(user[user.uid].admin.email, user.uid, $event.checked)" color="primary">{{ d.l.cafetAdminLabel }}</mat-slide-toggle>
-            <mat-slide-toggle [checked]="nsigmaChecked(user)" (change)="setNsigmaAdmin(user[user.uid].admin.email, user.uid, $event.checked)" color="primary">{{ d.l.nsigmaAdminLabel }}</mat-slide-toggle>
-            <mat-slide-toggle [checked]="annoncesChecked(user)" (change)="setAnnoncesAdmin(user[user.uid].admin.email, user.uid, $event.checked)" color="primary">{{ d.l.annoncesAdminLabel }}</mat-slide-toggle>
-          </div>
+            <mat-slide-toggle *ngFor="let adminString of adminsStrings" [checked]="isUserAdminOf(user, adminString)" (change)="setUserAdminOf(user[user.uid].admin.email, user.uid, adminString, $event.checked)" color="primary">{{ d.l[adminString + 'AdminLabel'] }}</mat-slide-toggle>
+           </div>
         </mat-expansion-panel>
       </div>
     </mat-accordion>

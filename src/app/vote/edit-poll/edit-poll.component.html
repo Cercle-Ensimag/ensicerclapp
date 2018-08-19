@@ -42,11 +42,14 @@
     </div>
 
     <button mat-raised-button (click)="addChoice()" [disabled]="!choicesOk()" color="primary">{{ d.l.addChoiceLabel }}</button>
-    <button mat-raised-button (click)="onSubmit()" color="primary" [disabled]="!choicesOk() || pollCtrl.invalid">{{ d.l.applyChangesLabel }}</button>
   </form>
 </mat-card>
 
-<button mat-fab class="mat-fab-bottom-right" color="primary"
-        (click)="location.back()">
-  <mat-icon>arrow_back</mat-icon>
-</button>
+<div class="mat-fab-bottom-right">
+  <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
+  <button *ngIf="poll" mat-fab color="primary"
+          (click)="submit()"
+          [disabled]="pollCtrl.invalid || (pollCtrl.pristine && allNewChoicesPristine()) || !choicesOk()">
+    <mat-icon>save</mat-icon>
+  </button>
+</div>

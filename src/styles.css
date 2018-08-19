@@ -13,7 +13,7 @@ body {
   margin: auto;
 }
 
-.grid-container > div > mat-card {
+.grid-container mat-card {
   min-height: 94%;
   box-sizing: border-box;
 }
@@ -23,8 +23,9 @@ body {
   margin: 5px;
 }
 
-mat-card[ng-reflect-router-link] {
+[ng-reflect-router-link] {
   cursor: pointer;
+  outline: none;
 }
 
 
@@ -33,10 +34,6 @@ mat-card[ng-reflect-router-link] {
   .grid-container {
     grid-template-columns: 100%;
   }
-}
-
-.grid-container > * {
-  width: 100%;
 }
 
 .container {
@@ -80,7 +77,7 @@ mat-card[ng-reflect-router-link] {
 }
 
 div.mat-fab-bottom-right {
-  position: absolute !important;
+  position: fixed !important;
   bottom: 28px;
   right: 28px;
 }

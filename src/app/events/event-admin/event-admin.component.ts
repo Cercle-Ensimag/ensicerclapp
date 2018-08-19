@@ -17,9 +17,6 @@ import { ComResp, Group } from '../events-service/events.service';
 })
 export class EventAdminComponent implements OnInit, OnDestroy {
 
-  deleteEventId: string;
-  deleteEventTitle: string;
-
   emailCtrl: FormControl;
   emailWatcher: any;
 
@@ -39,9 +36,7 @@ export class EventAdminComponent implements OnInit, OnDestroy {
     private list: ListService,
     public tools: ToolsService,
     public d: DicoService
-  ) {
-    this.deleteEventId = null;
-  }
+  ) {  }
 
   ngOnInit () {
     this.events.start();
@@ -57,20 +52,6 @@ export class EventAdminComponent implements OnInit, OnDestroy {
     this.events.stop();
     this.comRespsWatcher.unsubscribe();
     this.list.stop();
-  }
-
-  delete(eventId: string, eventTitle: string) {
-    this.deleteEventId = eventId;
-    this.deleteEventTitle = eventTitle;
-  }
-
-  back() {
-    this.deleteEventId = null;
-  }
-
-  confirmDelete() {
-    this.events.deleteEvent(this.deleteEventId);
-    this.back();
   }
 
   createSearchForm() {

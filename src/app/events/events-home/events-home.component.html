@@ -1,35 +1,9 @@
-<!-- Loading -->
-<div class="loading-indicator" *ngIf="!events.activeEvents">
-  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
-</div>
+<app-paged-grid [list]="events.activeEvents" #pages>
+  <app-event-card *ngFor="let event of pages.truncatedList()"
+                  [event]="event">
+  </app-event-card>
+</app-paged-grid>
 
-<!-- Events list -->
-<div *ngIf="events.activeEvents && events.activeEvents.length > 0">
-  <div *ngFor="let event of events.activeEvents">
-    <button mat-raised-button *ngIf="isNotPassed(event)" [color]="color(event)" routerLink="/events/event/{{ event.id }}">
-      <h2>{{ event.title }}</h2>
-			<label>
-				{{ d.format(d.l.eventOrganizer, event.asso) }}
-			</label><br>
-			<label *ngIf="singleDay(event)">
-		    {{ event.start | date:d.l.shortDateFormat:'':d.l.locale }}, {{ event.start | date:d.l.timeFormat:'':d.l.locale }} - {{ event.end | date:d.l.timeFormat:'':d.l.locale }}
-			</label>
-			<label *ngIf="!singleDay(event)">
-		    {{ event.start | date:d.l.shortDateTimeFormat:'':d.l.locale }} - {{ event.end | date:d.l.shortDateTimeFormat:'':d.l.locale }}
-			</label>
-			<br>
-    </button>
-  </div>
+<div class="mat-fab-bottom-right">
+  <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
 </div>
-
-<!-- No event -->
-<div *ngIf="events.activeEvents && events.activeEvents.length == 0">
-  <mat-card class="center">
-    <h3>{{ d.l.noEvent }}</h3>
-  </mat-card>
-</div>
-
-<button mat-fab class="mat-fab-bottom-right" color="primary"
-        (click)="location.back()">
-  <mat-icon>arrow_back</mat-icon>
-</button>

@@ -1,33 +1,10 @@
-<!-- Loading -->
-<div class="loading-indicator" *ngIf="!vote.polls">
-  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+<app-paged-grid [list]="vote.polls" #pages>
+  <app-vote-card *ngFor="let poll of pages.truncatedList()"
+                 [poll]="poll">
+  </app-vote-card>
+</app-paged-grid>
+
+<div class="mat-fab-bottom-right">
+  <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
 </div>
 
-<!-- Polls -->
-<div *ngIf="vote.polls">
-
-  <!-- Polls display -->
-  <div *ngIf="isPoll()">
-    <div *ngFor="let poll of vote.polls">
-      <button mat-raised-button
-        *ngIf="poll.started"
-        [disabled]="vote.votes[poll.id] || false"
-        routerLink="/vote/poll/{{ poll.id }}"
-      >
-        <h2>{{ poll.title }}</h2>
-      </button>
-    </div>
-  </div>
-
-  <!-- No Poll -->
-  <div *ngIf="!isPoll()">
-    <mat-card>
-      <h3>{{ d.l.noPoll }}</h3>
-    </mat-card>
-  </div>
-</div>
-
-<button mat-fab class="mat-fab-bottom-right" color="primary"
-        (click)="location.back()">
-  <mat-icon>arrow_back</mat-icon>
-</button>

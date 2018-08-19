@@ -1,6 +1,6 @@
 <!-- Header -->
 <mat-card class="header center">
-  <button mat-icon-button [disabled]="edit" routerLink="/calendar/edit/-"><mat-icon>add_circle</mat-icon></button>
+  <button mat-icon-button [disabled]="edit" routerLink="/calendrier/event/-/edit"><mat-icon>add_circle</mat-icon></button>
   <button mat-icon-button *ngIf="!edit" (click)="edit=!edit" [color]="edit ? 'primary': ''"><mat-icon>edit</mat-icon></button>
   <button mat-icon-button *ngIf="edit" (click)="edit=false"><mat-icon>close</mat-icon></button>
   <span *ngIf="!media.mobileSize">
@@ -8,7 +8,7 @@
     <label>{{ getDay(dayOffset) | date:d.l.shortDateFormat:'':d.l.locale | uppercase }}</label>
     <button mat-icon-button (click)="nextDay()"><mat-icon>navigate_next</mat-icon></button>
   </span>
-  <button mat-icon-button [disabled]="edit" routerLink="/calendar/settings"><mat-icon>settings</mat-icon></button>
+  <button mat-icon-button [disabled]="edit" routerLink="/calendrier/settings"><mat-icon>settings</mat-icon></button>
   <button mat-icon-button (click)="setToToday()"><mat-icon>today</mat-icon></button>
   <div *ngIf="media.mobileSize">
     <button mat-icon-button (click)="previousDay()"><mat-icon>navigate_before</mat-icon></button>
@@ -35,7 +35,7 @@
 		<br>
     {{ event.location }}<br>
     <button mat-icon-button *ngIf="event.isAssos() && !edit" routerLink="/events/event/{{ event.id }}"><mat-icon>search</mat-icon></button>
-    <button mat-icon-button *ngIf="event.isPerso() && edit" routerLink="/calendar/edit/{{ event.id }}"><mat-icon>edit</mat-icon></button>
+    <button mat-icon-button *ngIf="event.isPerso() && edit" routerLink="/calendrier/edit/{{ event.id }}"><mat-icon>edit</mat-icon></button>
     <button mat-icon-button *ngIf="event.isPerso() && edit" (click)="cal.removeEvent(event.id)"><mat-icon>delete</mat-icon></button>
   </mat-card>
 </div>

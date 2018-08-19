@@ -61,12 +61,21 @@ export class ToolsService {
   	return roundedTempNumber / factor;
   }
 
+  // TODO: Transformer en pipe.
+  truncate(sentence: string, maxLength: number = 100): string{
+    return sentence.slice(0, maxLength) + (sentence.length > 100 ? '...' : '');
+  }
+
   djb2(str: string){
     var hash = 5381;
     for (var i = 0; i < str.length; i++) {
       hash = ((hash << 5) + hash) + str.charCodeAt(i); /* hash * 33 + c */
     }
     return hash;
+  }
+
+  removeTags(sentence: string) : string {
+    return sentence.replace(/<[^>]*>/g, '')
   }
 
   hashStringToColor(str: string) {

@@ -1,7 +1,4 @@
-<!-- Loading -->
-<div class="loading-indicator" *ngIf="!annonce">
-  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
-</div>
+<app-loading [loading]="annonce"></app-loading>
 
 <!-- Nsigma annonces display -->
 <mat-card *ngIf="annonce">

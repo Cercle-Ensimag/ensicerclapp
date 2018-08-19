@@ -1,7 +1,4 @@
-<!-- Loading -->
-<div class="loading-indicator" *ngIf="!nsigmaAnnonce">
-  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
-</div>
+<app-loading [loading]="nsigmaAnnonce"></app-loading>
 
 <!-- Nsigma annonce display -->
 <mat-card *ngIf="nsigmaAnnonce">
@@ -20,14 +17,14 @@
     </mat-form-field>
 
     <mat-form-field>
-      <mat-select placeholder="{{ d.l.nsigmaTypeLabel }}" formControlName="type" [(ngModel)]="defaultType">
-        <mat-option value="6">Général</mat-option>
-        <mat-option value="0">Web</mat-option>
-        <mat-option value="1">Mobile</mat-option>
-        <mat-option value="2">Maths</mat-option>
-        <mat-option value="3">Telecom</mat-option>
-        <mat-option value="4">Bureautique</mat-option>
-        <mat-option value="5">Sécurité</mat-option>
+      <mat-select placeholder="{{ d.l.nsigmaTypeLabel }}" formControlName="type" [(ngModel)]="nsigmaAnnonce.type">
+        <mat-option [value]="6">Général</mat-option>
+        <mat-option [value]="0">Web</mat-option>
+        <mat-option [value]="1">Mobile</mat-option>
+        <mat-option [value]="2">Maths</mat-option>
+        <mat-option [value]="3">Telecom</mat-option>
+        <mat-option [value]="4">Bureautique</mat-option>
+        <mat-option [value]="5">Sécurité</mat-option>
       </mat-select>
       <mat-error *ngIf="nsigmaAnnonceCtrl.get('type').invalid">{{ d.l.nsigmaTypeError }}</mat-error>
     </mat-form-field>

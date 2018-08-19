@@ -138,5 +138,4 @@ export class VoteService {
     let emailId = this.tools.getEmailIdFromEmail(email);
     return this.db.object<Assessor>('vote/assessors/'+emailId).set({emailId: emailId});
   }
-
 }

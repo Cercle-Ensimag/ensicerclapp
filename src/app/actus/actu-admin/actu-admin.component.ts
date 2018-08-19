@@ -66,20 +66,6 @@ export class ActuAdminComponent implements OnInit, OnDestroy {
     this.list.stop();
   }
 
-  delete(actu: Actu) {
-    this.dialog.open(DeleteDialogComponent, {
-      data: {
-        title: "Confirmation de la suppression",
-        content: `Êtes-vous certain de vouloir supprimer ${actu.title} ?`
-      }
-    }).afterClosed().subscribe(result => {
-      if (result){
-        this.actus.deleteActu(actu.id);
-        this.snackBar.open("Actu supprimée", 'ok', {duration: 2000});
-      }
-    });
-  }
-
   createSearchForm() {
     this.emailCtrl = new FormControl('', [this.auth.emailDomainValidator, Validators.email]);
     this.emailCtrl.valueChanges.subscribe((email) => {

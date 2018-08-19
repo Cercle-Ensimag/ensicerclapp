@@ -13,6 +13,9 @@ import {MatDialog, MatSnackBar} from '@angular/material';
 })
 export class JournalistComponent implements OnInit, OnDestroy {
 
+  pageIndex: number = 0;
+  pageSize: number = 5;
+
   constructor(
     public auth: AuthService,
     public actus: ActusService,
@@ -27,20 +30,6 @@ export class JournalistComponent implements OnInit, OnDestroy {
 
   ngOnDestroy () {
     this.actus.stop();
-  }
-
-  delete(actu: Actu) {
-    this.dialog.open(DeleteDialogComponent, {
-      data: {
-        title: "Confirmation de la suppression",
-        content: `Êtes-vous certain de vouloir supprimer ${actu.title} ?`
-      }
-    }).afterClosed().subscribe(result => {
-      if (result){
-        this.actus.deleteActu(actu.id);
-        this.snackBar.open("Actu supprimée", 'ok', {duration: 2000});
-      }
-    });
   }
 
 }

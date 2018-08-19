@@ -83,11 +83,4 @@ export class ActusService {
       });
     });
   }
-
-  // helpers
-
-  getTaglessDesciption(actu: Actu) : string {
-    return actu.description.replace(/<[^>]*>/g, '')
-  }
-
 }

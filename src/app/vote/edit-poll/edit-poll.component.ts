@@ -109,12 +109,7 @@ export class EditPollComponent implements OnInit, OnDestroy {
   }
 
   choicesOk() {
-    for (let choice of this.newChoices) {
-      if (choice.ctrl.invalid) {
-        return false;
-      }
-    }
-    return true;
+    return !this.newChoices.some(choice => choice.ctrl.invalid);
   }
 
   removeChoice(choiceId: string) {
@@ -124,7 +119,7 @@ export class EditPollComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSubmit() {
+  submit() {
     if (!this.pollCtrl.invalid && this.choicesOk()) {
       let choices = {};
       for (let choice of this.newChoices) {
@@ -147,8 +142,7 @@ export class EditPollComponent implements OnInit, OnDestroy {
     }
   }
 
-  back() {
-    this.location.back();
+  allNewChoicesPristine(): boolean {
+    return this.newChoices.every(choice => choice.ctrl.pristine);
   }
-
 }

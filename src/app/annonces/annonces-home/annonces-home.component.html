@@ -1,3 +1,9 @@
-<p>
-  annonces-home works!
-</p>
+<app-paged-grid [list]="annonces.annonces" #pages>
+  <app-annonce-card *ngFor="let annonce of pages.truncatedList()"
+                    [annonce]="annonce">
+  </app-annonce-card>
+</app-paged-grid>
+
+<div class="mat-fab-bottom-right">
+  <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
+</div>

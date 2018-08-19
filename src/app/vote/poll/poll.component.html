@@ -1,7 +1,4 @@
-<!-- Loading -->
-<div class="loading-indicator" *ngIf="!poll">
-  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
-</div>
+<app-loading [loading]="poll"></app-loading>
 
 <div *ngIf="poll">
   <div>

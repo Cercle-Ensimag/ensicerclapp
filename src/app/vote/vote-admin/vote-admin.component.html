@@ -1,38 +1,14 @@
-<div class="mat-fab-bottom-right">
-  <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
-  <button *ngIf="tabGroup.selectedIndex == 0" mat-fab color="primary" routerLink="/votes/poll/-/edit"><mat-icon>add</mat-icon></button>
-</div>
-
-<div class="loading-indicator" *ngIf="tabGroup.selectedIndex ? !assessors : !vote.polls">
-  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
-</div>
-
 <mat-tab-group #tabGroup>
-
   <!-- Polls tab -->
   <mat-tab label="{{ d.l.polls }}">
 
     <!-- Polls display -->
-    <div *ngIf="vote.polls" class="grid-container">
-      <mat-card *ngFor="let poll of vote.polls">
-        <mat-card-header>
-          <img mat-card-avatar src="assets/img/icons/votes.png">
-          <mat-card-title>{{ poll.title }}</mat-card-title>
-          <mat-card-subtitle>{{ choicesString(poll) }}</mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content>
-          <p>{{ poll.description.slice(0,100) }}{{poll.description.length > 100 ? '...' : '' }}</p>
-        </mat-card-content>
-        <mat-card-actions>
-          <mat-slide-toggle [checked]="poll.started" (change)="setStarted(poll.id, $event.checked)" color="primary">Start</mat-slide-toggle>
-          <button mat-icon-button routerLink="/votes/poll/{{ poll.id }}"><mat-icon>search</mat-icon></button>
-          <button mat-icon-button [disabled]="poll.started" routerLink="/votes/poll/{{ poll.id }}/edit"><mat-icon>edit</mat-icon></button>
-          <button mat-icon-button [disabled]="poll.started" routerLink="/votes/poll/{{ poll.id }}/results"><mat-icon>poll</mat-icon></button>
-          <button mat-icon-button routerLink="/votes/poll/{{ poll.id }}/users"><mat-icon>face</mat-icon></button>
-          <button mat-icon-button [disabled]="poll.started" (click)="delete(poll)"><mat-icon>delete</mat-icon></button>
-        </mat-card-actions>
-      </mat-card>
-    </div>
+    <app-paged-grid [list]="vote.polls" #pages>
+      <app-vote-card *ngFor="let poll of pages.truncatedList()"
+                     [poll]="poll"
+                     [admin]="true">
+      </app-vote-card>
+    </app-paged-grid>
   </mat-tab>
 
   <mat-tab label="{{ d.l.assessorPlLabel }}">
@@ -62,5 +38,13 @@
         </mat-nav-list>
       </mat-card>
     </div>
+    <div *ngIf="!assessors" class="loading-indicator">
+      <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+    </div>
   </mat-tab>
 </mat-tab-group>
+
+<div class="mat-fab-bottom-right">
+  <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
+  <button *ngIf="tabGroup.selectedIndex == 0" mat-fab color="primary" routerLink="/votes/poll/-/edit"><mat-icon>add</mat-icon></button>
+</div>

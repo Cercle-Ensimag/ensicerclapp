@@ -11,16 +11,11 @@ import { DicoService } from '../../language/dico.service';
 })
 export class ComRespComponent implements OnInit, OnDestroy {
 
-  deleteEventId: string;
-  deleteEventTitle: string;
-
   constructor(
     public auth: AuthService,
     public events: EventsService,
     public d: DicoService
-  ) {
-    this.deleteEventId = null;
-  }
+  ) { }
 
   ngOnInit () {
     this.events.start();
@@ -29,19 +24,4 @@ export class ComRespComponent implements OnInit, OnDestroy {
   ngOnDestroy () {
     this.events.stop();
   }
-
-  delete(eventId: string, eventTitle: string) {
-    this.deleteEventId = eventId;
-    this.deleteEventTitle = eventTitle;
-  }
-
-  back() {
-    this.deleteEventId = null;
-  }
-
-  confirmDelete() {
-    this.events.deleteEvent(this.deleteEventId);
-    this.back();
-  }
-
 }

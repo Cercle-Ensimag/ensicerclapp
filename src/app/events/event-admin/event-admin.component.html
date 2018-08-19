@@ -1,41 +1,11 @@
 <mat-tab-group>
   <mat-tab label="{{ d.l.events }}">
-
-    <!-- Events display -->
-    <div *ngIf="!deleteEventId">
-
-      <!-- Loading -->
-      <mat-card *ngIf="!events.events" class="spinner-wrapper">
-        <mat-spinner class="spinner"></mat-spinner>
-      </mat-card>
-
-      <!-- Display events -->
-      <div *ngIf="events.events">
-        <mat-card *ngFor="let event of events.events | slice:(pageIndex*pageSize):(pageIndex+1)*pageSize">
-          <h2>{{ event.title }}</h2>
-					<label>{{ d.format(d.l.eventOrganizer, event.asso) }}</label><br>
-          <button mat-icon-button routerLink="/events/event/{{ event.id }}"><mat-icon>search</mat-icon></button>
-          <button mat-icon-button (click)="delete(event.id, event.title)"><mat-icon>delete</mat-icon></button>
-        </mat-card>
-        <mat-card *ngIf="events.events.length == 0">
-          <h3>{{ d.l.noEvent }}</h3>
-        </mat-card>
-		    <mat-paginator [length]="events.events.length"
-		                  [pageSize]="pageSize"
-		                  (page)="updateList($event)">
-		    </mat-paginator>
-      </div>
-
-    </div>
-
-    <!-- Delete event -->
-    <div *ngIf="deleteEventId">
-      <mat-card class="message">
-        <h3 [innerHTML]="d.format(d.l.confirmEventDeleteInfo, deleteEventTitle)"></h3>
-        <button mat-raised-button (click)="confirmDelete()" color="warn">{{ d.l.confirmEventDeleteLabel }}</button>
-        <button mat-raised-button (click)="back()" color="primary">{{ d.l.backLabel }}</button>
-      </mat-card>
-    </div>
+    <app-paged-grid [list]="events.events" #pages>
+      <app-event-card *ngFor="let event of pages.truncatedList()"
+                               [event]="event"
+                               [admin]="true">
+      </app-event-card>
+    </app-paged-grid>
   </mat-tab>
 
   <mat-tab label="{{ d.l.comRespPlLabel }}">

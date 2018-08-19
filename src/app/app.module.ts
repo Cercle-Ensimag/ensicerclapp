@@ -126,6 +126,7 @@ import { MatTableModule } from '@angular/material/table';
 import { environment } from '../environments/environment';
 import { AnnoncesHomeComponent } from './annonces/annonces-home/annonces-home.component';
 import { AnnoncesAdminComponent } from './annonces/annonces-admin/annonces-admin.component';
+import { AnnoncesAnnonceComponent } from './annonces/annonces-annonce/annonces-annonce.component';
 import { NsigmaHomeComponent } from './nsigma/nsigma-home/nsigma-home.component';
 import { NsigmaAnnonceComponent } from './nsigma/nsigma-annonce/nsigma-annonce.component';
 import { NsigmaAdminComponent } from './nsigma/nsigma-admin/nsigma-admin.component';
@@ -134,6 +135,16 @@ import { NsigmaGuard } from './nsigma/nsigma.guard';
 import { AnnoncesGuard } from './annonces/annonces.guard';
 import { DeleteDialogComponent } from './shared-components/delete-dialog/delete-dialog.component';
 import { LoginDialogComponent } from './shared-components/login-dialog/login-dialog.component';
+import { PagedGridComponent } from './shared-components/paged-grid/paged-grid.component';
+import { AnnoncesEditComponent } from './annonces/annonces-edit/annonces-edit.component';
+import { LoadingComponent } from './shared-components/loading/loading.component';
+import { ConditionalRouterLinkComponent } from './shared-components/conditional-router-link/conditional-router-link.component';
+import { AnnonceCardComponent } from './annonces/components/annonce-card/annonce-card.component';
+import { VoteCardComponent } from './vote/components/vote-card/vote-card.component';
+import { EventCardComponent } from './events/components/event-card/event-card.component';
+import { ActuCardComponent } from './actus/components/actu-card/actu-card.component';
+import {NsigmaAnnonceCardComponent} from './nsigma/components/nsigma-annonce-card/nsigma-annonce-card.component';
+import { PagedListComponent } from './shared-components/paged-list/paged-list.component';
 
 @NgModule({
   declarations: [
@@ -155,7 +166,18 @@ import { LoginDialogComponent } from './shared-components/login-dialog/login-dia
     NsigmaAnnonceComponent,
     NsigmaEditComponent,
     DeleteDialogComponent,
-    LoginDialogComponent
+    LoginDialogComponent,
+    AnnoncesAnnonceComponent,
+    AnnoncesEditComponent,
+    LoadingComponent,
+    ConditionalRouterLinkComponent,
+    AnnonceCardComponent,
+    NsigmaAnnonceCardComponent,
+    VoteCardComponent,
+    EventCardComponent,
+    ActuCardComponent,
+    PagedGridComponent,
+    PagedListComponent
   ],
   imports: [
     BrowserModule,

@@ -1,5 +1,5 @@
 from RulesPattern import RulesPattern
-from common import OtherRules, StringRules, BornedNumberRules, NumberRules, IdRules, doAnd, doOr, isAdmin, isMember, isOneAdmin
+from common import OtherRules, BooleanRules, StringRules, BornedNumberRules, NumberRules, IdRules, doAnd, doOr, isAdmin, isMember, isOneAdmin
 
 class AnnoncesRules (RulesPattern):
     def build(self):
@@ -36,4 +36,5 @@ class AnnonceRules (AnnoncesListRules):
         self.add(StringRules("technologies", 100))
         self.add(StringRules("contact", 200))
         self.add(StringRules("author", 30))
+        self.add(BooleanRules("done"))
         self.add(OtherRules())

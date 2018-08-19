@@ -1,40 +1,11 @@
-<!-- Loading -->
-<mat-card *ngIf="!actus.actus" class="spinner-wrapper">
-  <mat-spinner class="spinner"></mat-spinner>
-</mat-card>
-
-<!-- Actus -->
-<div *ngIf="actus.actus">
-
-  <!-- Actus -->
-  <div *ngIf="actus.actus && actus.actus.length > 0" class="grid-container">
-    <div *ngFor="let actu of actus.actus | slice:(pageIndex*pageSize):(pageIndex+1)*pageSize">
-      <mat-card routerLink="/actus/actu/{{ actu.id }}">
-        <mat-card-header>
-          <img mat-card-avatar src="assets/img/icons/actus.png">
-          <mat-card-title>{{ actu.title }}</mat-card-title>
-          <mat-card-subtitle> {{ actu.date | date:'fullDate':'':d.l.locale }} - <i>{{ actu.author }}</i> </mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content>
-          <p>{{ actus.getTaglessDesciption(actu).slice(0,100) }} {{actus.getTaglessDesciption(actu).length > 100 ? '...' : '' }}</p>
-        </mat-card-content>
-        <mat-card-actions style="text-align: center">
-          <button mat-icon-button routerLink="/actus/actu/{{ actu.id }}"><mat-icon>search</mat-icon></button>
-          <button mat-icon-button routerLink="/actus/actu/{{ actu.id }}/edit"><mat-icon>edit</mat-icon></button>
-          <button mat-icon-button (click)="delete(actu)"><mat-icon>delete</mat-icon></button>
-        </mat-card-actions>
-      </mat-card>
-    </div>
-  </div>
-  <!-- No actus -->
-  <div *ngIf="actus.actus && actus.actus.length == 0">
-    <mat-card class="center">
-      <h3>{{ d.l.noActu }}</h3>
-    </mat-card>
-  </div>
-</div>
+<app-paged-grid [list]="actus.actus" #pages>
+  <app-actu-card *ngFor="let actu of pages.truncatedList()"
+                 [actu]="actu"
+                 [admin]="true">
+  </app-actu-card>
+</app-paged-grid>
 
 <div class="mat-fab-bottom-right">
   <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
-  <button mat-fab color="primary" routerLink="/actus/edit/-"><mat-icon>add</mat-icon></button>
+  <button mat-fab color="primary" routerLink="/actus/actu/-/edit"><mat-icon>add</mat-icon></button>
 </div>

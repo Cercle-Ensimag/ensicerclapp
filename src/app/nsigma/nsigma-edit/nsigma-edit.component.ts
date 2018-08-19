@@ -20,7 +20,6 @@ export class NsigmaEditComponent implements OnInit, OnDestroy {
   nsigmaAnnonceWatcher: any;
   nsigmaAnnonceCtrlWatcher: any;
   error: string;
-  defaultType: string;
 
   constructor(
     private auth: AuthService,
@@ -46,14 +45,12 @@ export class NsigmaEditComponent implements OnInit, OnDestroy {
     return this.nsigmaAnnonces.getNsigmaAnnonce(nsigmaAnnonceId).subscribe((nsigmaAnnonce) => {
       if (nsigmaAnnonce) {
         this.nsigmaAnnonce = nsigmaAnnonce;
-        this.defaultType = nsigmaAnnonce.type.toString();
       } else {
         this.nsigmaAnnonce = new NsigmaAnnonce();
         this.nsigmaAnnonce.id = this.nsigmaAnnonces.getNsigmaAnnonceId();
-        this.defaultType = '6';
       }
       this.nsigmaAnnonceCtrl = this.fb.group({
-        title: [this.nsigmaAnnonce.title || '', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
+        title: [this.nsigmaAnnonce.title || '', [Validators.required, Validators.maxLength(50)]],
         description: [this.nsigmaAnnonce.description || '', [Validators.required, Validators.maxLength(5000)]],
         type: [this.nsigmaAnnonce.type || 6, [Validators.required, Validators.min(0), Validators.max(6)]],
         start: [new Date(this.nsigmaAnnonce.start) || '', [Validators.required, this.tools.dateValidator]],
@@ -77,7 +74,7 @@ export class NsigmaEditComponent implements OnInit, OnDestroy {
         id: this.nsigmaAnnonce.id,
         title: this.nsigmaAnnonceCtrl.get('title').value,
         description: this.nsigmaAnnonceCtrl.get('description').value,
-        type: parseInt(this.nsigmaAnnonceCtrl.get('type').value),
+        type: this.nsigmaAnnonceCtrl.get('type').value,
         start: this.nsigmaAnnonceCtrl.get('start').value.getTime(),
         end: this.nsigmaAnnonceCtrl.get('end').value.getTime(),
         technologies: this.nsigmaAnnonceCtrl.get('technologies').value,

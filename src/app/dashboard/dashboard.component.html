@@ -1,7 +1,4 @@
-<!-- Loading -->
-<div class="loading-indicator" *ngIf="!modules.appModules">
-  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
-</div>
+<app-loading [loading]="modules.appModules"></app-loading>
 
 <!-- Modules display -->
 <div *ngIf="modules.appModules" class="grid-container">

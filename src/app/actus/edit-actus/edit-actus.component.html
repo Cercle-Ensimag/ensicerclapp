@@ -1,7 +1,4 @@
-<!-- Loading -->
-<div class="loading-indicator" *ngIf="!actu">
-  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
-</div>
+<app-loading [loading]="actu"></app-loading>
 
 <!-- Actu display -->
 <mat-card *ngIf="actu">

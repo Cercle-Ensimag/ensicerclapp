@@ -72,10 +72,6 @@ export class VoteAdminComponent implements OnInit, OnDestroy {
     });
   }
 
-  setStarted(pollId: string, started: boolean) {
-    this.vote.setStarted(pollId, started);
-  }
-
   createSearchForm() {
     this.emailCtrl = new FormControl('', [this.auth.emailDomainValidator, Validators.email]);
     this.emailCtrl.valueChanges.subscribe((email) => {
@@ -102,9 +98,5 @@ export class VoteAdminComponent implements OnInit, OnDestroy {
         this.emailCtrl.setValue("");
       }
     }
-  }
-
-  choicesString(poll: Poll): string{
-    return Object.keys(poll.choices).map(choice => poll.choices[choice].label).join(' - ');
   }
 }
