@@ -18,6 +18,17 @@ h1.app-name {
   margin-left: 8px;
 }
 
+h1.app-name img {
+  max-height: 2em;
+  max-width: 2em;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+h1.app-name span {
+  vertical-align: middle;
+}
+
 .homebtn {
   margin-left: 8px;
 }

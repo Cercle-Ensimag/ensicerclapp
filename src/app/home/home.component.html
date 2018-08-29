@@ -3,9 +3,17 @@
   <mat-toolbar color="primary" class="toolbar">
     <button mat-icon-button (click)="snav.toggle()" *ngIf="auth.getCurrentUser()"><mat-icon>menu</mat-icon></button>
     <!-- <button mat-icon-button routerLink='/home' class="homebtn" [disabled]="!auth.getCurrentUser()"><mat-icon>home</mat-icon></button> -->
-    <h1 class="app-name" routerLink='/home'>{{ d.l.appName }}</h1>
+    <h1 class="app-name" routerLink='/home'>
+      <img src="/assets/img/logo.svg">
+      <span>{{ d.l.appName }}</span>
+    </h1>
     <div class="right-btns">
-      <button mat-icon-button routerLink='/info' class="infobtn"><mat-icon>info</mat-icon></button>
+      <button *ngIf="this.location.path() !== '/infos'" mat-icon-button routerLink='/infos' class="infobtn">
+        <mat-icon>info</mat-icon>
+      </button>
+      <button *ngIf="this.location.path() === '/infos'" mat-icon-button (click)='location.back()' class="infobtn">
+        <mat-icon style="color: #ffffff4f;">info</mat-icon>
+      </button>
       <button mat-icon-button routerLink='/account' class="accountbtn" *ngIf="auth.getCurrentUser()"><mat-icon>account_circle</mat-icon></button>
     </div>
   </mat-toolbar>

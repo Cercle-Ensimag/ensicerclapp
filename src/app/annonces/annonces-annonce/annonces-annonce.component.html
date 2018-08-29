@@ -1,0 +1,21 @@
+<app-loading [loading]="annonce"></app-loading>
+
+<!-- Annonce display -->
+<mat-card *ngIf="annonce">
+  <mat-card-header>
+    <img mat-card-avatar src="assets/img/annonces-types/{{ annonce.type }}.png">
+    <mat-card-title>{{ annonce.done ? '[Finie] ' : ''}}{{ annonce.title }}</mat-card-title>
+    <mat-card-subtitle> {{ annonce.author }} - {{ annonce.contact }} </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <p><b>Technologies : </b>{{ annonce.technologies}}</p>
+    <p><b>Durée : </b>{{ annonce.length }}</p>
+    <p><b>{{ d.format(annonce.start | date:d.l.longDateFormat:'':d.l.locale) }}</b></p>
+    <markdown [data]="annonce.description"></markdown>
+  </mat-card-content>
+</mat-card>
+
+<button mat-fab class="mat-fab-bottom-right" color="primary"
+        (click)="location.back()">
+  <mat-icon>arrow_back</mat-icon>
+</button>

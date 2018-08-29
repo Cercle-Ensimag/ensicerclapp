@@ -16,6 +16,8 @@
       <mat-error *ngIf="actuCtrl.get('description').invalid">{{ d.l.actuDescriptionError }}</mat-error>
     </mat-form-field>
 
+    <markdown [data]="actuCtrl.get('description').value"></markdown>
+
     <mat-form-field>
       <input matInput placeholder="{{ d.l.actuImageLabel }}" formControlName="image" autocomplete="off">
       <mat-error *ngIf="actuCtrl.get('image').invalid">{{ d.l.actuImageError }}</mat-error>

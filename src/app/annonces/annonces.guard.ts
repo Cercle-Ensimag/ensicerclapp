@@ -9,12 +9,18 @@ export class AnnoncesGuard implements CanActivate {
 
   constructor(private auth: AuthService, private router: Router) { }
 
-  canActivate(): boolean {
-    if (!this.auth.isAnnoncesAdmin) {
-      this.router.navigateByUrl('/home');
-      return false;
-    } else {
-      return true;
-    }
+  canActivate(
+    next: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ) {
+    return this.auth.waitForAccessToXToBeSet('admins')
+      .take(1)
+      .map(auth => auth.isAnnoncesAdmin)
+      .do(is => {
+        if (!is) {
+          this.router.navigateByUrl('/home');
+          return;
+        }
+      });
   }
 }

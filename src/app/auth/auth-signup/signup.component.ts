@@ -55,7 +55,7 @@ export class SignUpComponent implements OnInit {
     }
   }
 
-  onSubmit() {
+  submit() {
     if(this.signUpCtrl.valid){
       this.auth.createAccount(
         this.getEmail(),

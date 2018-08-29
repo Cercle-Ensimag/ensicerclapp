@@ -1,0 +1,17 @@
+<app-loading [loading]="list"></app-loading>
+<div *ngIf="list">
+  <div *ngIf="list.length">
+    <div class="grid-container">
+      <ng-content></ng-content>
+    </div>
+    <mat-paginator *ngIf="list.length > pageSize"
+                   [length]="list.length"
+                   [pageSize]="pageSize"
+                   (page)="updateList($event)">
+    </mat-paginator>
+  </div>
+
+  <p *ngIf="!list.length" class="center">
+    Aucun élément à afficher ! <img src="assets/img/icons/empty.png">
+  </p>
+</div>

@@ -16,7 +16,7 @@
     </h4>
     <button mat-icon-button [color]="isInCalendar ? 'primary': ''" (click)="events.addEventToCalendar(event.id)"><mat-icon>event_available</mat-icon></button>
     <button mat-icon-button [color]="isInCalendar ? '': 'primary'" (click)="events.removeEventFromCalendar(event.id)"><mat-icon>event_busy</mat-icon></button>
-    <h4 [innerHTML]="event.description"></h4>
+    <markdown [data]="event.description"></markdown>
   </mat-card-content>
   <img *ngIf="event.image !== ''" mat-card-image src="{{ event.image }}">
 </mat-card>

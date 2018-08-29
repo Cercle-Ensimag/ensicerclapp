@@ -1,8 +1,9 @@
 /* @import '~@angular/material/prebuilt-themes/purple-green.css'; */
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
 body {
-    background:#E2E4E6;
-    padding-top:4em;
+  background: #E2E4E6;
+  padding-top: 4em;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 .grid-container {

@@ -83,4 +83,14 @@ export class ActusService {
       });
     });
   }
+
+  addJournalistEmailId(emailId: string, group: Group) {
+    return this.db.object<Group>('actus/journalists/groups/'+group.groupId).set(group)
+      .then(() => {
+        return this.db.object<Journalist>('actus/journalists/users/'+emailId).set({
+          emailId: emailId,
+          groupId: group.groupId
+        });
+      });
+  }
 }

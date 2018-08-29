@@ -7,8 +7,6 @@
 <mat-card *ngIf="event">
   <form [formGroup]="eventCtrl" class="container">
 
-    <span *ngIf="error" class="error">{{ error }}</span>
-
     <mat-form-field>
       <input matInput placeholder="{{ d.l.eventTitleLabel }}" formControlName="title" autocomplete="off">
       <mat-error *ngIf="eventCtrl.get('title').invalid">{{ d.l.eventTitleTooShortError }}</mat-error>
@@ -18,6 +16,8 @@
       <textarea matInput placeholder="{{ d.l.eventDescriptionLabel }}" formControlName="description"></textarea>
       <mat-error *ngIf="eventCtrl.get('description').invalid">{{ d.l.eventDescriptionError }}</mat-error>
     </mat-form-field>
+
+    <markdown [data]="eventCtrl.get('description').value"></markdown>
 
     <mat-form-field>
       <input matInput placeholder="{{ d.l.eventImageLabel }}" formControlName="image" autocomplete="off">
@@ -64,15 +64,14 @@
       <input matInput placeholder="{{ d.l.eventPriceLabel }}" formControlName="price" autocomplete="off">
       <mat-error *ngIf="eventCtrl.get('price').invalid">{{ d.l.eventPriceError }}</mat-error>
     </mat-form-field>
-
-    <button mat-raised-button
-      (click)="onSubmit()" color="primary"
-      [disabled]="eventCtrl.invalid"
-    >{{ d.l.applyChangesLabel }}</button>
   </form>
 </mat-card>
 
-<button mat-fab class="mat-fab-bottom-right" color="primary"
-        (click)="location.back()">
-  <mat-icon>arrow_back</mat-icon>
-</button>
+<div class="mat-fab-bottom-right">
+  <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
+  <button *ngIf="actu" mat-fab color="primary"
+          (click)="submit()"
+          [disabled]="eventCtrl.invalid || eventCtrl.pristine">
+    <mat-icon>save</mat-icon>
+  </button>
+</div>

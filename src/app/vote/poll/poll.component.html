@@ -3,7 +3,7 @@
 <div *ngIf="poll">
   <div>
     <h1>{{ poll.title }}</h1>
-    <h3>{{ poll.description }}</h3>
+    <markdown [data]="poll.description"></markdown>
   </div>
 
   <div *ngIf='!selectedChoice' class="grid-container">

@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  onSubmit() {
+  submit() {
     if(this.loginCtrl.valid){
       this.auth.login(this.getEmail(), this.getPassword());
     }

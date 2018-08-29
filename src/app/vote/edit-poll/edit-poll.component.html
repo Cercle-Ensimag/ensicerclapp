@@ -19,6 +19,8 @@
       <mat-error *ngIf="pollCtrl.get('description').invalid">{{ d.l.pollDescriptionError }}</mat-error>
     </mat-form-field>
 
+    <markdown [data]="pollCtrl.get('description').value"></markdown>
+
     <div class="grid-container">
       <div *ngFor="let choice of newChoices">
         <div class="wrapper border">

@@ -7,7 +7,7 @@
 <div *ngIf="users && !dayPreview">
 
   <!-- Print accounts -->
-  <mat-card class="accounts-card">
+  <mat-card class="accounts-card center">
     <button *ngIf="!cafet.pdf" mat-raised-button (click)="cafet.printAccountsPdf(users)" color="primary">{{ d.l.printAccountsToPdf }}</button>
     <button *ngIf="cafet.pdf" mat-raised-button (click)="cafet.pdf = null">{{ d.l.leaveAccountsToPdfPreview }}</button>
     <button mat-raised-button (click)="cafet.saveAccountsPdf(users)" color="primary">{{ d.l.saveAccountsToPdf }}</button>

@@ -8,12 +8,18 @@ export class CanActivateCafetResp implements CanActivate {
 
   constructor(private auth: AuthService, private router: Router) { }
 
-  canActivate(): boolean {
-    if (!this.auth.isCafetResp) {
-      this.router.navigateByUrl('/home');
-      return false;
-    } else {
-      return true;
-    }
+  canActivate(
+    next: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ) {
+    return this.auth.waitForAccessToXToBeSet('cafetResps')
+      .take(1)
+      .map(auth => auth.isCafetResp)
+      .do(is => {
+        if (!is) {
+          this.router.navigateByUrl('/home');
+          return;
+        }
+      });
   }
 }

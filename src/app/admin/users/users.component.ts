@@ -110,7 +110,7 @@ export class AdminUsersComponent implements OnInit {
     return this.tools.titleCase(
       user[user.uid].admin.email
       .split('@')[0].split('.').join(' ')
-      .replace('1', '').replace(/[0-9]/g, "")
+      .replace(/[0-9]/g, "")
     );
   }
 

@@ -8,12 +8,18 @@ export class CanActivateActusAdmin implements CanActivate {
 
   constructor(private auth: AuthService, private router: Router) { }
 
-  canActivate(): boolean {
-    if (!this.auth.isActusAdmin) {
-      this.router.navigateByUrl('/home');
-      return false;
-    } else {
-      return true;
-    }
+  canActivate(
+    next: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ) {
+    return this.auth.waitForAccessToXToBeSet('admins')
+      .take(1)
+      .map(auth => auth.isActusAdmin)
+      .do(is => {
+        if (!is) {
+          this.router.navigateByUrl('/home');
+          return;
+        }
+      });
   }
 }

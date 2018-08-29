@@ -1,14 +1,14 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
-import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {Location} from '@angular/common';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
-import { Event } from '../events-service/events.service';
+import {Event, EventsService} from '../events-service/events.service';
 
-import { AuthService } from '../../auth/auth-service/auth.service';
-import { ToolsService } from '../../providers/tools.service';
-import { EventsService } from '../events-service/events.service';
-import { DicoService } from '../../language/dico.service';
+import {AuthService} from '../../auth/auth-service/auth.service';
+import {ToolsService} from '../../providers/tools.service';
+import {DicoService} from '../../language/dico.service';
+import {MatSnackBar} from '@angular/material';
 
 @Component({
   selector: 'app-edit-events',
@@ -21,7 +21,6 @@ export class EditEventsComponent implements OnInit, OnDestroy {
   event: Event;
   eventWatcher: any;
   eventCtrlWatcher: any;
-  error: string;
 
   constructor(
     private auth: AuthService,
@@ -30,7 +29,8 @@ export class EditEventsComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private location: Location,
     private fb: FormBuilder,
-    public d: DicoService
+    public d: DicoService,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
@@ -98,7 +98,7 @@ export class EditEventsComponent implements OnInit, OnDestroy {
     return this.eventCtrl.get('price').value;
   }
 
-  onSubmit() {
+  submit() {
     if (!this.eventCtrl.invalid) {
       let event = {
         id: this.event.id,
@@ -113,7 +113,9 @@ export class EditEventsComponent implements OnInit, OnDestroy {
         groupId: this.auth.comRespGroupId
       };
       this.events.setEvent(event).then(() => {
-        this.error = this.d.l.changesApplied;
+        this.snackBar.open(this.d.l.changesApplied, 'ok', {duration: 2000});
+      }).catch(reason => {
+        this.snackBar.open(reason, 'ok', {duration: 2000});
       });
     }
   }

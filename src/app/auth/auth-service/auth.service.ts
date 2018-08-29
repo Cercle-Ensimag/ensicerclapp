@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {EventEmitter, Injectable} from '@angular/core';
 import { Location } from '@angular/common';
 import { Router, ActivatedRouteSnapshot } from '@angular/router';
 import { FormControl } from '@angular/forms';
@@ -16,6 +16,7 @@ import { Assessor } from '../../vote/vote-admin/vote-admin.component';
 import { CafetResp } from '../../cafet/cafet-service/cafet.service';
 
 import { environment } from '../../../environments/environment';
+import {Observable} from '../../../../node_modules/rxjs';
 
 export const ENSIDOMAIN = "ensimag.fr";
 export const PHELMADOMAIN = "phelma.grenoble-inp.fr";
@@ -60,6 +61,15 @@ export class AuthService {
   cafetActivated: boolean = false;
   comRespGroupId: string = null;
   journalistGroupId: string = null;
+
+  accessSet = {
+    admins: false,
+    assessors: false,
+    comResps: false,
+    journalists: false,
+    cafetResps: false
+  };
+  accessSetListener = new EventEmitter();
 
   userWatcher: any;
   profileWatcher: any;
@@ -119,7 +129,7 @@ export class AuthService {
   }
 
   stop() {
-    this.userWatcher.unsubscribe();
+    //if (this.userWatcher) this.userWatcher.unsubscribe();
   }
 
   logout() {
@@ -324,9 +334,27 @@ export class AuthService {
           this.isNsigmaAdmin = false;
           this.cafetActivated = false;
         }
+        this.accessSet['admins'] = true;
+        this.accessSetListener.emit('admins');
       },
       err => {}
     );
+  }
+
+  waitForAccessToXToBeSet(x: string) {
+    return new Observable<AuthService>(observer => {
+      if (this.accessSet[x]) {
+        observer.next(this);
+        observer.complete();
+      } else {
+        this.accessSetListener.subscribe(toWho => {
+          if (toWho === x){
+            observer.next(this);
+            observer.complete();
+          }
+        });
+      }
+    });
   }
 
   watchIsAssessor() {
@@ -334,6 +362,8 @@ export class AuthService {
     .subscribe(
       is => {
         this.isAssessor = is != null;
+        this.accessSet['assessors'] = true;
+        this.accessSetListener.emit('assessors');
       },
       err => {}
     )
@@ -351,6 +381,8 @@ export class AuthService {
           this.isComResp = false;
           this.comRespGroupId = null;
         }
+        this.accessSet['comResps'] = true;
+        this.accessSetListener.emit('comResps');
       },
       err => {}
     )
@@ -368,6 +400,8 @@ export class AuthService {
           this.isJournalist = false;
           this.journalistGroupId = null;
         }
+        this.accessSet['journalists'] = true;
+        this.accessSetListener.emit('journalists');
       },
       err => {}
     )
@@ -383,6 +417,8 @@ export class AuthService {
         } else {
           this.isCafetResp = false;
         }
+        this.accessSet['cafetResps'] = true;
+        this.accessSetListener.emit('cafetResps');
       },
       err => {}
     )

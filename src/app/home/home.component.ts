@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Location } from '@angular/common';
 
 import { DeviceSizeService } from '../providers/device-size.service';
 
@@ -13,28 +14,21 @@ import { DicoService } from '../language/dico.service';
   styleUrls: ['home.component.css'],
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  logOutLabel: string;
-  adminLabel: string;
-  adminVoteLabel: string;
-  adminCafetLabel: string;
-
-  sideNav: boolean;
 
   constructor(
-    public auth: AuthService,
-    public modules: AppModulesService,
-    public media: DeviceSizeService,
-    public d: DicoService
-  ) {
-    this.sideNav = false;
-  }
+    private auth: AuthService,
+    private modules: AppModulesService,
+    private media: DeviceSizeService,
+    private location: Location,
+    private d: DicoService
+  ) { }
 
   ngOnInit() {
     this.media.start();
     this.auth.start();
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
     this.media.stop();
     this.auth.stop();
   }

@@ -25,14 +25,13 @@
 
       <div class="accounts-search" [class.accounts-search-lg]="media.largeSize" [class.accounts-search-md]="!media.largeSize && ! media.mobileSize" [class.accounts-search-sm]="media.mobileSize">
 
-        <div class="item0">
+        <div class="item0 center">
           <span class="search-box">
             <mat-form-field>
               <input matInput placeholder="{{ d.l.emailLabel }}" formControlName="email" autocomplete="off">
               <mat-hint *ngIf="accountCtrl.get('email').valid && matchUsers.length > 0">{{ d.format(d.l.cafetAccountsMatch, matchUsers.length) }}</mat-hint>
             </mat-form-field>
-            <button *ngIf="!edit" mat-icon-button (click)="edit=true"><mat-icon>edit</mat-icon></button>
-            <button *ngIf="edit" mat-icon-button (click)="edit=false"><mat-icon>close</mat-icon></button>
+            <button mat-icon-button (click)="edit=!edit"><mat-icon>{{ edit ? 'close' : 'edit'}}</mat-icon></button>
           </span>
           <mat-checkbox *ngIf="!edit" color="primary" formControlName="byCredit">{{ d.l.orderByCreditLabel }}</mat-checkbox>
           <mat-checkbox *ngIf="!edit" color="primary" formControlName="byDate">{{ d.l.orderByLastTransactionDateLabel }}</mat-checkbox>

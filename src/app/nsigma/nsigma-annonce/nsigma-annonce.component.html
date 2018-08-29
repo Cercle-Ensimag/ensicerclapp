@@ -12,7 +12,7 @@
     <p><b>Difficulté : </b>{{ annonce.difficulty }}</p>
     <p><b>{{ d.format(annonce.start | date:d.l.longDateFormat:'':d.l.locale) }} -
       {{ d.format(annonce.end | date:d.l.longDateFormat:'':d.l.locale) }}</b></p>
-    <p>{{ annonce.description }}</p>
+    <markdown [data]="annonce.description"></markdown>
   </mat-card-content>
   <mat-card-actions>
     <a mat-raised-button color="primary"	target="_blank" href="{{annonce.form}}" [disabled]="annonce.done">

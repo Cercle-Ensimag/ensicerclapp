@@ -7,8 +7,6 @@
 <mat-card *ngIf="event">
   <form [formGroup]="eventCtrl" class="container">
 
-    <span *ngIf="error" class="error">{{ error }}</span>
-
     <mat-form-field>
       <input matInput placeholder="{{ d.l.eventTitleLabel }}" formControlName="title" autocomplete="off">
       <mat-error *ngIf="eventCtrl.get('title').invalid">{{ d.l.eventTitleTooShortError }}</mat-error>
@@ -59,12 +57,14 @@
       <input matInput placeholder="{{ d.l.eventLocationLabel }}" formControlName="location" autocomplete="off">
       <mat-error *ngIf="eventCtrl.get('location').invalid">{{ d.l.eventLocationError }}</mat-error>
     </mat-form-field>
-
-    <button mat-raised-button
-      (click)="onSubmit()" color="primary"
-      [disabled]="eventCtrl.invalid"
-    >{{ d.l.applyChangesLabel }}</button>
-
-    <button mat-raised-button (click)="back()">{{ d.l.backLabel }}</button>
   </form>
 </mat-card>
+
+<div class="mat-fab-bottom-right">
+  <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
+  <button mat-fab color="primary"
+          (click)="submit()"
+          [disabled]="eventCtrl.invalid || eventCtrl.pristine">
+    <mat-icon>save</mat-icon>
+  </button>
+</div>

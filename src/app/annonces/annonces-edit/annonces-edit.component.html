@@ -1,0 +1,71 @@
+<app-loading [loading]="annonce"></app-loading>
+
+<!-- Annonce display -->
+<mat-card *ngIf="annonce">
+  <form [formGroup]="annonceCtrl" class="container">
+
+    <span *ngIf="error" class="error">{{ error }}</span>
+
+    <mat-form-field>
+      <input matInput placeholder="{{ d.l.annoncesTitleLabel }}" formControlName="title" autocomplete="off">
+      <mat-error *ngIf="annonceCtrl.get('title').invalid">{{ d.l.annoncesTitleTooShortError }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <textarea matInput placeholder="{{ d.l.annoncesDescriptionLabel }}" formControlName="description"></textarea>
+      <mat-error *ngIf="annonceCtrl.get('description').invalid">{{ d.l.annoncesDescriptionError }}</mat-error>
+    </mat-form-field>
+
+    <markdown [data]="annonceCtrl.get('description').value"></markdown>
+
+    <mat-form-field>
+      <mat-select placeholder="{{ d.l.annoncesTypeLabel }}" formControlName="type" [(ngModel)]="annonce.type">
+        <mat-option [value]="2">Général</mat-option>
+        <mat-option [value]="0">Durée déterminée</mat-option>
+        <mat-option [value]="1">Durée indéterminée</mat-option>
+      </mat-select>
+      <mat-error *ngIf="annonceCtrl.get('type').invalid">{{ d.l.annoncesTypeError }}</mat-error>
+    </mat-form-field>
+    
+    <mat-form-field style="max-width: 200px">
+      <input matInput [matDatepicker]="picker1" placeholder="{{ d.l.annoncesStartLabel }}" formControlName="start" autocomplete="off">
+      <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+      <mat-datepicker #picker1></mat-datepicker>
+      <mat-error *ngIf="annonceCtrl.get('start').invalid">{{ d.l.annoncesStartError }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="{{ d.l.annoncesLengthLabel }}" formControlName="length" autocomplete="off">
+      <mat-error *ngIf="annonceCtrl.get('length').invalid">{{ d.l.annoncesLengthError }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="{{ d.l.annoncesTechnologiesLabel }}" formControlName="technologies" autocomplete="off">
+      <mat-error *ngIf="annonceCtrl.get('technologies').invalid">{{ d.l.annoncesTechnologiesError }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="{{ d.l.annoncesContactLabel }}" formControlName="contact" autocomplete="off">
+      <mat-error *ngIf="annonceCtrl.get('contact').invalid">{{ d.l.annoncesContactError }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="{{ d.l.annoncesAuthorLabel }}" formControlName="author" autocomplete="off">
+      <mat-error *ngIf="annonceCtrl.get('author').invalid">{{ d.l.annonceAuthorError }}</mat-error>
+    </mat-form-field>
+
+    <mat-slide-toggle formControlName="done" [checked]="annoncesAnnonce.done" color="primary">
+      <span *ngIf="!annonceCtrl.get('done').value">{{ d.l.annoncesEnCours }}</span>
+      <span *ngIf="annonceCtrl.get('done').value">{{ d.l.annoncesFinie }}</span>
+    </mat-slide-toggle>
+  </form>
+</mat-card>
+
+<div class="mat-fab-bottom-right">
+  <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
+  <button *ngIf="annonce" mat-fab color="primary"
+          (click)="submit()"
+          [disabled]="annonceCtrl.invalid || annonceCtrl.pristine">
+    <mat-icon>save</mat-icon>
+  </button>
+</div>

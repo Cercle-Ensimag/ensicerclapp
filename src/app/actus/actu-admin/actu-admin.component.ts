@@ -9,6 +9,7 @@ import { ToolsService } from '../../providers/tools.service';
 import { DicoService } from '../../language/dico.service';
 import {DeleteDialogComponent} from '../../shared-components/delete-dialog/delete-dialog.component';
 import {MatDialog, MatSnackBar} from '@angular/material';
+import {User} from 'firebase/app';
 
 export class Journalist {
   emailId: string;
@@ -99,6 +100,13 @@ export class ActuAdminComponent implements OnInit, OnDestroy {
         this.emailCtrl.setValue("");
       }
     }
+  }
+
+  add(emailId: string){
+    this.actus.addJournalist(emailId.split('|').join('.') + 'ensimga.fr', {
+      groupId: emailId,
+      displayName: emailId
+    });
   }
 
 }

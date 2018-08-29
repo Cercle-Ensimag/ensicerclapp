@@ -1,0 +1,17 @@
+<app-conditional-router-link link="/annonces/annonce/{{ annonce.id }}" [enabled]="!admin">
+  <mat-card>
+    <mat-card-header>
+      <img mat-card-avatar src="assets/img/icons/annonces/{{ annonce.type }}.png">
+      <mat-card-title>{{ annonce.done ? '[Finie] ' : ''}}{{ annonce.title }}</mat-card-title>
+      <mat-card-subtitle> {{ annonce.author }} - {{ annonce.length }} - {{ annonce.technologies }} - difficulté : {{ annonce.difficulty }} </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p>{{ tools.truncate(annonce.description) }}</p>
+    </mat-card-content>
+    <mat-card-actions *ngIf="admin">
+      <button mat-icon-button routerLink="/annonces/annonce/{{ annonce.id }}"><mat-icon>search</mat-icon></button>
+      <button mat-icon-button routerLink="/annonces/annonce/{{ annonce.id }}/edit"><mat-icon>edit</mat-icon></button>
+      <button mat-icon-button (click)="delete(annonce)"><mat-icon>delete</mat-icon></button>
+    </mat-card-actions>
+  </mat-card>
+</app-conditional-router-link>

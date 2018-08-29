@@ -24,8 +24,6 @@
 
       <!-- Header display -->
       <mat-card>
-        <span *ngIf="error" class="error">{{ error }}</span>
-
         <mat-form-field [class.large]="!media.mobileSize">
           <input matInput placeholder="{{ d.l.addJournalistInfo }}" [formControl]="emailCtrl" autocomplete="off">
           <button mat-icon-button matSuffix><mat-icon>search</mat-icon></button>

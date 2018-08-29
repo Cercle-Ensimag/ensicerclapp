@@ -134,7 +134,7 @@ export class French {
 
   public static readonly eventIdLabel = "ID";
   public static readonly eventTitleLabel = "Titre";
-  public static readonly eventDescriptionLabel = "Description (Utiliser des balises HTML pour la mise en forme)";
+  public static readonly eventDescriptionLabel = "Description (Markdown pour la mise en forme)";
   public static readonly eventImageLabel = "URL de l'image";
   public static readonly eventStartLabel = "Date de début (mm/dd/yyyy)";
   public static readonly eventEndLabel = "Date de fin (mm/dd/yyyy)";
@@ -169,7 +169,7 @@ export class French {
 
   public static readonly actuIdLabel = "ID";
   public static readonly actuTitleLabel = "Titre";
-  public static readonly actuDescriptionLabel = "Description (Utiliser des balises HTML pour la mise en forme)";
+  public static readonly actuDescriptionLabel = "Description (Markdown pour la mise en forme)";
   public static readonly actuImageLabel = "URL de l'image";
   public static readonly actuPdfLinkLabel = "URL du document pdf";
   public static readonly actuDateLabel = "Date";

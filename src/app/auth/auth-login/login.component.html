@@ -1,7 +1,10 @@
 <div class="container">
   <div>
     <mat-card>
-      <form [formGroup]="loginCtrl" (ngSubmit)="onSubmit()" class="container center">
+      <div class="center">
+        <img src="/assets/img/logo.svg" style="max-width: 200px">
+      </div>
+      <form [formGroup]="loginCtrl" (ngSubmit)="submit()" class="container center">
         <h2 [innerHTML]="d.l.signInPageTitle"></h2>
 
         <span *ngIf="auth.error" class="error">{{ auth.error }}</span>

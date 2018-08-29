@@ -47,7 +47,7 @@ export class EditCafetUserComponent {
     return this.profileCtrl.get('email').value;
   }
 
-  onSubmit() {
+  submit() {
     this.cafet.setUserProfile(this.user.emailId, {
       firstName: this.getFirstName(),
       lastName: this.getLastName(),

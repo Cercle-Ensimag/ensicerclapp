@@ -1,0 +1,10 @@
+<div *ngIf="enabled"
+     [routerLink]="link">
+  <ng-container *ngTemplateOutlet="content" ></ng-container>
+</div>
+<div *ngIf="!enabled">
+  <ng-container *ngTemplateOutlet="content" ></ng-container>
+</div>
+<ng-template #content>
+  <ng-content></ng-content>
+</ng-template>

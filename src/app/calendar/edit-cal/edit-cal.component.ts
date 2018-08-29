@@ -1,11 +1,12 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
-import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {Location} from '@angular/common';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
-import { ToolsService } from '../../providers/tools.service';
-import { CalService, CalEvent, PERSOS, ASSOS, COURSE } from '../cal-service/cal.service';
-import { DicoService } from '../../language/dico.service';
+import {ToolsService} from '../../providers/tools.service';
+import {CalEvent, CalService, PERSOS} from '../cal-service/cal.service';
+import {DicoService} from '../../language/dico.service';
+import {MatSnackBar} from '@angular/material';
 
 @Component({
   selector: 'app-edit-cal',
@@ -26,7 +27,8 @@ export class EditCalComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private location: Location,
     private fb: FormBuilder,
-    public d: DicoService
+    public d: DicoService,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
@@ -54,7 +56,7 @@ export class EditCalComponent implements OnInit, OnDestroy {
         end: [new Date(this.event.end) || "", [Validators.required, this.tools.dateValidator]],
         occurences: [this.event.occurences || 1, [Validators.required, Validators.min(1), Validators.max(42)]],
         endTime: [this.tools.getTimeFromDate(this.event.end), [Validators.required, this.tools.timeValidator]],
-        location: [this.event.location || "", [Validators.required]]
+        location: [this.event.location || "", []]
       });
       if (this.eventCtrlWatcher) {
         this.eventCtrlWatcher.unsubscribe();
@@ -89,7 +91,7 @@ export class EditCalComponent implements OnInit, OnDestroy {
     return this.eventCtrl.get('location').value;
   }
 
-  onSubmit() {
+  submit() {
     if (!this.eventCtrl.invalid) {
       this.cal.setEvent(
         new CalEvent(
@@ -102,13 +104,8 @@ export class EditCalComponent implements OnInit, OnDestroy {
           this.event.type
         )
       ).then(() => {
-        this.error = this.d.l.changesApplied;
+        this.snackBar.open(this.d.l.changesApplied, 'ok', {duration: 2000});
       });
     }
   }
-
-  back() {
-    this.location.back();
-  }
-
 }

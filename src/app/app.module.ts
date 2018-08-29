@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { HttpClientModule } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
+import {MarkdownModule, MarkedOptions} from 'ngx-markdown';
 
 // angularfire modules
 import { AngularFireModule } from 'angularfire2';
@@ -145,6 +146,8 @@ import { EventCardComponent } from './events/components/event-card/event-card.co
 import { ActuCardComponent } from './actus/components/actu-card/actu-card.component';
 import {NsigmaAnnonceCardComponent} from './nsigma/components/nsigma-annonce-card/nsigma-annonce-card.component';
 import { PagedListComponent } from './shared-components/paged-list/paged-list.component';
+import { FilterAddUsersComponent } from './shared-components/filter-add-users/filter-add-users.component';
+import {UsersService} from './shared-components/filter-add-users/users.service';
 
 @NgModule({
   declarations: [
@@ -177,7 +180,8 @@ import { PagedListComponent } from './shared-components/paged-list/paged-list.co
     EventCardComponent,
     ActuCardComponent,
     PagedGridComponent,
-    PagedListComponent
+    PagedListComponent,
+    FilterAddUsersComponent
   ],
   imports: [
     BrowserModule,
@@ -187,10 +191,16 @@ import { PagedListComponent } from './shared-components/paged-list/paged-list.co
     FormsModule, ReactiveFormsModule,
     AngularFireModule.initializeApp(environment.firebase), AngularFireAuthModule, AngularFireDatabaseModule, AngularFireStorageModule,
     MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule, MatToolbarModule, MatSidenavModule, MatListModule, MatCardModule, MatSnackBarModule, MatSlideToggleModule, MatTabsModule, MatExpansionModule, MatCheckboxModule, MatPaginatorModule, MatDatepickerModule, MatNativeDateModule, MatSelectModule, MatDialogModule, MatProgressSpinnerModule, MatTableModule,
-    FlexLayoutModule
+    FlexLayoutModule,
+    MarkdownModule.forRoot({
+      provide: MarkedOptions,
+      useValue: {
+        sanitize: true
+      }
+    })
   ],
   providers: [
-    AuthService, VoteService, AdminService, CafetService, EventsService, ActusService, NsigmaService, NsigmaGuard, AnnoncesService, AnnoncesGuard, CalService,
+    AuthService, VoteService, AdminService, CafetService, EventsService, ActusService, NsigmaService, NsigmaGuard, AnnoncesService, AnnoncesGuard, CalService, UsersService,
     AppModulesService, DeviceSizeService, ListService, ToolsService,
     CanActivateHome, CanActivateVoteAdmin, CanActivateAssessor, CanActivateEventsAdmin, CanActivateComResp, CanActivateEventsEdit, CanActivateActusAdmin, CanActivateJournalist, CanActivateCafetResp, CanActivateActusEdit, CanActivateAdmin, CanActivateCafetAdmin, EmailVerifGuard, AccountGuard,
     DicoService, DatePipe

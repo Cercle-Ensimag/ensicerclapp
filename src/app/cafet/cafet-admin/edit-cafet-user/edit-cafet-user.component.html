@@ -1,6 +1,6 @@
 <span *ngIf="error" class="error">{{ error }}</span>
 
-<form>
+<form class="center">
   <span class="button" *ngIf="activated && user.activated">
     <button mat-icon-button (click)="archive()"><mat-icon>archive</mat-icon></button>
     <label>{{ d.l.achiveCafetUserButtonLabel }}</label>
@@ -17,7 +17,7 @@
   </span>
 </form>
 
-<form [formGroup]="profileCtrl" (ngSubmit)="onSubmit()" class="container">
+<form [formGroup]="profileCtrl" (ngSubmit)="submit()" class="container">
 
   <mat-form-field>
     <input matInput placeholder="{{ d.l.firstNameLabel }}" formControlName="firstName" autocomplete="off">

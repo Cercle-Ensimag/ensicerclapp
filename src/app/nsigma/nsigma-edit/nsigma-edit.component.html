@@ -16,6 +16,8 @@
       <mat-error *ngIf="nsigmaAnnonceCtrl.get('description').invalid">{{ d.l.nsigmaDescriptionError }}</mat-error>
     </mat-form-field>
 
+    <markdown [data]="nsigmaAnnonceCtrl.get('description').value"></markdown>
+
     <mat-form-field>
       <mat-select placeholder="{{ d.l.nsigmaTypeLabel }}" formControlName="type" [(ngModel)]="nsigmaAnnonce.type">
         <mat-option [value]="6">Général</mat-option>
