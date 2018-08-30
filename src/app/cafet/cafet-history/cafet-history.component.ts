@@ -4,7 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatPaginator, MatTableDataSource } from 
 import { CafetService, CafetUser, Transaction } from '../cafet-service/cafet.service';
 import { DicoService } from '../../language/dico.service';
 
-class Element {
+class Log {
   date: number;
   value: string;
 }
@@ -17,7 +17,7 @@ class Element {
 export class CafetHistoryComponent {
 
   isHistory: boolean;
-  history: MatTableDataSource<Element> = new MatTableDataSource<Element>([]);
+  history: MatTableDataSource<Log> = new MatTableDataSource<Log>([]);
   historyWatcher: any;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -43,10 +43,6 @@ export class CafetHistoryComponent {
     }
   }
 
-  ngAfterViewInit() {
-    this.history.paginator = this.paginator;
-  }
-
   onNoClick(): void {
     this.dialogRef.close();
   }
@@ -54,28 +50,29 @@ export class CafetHistoryComponent {
   watchHistory() {
     return this.cafet.getHistory(this.user.emailId).subscribe(
       history => {
-        let elements: Element[] = [];
+        const logs: Log[] = [];
         history.reverse().forEach(trans => {
-          elements.push({
+          logs.push({
             date: trans.date,
             value: trans.value.toFixed(2) + '€'
           })
-        })
-        elements.push({
+        });
+        logs.push({
           date: this.user.creationDate,
           value: this.d.l.cafetAccountCreationDateLabel
-        })
-        this.history.data = elements;
+        });
+        this.history.data = logs;
+        setTimeout(() => this.history.paginator = this.paginator);
         this.isHistory = true;
       }
     )
   }
 
-  isPlus(element: Element) {
-    return element.value.match(/^[0-9]/);
+  isPlus(log: Log) {
+    return log.value.match(/^[0-9]/);
   }
 
-  isMinus(element: Element) {
-    return element.value.match(/^-/);
+  isMinus(log: Log) {
+    return log.value.match(/^-/);
   }
 }

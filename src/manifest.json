@@ -1,0 +1,21 @@
+{
+  "short_name": "Cercle",
+  "name": "Cercle Ensimag",
+  "icons": [
+    {
+      "src": "/assets/img/logo-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/assets/img/logo-192.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/home",
+  "background_color": "#3fb551",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#3fb551"
+}

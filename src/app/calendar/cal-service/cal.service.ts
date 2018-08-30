@@ -155,7 +155,7 @@ export class CalService {
     }
     return this.http.get(this.getCoursesURL(resources), { responseType: 'text' }).subscribe(
       cal => {
-        this.courses = parseICS(cal).map(event => new CalEvent(
+        this.courses = parseICS(cal).map((event: {name: string, startDate: any, endDate: any, location: any}) => new CalEvent(
           "", event.name.replace(/\\,/g, ','), event.startDate, event.endDate, 1, event.location, COURSE
         )) || [];
         this.concatEvents();

@@ -2,12 +2,13 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
-import { MatSnackBar } from '@angular/material';
+import {MatDialog, MatSnackBar} from '@angular/material';
 
 import { VoteService } from '../vote-service/vote.service';
 import { DicoService } from '../../language/dico.service';
 
 import { VoteSnackbarComponent } from './vote-snackbar/vote-snackbar.component';
+import {DeleteDialogComponent} from '../../shared-components/delete-dialog/delete-dialog.component';
 
 export class Choice {
   id: string;
@@ -32,7 +33,6 @@ export class Poll {
 export class PollComponent implements OnInit, OnDestroy {
   poll: Poll;
   choices: Choice[];
-  selectedChoice: Choice;
 
   pollWatcher: any;
   choicesWatcher: any;
@@ -41,11 +41,10 @@ export class PollComponent implements OnInit, OnDestroy {
     private vote: VoteService,
     private route: ActivatedRoute,
     private location: Location,
-    public snackBar: MatSnackBar,
-    public d: DicoService,
-  ) {
-    this.selectedChoice = null;
-  }
+    private snackBar: MatSnackBar,
+    private d: DicoService,
+    private dialog: MatDialog,
+  ) { }
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
@@ -70,28 +69,20 @@ export class PollComponent implements OnInit, OnDestroy {
     });
   }
 
-  onVote(choice: Choice){
-    this.selectedChoice = choice;
-  }
-
-  onConfirm(selectedChoice) {
-    this.vote.sendVote(this.poll.id, selectedChoice.id)
-    .then(() => {
-      this.message();
-    })
-    .catch((error) => {
-      console.log(error);
+  choose(choice: Choice){
+    this.dialog.open(DeleteDialogComponent, {
+      data: {
+        title: "Confirmation de la suppression",
+        content: `Êtes-vous certain de vouloir voter pour "${choice.label}" ?`
+      }
+    }).afterClosed().subscribe(result => {
+      if (result) {
+        this.vote.sendVote(this.poll.id, choice.id)
+        .then(() => {
+          this.snackBar.open(`Vote pour "${choice.label}" enregistré`, 'ok', {duration: 2000});
+          this.location.back();
+        })
+      }
     });
-    this.location.back();
   }
-
-  private message() {
-    this.snackBar.openFromComponent(VoteSnackbarComponent, { duration: 3000 });
-  }
-
-  onCancel() {
-    this.selectedChoice = null;
-  }
-
-
 }

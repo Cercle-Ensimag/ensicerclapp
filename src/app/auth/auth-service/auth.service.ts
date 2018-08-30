@@ -67,7 +67,8 @@ export class AuthService {
     assessors: false,
     comResps: false,
     journalists: false,
-    cafetResps: false
+    cafetResps: false,
+    profile: false
   };
   accessSetListener = new EventEmitter();
 
@@ -229,12 +230,12 @@ export class AuthService {
     .catch((err) => { console.log(err) });
   }
 
-  updateProfile(p: Profile) {
-    this.updateProfileFromUser(this.getCurrentUser(), p);
+  updateProfile(p: Profile): Promise<any> {
+    return this.updateProfileFromUser(this.getCurrentUser(), p);
   }
 
-  updateProfileFromUser(user: any, p: Profile) {
-    this.db.object(this.getUserAccountPathFromUser(user)+'/account').set(p);
+  updateProfileFromUser(user: any, p: Profile): Promise<any> {
+    return this.db.object(this.getUserAccountPathFromUser(user)+'/account').set(p);
   }
 
   getEmailId(): string {
@@ -297,6 +298,8 @@ export class AuthService {
       profile => {
         if (profile) {
           this.profile = profile;
+          this.accessSet['profile'] = true;
+          this.accessSetListener.emit('profile');
         }
       },
       err => {}

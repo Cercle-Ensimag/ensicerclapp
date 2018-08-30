@@ -33,13 +33,13 @@ export class VoteAdminComponent implements OnInit, OnDestroy {
 
   constructor(
     private auth: AuthService,
-    public vote: VoteService,
-    public media: DeviceSizeService,
+    private vote: VoteService,
+    private media: DeviceSizeService,
     private list: ListService,
     private tools: ToolsService,
-    public d: DicoService,
-  public dialog: MatDialog,
-  private snackBar: MatSnackBar
+    private d: DicoService,
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar
   ) { }
 
   ngOnInit () {

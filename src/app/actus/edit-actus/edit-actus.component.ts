@@ -1,13 +1,12 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
-import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {Location} from '@angular/common';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
-import { Actu } from '../actus-service/actus.service';
+import {Actu, ActusService} from '../actus-service/actus.service';
 
-import { AuthService } from '../../auth/auth-service/auth.service';
-import { ActusService } from '../actus-service/actus.service';
-import { DicoService } from '../../language/dico.service';
+import {AuthService} from '../../auth/auth-service/auth.service';
+import {DicoService} from '../../language/dico.service';
 import {MatSnackBar} from '@angular/material';
 
 @Component({

@@ -65,9 +65,6 @@ export class EditEventsComponent implements OnInit, OnDestroy {
       if (this.eventCtrlWatcher) {
         this.eventCtrlWatcher.unsubscribe();
       }
-      this.eventCtrlWatcher = this.eventCtrl.valueChanges.subscribe(() => {
-        this.error = null;
-      });
     });
   }
 

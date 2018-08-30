@@ -8,13 +8,18 @@
       <span>{{ d.l.appName }}</span>
     </h1>
     <div class="right-btns">
-      <button *ngIf="this.location.path() !== '/infos'" mat-icon-button routerLink='/infos' class="infobtn">
+      <button *ngIf="this.location.path() !== '/infos'" mat-icon-button routerLink='/infos'>
         <mat-icon>info</mat-icon>
       </button>
-      <button *ngIf="this.location.path() === '/infos'" mat-icon-button (click)='location.back()' class="infobtn">
+      <button *ngIf="this.location.path() === '/infos'" mat-icon-button (click)='location.back()'>
         <mat-icon style="color: #ffffff4f;">info</mat-icon>
       </button>
-      <button mat-icon-button routerLink='/account' class="accountbtn" *ngIf="auth.getCurrentUser()"><mat-icon>account_circle</mat-icon></button>
+      <button *ngIf="auth.getCurrentUser() && this.location.path() !== '/account'" mat-icon-button routerLink='/account'>
+        <mat-icon>account_circle</mat-icon>
+      </button>
+      <button *ngIf="auth.getCurrentUser() && this.location.path() === '/account'" mat-icon-button (click)='location.back()'>
+        <mat-icon style="color: #ffffff4f;">account_circle</mat-icon>
+      </button>
     </div>
   </mat-toolbar>
 

@@ -3,28 +3,23 @@
 <div *ngIf="poll">
   <div>
     <h1>{{ poll.title }}</h1>
+    <h2 *ngIf="!poll.started">Le vote n'a pas encore débuté...</h2>
     <markdown [data]="poll.description"></markdown>
   </div>
 
-  <div *ngIf='!selectedChoice' class="grid-container">
+  <div class="grid-container">
     <div *ngFor="let choice of choices">
       <mat-card class="wrapper">
         <mat-card-title>{{ choice.label }}</mat-card-title>
         <img mat-card-image src="{{ choice.image }}" alt="{{ choice.label }} - image" class="image">
         <mat-card-actions>
-          <button mat-raised-button [disabled]="!poll.started" (click)="onVote(choice);" color="primary">{{ d.l.voteForLabel }} {{ choice.short || choice.label }}</button>
+          <button mat-raised-button [disabled]="!poll.started" (click)="choose(choice);" color="primary">{{ d.l.voteForLabel }} {{ choice.short || choice.label }}</button>
         </mat-card-actions>
       </mat-card>
     </div>
   </div>
+</div>
 
-  <div *ngIf='selectedChoice'>
-    <h2>{{ d.l.choiceSelectionInfo }}</h2>
-    <mat-card class="final">
-      <mat-card-title>{{ selectedChoice.label }}</mat-card-title>
-      <img mat-card-image src="{{ selectedChoice.image }}" alt="{{ selectedChoice.label }} logo">
-    </mat-card>
-    <button mat-raised-button color="primary" class="confirm-btn" (click)='onConfirm(selectedChoice)'>{{ d.l.confirmLabel }}</button>
-    <button mat-raised-button color="warn" class="confirm-btn" (click)='onCancel()'>{{ d.l.cancelLabel }}</button>
-  </div>
+<div class="mat-fab-bottom-right">
+  <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
 </div>

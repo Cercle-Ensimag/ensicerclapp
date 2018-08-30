@@ -54,7 +54,7 @@ export class French {
   public static readonly confimDeleteAccountButtonLabel = "Supprimer le compte";
   public static readonly accountDeletedInfo = "Ton compte a été correctement supprimé";
   public static readonly passwordChangedInfo = "Ton mot de passe a été modifié avec succès";
-  public static readonly changePasswordButtonLabel = "Changer mot de passe";
+  public static readonly changePasswordButtonLabel = "Changer le mot de passe";
   public static readonly changePasswordInfo = "Tu es sur le point de changer de mot de passe";
 
   // Admin
@@ -265,6 +265,27 @@ export class French {
   public static readonly nsigmaFormError = 'Formulaire invalide';
   public static readonly nsigmaEnCours = 'En cours';
   public static readonly nsigmaFinie = 'Finie';
+
+  // Annonce
+
+  public static readonly annonceTitleLabel = 'Titre';
+  public static readonly annonceTitleTooShortError = 'Titre trop court';
+  public static readonly annonceDescriptionLabel = 'Description';
+  public static readonly annonceDescriptionError = 'Description trop courte';
+  public static readonly annonceTypeLabel = 'Type de l\'étude';
+  public static readonly annonceTypeError = 'Type invalide';
+  public static readonly annonceStartLabel = 'Début';
+  public static readonly annonceStartError = 'Début invalide';
+  public static readonly annonceLengthLabel = 'Durée';
+  public static readonly annonceLengthError = 'Durée invalide';
+  public static readonly annonceContactLabel = 'Contact';
+  public static readonly annonceContactError = 'Contact invalide';
+  public static readonly annonceAuthorLabel = 'Auteur';
+  public static readonly annonceAuthorError = 'Auteur invalide';
+  public static readonly annonceTechnologiesLabel = 'Technologies';
+  public static readonly annonceTechnologiesError = 'Technologies invalides';
+  public static readonly annonceEnCours = 'En cours';
+  public static readonly annonceFinie = 'Finie';
 
   // Info
   public static readonly legalNoticeLabel = "Mentions légales";

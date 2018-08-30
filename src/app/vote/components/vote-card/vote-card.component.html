@@ -2,7 +2,7 @@
   <mat-card>
     <mat-card-header>
       <img mat-card-avatar src="assets/img/icons/votes.png">
-      <mat-card-title>{{ poll.title }}</mat-card-title>
+      <mat-card-title>{{ ((vote.votes[poll.id] || false) ? '[A voté] ' : '') }}{{ poll.title }}</mat-card-title>
       <mat-card-subtitle>{{ choicesString(poll) }}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>

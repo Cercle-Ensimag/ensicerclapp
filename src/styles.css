@@ -93,6 +93,10 @@ button.mat-fab-bottom-right {
   right: 28px;
 }
 
+button.mat-fab[ng-reflect-disabled="true"] {
+  background-color: #dcdcdc !important;
+}
+
 /* Absolute Center Spinner */
 .loading-indicator {
   position: fixed;

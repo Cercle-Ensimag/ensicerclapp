@@ -119,7 +119,7 @@ export class VoteService {
     let refs = {
       emailId: emailId,
       voted: true
-    }
+    };
     return this.db.object('vote/votes/'+pollId+'/'+emailId).update(refs)
     .then(() => {
       return this.db.object('vote/users/'+emailId+'/votes/'+pollId).set(true);
