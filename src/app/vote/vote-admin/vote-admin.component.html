@@ -1,9 +1,9 @@
-<mat-tab-group #tabGroup>
+<mat-tab-group (selectedTabChange)="tabChanged($event)">
   <!-- Polls tab -->
   <mat-tab label="{{ d.l.polls }}">
 
     <!-- Polls display -->
-    <app-paged-grid [list]="vote.polls" #pages>
+    <app-paged-grid [list]="vote.getPolls() | async" #pages>
       <app-vote-card *ngFor="let poll of pages.truncatedList()"
                      [poll]="poll"
                      [admin]="true">
@@ -12,33 +12,31 @@
   </mat-tab>
 
   <mat-tab label="{{ d.l.assessorPlLabel }}">
-
     <!-- Users display -->
-    <div *ngIf="assessors">
+    <div *ngIf="filteredUsers() | async as users">
       <mat-card>
-        <span *ngIf="error" class="error">{{ error }}</span>
 
         <mat-form-field [class.large]="!media.mobileSize">
           <input matInput placeholder="{{ d.l.addAssessorInfo }}" [formControl]="emailCtrl" autocomplete="off">
           <button mat-icon-button matSuffix><mat-icon>search</mat-icon></button>
         </mat-form-field>
         <button mat-raised-button
-          (click)="addAssessor()"
-          [disabled]="emailCtrl.invalid || displayedUsers.length != 0"
+          (click)="addAssessor()" *ngIf="emailCtrl"
+          [disabled]="emailCtrl.invalid || users.length !== 0"
           color="primary"
         >{{ d.l.addAssessorButtonLabel }}</button>
       </mat-card>
 
-      <mat-card *ngIf="displayedUsers.length != 0">
+      <mat-card *ngIf="users.length !== 0">
         <mat-nav-list>
-          <a mat-list-item *ngFor="let user of displayedUsers">
+          <a mat-list-item *ngFor="let user of users">
             {{ tools.titleCase(user.emailId.split('|').join(' ')) }}
             <button mat-icon-button matSuffix (click)="vote.removeAssessor(user.emailId)"><mat-icon>delete</mat-icon></button>
           </a>
         </mat-nav-list>
       </mat-card>
     </div>
-    <div *ngIf="!assessors" class="loading-indicator">
+    <div *ngIf="!filteredUsers() | async" class="loading-indicator">
       <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
     </div>
   </mat-tab>
@@ -46,5 +44,5 @@
 
 <div class="mat-fab-bottom-right">
   <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
-  <button *ngIf="tabGroup.selectedIndex == 0" mat-fab color="primary" routerLink="/votes/poll/-/edit"><mat-icon>add</mat-icon></button>
+  <button *ngIf="selectedTab === 0" mat-fab color="primary" routerLink="/votes/poll/-/edit"><mat-icon>add</mat-icon></button>
 </div>

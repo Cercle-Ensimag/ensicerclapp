@@ -1,7 +1,6 @@
-import { Injectable } from '@angular/core';
-import { AngularFireDatabase } from 'angularfire2/database';
-
-import { ToolsService } from '../providers/tools.service';
+import {Injectable} from '@angular/core';
+import {AngularFireDatabase} from 'angularfire2/database';
+import {Observable} from '../../../node_modules/rxjs';
 
 export class Annonce {
   id: string;
@@ -18,42 +17,32 @@ export class Annonce {
 
 @Injectable()
 export class AnnoncesService {
-
-  annonces: Annonce[];
-  annoncesWatcher: any;
+  private _annonces: Observable<Annonce[]>;
+  private _annonce: { [ $annonceId: string ]: Observable<Annonce> } = {};
 
   constructor(
     private db: AngularFireDatabase,
-    private tools: ToolsService
-  ) {
-  }
+  ) { }
 
-  start() {
-    if (this.annoncesWatcher) {
-      this.stop();
+  getAnnonces(): Observable<Annonce[]> {
+    if (!this._annonces){
+      this._annonces = this.db
+        .list<Annonce>('annonces/annonces')
+        .valueChanges()
+        .map(annonces => annonces.reverse())
+        .shareReplay(1);
     }
-    this.annoncesWatcher = this.watchAnnonces();
-  }
-
-  stop() {
-    if (this.annoncesWatcher) {
-      this.annoncesWatcher.unsubscribe();
-      this.annoncesWatcher = null;
-    }
-  }
-
-  watchAnnonces() {
-    return this.db.list<Annonce>('/annonces/annonces').valueChanges().subscribe(
-      annonces => {
-        this.annonces = annonces.reverse() || [];
-      },
-      err => {
-      }
-    );
+    return this._annonces;
   }
 
   getAnnonce(annonceId: string) {
-    return this.db.object<Annonce>('/annonces/annonces/' + annonceId).valueChanges();
+    if (!this._annonce[annonceId]) {
+      this._annonce[annonceId] = this.db
+        .object<Annonce>('/annonces/annonces/' + annonceId)
+        .valueChanges()
+        .shareReplay(1);
+    }
+    return this._annonce[annonceId];
   }
 
   getAnnonceId() {

@@ -1,82 +1,46 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {Location} from '@angular/common';
 
-import { VoteService } from '../vote-service/vote.service';
-import { Poll, Choice } from '../poll/poll.component';
+import {VoteService} from '../vote-service/vote.service';
 
-import { DicoService } from '../../language/dico.service';
+import {DicoService} from '../../language/dico.service';
+import {Observable} from 'rxjs/Observable';
 
 @Component({
   selector: 'app-results',
   templateUrl: './results.component.html',
   styleUrls: ['./results.component.css']
 })
-export class ResultsComponent implements OnInit, OnDestroy {
-
-  choices: Choice[];
-  results: {
-    [choiceId: string]: number;
-  };
-
-  pollWatcher: any;
-  resultsWatcher: any[];
+export class ResultsComponent implements OnInit {
+  private id: string;
+  private _totalVotes: Observable<number>;
 
   constructor(
     private vote: VoteService,
     private route: ActivatedRoute,
     private location: Location,
-    public d: DicoService
-  ) {
-    this.results = {};
-    this.resultsWatcher = [];
-  }
+    private d: DicoService
+  ) { }
 
   ngOnInit() {
-    const id = this.route.snapshot.paramMap.get('id');
-    this.pollWatcher = this.watchPoll(id);
+    this.id = this.route.snapshot.paramMap.get('id');
   }
 
-  ngOnDestroy() {
-    if (this.pollWatcher) {
-      this.pollWatcher.unsubscribe();
-      this.pollWatcher = null;
+  totalVotes(): Observable<number> {
+    if (!this._totalVotes) {
+      this._totalVotes = this.vote.getAllResults(this.id)
+        .map((results: { [$choiceId: string]: number }) => Object.values(results).reduce((sum, cur) => sum + cur), 0)
+        .shareReplay(1);
     }
-    for (let w of this.resultsWatcher) {
-      if (w) { w.unsubscribe(); }
-    }
-    this.resultsWatcher = [];
+    return this._totalVotes;
   }
 
-  watchPoll(pollId: string) {
-    return this.vote.getChoices(pollId).subscribe((choices) => {
-      this.choices = choices;
-      this.watchResults(pollId);
-    })
-  }
-
-  watchResults(pollId: string) {
-    for (let choice of this.choices) {
-      this.resultsWatcher.push(this.vote.getResults(pollId, choice.id).subscribe(results => {
-        this.results[choice.id] = results.length;
-      }));
-    }
-  }
-
-  totalVotes(): number {
-    let total: number = 0;
-    for (let choice of this.choices) {
-      total += this.results[choice.id];
-    }
-    return total;
-  }
-
-  percent(choiceId: string): number {
-    return ((100 * this.results[choiceId]) / this.totalVotes()) || 0;
-  }
-
-  back() {
-    this.location.back();
+  percent(choiceId: string): Observable<string> {
+    return Observable.combineLatest(
+      this.totalVotes(),
+      this.vote.getResults(this.id, choiceId))
+      .map(([total, partial]) => (100 * partial/total).toFixed(2));
   }
 
 }

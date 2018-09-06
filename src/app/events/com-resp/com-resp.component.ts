@@ -1,27 +1,20 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-
-import { AuthService } from '../../auth/auth-service/auth.service';
-import { EventsService } from '../events-service/events.service';
-import { DicoService } from '../../language/dico.service';
+import {Component, OnInit} from '@angular/core';
+import {EventsService} from '../events-service/events.service';
+import {DicoService} from '../../language/dico.service';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-com-resp',
   templateUrl: './com-resp.component.html',
   styleUrls: ['./com-resp.component.css']
 })
-export class ComRespComponent implements OnInit, OnDestroy {
+export class ComRespComponent implements OnInit {
 
   constructor(
-    public auth: AuthService,
+    public location: Location,
     public events: EventsService,
     public d: DicoService
   ) { }
 
-  ngOnInit () {
-    this.events.start();
-  }
-
-  ngOnDestroy () {
-    this.events.stop();
-  }
+  ngOnInit () { }
 }

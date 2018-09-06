@@ -30,15 +30,12 @@ import {CafetAdminUsersComponent} from './cafet/cafet-admin/cafet-admin-users/ca
 import {CafetAdminAccountsComponent} from './cafet/cafet-admin/cafet-admin-accounts/cafet-admin-accounts.component';
 import {CafetAdminArchivesComponent} from './cafet/cafet-admin/cafet-admin-archives/cafet-admin-archives.component';
 import {CafetAdminRespsComponent} from './cafet/cafet-admin/cafet-admin-resps/cafet-admin-resps.component';
-import {CafetRespComponent} from './cafet/cafet-resp/cafet-resp.component';
 import {TrezoComponent} from './cafet/cafet-admin/trezo/trezo.component';
 import {CafetHistoryComponent} from './cafet/cafet-history/cafet-history.component';
 import {EditCafetUserComponent} from './cafet/cafet-admin/edit-cafet-user/edit-cafet-user.component';
-import {CafetDayHistoryComponent} from './cafet/cafet-resp/cafet-day-history/cafet-day-history.component';
 
 import {VoteComponent} from './vote/vote-all/vote.component';
 import {PollComponent} from './vote/poll/poll.component';
-import {VoteSnackbarComponent} from './vote/poll/vote-snackbar/vote-snackbar.component';
 import {VoteAdminComponent} from './vote/vote-admin/vote-admin.component';
 import {EditPollComponent} from './vote/edit-poll/edit-poll.component';
 import {ResultsComponent} from './vote/results/results.component';
@@ -82,20 +79,19 @@ import {DeviceSizeService} from './providers/device-size.service';
 import {ListService} from './providers/list.service';
 import {ToolsService} from './providers/tools.service';
 
-import {CanActivateHome} from './home/home-guard/home.service';
-import {CanActivateVoteAdmin} from './vote/vote-guard/vote-admin.service';
-import {CanActivateAssessor} from './vote/vote-guard/assessor.service';
-import {CanActivateEventsAdmin} from './events/events-guard/events-admin.service';
-import {CanActivateComResp} from './events/events-guard/com-resp.service';
-import {CanActivateEventsEdit} from './events/events-guard/events-edit.service';
-import {CanActivateActusAdmin} from './actus/actus-guard/actus-admin.service';
-import {CanActivateJournalist} from './actus/actus-guard/journalist.service';
-import {CanActivateActusEdit} from './actus/actus-guard/actus-edit.service';
-import {CanActivateAdmin} from './admin/guard/admin-guard.service';
-import {CanActivateCafetAdmin} from './cafet/cafet-guard/cafet-admin.service';
+import {CanActivateHome} from './home/home-guard/home.guard';
+import {CanActivateVoteAdmin} from './vote/vote-guard/vote-admin.guard';
+import {CanActivateAssessor} from './vote/vote-guard/assessor.guard';
+import {CanActivateEventsAdmin} from './events/events-guard/events-admin.guard';
+import {CanActivateComResp} from './events/events-guard/com-resp.guard';
+import {CanActivateEventsEdit} from './events/events-guard/events-edit.guard';
+import {CanActivateActusAdmin} from './actus/actus-guard/actus-admin.guard';
+import {CanActivateJournalist} from './actus/actus-guard/journalist.guard';
+import {CanActivateActusEdit} from './actus/actus-guard/actus-edit.guard';
+import {CanActivateAdmin} from './admin/admin-guard/admin-guard';
+import {CanActivateCafetAdmin} from './cafet/cafet-guard/cafet-admin.guard';
 import {CanActivateCafetResp} from './cafet/cafet-guard/cafet-resp.guard';
 import {EmailVerifGuard} from './auth/email-verif/email-verif-guard/email-verif.guard';
-import {AccountGuard} from './account/account-guard/account.guard';
 
 import {DicoService} from './language/dico.service';
 // angular materials
@@ -119,6 +115,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatTableModule} from '@angular/material/table';
+
 import {environment} from '../environments/environment';
 import {AnnoncesHomeComponent} from './annonces/annonces-home/annonces-home.component';
 import {AnnoncesAdminComponent} from './annonces/annonces-admin/annonces-admin.component';
@@ -144,6 +141,10 @@ import {PagedListComponent} from './shared-components/paged-list/paged-list.comp
 import {UsersService} from './shared-components/filter-add-users/users.service';
 import {FilterAddUsersComponent} from './shared-components/filter-add-users/filter-add-users.component';
 import {UpdatePasswordDialogComponent} from './account/components/update-password-dialog/update-password-dialog.component';
+import {DayColumnComponent} from './calendar/components/day-column/day-column.component';
+import {CafetRespComponent} from './cafet/cafet-resp/cafet-resp.component';
+
+import 'hammerjs';
 
 @NgModule({
   declarations: [
@@ -151,8 +152,8 @@ import {UpdatePasswordDialogComponent} from './account/components/update-passwor
     AdminUsersComponent,
     HomeComponent, DashboardComponent,
     LoginComponent, SignUpComponent, EmailVerifComponent, PasswordResetComponent,
-    CafetComponent, CafetInfoComponent, CafetAdminComponent, CafetAdminUsersComponent, CafetAdminAccountsComponent, CafetAdminArchivesComponent, CafetAdminRespsComponent, TrezoComponent, CafetRespComponent, CafetHistoryComponent, EditCafetUserComponent, CafetDayHistoryComponent,
-    VoteComponent, PollComponent, VoteSnackbarComponent, VoteAdminComponent, EditPollComponent, ResultsComponent, VoteUsersComponent, AssessorComponent,
+    CafetComponent, CafetInfoComponent, CafetAdminComponent, CafetAdminUsersComponent, CafetAdminAccountsComponent, CafetAdminArchivesComponent, CafetAdminRespsComponent, TrezoComponent, CafetHistoryComponent, EditCafetUserComponent,
+    VoteComponent, PollComponent, VoteAdminComponent, EditPollComponent, ResultsComponent, VoteUsersComponent, AssessorComponent,
     CalendarComponent, EditCalComponent, CalSettingsComponent,
     EventsHomeComponent, EventComponent, EventAdminComponent, ComRespComponent, EditEventsComponent,
     ActusHomeComponent, ActuComponent, ActuAdminComponent, JournalistComponent, EditActusComponent,
@@ -179,6 +180,8 @@ import {UpdatePasswordDialogComponent} from './account/components/update-passwor
     PagedListComponent,
     FilterAddUsersComponent,
     UpdatePasswordDialogComponent,
+    DayColumnComponent,
+    CafetRespComponent,
   ],
   imports: [
     BrowserModule,
@@ -199,14 +202,12 @@ import {UpdatePasswordDialogComponent} from './account/components/update-passwor
   providers: [
     AuthService, VoteService, AdminService, CafetService, EventsService, ActusService, NsigmaService, NsigmaGuard, AnnoncesService, AnnoncesGuard, CalService, UsersService,
     AppModulesService, DeviceSizeService, ListService, ToolsService,
-    CanActivateHome, CanActivateVoteAdmin, CanActivateAssessor, CanActivateEventsAdmin, CanActivateComResp, CanActivateEventsEdit, CanActivateActusAdmin, CanActivateJournalist, CanActivateCafetResp, CanActivateActusEdit, CanActivateAdmin, CanActivateCafetAdmin, EmailVerifGuard, AccountGuard,
+    CanActivateHome, CanActivateVoteAdmin, CanActivateAssessor, CanActivateEventsAdmin, CanActivateComResp, CanActivateEventsEdit, CanActivateActusAdmin, CanActivateJournalist, CanActivateCafetResp, CanActivateActusEdit, CanActivateAdmin, CanActivateCafetAdmin, EmailVerifGuard,
     DicoService, DatePipe
   ],
   entryComponents: [
-    VoteSnackbarComponent,
     CafetHistoryComponent,
     EditCafetUserComponent,
-    CafetDayHistoryComponent,
     DeleteDialogComponent,
     LoginDialogComponent,
     UpdatePasswordDialogComponent

@@ -17,16 +17,15 @@ export class ActuCardComponent implements OnInit {
   @Input() actu: Annonce;
 
   constructor(
-    public actus: ActusService,
-    public dialog: MatDialog,
+    private actus: ActusService,
+    private dialog: MatDialog,
     private snackBar: MatSnackBar,
+
     public d: DicoService,
     public tools: ToolsService
-  ) {
-  }
+  ) { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
   delete() {
     this.dialog.open(DeleteDialogComponent, {
@@ -36,8 +35,9 @@ export class ActuCardComponent implements OnInit {
       }
     }).afterClosed().subscribe(result => {
       if (result) {
-        this.actus.deleteActu(this.actu.id);
-        this.snackBar.open("Actualité supprimée", 'ok', {duration: 2000});
+        this.actus.deleteActu(this.actu.id).then(() =>
+          this.snackBar.open("Actualité supprimée", 'ok', {duration: 2000})
+        );
       }
     });
   }

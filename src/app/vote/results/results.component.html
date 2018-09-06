@@ -1,15 +1,12 @@
 <!-- Loading -->
-<mat-card *ngIf="!results" class="spinner-wrapper">
-  <mat-spinner class="spinner"></mat-spinner>
-</mat-card>
+<app-loading [loading]="results"></app-loading>
 
 <!-- Results display -->
-<mat-card *ngIf="results">
+<mat-card *ngIf="vote.getChoices(id) | async as choices">
   <div *ngFor="let choice of choices">
     <h2>
-      {{ choice.label }}: {{ results[choice.id] }} vote{{ results[choice.id]>1 ? "s" : ""}}
-      ({{ percent(choice.id).toFixed(2) }}%)
+      {{ choice.label }}: {{ vote.getResults(id, choice.id) | async }} vote<span *ngIf="vote.getResults(id, choice.id) > 1 | async">s</span>}
+      ({{ percent(choice.id) | async }}%)
     </h2>
   </div>
-  <button mat-raised-button (click)="back()">{{ d.l.backLabel }}</button>
 </mat-card>

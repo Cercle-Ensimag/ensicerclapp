@@ -1,8 +1,10 @@
-import { Injectable } from '@angular/core';
-import { AngularFireDatabase } from 'angularfire2/database';
+import {Injectable} from '@angular/core';
+import {AngularFireDatabase} from 'angularfire2/database';
 
-import { ToolsService } from '../../providers/tools.service';
-import { AuthService } from '../../auth/auth-service/auth.service';
+import {ToolsService} from '../../providers/tools.service';
+import {AuthService} from '../../auth/auth-service/auth.service';
+import {Observable} from '../../../../node_modules/rxjs';
+import {CalEvent} from '../../calendar/cal-service/cal.service';
 
 export class Event {
   id: string;
@@ -29,10 +31,11 @@ export class Group {
 
 @Injectable()
 export class EventsService {
-
-  events: Event[];
-  activeEvents: Event[];
-  eventsWatcher: any;
+  private _events: Observable<Event[]>;
+  private _activeEvents: Observable<Event[]>;
+  private _event: { [$eventId: string]: Observable<Event> } = {};
+  private _comResps: Observable<ComResp[]>;
+  private _eventInCalendar: { [$eventId: string]: Observable<CalEvent> }  = {};
 
   constructor(
     private db: AngularFireDatabase,
@@ -40,38 +43,38 @@ export class EventsService {
     private auth: AuthService
   ) { }
 
-  start() {
-    if (this.eventsWatcher) {
-      this.stop();
+  start() { }
+
+  stop() { }
+
+  getEvents(): Observable<Event[]> {
+    if (!this._events){
+      this._events = this.db
+        .list<Event>('events/events', ref => ref.orderByChild('start'))
+        .valueChanges()
+        .map((events: Event[]) => events.reverse())
+        .shareReplay(1);
     }
-    this.eventsWatcher = this.watchEvents();
+    return this._events;
   }
 
-  stop() {
-    if (this.eventsWatcher) {
-      this.eventsWatcher.unsubscribe();
-      this.eventsWatcher = null;
+  getActiveEvents(): Observable<Event[]> {
+    if (!this._activeEvents){
+      this._activeEvents = this.getEvents()
+        .map((events: Event[]) => events.filter(event => event.end > Date.now()))
+        .shareReplay(1);
     }
+    return this._activeEvents;
   }
 
-  getEvents() {
-    return this.db.list<Event>('events/events', ref => ref.orderByChild('start')).valueChanges();
-  }
-
-  watchEvents() {
-    return this.getEvents().subscribe(
-      events => {
-        this.events = events.reverse() || [];
-        this.activeEvents = events.filter(event => event.end > Date.now()).reverse() || [];
-      },
-      err => {
-				console.log(err);
-			}
-    );
-  }
-
-  getEvent(eventId: string) {
-    return this.db.object<Event>('events/events/'+eventId).valueChanges();
+  getEvent(eventId: string): Observable<Event> {
+    if (!this._event[eventId]){
+      this._event[eventId] = this.db
+        .object<Event>('events/events/'+eventId)
+        .valueChanges()
+        .shareReplay(1);
+    }
+    return this._event[eventId];
   }
 
   getEventId() {
@@ -86,8 +89,14 @@ export class EventsService {
     return this.db.object<Event>('events/events/'+eventId).set(null);
   }
 
-  getComResps() {
-    return this.db.list<ComResp>('events/com-resps/resps').valueChanges();
+  getComResps(): Observable<ComResp[]> {
+    if (!this._comResps) {
+      this._comResps = this.db
+        .list<ComResp>('events/com-resps/resps')
+        .valueChanges()
+        .shareReplay(1);
+    }
+    return this._comResps;
   }
 
   removeComResp(emailId: string) {
@@ -106,15 +115,32 @@ export class EventsService {
   }
 
   addEventToCalendar(eventId: string) {
-    return this.db.object('calendar/users/'+this.auth.getCurrentUser().uid+'/assos/'+eventId).set(eventId);
+    return this.auth.getUser()
+      .first()
+      .flatMap(user => Observable.fromPromise(
+        this.db.object('calendar/users/'+user.uid+'/assos/'+eventId).set(eventId)
+      ))
+      .toPromise()
   }
 
   removeEventFromCalendar(eventId: string) {
-    return this.db.object('calendar/users/'+this.auth.getCurrentUser().uid+'/assos/'+eventId).set(null);
+    return this.auth.getUser()
+      .first()
+      .flatMap(user => Observable.fromPromise(
+        this.db.object('calendar/users/'+user.uid+'/assos/'+eventId).set(null)
+      ))
+      .toPromise()
   }
 
-  getEventInCalendar(eventId: string) {
-    return this.db.object('calendar/users/'+this.auth.getCurrentUser().uid+'/assos/'+eventId).valueChanges();
+  getEventInCalendar(eventId: string): Observable<CalEvent> {
+    if (!this._eventInCalendar[eventId]) {
+      this._eventInCalendar[eventId] = this.auth.getUser()
+        .flatMap(user =>
+          this.db.object<CalEvent>('calendar/users/'+user.uid+'/assos/'+eventId).valueChanges()
+        )
+        .shareReplay(1);
+    }
+    return this._eventInCalendar[eventId];
   }
 
 }

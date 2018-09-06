@@ -12,13 +12,11 @@ export class CanActivateCafetResp implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ) {
-    return this.auth.waitForAccessToXToBeSet('cafetResps')
-      .take(1)
-      .map(auth => auth.isCafetResp)
+    return this.auth.isCafetResp()
+      .first()
       .do(is => {
         if (!is) {
-          this.router.navigateByUrl('/home');
-          return;
+          this.auth.goToHome();
         }
       });
   }

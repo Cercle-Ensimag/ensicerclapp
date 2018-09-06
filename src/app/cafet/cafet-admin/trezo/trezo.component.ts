@@ -1,13 +1,15 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, Validators} from '@angular/forms';
+import {MatDialog, MatSnackBar} from '@angular/material';
 
-import { CafetService, CafetUser } from '../../cafet-service/cafet.service';
-import { ToolsService } from '../../../providers/tools.service';
-import { DeviceSizeService } from '../../../providers/device-size.service';
-import { DicoService } from '../../../language/dico.service';
+import {CafetService, CafetUser} from '../../cafet-service/cafet.service';
+import {ToolsService} from '../../../providers/tools.service';
+import {DeviceSizeService} from '../../../providers/device-size.service';
+import {DicoService} from '../../../language/dico.service';
 
-import { CafetHistoryComponent } from '../../cafet-history/cafet-history.component';
+import {CafetHistoryComponent} from '../../cafet-history/cafet-history.component';
+import {Subject} from 'rxjs/Subject';
+import {Observable} from 'rxjs/Observable';
 
 @Component({
   selector: 'app-trezo',
@@ -15,68 +17,45 @@ import { CafetHistoryComponent } from '../../cafet-history/cafet-history.compone
   styleUrls: ['./trezo.component.css']
 })
 export class TrezoComponent implements OnInit {
+  private unsubscribe: Subject<void> = new Subject();
 
-  trezo: CafetUser[];
-  users: CafetUser[];
-  displayedUsers: CafetUser[] = [];
-  usersWatcher: any;
-  trezoWatcher: any;
-
-  controls: {[emailId: string]: {
+  public controls: {[emailId: string]: {
     add: FormControl,
     sub: FormControl
   }};
 
-  expanded: {[emailId: string]: boolean};
-
-  totalOfPositive = 0;
-  totalOfNegative = 0;
-  totalOnAccounts = 0;
-  nbOfPosAccounts = 0;
-  nbOfNegAccounts = 0;
-  nbOfAllAccounts = 0;
-
-  error: string;
-
   constructor(
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar,
+
     public cafet: CafetService,
     public tools: ToolsService,
     public media: DeviceSizeService,
-    public dialog: MatDialog,
-    public d: DicoService
+    public d: DicoService,
   ) { }
 
   ngOnInit() {
-    this.trezoWatcher = this.watchTrezo();
-    this.usersWatcher = this.watchUsers();
+    this.initFormGroup();
   }
 
   ngOnDestroy() {
-    this.trezoWatcher.unsubscribe();
-    this.usersWatcher.unsubscribe();
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 
-  watchTrezo() {
-    return this.cafet.getTrezAccounts().subscribe(trezo => {
-      this.trezo = trezo;
-      this.controls = {};
-      this.expanded = {};
-      for (let user of trezo) {
-        this.controls[user.emailId] = {
-          add: new FormControl("", [Validators.required, Validators.max(1000), Validators.min(0.1)]),
-          sub: new FormControl("", [Validators.required, Validators.max(1000), Validators.min(0.1)])
-        };
-        this.expanded[user.emailId] = false;
-      }
-    })
+  initFormGroup() {
+    this.cafet.getTrezAccounts()
+      .takeUntil(this.unsubscribe)
+      .subscribe(users => {
+        this.controls = {};
+        for (let user of users) {
+          this.controls[user.emailId] = {
+            add: new FormControl('', [Validators.required, Validators.max(1000), Validators.min(0.1)]),
+            sub: new FormControl('', [Validators.required, Validators.max(1000), Validators.min(0.1)])
+          };
+        }
+      });
   }
-
-  watchUsers() {
-    return this.cafet.getUsers().subscribe(users => {
-        this.processAccounts(users);
-    })
-  }
-
 
   // transactions
 
@@ -87,45 +66,51 @@ export class TrezoComponent implements OnInit {
     } else {
       value = -this.controls[user.emailId].sub.value;
     }
-    this.controls[user.emailId].add.setValue("");
-    this.controls[user.emailId].sub.setValue("");
-    this.cafet.newTrezoTransaction(user, value).then(
-      () => {
-        this.error = this.d.format(this.d.l.informAboutTransaction, this.cafet.getUserName(user), value.toFixed(2));
-      },
-      (err) => {
-        this.error = err;
-      }
-    );
+    this.cafet.newTrezoTransaction(user, value)
+      .then(() => {
+        this.controls[user.emailId].add.setValue('');
+        this.controls[user.emailId].sub.setValue('');
+        this.snackBar.open(this.d.format(this.d.l.informAboutTransaction, this.cafet.getUserName(user), value.toFixed(2)), 'ok', {duration: 2000});
+      })
+      .catch((err) => this.snackBar.open(err, 'ok', {duration: 2000}));
   }
 
   openHistory(user: CafetUser): void {
-    let dialogRef = this.dialog.open(CafetHistoryComponent, {
-      data: user,
+    this.dialog.open(CafetHistoryComponent, {
+      data: {user: user, day: false},
       width: '450px'
     });
   }
 
 
   // Credits
+  get totalOfPositive(): Observable<string> {
+    return this.cafet.getUsers()
+      .map(users => users.filter(user => user.credit >= 0).reduce((sum, user) => sum + user.credit, 0).toFixed(2))
+  }
 
-  processAccounts(users: CafetUser[]) {
-    this.totalOfPositive = 0;
-    this.totalOfNegative = 0;
-    this.totalOnAccounts = 0;
-    this.nbOfPosAccounts = 0;
-    this.nbOfNegAccounts = 0;
-    this.nbOfAllAccounts = 0;
-    users.forEach(user => {
-      if (user.credit < 0) {
-        this.totalOfNegative += user.credit;
-        this.nbOfNegAccounts += 1;
-      } else {
-        this.totalOfPositive += user.credit;
-        this.nbOfPosAccounts += 1;
-      }
-      this.totalOnAccounts += user.credit;
-      this.nbOfAllAccounts += 1;
-    })
+  get totalOfNegative(): Observable<string> {
+    return this.cafet.getUsers()
+      .map(users => users.filter(user => user.credit < 0).reduce((sum, user) => sum + user.credit, 0).toFixed(2))
+  }
+
+  get totalOnAccounts(): Observable<string> {
+    return this.cafet.getUsers()
+      .map(users => users.reduce((sum, user) => sum + user.credit, 0).toFixed(2))
+  }
+
+  get nbOfPosAccounts(): Observable<number> {
+    return this.cafet.getUsers()
+      .map(users => users.filter(user => user.credit >= 0).length)
+  }
+
+  get nbOfNegAccounts(): Observable<number> {
+    return this.cafet.getUsers()
+      .map(users => users.filter(user => user.credit < 0).length)
+  }
+
+  get nbOfAllAccounts(): Observable<number> {
+    return this.cafet.getUsers()
+      .map(users => users.length)
   }
 }

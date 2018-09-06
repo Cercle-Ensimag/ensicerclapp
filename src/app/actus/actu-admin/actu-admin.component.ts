@@ -1,15 +1,15 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {FormControl, Validators} from '@angular/forms';
 
-import { DeviceSizeService } from '../../providers/device-size.service';
-import {Actu, ActusService} from '../actus-service/actus.service';
-import { AuthService } from '../../auth/auth-service/auth.service';
-import { ListService } from '../../providers/list.service';
-import { ToolsService } from '../../providers/tools.service';
-import { DicoService } from '../../language/dico.service';
-import {DeleteDialogComponent} from '../../shared-components/delete-dialog/delete-dialog.component';
+import {DeviceSizeService} from '../../providers/device-size.service';
+import {ActusService} from '../actus-service/actus.service';
+import {AuthService} from '../../auth/auth-service/auth.service';
+import {ListService} from '../../providers/list.service';
+import {ToolsService} from '../../providers/tools.service';
+import {DicoService} from '../../language/dico.service';
 import {MatDialog, MatSnackBar} from '@angular/material';
-import {User} from 'firebase/app';
+import {Subject} from 'rxjs/Subject';
+import {Observable} from 'rxjs/Observable';
 
 export class Journalist {
   emailId: string;
@@ -27,86 +27,60 @@ export class Group {
   styleUrls: ['./actu-admin.component.css']
 })
 export class ActuAdminComponent implements OnInit, OnDestroy {
+  private unsubscribe: Subject<void> = new Subject();
 
-  emailCtrl: FormControl;
-  emailWatcher: any;
-
-  journalists: Journalist[];
-  displayedUsers: Journalist[];
-  journalistsWatcher: any;
-
-  error: string;
-
-  pageIndex: number = 0;
-  pageSize: number = 5;
+  public emailCtrl: FormControl;
 
   constructor(
     private auth: AuthService,
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar,
+
     public tools: ToolsService,
     public actus: ActusService,
     public media: DeviceSizeService,
-    private list: ListService,
+    public list: ListService,
     public d: DicoService,
-    public dialog: MatDialog,
-    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit () {
-    this.actus.start();
-    this.journalistsWatcher = this.actus.getJournalists().subscribe(journalist => {
-      this.journalists = journalist;
-      this.sortUsers(this.emailCtrl.value);
-    });
-    this.createSearchForm();
+    this.emailCtrl = new FormControl('', [this.auth.emailDomainValidator, Validators.email]);
     this.list.start();
   }
 
   ngOnDestroy () {
-    this.actus.stop();
-    this.journalistsWatcher.unsubscribe();
     this.list.stop();
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 
-  createSearchForm() {
-    this.emailCtrl = new FormControl('', [this.auth.emailDomainValidator, Validators.email]);
-    this.emailCtrl.valueChanges.subscribe((email) => {
-      this.sortUsers(email);
-      this.error = null;
-    });
-  }
-
-  sortUsers(email: string) {
-    let emailId = this.tools.getEmailIdFromEmail(email.split('@')[0]);
-    this.displayedUsers = this.journalists.filter(
-      user => user.emailId.includes(emailId)
-    );
-  }
-
-  updateList(event) {
-    this.pageIndex = event.pageIndex;
+  filteredUsers(): Observable<Journalist[]> {
+    let emailId = this.tools.getEmailIdFromEmail(this.emailCtrl.value.split('@')[0]);
+    return this.actus.getJournalists()
+      .map(journalists => journalists.filter(
+        user => user.emailId.includes(emailId)
+      ));
   }
 
   addJournalist() {
-    if (!this.emailCtrl.invalid && this.displayedUsers.length == 0) {
-      let emailId = this.tools.getEmailIdFromEmail(this.emailCtrl.value);
-      if (!this.list.authUsers[emailId]) {
-        let name = this.tools.titleCase(emailId.replace('|', ' ').replace('  ', ' '));
-        this.error = this.d.format(this.d.l.notOnTheList, name);
-      } else {
-        this.actus.addJournalist(this.emailCtrl.value, {
-          groupId: emailId,
-          displayName: emailId
-        });
-        this.emailCtrl.setValue("");
-      }
+    const emailId = this.tools.getEmailIdFromEmail(this.emailCtrl.value);
+    if (!this.list.authUsers[emailId]) {
+      let name = this.tools.titleCase(emailId.replace('|', ' ').replace('  ', ' '));
+      this.snackBar.open(this.d.format(this.d.l.notOnTheList, name), 'ok', {duration: 2000});
+    } else {
+      this.actus.addJournalist(this.emailCtrl.value, {
+        groupId: emailId,
+        displayName: emailId
+      });
+      this.emailCtrl.setValue("");
     }
   }
 
-  add(emailId: string){
-    this.actus.addJournalist(emailId.split('|').join('.') + 'ensimga.fr', {
+  /*add(emailId: string){
+    this.actus.addJournalist(emailId.split('|').join('.') + 'ensimag.fr', {
       groupId: emailId,
       displayName: emailId
     });
-  }
+  }*/
 
 }

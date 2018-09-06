@@ -1,13 +1,13 @@
-<app-loading [loading]="cafet.user"></app-loading>
+<app-loading [loading]="cafet.getMe() | async"></app-loading>
 
 <!-- Compte -->
-<div *ngIf="cafet.user">
-  <div *ngIf="cafet.user.activated" class="center">
+<div *ngIf="cafet.getMe() | async as me">
+  <div *ngIf="me.activated" class="center">
     <!-- Credit -->
     <mat-card>
-      <h2>{{ d.l.creditLabel }}: {{ cafet.user.credit.toFixed(2) }}€</h2>
-      <div><mat-error *ngIf="isCreditError()" [innerHTML]="getCreditError()"></mat-error></div>
-      <button mat-icon-button (click)="openHistory()"><mat-icon>history</mat-icon></button>
+      <h2>{{ d.l.creditLabel }}: {{ me.credit.toFixed(2) }}€</h2>
+      <div><mat-error *ngIf="me.credit < 0 | async" [innerHTML]="d.l.negativeCreditError"></mat-error></div>
+      <button mat-icon-button (click)="openHistory(me)"><mat-icon>history</mat-icon></button>
     </mat-card>
     <!-- Week ingredient -->
     <!-- <mat-card *ngIf="ingredients">
@@ -20,5 +20,9 @@
     </mat-card> -->
   </div>
 
-  <app-cafet-info *ngIf="!cafet.user.activated"></app-cafet-info>
+  <app-cafet-info *ngIf="!me.activated"></app-cafet-info>
+</div>
+
+<div class="mat-fab-bottom-right">
+  <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
 </div>

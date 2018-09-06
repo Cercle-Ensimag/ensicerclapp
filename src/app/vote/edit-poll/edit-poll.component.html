@@ -1,28 +1,24 @@
 <!-- Loading -->
-<mat-card *ngIf="!poll" class="spinner-wrapper">
-  <mat-spinner class="spinner"></mat-spinner>
-</mat-card>
+<app-loading [loading]="formGroup"></app-loading>
 
 <!-- Poll display -->
-<mat-card *ngIf="poll">
-  <form [formGroup]="pollCtrl" class="container">
-
-    <span *ngIf="message" class="error">{{ message }}</span>
+<mat-card *ngIf="formGroup">
+  <form [formGroup]="formGroup" class="container">
 
     <mat-form-field>
       <input matInput placeholder="{{ d.l.pollTitleLabel }}" formControlName="title" autocomplete="off">
-      <mat-error *ngIf="pollCtrl.get('title').invalid">{{ d.l.pollTitleTooShortError }}</mat-error>
+      <mat-error *ngIf="formGroup.get('title').invalid">{{ d.l.pollTitleTooShortError }}</mat-error>
     </mat-form-field>
 
     <mat-form-field>
       <textarea matInput placeholder="{{ d.l.pollDescriptionLabel }}" formControlName="description"></textarea>
-      <mat-error *ngIf="pollCtrl.get('description').invalid">{{ d.l.pollDescriptionError }}</mat-error>
+      <mat-error *ngIf="formGroup.get('description').invalid">{{ d.l.pollDescriptionError }}</mat-error>
     </mat-form-field>
 
-    <markdown [data]="pollCtrl.get('description').value"></markdown>
+    <markdown [data]="formGroup.get('description').value"></markdown>
 
     <div class="grid-container">
-      <div *ngFor="let choice of newChoices">
+      <div *ngFor="let choice of choices">
         <div class="wrapper border">
           <form [formGroup]="choice.ctrl" class="container">
             <mat-form-field>
@@ -43,15 +39,15 @@
       </div>
     </div>
 
-    <button mat-raised-button (click)="addChoice()" [disabled]="!choicesOk()" color="primary">{{ d.l.addChoiceLabel }}</button>
+    <button mat-raised-button (click)="addChoice()" color="primary">{{ d.l.addChoiceLabel }}</button>
   </form>
 </mat-card>
 
 <div class="mat-fab-bottom-right">
   <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
-  <button *ngIf="poll" mat-fab color="primary"
+  <button *ngIf="formGroup" mat-fab color="primary"
           (click)="submit()"
-          [disabled]="pollCtrl.invalid || (pollCtrl.pristine && allNewChoicesPristine()) || !choicesOk()">
+          [disabled]="formGroup.invalid || (formGroup.pristine && allNewChoicesPristine()) || !choicesOk()">
     <mat-icon>save</mat-icon>
   </button>
 </div>

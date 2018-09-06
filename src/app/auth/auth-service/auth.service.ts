@@ -1,22 +1,21 @@
-import {EventEmitter, Injectable} from '@angular/core';
-import { Location } from '@angular/common';
-import { Router, ActivatedRouteSnapshot } from '@angular/router';
-import { FormControl } from '@angular/forms';
+import {Injectable} from '@angular/core';
+import {Location} from '@angular/common';
+import {Router} from '@angular/router';
+import {FormControl} from '@angular/forms';
 
-import { AngularFireAuth } from 'angularfire2/auth';
-import { AngularFireDatabase } from 'angularfire2/database';
+import {AngularFireAuth} from 'angularfire2/auth';
+import {AngularFireDatabase} from 'angularfire2/database';
 
-import { AppModulesService } from '../../providers/app-modules.service';
-import { ToolsService } from '../../providers/tools.service';
-import { DicoService } from '../../language/dico.service';
+import {AppModulesService} from '../../providers/app-modules.service';
+import {ToolsService} from '../../providers/tools.service';
+import {DicoService} from '../../language/dico.service';
 
-import { ComResp } from '../../events/events-service/events.service';
-import { Journalist } from '../../actus/actu-admin/actu-admin.component';
-import { Assessor } from '../../vote/vote-admin/vote-admin.component';
-import { CafetResp } from '../../cafet/cafet-service/cafet.service';
-
-import { environment } from '../../../environments/environment';
-import {Observable} from '../../../../node_modules/rxjs';
+import {ComResp} from '../../events/events-service/events.service';
+import {Journalist} from '../../actus/actu-admin/actu-admin.component';
+import {Assessor} from '../../vote/vote-admin/vote-admin.component';
+import {CafetResp} from '../../cafet/cafet-service/cafet.service';
+import {Observable, Observer, Subject} from '../../../../node_modules/rxjs';
+import {User} from 'firebase/app';
 
 export const ENSIDOMAIN = "ensimag.fr";
 export const PHELMADOMAIN = "phelma.grenoble-inp.fr";
@@ -41,45 +40,28 @@ export class Profile {
 
 @Injectable()
 export class AuthService {
-
   error: any;
   error_persist: boolean;
-  currentUser: any;
-  profile: Profile;
 
-  isAdmin: boolean = false;
-  isVoteAdmin: boolean = false;
-  isAssessor: boolean = false;
-  isEventsAdmin: boolean = false;
-  isComResp: boolean = false;
-  isActusAdmin: boolean = false;
-  isJournalist: boolean = false;
-  isCafetAdmin: boolean = false;
-  isNsigmaAdmin: boolean = false;
-  isAnnoncesAdmin: boolean = false;
-  isCafetResp: boolean = false;
-  cafetActivated: boolean = false;
-  comRespGroupId: string = null;
-  journalistGroupId: string = null;
+  private _adminsRes: Observable<any> = null;
+  private _otherAdminsRes: Observable<any> = null;
+  private _assessorRes: Observable<any> = null;
+  private _cafetRespRes: Observable<any> = null;
+  private _journalistRes: Observable<any> = null;
+  private _comRespRes: Observable<any> = null;
 
-  accessSet = {
-    admins: false,
-    assessors: false,
-    comResps: false,
-    journalists: false,
-    cafetResps: false,
-    profile: false
-  };
-  accessSetListener = new EventEmitter();
+  private _user: Observable<any> = null;
+  private _loggedUser: Observable<any> = null;
+  private _profile: Observable<any> = null;
 
-  userWatcher: any;
-  profileWatcher: any;
-  adminWatcher: any;
-  adminOtherWatcher: any;
-  assessorWatcher: any;
-  comRespsWatcher: any;
-  journalistsWatcher: any;
-  cafetRespsWatcher: any;
+  private _isAdmin: Observable<any> = null;
+  private _isAdminOf: { [of: string]: Observable<boolean>} = {};
+  private _hasCafetActivated: Observable<boolean>;
+  private _isAssessor: Observable<boolean>;
+  private _isCafetResp: Observable<boolean>;
+  private _respComId: Observable<string>;
+  private _journalistId: Observable<string>;
+  private _isLogged: Observable<boolean>;
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -90,59 +72,36 @@ export class AuthService {
     private tools: ToolsService,
     public d: DicoService
   ) {
-    this.currentUser = this.afAuth.auth.currentUser;
-    this.profile = new Profile('', '', '', '');
     this.error_persist = false;
-  }
-
-  watchUser() {
-    return this.afAuth.auth.onIdTokenChanged((user) => {
-      this.stopServices();
-      if (!user) {
-        this.currentUser = null;
-        this.router.navigateByUrl('/login');
-      } else {
-        this.redirectOnTokenChange(user);
-        this.currentUser = user;
-        this.startServices();
-      }
-    });
+    this.afAuth.auth.onIdTokenChanged((user: User) => this.redirectOnTokenChange(user));
   }
 
   redirectOnTokenChange(user: any) {
-    if (!user) {
-      return;
-    }
-    const path = this.location.path();
+    if (!user) return this.goToLogin();
 
-    if (path === "/login") {
-      this.goToHome();
-      return;
+    if (this.location.path() === '/login') {
+      return this.goToHome();
     }
-    if (path === "/email_verif" && this.getCurrentUser().emailVerified) {
-      this.goToHome();
-      return;
+
+    if (this.location.path() === '/email_verif') {
+      this.getUser()
+      .first()
+      .subscribe(user => {
+        if (user.emailVerified) this.goToHome();
+      });
     }
   }
 
-  start() {
-    this.userWatcher = this.watchUser();
-  }
+  // Methods
 
-  stop() {
-    //if (this.userWatcher) this.userWatcher.unsubscribe();
+  login(email: string, password: string) {
+    return this.afAuth.auth.signInWithEmailAndPassword(email, password)
+      .catch(err => this.onLoginError(err));
   }
 
   logout() {
-    this.afAuth.auth.signOut();
-  }
-
-  login(email: string, password: string) {
-    this.afAuth.auth.signInWithEmailAndPassword(email, password)
-    .then(
-      (success) => { this.goToHome() },
-      (err) => { this.onLoginError(err) }
-    );
+    this.afAuth.auth.signOut()
+      .then(() => this.goToHome());
   }
 
   createAccount(
@@ -158,29 +117,40 @@ export class AuthService {
     .catch((err) => { this.onLoginError(err); })
   }
 
-  deleteAccount() {
-    return this.getCurrentUser().delete();
+  deleteAccount(): Promise<any> {
+    return this.getLoggedUser()
+      .first()
+      .flatMap((user: User) => Observable.fromPromise(user.delete()))
+      .toPromise();
   }
 
-  updatePassword(password: string) {
-    return this.getCurrentUser().updatePassword(password);
+  updatePassword(password: string): Promise<any> {
+    return this.getLoggedUser()
+      .first()
+      .flatMap((user: User) => Observable.fromPromise(user.updatePassword(password)))
+      .toPromise();
   }
+
+  updateProfile(p: Profile): Promise<any> {
+    return this.getLoggedUser()
+      .first()
+      .flatMap((user: User) => Observable.fromPromise(this.updateProfileFromUser(user, p)))
+      .toPromise();
+  }
+
+  setProfile(user: any, firstName: string, lastName: string) {
+    user.updateProfile({
+      displayName: firstName + " " + lastName,
+      photoURL: ""
+    })
+      .catch((err) => { console.log(err) });
+  }
+
+  // Errors
 
   private onLoginError(error: any) {
     console.log(error);
     this.error = error;
-  }
-
-  goToLogin() {
-    this.router.navigateByUrl('/login');
-  }
-
-  goToEmailVerif() {
-    this.router.navigateByUrl('/email_verif');
-  }
-
-  goToHome() {
-    this.router.navigateByUrl('/home');
   }
 
   setError(message: string, persist: boolean) {
@@ -194,60 +164,6 @@ export class AuthService {
     } else {
       this.error = null;
     }
-  }
-
-  emailDomainValidator(control: FormControl) {
-    let email = control.value;
-    if (email && email.indexOf("@") != -1) {
-      let [_, domain] = email.split("@");
-      if (domain !== ENSIDOMAIN && domain !== PHELMADOMAIN) {
-        return { domain: { parsedDomain: domain } };
-      }
-    }
-    return null;
-  }
-
-  getEmailErrorMessage(email_ctrl: FormControl) {
-    return email_ctrl.hasError('required') ? this.d.l.noEmailError :
-        email_ctrl.hasError('email') ? this.d.l.emailFormatError :
-        email_ctrl.hasError('domain') ? this.d.l.emailDomainError :
-        '';
-  }
-
-  getCurrentUser() {
-    return this.currentUser;
-  }
-
-  getAuthState() {
-    return this.afAuth.authState;
-  }
-
-  setProfile(user: any, firstName: string, lastName: string) {
-    user.updateProfile({
-      displayName: firstName + " " + lastName,
-      photoURL: ""
-    })
-    .catch((err) => { console.log(err) });
-  }
-
-  updateProfile(p: Profile): Promise<any> {
-    return this.updateProfileFromUser(this.getCurrentUser(), p);
-  }
-
-  updateProfileFromUser(user: any, p: Profile): Promise<any> {
-    return this.db.object(this.getUserAccountPathFromUser(user)+'/account').set(p);
-  }
-
-  getEmailId(): string {
-    return this.tools.getEmailIdFromEmail(this.getCurrentUser().email);
-  }
-
-  getUserAccountPath(): string {
-    return this.getUserAccountPathFromUser(this.getCurrentUser());
-  }
-
-  getUserAccountPathFromUser(user: any) {
-    return "users/" + this.tools.getEmailIdFromEmail(user.email) + '/' + user.uid;
   }
 
   sendEmailVerification(user: any) {
@@ -272,190 +188,254 @@ export class AuthService {
     .catch((err) => { console.log(err) });
   }
 
-  startServices(){
-    this.startWatchingUserProfile();
-    this.modules.start();
+  // Getters
+
+  getAuthState(): Observable<User> {
+    return this.afAuth.authState;
   }
 
-  stopServices(){
-    this.stopWatchingUserProfile();
-    this.modules.stop();
+  getUser(): Observable<User> {
+    if (!this._user){
+      this._user = new Observable<User>((observer: Observer<User>) => {
+          this.afAuth.auth.onIdTokenChanged((user) => {
+            observer.next(user ? user : null);
+          });
+        })
+        .shareReplay(1);
+    }
+    return this._user;
   }
 
-  startWatchingUserProfile() {
-    this.profileWatcher = this.watchProfile();
-    this.adminWatcher = this.watchIsAdmin();
-    this.adminOtherWatcher = this.watchIsAdminOther();
-    this.assessorWatcher = this.watchIsAssessor();
-    this.comRespsWatcher = this.watchIsComResp();
-    this.journalistsWatcher = this.watchIsJournalist();
-    this.cafetRespsWatcher = this.watchIsCafetResp();
+  getLoggedUser(): Observable<User> {
+    if (!this._loggedUser){
+      this._loggedUser = this.getUser()
+        .filter(user => !!user)
+        .shareReplay(1);
+    }
+    return this._loggedUser;
   }
 
-  watchProfile() {
-    return this.db.object<Profile>(this.getUserAccountPath()+'/account/')
-    .valueChanges().subscribe(
-      profile => {
-        if (profile) {
-          this.profile = profile;
-          this.accessSet['profile'] = true;
-          this.accessSetListener.emit('profile');
-        }
-      },
-      err => {}
-    );
+  isLogged(): Observable<boolean> {
+    if (!this._isLogged){
+      this._isLogged = this.getUser()
+        .map(user => !!user)
+        .shareReplay(1);
+    }
+    return this._isLogged;
   }
 
-  watchIsAdmin() {
-    return this.adminWatcher = this.db.list<string>('admin/private/admins').valueChanges()
-    .subscribe(
-      admins => {
-        this.isAdmin = admins.includes(this.currentUser.email);
-      },
-      err => {}
-    );
+  getEmailId(): Observable<string> {
+    return this.getLoggedUser()
+      .filter((user: User) => !!user )
+      .map((user: User) => this.tools.getEmailIdFromEmail(user.email));
   }
 
-  watchIsAdminOther() {
-    return this.adminOtherWatcher = this.db.object<string>(this.getUserAccountPath()+'/admin').valueChanges()
-    .subscribe(
-      data => {
-        if (data) {
-          this.isVoteAdmin = data["vote-admin"] || false;
-          this.isCafetAdmin = data["cafet-admin"] || false;
-          this.isEventsAdmin = data["events-admin"] || false;
-          this.isActusAdmin = data["actus-admin"] || false;
-          this.isAnnoncesAdmin = data["annonces-admin"] || false;
-          this.isNsigmaAdmin = data["nsigma-admin"] || false;
-          this.cafetActivated = data["cafet-activated"] || false;
-        } else {
-          this.isVoteAdmin = false;
-          this.isCafetAdmin = false;
-          this.isEventsAdmin = false;
-          this.isActusAdmin = false;
-          this.isAnnoncesAdmin = false;
-          this.isNsigmaAdmin = false;
-          this.cafetActivated = false;
-        }
-        this.accessSet['admins'] = true;
-        this.accessSetListener.emit('admins');
-      },
-      err => {}
-    );
+  getUserAccountPath(): Observable<string> {
+    return this.getLoggedUser()
+      .filter((user: User) => !!user )
+      .map((user: User) => this.getUserAccountPathFromUser(user));
   }
 
-  waitForAccessToXToBeSet(x: string) {
-    return new Observable<AuthService>(observer => {
-      if (this.accessSet[x]) {
-        observer.next(this);
-        observer.complete();
-      } else {
-        this.accessSetListener.subscribe(toWho => {
-          if (toWho === x){
-            observer.next(this);
-            observer.complete();
-          }
-        });
+  getProfile(): Observable<Profile> {
+    if (!this._profile){
+      this._profile = this.getUserAccountPath()
+        .flatMap((accountPath: string) =>
+          this.db
+            .object<Profile>(accountPath+'/account/')
+            .valueChanges())
+        .shareReplay(1);
+    }
+    return this._profile;
+  }
+
+  isAdmin(): Observable<boolean> {
+    if (!this._isAdmin){
+      this._isAdmin = Observable.combineLatest(
+        this.getAdminsRes(),
+        this.getLoggedUser())
+        .map(([admins, user]: [string, User]): boolean => Object.values(admins).includes(user.email))
+        .shareReplay(1);
+    }
+    return this._isAdmin;
+  }
+
+  isAdminOf(of: string): Observable<boolean> {
+    if (!this._isAdminOf[of]){
+      this._isAdminOf[of] = this.getOtherAdminsRes()
+          .map(data => data ? data[`${of}-admin`] || false : false)
+          .shareReplay(1);
+    }
+    return this._isAdminOf[of];
+  }
+
+  hasCafetActivated(): Observable<boolean> {
+    if (!this._hasCafetActivated){
+      this._hasCafetActivated = this.getOtherAdminsRes()
+          .map(data => data ? data[`cafet-activated`] || false : false)
+          .shareReplay(1);
+    }
+    return this._hasCafetActivated;
+  }
+
+  isAssessor(): Observable<boolean> {
+    if (!this._isAssessor) {
+      this._isAssessor = this.getAssessorRes()
+          .map(is => is != null)
+          .shareReplay(1);
+    }
+    return this._isAssessor;
+  }
+
+  isCafetResp(): Observable<boolean> {
+    if (!this._isCafetResp) {
+      this._isCafetResp = this.getCafetRespRes()
+          .map(is => is != null)
+          .shareReplay(1);
+    }
+    return this._isCafetResp;
+  }
+
+  getRespComId(): Observable<string> {
+    if (!this._respComId){
+      this._respComId = this.getComRespRes()
+          .map(resp => resp ? resp.groupId : null)
+          .shareReplay(1);
+    }
+    return this._respComId;
+  }
+
+  isRespCom(): Observable<boolean> {
+    return this.getJournalistId()
+      .map(jid => jid !== null);
+  }
+
+  getJournalistId(): Observable<string> {
+    if (!this._journalistId){
+      this._journalistId = this.getJournalistRes()
+          .map(user => user ? user.groupId : null)
+          .shareReplay(1);
+    }
+    return this._journalistId;
+  }
+
+  isJournalist(): Observable<boolean> {
+    return this.getJournalistId()
+      .map(jid => jid !== null);
+  }
+
+  // Private res getters
+
+  getAdminsRes(): Observable<string> {
+    if (!this._adminsRes){
+      this._adminsRes = this.db
+        .object<string>('admin/private/admins')
+        .valueChanges()
+        .shareReplay(1);
+    }
+    return this._adminsRes;
+  }
+
+  getOtherAdminsRes(): Observable<string> {
+    if (!this._otherAdminsRes) {
+      this._otherAdminsRes = this.getUserAccountPath()
+        .flatMap((accountPath: string) =>
+          this.db.object<string>(accountPath + '/admin')
+            .valueChanges()
+        )
+        .shareReplay(1);
+    }
+    return this._otherAdminsRes;
+  }
+
+  getAssessorRes(): Observable<Assessor> {
+    if (!this._assessorRes) {
+      this._assessorRes = this.getEmailId()
+        .flatMap((emailId: string) =>
+          this.db.object<Assessor>('vote/assessors/'+ emailId)
+            .valueChanges()
+        )
+        .shareReplay(1);
+    }
+    return this._assessorRes;
+  }
+
+  getCafetRespRes(): Observable<CafetResp> {
+    if (!this._cafetRespRes) {
+      this._cafetRespRes = this.getEmailId()
+        .flatMap((emailId: string) =>
+          this.db.object<CafetResp>('cafet/cafetResps/resps/'+ emailId)
+            .valueChanges()
+        )
+        .shareReplay(1);
+    }
+    return this._cafetRespRes;
+  }
+
+  getJournalistRes(): Observable<Journalist> {
+    if (!this._journalistRes) {
+      this._journalistRes = this.getEmailId()
+        .flatMap((emailId: string) =>
+          this.db.object<Journalist>('actus/journalists/users/'+ emailId)
+            .valueChanges()
+        )
+        .shareReplay(1);
+    }
+    return this._journalistRes;
+  }
+
+  getComRespRes(): Observable<ComResp> {
+    if (!this._comRespRes) {
+      this._comRespRes = this.getEmailId()
+        .flatMap((emailId: string) =>
+          this.db.object<ComResp>('events/com-resps/resps/'+ emailId)
+            .valueChanges()
+        )
+        .shareReplay(1);
+    }
+    return this._comRespRes;
+  }
+
+  // Form
+
+  getEmailErrorMessage(email_ctrl: FormControl) {
+    return email_ctrl.hasError('required') ? this.d.l.noEmailError :
+      email_ctrl.hasError('email') ? this.d.l.emailFormatError :
+        email_ctrl.hasError('domain') ? this.d.l.emailDomainError :
+          '';
+  }
+
+  // Helpers
+
+  updateProfileFromUser(user: User, p: Profile): Promise<any> {
+    return this.db.object(this.getUserAccountPathFromUser(user)+'/account').set(p);
+  }
+
+  getUserAccountPathFromUser(user: User) {
+    return "users/" + this.tools.getEmailIdFromEmail(user.email) + '/' + user.uid;
+  }
+
+  emailDomainValidator(control: FormControl) {
+    let email = control.value;
+    if (email && email.indexOf("@") != -1) {
+      let [_, domain] = email.split("@");
+      if (domain !== ENSIDOMAIN && domain !== PHELMADOMAIN) {
+        return { domain: { parsedDomain: domain } };
       }
-    });
+    }
+    return null;
   }
 
-  watchIsAssessor() {
-    return this.adminOtherWatcher = this.db.object<Assessor>('vote/assessors/'+this.getEmailId()).valueChanges()
-    .subscribe(
-      is => {
-        this.isAssessor = is != null;
-        this.accessSet['assessors'] = true;
-        this.accessSetListener.emit('assessors');
-      },
-      err => {}
-    )
+  // Router +
+
+  goToLogin() {
+    this.router.navigateByUrl('/login');
   }
 
-  watchIsComResp() {
-    return this.adminOtherWatcher = this.db.object<ComResp>('events/com-resps/resps/'+this.getEmailId()).valueChanges()
-    .subscribe(
-      resp => {
-        this.isComResp = resp != null;
-        if (resp != null) {
-          this.isComResp = true;
-          this.comRespGroupId = resp.groupId;
-        } else {
-          this.isComResp = false;
-          this.comRespGroupId = null;
-        }
-        this.accessSet['comResps'] = true;
-        this.accessSetListener.emit('comResps');
-      },
-      err => {}
-    )
+  goToEmailVerif() {
+    this.router.navigateByUrl('/email_verif');
   }
 
-  watchIsJournalist() {
-    return this.adminOtherWatcher = this.db.object<Journalist>('actus/journalists/users/'+this.getEmailId()).valueChanges()
-    .subscribe(
-      user => {
-        this.isJournalist = user != null;
-        if (user != null) {
-          this.isJournalist = true;
-          this.journalistGroupId = user.groupId;
-        } else {
-          this.isJournalist = false;
-          this.journalistGroupId = null;
-        }
-        this.accessSet['journalists'] = true;
-        this.accessSetListener.emit('journalists');
-      },
-      err => {}
-    )
+  goToHome() {
+    this.router.navigateByUrl('/home');
   }
-
-  watchIsCafetResp() {
-    return this.adminOtherWatcher = this.db.object<CafetResp>('cafet/cafetResps/resps/'+this.getEmailId()).valueChanges()
-    .subscribe(
-      user => {
-        this.isCafetResp = user != null;
-        if (user != null) {
-          this.isCafetResp = true;
-        } else {
-          this.isCafetResp = false;
-        }
-        this.accessSet['cafetResps'] = true;
-        this.accessSetListener.emit('cafetResps');
-      },
-      err => {}
-    )
-  }
-
-  stopWatchingUserProfile() {
-    if (this.profileWatcher) {
-      this.profileWatcher.unsubscribe();
-      this.profileWatcher = null;
-    }
-    if (this.adminWatcher) {
-      this.adminWatcher.unsubscribe();
-      this.adminWatcher = null;
-    }
-    if (this.adminOtherWatcher){
-      this.adminOtherWatcher.unsubscribe();
-      this.adminOtherWatcher = null;
-    }
-    if (this.assessorWatcher) {
-      this.assessorWatcher.unsubscribe();
-      this.assessorWatcher = null;
-    }
-    if (this.comRespsWatcher) {
-      this.comRespsWatcher.unsubscribe();
-      this.comRespsWatcher = null;
-    }
-    if (this.journalistsWatcher) {
-      this.journalistsWatcher.unsubscribe();
-      this.journalistsWatcher = null;
-    }
-    if (this.cafetRespsWatcher) {
-      this.cafetRespsWatcher.unsubscribe();
-      this.cafetRespsWatcher = null;
-    }
-  }
-
 }

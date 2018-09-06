@@ -7,6 +7,9 @@ import {Location} from '@angular/common';
 import {DicoService} from '../../language/dico.service';
 import {NsigmaAnnonce, NsigmaService} from '../nsigma.service';
 import {MatSnackBar} from '@angular/material';
+import {Subject} from 'rxjs/Subject';
+
+import 'rxjs/add/operator/takeUntil';
 
 @Component({
   selector: 'app-nsigma-edit',
@@ -14,78 +17,79 @@ import {MatSnackBar} from '@angular/material';
   styleUrls: ['./nsigma-edit.component.css']
 })
 export class NsigmaEditComponent implements OnInit, OnDestroy {
-  nsigmaAnnonceCtrl: FormGroup;
+  private unsubscribe: Subject<void> = new Subject();
+  private id: string;
 
-  nsigmaAnnonce: NsigmaAnnonce;
-  nsigmaAnnonceWatcher: any;
-  nsigmaAnnonceCtrlWatcher: any;
-  error: string;
+  public formGroup: FormGroup;
 
   constructor(
     private auth: AuthService,
-    private tools: ToolsService,
-    private nsigmaAnnonces: NsigmaService,
+    private nsigma: NsigmaService,
     private route: ActivatedRoute,
-    private location: Location,
     private fb: FormBuilder,
-    public d: DicoService,
-    private snackBar: MatSnackBar
+    private d: DicoService,
+    private snackBar: MatSnackBar,
+
+    public tools: ToolsService,
+    public location: Location,
   ) {}
 
   ngOnInit() {
-    const id = this.route.snapshot.paramMap.get('id');
-    this.nsigmaAnnonceWatcher = this.watchNsigmaAnnonce(id);
+    this.id = this.route.snapshot.paramMap.get('id');
+    this.initFormGroup();
   }
 
   ngOnDestroy() {
-    this.nsigmaAnnonceWatcher.unsubscribe();
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 
-  watchNsigmaAnnonce(nsigmaAnnonceId: string) {
-    return this.nsigmaAnnonces.getNsigmaAnnonce(nsigmaAnnonceId).subscribe((nsigmaAnnonce) => {
-      if (nsigmaAnnonce) {
-        this.nsigmaAnnonce = nsigmaAnnonce;
-      } else {
-        this.nsigmaAnnonce = new NsigmaAnnonce();
-        this.nsigmaAnnonce.id = this.nsigmaAnnonces.getNsigmaAnnonceId();
-      }
-      this.nsigmaAnnonceCtrl = this.fb.group({
-        title: [this.nsigmaAnnonce.title || '', [Validators.required, Validators.maxLength(50)]],
-        description: [this.nsigmaAnnonce.description || '', [Validators.required, Validators.maxLength(5000)]],
-        type: [this.nsigmaAnnonce.type || 6, [Validators.required, Validators.min(0), Validators.max(6)]],
-        start: [new Date(this.nsigmaAnnonce.start) || '', [Validators.required, this.tools.dateValidator]],
-        end: [new Date(this.nsigmaAnnonce.end) || '', [Validators.required, this.tools.dateValidator]],
-        technologies: [this.nsigmaAnnonce.technologies || '', [Validators.required, Validators.maxLength(100)]],
-        difficulty: [this.nsigmaAnnonce.difficulty || '', [Validators.required, Validators.maxLength(100)]],
-        remuneration: [this.nsigmaAnnonce.remuneration || 0, [Validators.required, Validators.min(0), Validators.max(500000)]],
-        form: [this.nsigmaAnnonce.form || '', [Validators.required, this.tools.urlValidator, Validators.maxLength(100)]],
-        done: [this.nsigmaAnnonce.done || false, [Validators.required]]
-      })
-      if (this.nsigmaAnnonceCtrlWatcher) {
-        this.nsigmaAnnonceCtrlWatcher.unsubscribe();
-      }
-      this.nsigmaAnnonceCtrlWatcher = this.nsigmaAnnonceCtrl.valueChanges.subscribe(changes => {});
+  initFormGroup() {
+    return this.nsigma
+      .getAnnonce(this.id)
+      .takeUntil(this.unsubscribe)
+      .subscribe((annonce) => {
+        if (!annonce) {
+          annonce = new NsigmaAnnonce();
+          annonce.type = 6;
+          this.id = this.nsigma.getAnnonceId();
+        }
+        this.formGroup = this.fb.group({
+          title: [annonce.title || '', [Validators.required, Validators.maxLength(50)]],
+          description: [annonce.description || '', [Validators.required, Validators.maxLength(5000)]],
+          type: [annonce.type, [Validators.required, Validators.min(0), Validators.max(6)]],
+          start: [new Date(annonce.start) || '', [Validators.required, this.tools.dateValidator]],
+          end: [new Date(annonce.end) || '', [Validators.required, this.tools.dateValidator]],
+          technologies: [annonce.technologies || '', [Validators.required, Validators.maxLength(100)]],
+          difficulty: [annonce.difficulty || '', [Validators.required, Validators.maxLength(100)]],
+          remuneration: [annonce.remuneration || 0, [Validators.required, Validators.min(0), Validators.max(500000)]],
+          form: [annonce.form || '', [Validators.required, this.tools.urlValidator, Validators.maxLength(100)]],
+          done: [annonce.done || false, [Validators.required]]
+        });
+        this.formGroup.get('start')
+          .valueChanges
+          .takeUntil(this.unsubscribe)
+          .subscribe(value => this.formGroup.get('end').setValue(value));
     });
   }
 
   submit() {
-    if (!this.nsigmaAnnonceCtrl.invalid) {
-      const nsigmaAnnonce = {
-        id: this.nsigmaAnnonce.id,
-        title: this.nsigmaAnnonceCtrl.get('title').value,
-        description: this.nsigmaAnnonceCtrl.get('description').value,
-        type: this.nsigmaAnnonceCtrl.get('type').value,
-        start: this.nsigmaAnnonceCtrl.get('start').value.getTime(),
-        end: this.nsigmaAnnonceCtrl.get('end').value.getTime(),
-        technologies: this.nsigmaAnnonceCtrl.get('technologies').value,
-        difficulty: this.nsigmaAnnonceCtrl.get('difficulty').value,
-        remuneration: this.nsigmaAnnonceCtrl.get('remuneration').value,
-        form: this.nsigmaAnnonceCtrl.get('form').value,
-        done: this.nsigmaAnnonceCtrl.get('done').value
-      };
-      this.nsigmaAnnonces.setNsigmaAnnonce(nsigmaAnnonce).then(() => {
-        this.snackBar.open(this.d.l.changesApplied, 'ok', {duration: 2000});
-      });
-    }
+    const annonce = {
+      id: this.id,
+      title: this.formGroup.get('title').value,
+      description: this.formGroup.get('description').value,
+      type: this.formGroup.get('type').value,
+      start: this.formGroup.get('start').value.getTime(),
+      end: this.formGroup.get('end').value.getTime(),
+      technologies: this.formGroup.get('technologies').value,
+      difficulty: this.formGroup.get('difficulty').value,
+      remuneration: this.formGroup.get('remuneration').value,
+      form: this.formGroup.get('form').value,
+      done: this.formGroup.get('done').value
+    };
+    this.nsigma.setAnnonce(annonce).then(() => {
+      this.snackBar.open(this.d.l.changesApplied, 'ok', {duration: 2000});
+      this.initFormGroup();
+    });
   }
 }

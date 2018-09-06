@@ -1,8 +1,8 @@
-<app-loading [loading]="modules.appModules"></app-loading>
+<app-loading [loading]="modules.getAppModules()"></app-loading>
 
 <!-- Modules display -->
-<div *ngIf="modules.appModules" class="grid-container">
-  <div *ngFor="let module of modules.appModules">
+<div *ngIf="modules.getAppModules() | async as appModules" class="grid-container">
+  <div *ngFor="let module of appModules">
       <mat-card routerLink="/{{ module.name }}" *ngIf="!module.disabled">
         <mat-card-header>
           <img mat-card-avatar src="assets/img/icons/{{ module.name }}.png">

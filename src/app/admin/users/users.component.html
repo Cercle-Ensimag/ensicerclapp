@@ -1,10 +1,10 @@
-<app-loading [loading]="users"></app-loading>
+<app-loading [loading]="admin.getUsers() | async"></app-loading>
 
 <div class="width">
   <!-- Header display -->
-  <mat-card *ngIf="users" class="group">
+  <mat-card *ngIf="admin.getUsers() | async as users" class="group">
     <h3>{{ d.format(d.l.nbMembersLabel, users.length) }}</h3>
-    <form [formGroup]="usersCtrl">
+    <form [formGroup]="formGroup">
       <mat-form-field class="search">
         <input matInput placeholder="{{ d.l.search }}" formControlName="search" autocomplete="off">
         <button mat-icon-button matSuffix><mat-icon>search</mat-icon></button>
@@ -16,10 +16,10 @@
   </mat-card>
 
   <!-- Users display -->
-  <app-paged-list [list]="displayedUsers" #pagedList>
+  <app-paged-list [list]="filteredUsers() | async" emptyMessage="Aucun utilisateur ne correspond aux filtres." #pagedList>
     <mat-accordion>
       <div *ngFor="let user of pagedList.truncatedList()">
-        <mat-expansion-panel *ngIf="user[user.uid]">
+        <mat-expansion-panel *ngIf="user[user.uid]" [expanded]="user.uid == expandedUserUid" (opened)="setExpanded(user.uid)">
           <mat-expansion-panel-header>
             <mat-panel-title>
               {{ getName(user) }}
@@ -37,3 +37,8 @@
     </mat-accordion>
   </app-paged-list>
 </div>
+
+<div class="mat-fab-bottom-right">
+  <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
+</div>
+

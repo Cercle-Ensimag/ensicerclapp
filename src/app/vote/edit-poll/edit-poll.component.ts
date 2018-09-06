@@ -1,12 +1,16 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
-import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {Location} from '@angular/common';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
-import { Poll, Choice } from '../poll/poll.component';
+import {Choice, Poll} from '../poll/poll.component';
 
-import { VoteService } from '../vote-service/vote.service';
-import { DicoService } from '../../language/dico.service';
+import {VoteService} from '../vote-service/vote.service';
+import {DicoService} from '../../language/dico.service';
+import {MatSnackBar} from '@angular/material';
+
+import 'rxjs/add/operator/takeUntil';
+import {Subject} from 'rxjs/Subject';
 
 @Component({
   selector: 'app-edit-poll',
@@ -14,135 +18,115 @@ import { DicoService } from '../../language/dico.service';
   styleUrls: ['./edit-poll.component.css']
 })
 export class EditPollComponent implements OnInit, OnDestroy {
-  pollCtrl: FormGroup;
+  private formGroup: FormGroup;
+  private unsubscribe: Subject<void> = new Subject();
+  private id: string;
 
-  poll: Poll;
-  choices: Choice[];
-
-  pollWatcher: any;
-  choicesWatcher: any;
-  pollCtrlWatcher: any;
-
-  newChoices: {
+  choices: {
     id: string,
     ctrl: FormGroup
   }[];
-
-  message: string;
 
   constructor(
     private vote: VoteService,
     private route: ActivatedRoute,
     private location: Location,
     private fb: FormBuilder,
-    public d: DicoService
+    private d: DicoService,
+    private snackBar: MatSnackBar
   ) {
-    this.newChoices = [];
+    this.choices = [];
   }
 
   ngOnInit() {
-    const id = this.route.snapshot.paramMap.get('id');
-    this.pollWatcher = this.watchPoll(id);
-    this.choicesWatcher = this.watchChoices(id);
+    this.id = this.route.snapshot.paramMap.get('id');
+    this.initFormGroup();
   }
 
   ngOnDestroy() {
-    this.pollWatcher.unsubscribe();
-    this.choicesWatcher.unsubscribe();
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 
-  watchPoll(pollId: string) {
-    return this.vote.getPoll(pollId).subscribe((poll) => {
-      if (poll) {
-        this.poll = poll;
-      } else {
-        this.poll = new Poll();
-        this.poll.id = this.vote.getPollId();
-      }
-      this.pollCtrl = this.fb.group({
-        title: [this.poll.title || "", [Validators.required, Validators.minLength(3)]],
-        description: [this.poll.description || "", []]
-      });
-      if (this.pollCtrlWatcher) {
-        this.pollCtrlWatcher.unsubscribe();
-      }
-      this.pollCtrlWatcher = this.pollCtrl.valueChanges.subscribe(() => {
-        this.message = null;
-      })
-    });
-  }
-
-  getTitle(): string {
-    return this.pollCtrl.get('title').value;
-  }
-  getDescription(): string {
-    return this.pollCtrl.get('description').value;
-  }
-
-  watchChoices(pollId: string) {
-    return this.vote.getChoices(pollId).subscribe((choices) => {
-      this.choices = choices || [];
-      this.newChoices = [];
-      for (let choice of choices || []) {
-        this.newChoices.push({
-          id: choice.id,
-          ctrl: this.fb.group({
-            label: [choice.label, [Validators.required]],
-            image: [choice.image, []],
-            short: [choice.short, []]
-          })
+  initFormGroup() {
+    this.vote.getPoll(this.id)
+      .takeUntil(this.unsubscribe)
+      .subscribe((poll) => {
+        if (!poll){
+          poll = new Poll();
+          this.id = this.vote.getPollId();
+        }
+        this.formGroup = this.fb.group({
+          title: [poll.title || "", [Validators.required, Validators.minLength(3)]],
+          description: [poll.description || "", []],
+          started: [poll.started || "", []]
         });
-      }
-    });
+      });
+
+    this.vote.getChoices(this.id)
+      .takeUntil(this.unsubscribe)
+      .subscribe((choices) => {
+        this.choices = choices.map(choice => ({
+            id: choice.id,
+            ctrl: this.fb.group({
+              label: [choice.label, [Validators.required]],
+              image: [choice.image, []],
+              short: [choice.short, []]
+            })
+          })
+        );
+      });
   }
 
   addChoice() {
-    this.newChoices.push({
-      id: this.vote.getChoiceId(this.poll.id),
+    this.choices.push({
+      id: this.vote.getChoiceId(this.id),
       ctrl: this.fb.group({
         label: ["", [Validators.required]],
         image: ["", []],
         short: ["", []]
       })
     });
-    this.message = null;
+  }
+
+  allNewChoicesPristine(): boolean {
+    return this.choices.every(choice => choice.ctrl.pristine);
   }
 
   choicesOk() {
-    return !this.newChoices.some(choice => choice.ctrl.invalid);
+    return this.choices.length && !this.choices.some(choice => choice.ctrl.invalid);
   }
 
   removeChoice(choiceId: string) {
-    var index = this.newChoices.findIndex(c => c.id === choiceId);
+    const index = this.choices.findIndex(c => c.id === choiceId);
     if (index >= 0) {
-      this.newChoices.splice(index, 1);
+      this.choices.splice(index, 1);
     }
   }
 
   submit() {
-    if (!this.pollCtrl.invalid && this.choicesOk()) {
-      let choices = {};
-      for (let choice of this.newChoices) {
-        choices[choice.id] = {
-          id: choice.id,
-          label: choice.ctrl.get('label').value,
-          image: choice.ctrl.get('image').value,
-          short: choice.ctrl.get('short').value
-        };
-      }
-      let poll = {
-        id: this.poll.id,
-        title: this.getTitle(),
-        description: this.getDescription(),
-        started: this.poll.started || false,
-        choices: choices
+    const choices = {};
+    for (const choice of this.choices) {
+      choices[choice.id] = {
+        id: choice.id,
+        label: choice.ctrl.get('label').value,
+        image: choice.ctrl.get('image').value,
+        short: choice.ctrl.get('short').value
       };
-      this.vote.setPoll(poll);
-      this.message = this.d.l.changesApplied;
     }
-  }
-
-  allNewChoicesPristine(): boolean {
-    return this.newChoices.every(choice => choice.ctrl.pristine);
+    let poll = {
+      id: this.id,
+      title: this.formGroup.get('title').value,
+      description: this.formGroup.get('description').value,
+      started: this.formGroup.get('started').value,
+      choices: choices
+    };
+    this.vote.setPoll(poll)
+      .then(
+      () => {
+        this.snackBar.open("modifications enregistrées", 'ok', {duration: 2000})
+        this.initFormGroup();
+      }
+    );
   }
 }

@@ -1,25 +1,25 @@
 <div class="history">
 
   <!-- Loading -->
-  <div *ngIf="!isHistory" class="spinner-wrapper">
+  <div *ngIf="!getData() | async" class="spinner-wrapper">
     <mat-spinner class="spinner"></mat-spinner>
   </div>
 
   <!-- History -->
-  <div *ngIf="isHistory">
+  <div *ngIf="getData() | async as tabData">
 
-    <mat-table [dataSource]="history">
+    <mat-table [dataSource]="tabData">
 
       <!-- Date -->
       <ng-container matColumnDef="date">
         <mat-header-cell *matHeaderCellDef>{{ d.l.transactionDateLabel }}</mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{ element.date | date:d.l.shortDateFormat:'':d.l.locale }} &emsp;</mat-cell>
+        <mat-cell *matCellDef="let log"> {{ log.date | date:d.l.shortDateFormat:'':d.l.locale }} &emsp;</mat-cell>
       </ng-container>
 
       <!-- Value -->
       <ng-container matColumnDef="value">
         <mat-header-cell *matHeaderCellDef>{{ d.l.transactionValueLabel }}</mat-header-cell>
-        <mat-cell *matCellDef="let element" [class.plus]="isPlus(element)" [class.minus]="isMinus(element)"> {{ element.value }} </mat-cell>
+        <mat-cell *matCellDef="let log" [class.plus]="isPlus(log)" [class.minus]="isMinus(log)"> {{ log.value }} </mat-cell>
       </ng-container>
 
       <mat-header-row *matHeaderRowDef="['date', 'value']"></mat-header-row>

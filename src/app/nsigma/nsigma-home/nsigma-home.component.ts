@@ -1,6 +1,5 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {DicoService} from '../../language/dico.service';
-import {ToolsService} from '../../providers/tools.service';
 import {NsigmaService} from '../nsigma.service';
 import {Location} from '@angular/common';
 
@@ -9,21 +8,13 @@ import {Location} from '@angular/common';
   templateUrl: './nsigma-home.component.html',
   styleUrls: ['./nsigma-home.component.css']
 })
-export class NsigmaHomeComponent implements OnInit, OnDestroy {
+export class NsigmaHomeComponent implements OnInit {
 
   constructor(
     public nsigma: NsigmaService,
     public d: DicoService,
-    private tools: ToolsService,
-    private location: Location
+    public location: Location
   ) { }
 
-  ngOnInit() {
-    this.nsigma.start();
-  }
-
-  ngOnDestroy() {
-    this.nsigma.stop();
-  }
-
+  ngOnInit() { }
 }

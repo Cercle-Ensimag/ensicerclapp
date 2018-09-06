@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { DicoService } from '../../language/dico.service';
-import { CafetService } from '../cafet-service/cafet.service';
+import {Component} from '@angular/core';
+import {DicoService} from '../../language/dico.service';
+import {CafetService} from '../cafet-service/cafet.service';
 
 @Component({
   selector: 'app-cafet-admin',

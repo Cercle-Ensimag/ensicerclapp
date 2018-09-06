@@ -2,17 +2,15 @@ import {MAT_DIALOG_DATA} from '@angular/material';
 import {Component, Inject, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 
-
 @Component({
   selector: 'app-update-password-dialog',
   templateUrl: './update-password-dialog.component.html',
   styleUrls: ['./update-password-dialog.component.css']
 })
 export class UpdatePasswordDialogComponent implements OnInit {
-
-  formGroup: FormGroup = null;
-  hidePwd: boolean = true;
-  hidePwdConf: boolean = true;
+  public formGroup: FormGroup = null;
+  public hidePwd: boolean = true;
+  public hidePwdConf: boolean = true;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -21,8 +19,8 @@ export class UpdatePasswordDialogComponent implements OnInit {
 
   ngOnInit() {
     this.formGroup = this.fb.group({
-      password_ctrl: ['', [Validators.required, Validators.minLength(6)]],
-      password_conf_ctrl: ['', [Validators.required, Validators.minLength(6), this.passwordConfValidator.bind(this)]]
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      password_conf: ['', [Validators.required, Validators.minLength(6), this.passwordConfValidator.bind(this)]]
     });
   }
 

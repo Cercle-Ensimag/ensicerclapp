@@ -1,10 +1,8 @@
 <!-- Loading -->
-<mat-card *ngIf="!event" class="spinner-wrapper">
-  <mat-spinner class="spinner"></mat-spinner>
-</mat-card>
+<app-loading [loading]="events.getEvent(id) | async"></app-loading>
 
 <!-- Event display -->
-<mat-card *ngIf="event">
+<mat-card *ngIf="events.getEvent(id) | async as event">
   <h2>{{ event.title }}</h2>
   <mat-card-content class="description">
     <h4>
@@ -14,14 +12,19 @@
       {{ d.format(d.l.eventLocation, event.location || "") }}<br>
       {{ d.format(d.l.eventPrice, event.price || d.l.free) }}
     </h4>
-    <button mat-icon-button [color]="isInCalendar ? 'primary': ''" (click)="events.addEventToCalendar(event.id)"><mat-icon>event_available</mat-icon></button>
-    <button mat-icon-button [color]="isInCalendar ? '': 'primary'" (click)="events.removeEventFromCalendar(event.id)"><mat-icon>event_busy</mat-icon></button>
+    <div *ngIf="isInCalendar() | async; else notInCalendar">
+      <button mat-icon-button disabled color="primary" ><mat-icon>event_available</mat-icon></button>
+      <button mat-icon-button (click)="events.removeEventFromCalendar(event.id)"><mat-icon>event_busy</mat-icon></button>
+    </div>
+    <ng-template #notInCalendar>
+      <button mat-icon-button (click)="events.addEventToCalendar(event.id)"><mat-icon>event_available</mat-icon></button>
+      <button mat-icon-button disabled color="primary"><mat-icon>event_busy</mat-icon></button>
+    </ng-template>
     <markdown [data]="event.description"></markdown>
   </mat-card-content>
   <img *ngIf="event.image !== ''" mat-card-image src="{{ event.image }}">
 </mat-card>
 
-<button mat-fab class="mat-fab-bottom-right" color="primary"
-        (click)="location.back()">
-  <mat-icon>arrow_back</mat-icon>
-</button>
+<div class="mat-fab-bottom-right">
+  <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
+</div>

@@ -1,15 +1,18 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {MatDialog, MatSnackBar} from '@angular/material';
 
-import { CafetService, CafetUser } from '../../cafet-service/cafet.service';
-import { ToolsService } from '../../../providers/tools.service';
-import { DeviceSizeService } from '../../../providers/device-size.service';
-import { DicoService } from '../../../language/dico.service';
-import { ListService } from '../../../providers/list.service';
+import {CafetService, CafetUser} from '../../cafet-service/cafet.service';
+import {ToolsService} from '../../../providers/tools.service';
+import {DeviceSizeService} from '../../../providers/device-size.service';
+import {DicoService} from '../../../language/dico.service';
+import {ListService} from '../../../providers/list.service';
 
-import { CafetHistoryComponent } from '../../cafet-history/cafet-history.component';
-import { EditCafetUserComponent } from '../edit-cafet-user/edit-cafet-user.component';
+import {CafetHistoryComponent} from '../../cafet-history/cafet-history.component';
+import {EditCafetUserComponent} from '../edit-cafet-user/edit-cafet-user.component';
+import {Observable} from 'rxjs/Observable';
+import {Subject} from 'rxjs/Subject';
+import {DeleteDialogComponent} from '../../../shared-components/delete-dialog/delete-dialog.component';
 
 
 @Component({
@@ -18,131 +21,40 @@ import { EditCafetUserComponent } from '../edit-cafet-user/edit-cafet-user.compo
   styleUrls: ['./cafet-admin-users.component.css']
 })
 export class CafetAdminUsersComponent implements OnInit {
+  private unsubscribe: Subject<void> = new Subject();
 
-  users: CafetUser[];
-  displayedUsers: CafetUser[] = [];
-  matchUsers: CafetUser[] = [];
-  usersWatcher: any;
-
-  accountCtrl: FormGroup;
-  accountWatcher1: any;
-  accountWatcher2: any;
-  accountWatcher3: any;
-  accountWatcher4: any;
-
-  controls: {[emailId: string]: {
+  public formGroup: FormGroup;
+  public controls: {[emailId: string]: {
     add: FormControl,
     sub: FormControl
   }};
-
-  expanded: {[emailId: string]: boolean};
-  pageIndex: number = 0;
-  pageSize: number = 10;
-  error: string;
-  exte: boolean;
-  edit: boolean;
-
-  orderByCredit: boolean;
-  orderByLastTransactionDate: boolean;
+  public editing: boolean;
 
   constructor(
+    private list: ListService,
+    private fb: FormBuilder,
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar,
+
     public cafet: CafetService,
     public tools: ToolsService,
-    private list: ListService,
     public media: DeviceSizeService,
-    private fb: FormBuilder,
-    public dialog: MatDialog,
     public d: DicoService
   ) { }
 
   ngOnInit() {
-    this.createAccountForm();
-    this.usersWatcher = this.watchUsers();
+    this.initFormGroup();
     this.list.start();
   }
 
   ngOnDestroy() {
-    this.usersWatcher.unsubscribe();
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
     this.list.stop();
   }
 
-  watchUsers() {
-    return this.cafet.getUsers().subscribe(users => {
-      this.users = users;
-      this.controls = {};
-      this.expanded = {};
-      for (let user of users) {
-        this.controls[user.emailId] = {
-          add: new FormControl("", [Validators.required, Validators.max(1000), Validators.min(0.1)]),
-          sub: new FormControl("", [Validators.required, Validators.max(1000), Validators.min(0.1)])
-        };
-        this.expanded[user.emailId] = false;
-      }
-      this.sortUsers(this.getAccountEmail());
-      this.findMatchUsers(this.getAccountEmail());
-    });
-  }
-
-
-  // Accounts
-
-  tryCreateCafetAccount() {
-    let emailId = this.tools.getEmailIdFromEmail(this.getAccountEmail());
-    let name = this.tools.titleCase(emailId.replace('|', ' ').replace('  ', ' '));
-
-    if (!this.list.isInList(this.getAccountEmail())) {
-      this.error = this.d.format(this.d.l.notOnTheList, name);
-      this.exte = true;
-    } else {
-      this.createCafetAccount(false);
-    }
-  }
-
-  createCafetAccount(exte: boolean) {
-    let user = {
-      credit: 0,
-      activated: true,
-      emailId: (exte ? "%exte%": "") +  this.tools.getEmailIdFromEmail(this.getAccountEmail()),
-      creationDate: (new Date()).getTime(),
-      lastTransactionDate: (new Date()).getTime(),
-      profile: {
-        firstName: this.tools.titleCase(this.getAccountFirstname()),
-        lastName: this.tools.titleCase(this.getAccountLastName()),
-        email: this.getAccountEmail(),
-        exte: exte
-      }
-    };
-    this.cafet.setUserAccount(user).then(
-      () => {
-        this.cafet.newTransaction(user, this.getAccountCredit()).then(
-          () => {
-            let value = this.getAccountCredit();
-            this.clearAccountCreation()
-            this.error = this.d.format(this.d.l.informAboutCafetCreation, this.cafet.getUserName(user), value.toFixed(2));
-          },
-          (err) => {
-            this.error = err;
-          }
-        );
-      },
-      (err) => {
-        this.error = err;
-      }
-    );
-  }
-
-  clearAccountCreation() {
-    this.accountCtrl.reset({
-      firstName: '',
-      lastName: '',
-      email: '',
-      credit: 0
-    });
-    this.exte = false;
-  }
-
-  createAccountForm() {
-    this.accountCtrl = this.fb.group({
+  initFormGroup() {
+    this.formGroup = this.fb.group({
       firstName: ['', [Validators.required, Validators.minLength(2)]],
       lastName: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.email]],
@@ -150,72 +62,95 @@ export class CafetAdminUsersComponent implements OnInit {
       byCredit: [],
       byDate: []
     });
-    if (this.accountWatcher1) {
-      this.accountWatcher1.unsubscribe();
-    }
-    this.accountWatcher1 = this.accountCtrl.get('email').valueChanges.subscribe((email) => {
-      this.findMatchUsers(email);
-      this.sortUsers(email);
-    });
-    if (this.accountWatcher2) {
-      this.accountWatcher2.unsubscribe();
-    }
-    this.accountWatcher2 = this.accountCtrl.valueChanges.subscribe(() => {
-      this.error = null;
-    });
-    if (this.accountWatcher3) {
-      this.accountWatcher3.unsubscribe();
-    }
-    this.accountWatcher3 = this.accountCtrl.get('byCredit').valueChanges.subscribe((checked) => {
-      if (checked != this.orderByCredit) {
-        if (checked) {
-          this.accountCtrl.get('byDate').disable();
-        } else {
-          this.accountCtrl.get('byDate').enable();
-        }
-        this.orderByCredit = checked;
-        this.sortUsers(this.getAccountEmail());
-      }
-    });
-    if (this.accountWatcher4) {
-      this.accountWatcher4.unsubscribe();
-    }
-    this.accountWatcher4 = this.accountCtrl.get('byDate').valueChanges.subscribe((checked) => {
-      if (checked != this.orderByLastTransactionDate) {
-        if (checked) {
-          this.accountCtrl.get('byCredit').disable();
-        } else {
-          this.accountCtrl.get('byCredit').enable();
-        }
-        this.orderByLastTransactionDate = checked;
-        this.sortUsers(this.getAccountEmail());
+
+    this.cafet.getUsers()
+      .takeUntil(this.unsubscribe)
+      .subscribe(users => {
+      this.controls = {};
+      for (let user of users) {
+        this.controls[user.emailId] = {
+          add: new FormControl('', [Validators.required, Validators.max(1000), Validators.min(0.1)]),
+          sub: new FormControl('', [Validators.required, Validators.max(1000), Validators.min(0.1)])
+        };
       }
     });
   }
 
-  getAccountFirstname() {
-    return this.accountCtrl.get('firstName').value;
+  // Accounts
+
+  tryCreateCafetAccount() {
+    const email = this.formGroup.get('email').value;
+    const emailId = this.tools.getEmailIdFromEmail(email);
+    const name = this.tools.titleCase(emailId.replace('|', ' ').replace('  ', ' '));
+
+    if (!this.list.isInList(email)) {
+      this.dialog.open(DeleteDialogComponent, {
+        data: {
+          title: 'Utilisateur introuvable',
+          content: `Voulez-vous ajouter "${email}" en tant qu'externe ?`
+        }
+      }).afterClosed()
+        .first()
+        .subscribe(result => {
+          if (result) {
+            this.createCafetAccount(true);
+          }
+        });
+    } else {
+      this.createCafetAccount(false);
+    }
   }
 
-  getAccountLastName() {
-    return this.accountCtrl.get('lastName').value;
+  createCafetAccount(exte: boolean) {
+    const email = this.formGroup.get('email').value;
+    const emailId = this.tools.getEmailIdFromEmail(email);
+    const credit = this.formGroup.get('credit').value;
+    const user = {
+      credit: 0,
+      activated: true,
+      emailId: (exte ? '%exte%': '') +  emailId,
+      creationDate: (new Date()).getTime(),
+      lastTransactionDate: (new Date()).getTime(),
+      profile: {
+        firstName: this.tools.titleCase(this.formGroup.get('firstName').value),
+        lastName: this.tools.titleCase(this.formGroup.get('lastName').value),
+        email: this.tools.titleCase(this.formGroup.get('email').value),
+        exte: exte
+      }
+    };
+    this.cafet.setUserAccount(user)
+      .then(() => this.cafet.newTransaction(user, credit))
+      .then(() => {
+        this.formGroup.reset({
+          firstName: '',
+          lastName: '',
+          email: '',
+          credit: 0
+        });
+        this.snackBar.open(this.d.format(this.d.l.informAboutCafetCreation, this.cafet.getUserName(user), credit.toFixed(2)),
+          'ok', {duration: 2000});
+      })
+      .catch(err => this.snackBar.open(err, 'ok', {duration: 2000}));
   }
 
-  getAccountEmail() {
-    return this.accountCtrl.get('email').value;
+  filteredUsers(): Observable<CafetUser[]> {
+    const email = this.formGroup.get('email').value;
+    const emailId = this.tools.getEmailIdFromEmail(email.split('@')[0]);
+    return this.cafet.getUsers()
+      .map(users => {
+        users = users.filter(
+          user => user.emailId.includes(emailId)
+            || this.cafet.getUserName(user).includes(this.tools.titleCase(email))
+        );
+        if (this.formGroup.get('byDate').value) {
+          users.sort((u1, u2) => u1.lastTransactionDate - u2.lastTransactionDate);
+        }
+        if (this.formGroup.get('byCredit').value) {
+          users.sort((u1, u2) => u1.credit - u2.credit);
+        }
+        return users;
+      });
   }
-
-  getAccountCredit() {
-    return this.accountCtrl.get('credit').value;
-  }
-
-  findMatchUsers(email: string) {
-    let emailId = this.tools.getEmailIdFromEmail(email);
-    this.matchUsers = this.users.filter(
-      user => user.emailId.includes(emailId)
-    );
-  }
-
 
   // transactions
 
@@ -226,56 +161,24 @@ export class CafetAdminUsersComponent implements OnInit {
     } else {
       value = -this.controls[user.emailId].sub.value;
     }
-    this.controls[user.emailId].add.setValue("");
-    this.controls[user.emailId].sub.setValue("");
-    this.cafet.newTransaction(user, value).then(
-      () => {
-        this.error = this.d.format(this.d.l.informAboutTransaction, this.cafet.getUserName(user), value.toFixed(2));
-      },
-      (err) => {
-        this.error = err;
-      }
-    );
-  }
-
-  sortUsers(email: string) {
-    let emailId = this.tools.getEmailIdFromEmail(email);
-    this.pageIndex = 0;
-    this.displayedUsers = this.users.filter(
-      user => (
-        user.emailId.includes(emailId)
-        || this.cafet.getUserName(user).includes(this.tools.titleCase(email))
-      )
-    );
-    if (this.orderByLastTransactionDate) {
-      this.displayedUsers = this.displayedUsers.sort(
-        (u1, u2) => {
-          return u1.lastTransactionDate - u2.lastTransactionDate;
-        }
-      );
-    }
-    if (this.orderByCredit) {
-      this.displayedUsers = this.displayedUsers.sort(
-        (u1, u2) => {
-          return u1.credit - u2.credit;
-        }
-      );
-    }
-  }
-
-  updateList(event) {
-    this.pageIndex = event.pageIndex;
+    this.controls[user.emailId].add.setValue('');
+    this.controls[user.emailId].sub.setValue('');
+    this.cafet.newTransaction(user, value)
+      .then(() => {
+        this.snackBar.open(this.d.format(this.d.l.informAboutTransaction, this.cafet.getUserName(user), value.toFixed(2)), 'ok', {duration: 2000});
+      })
+      .catch(err => this.snackBar.open(err, 'ok', {duration: 2000}));
   }
 
   openHistory(user: CafetUser): void {
-    let dialogRef = this.dialog.open(CafetHistoryComponent, {
-      data: user,
+    this.dialog.open(CafetHistoryComponent, {
+      data: {user: user, day: false},
       width: '450px'
     });
   }
 
   openEditor(user: CafetUser): void {
-    let dialogRef = this.dialog.open(EditCafetUserComponent, {
+    this.dialog.open(EditCafetUserComponent, {
       data: user,
       width: '450px'
     });

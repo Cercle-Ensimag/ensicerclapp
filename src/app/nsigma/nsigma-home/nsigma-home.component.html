@@ -1,4 +1,4 @@
-<app-paged-grid [list]="nsigma.annonces" #pages>
+<app-paged-grid [list]="nsigma.getAnnonces() | async" emptyMessage="Aucun événement à venir" #pages>
   <app-nsigma-annonce-card *ngFor="let annonce of pages.truncatedList()"
                            [annonce]="annonce">
   </app-nsigma-annonce-card>

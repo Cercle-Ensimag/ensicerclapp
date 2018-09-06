@@ -1,16 +1,17 @@
-import { Injectable } from '@angular/core';
-import { AngularFireDatabase } from 'angularfire2/database';
-import { Observable } from 'rxjs/Observable';
-import { DatePipe } from '@angular/common';
-import { DicoService } from '../../language/dico.service';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import {Injectable} from '@angular/core';
+import {AngularFireDatabase} from 'angularfire2/database';
+import {Observable} from 'rxjs/Observable';
+import {DatePipe} from '@angular/common';
+import {DicoService} from '../../language/dico.service';
+import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 
-import { AuthService } from '../../auth/auth-service/auth.service';
-import { ToolsService } from '../../providers/tools.service';
+import {AuthService} from '../../auth/auth-service/auth.service';
+import {ToolsService} from '../../providers/tools.service';
 
 import 'rxjs/add/operator/first';
-import "rxjs/add/observable/zip";
-import "rxjs/add/operator/map";
+import 'rxjs/add/observable/zip';
+import 'rxjs/add/operator/map';
+import {DayTransaction} from '../cafet-admin/cafet-admin-accounts/cafet-admin-accounts.component';
 
 declare var jsPDF: any;
 
@@ -51,15 +52,18 @@ export class CafetResp {
 
 @Injectable()
 export class CafetService {
+  /* ingrGroups: string[];
+  ingrGroupsWatcher: any; */
 
-  user: CafetUser;
-  ingrGroups: string[];
-
-  userWatcher: any;
-  ingrGroupsWatcher: any;
-
-  pdf: SafeResourceUrl;
-  pdfName: string;
+  private _me: Observable<CafetUser>;
+  private _users: Observable<CafetUser[]>;
+  private _user: { [$userId: string]: Observable<CafetUser> } = {};
+  private _archivesUsers: Observable<CafetUser[]>;
+  private _archivesUser: { [$userId: string]: Observable<CafetUser> } = {};
+  private _trezAccounts: Observable<CafetUser[]>;
+  private _cafetResps: Observable<CafetResp[]>;
+  private _dayTransactions: Observable<DayTransaction[]>;
+  private _history: { [$userId: string]: Observable<Transaction[]> } = {};
 
   constructor(
     private db: AngularFireDatabase,
@@ -69,79 +73,82 @@ export class CafetService {
     public d: DicoService,
     public sanitizer: DomSanitizer
   ) { }
-
-  start() {
-    this.userWatcher = this.watchUser();
-    this.ingrGroupsWatcher = this.watchIngrGroups();
-  }
-
-  stop() {
-    this.userWatcher.unsubscribe();
-    this.ingrGroupsWatcher = this.watchIngrGroups();
-  }
-
-  watchUser() {
-    return this.db.object<CafetUser>("cafet/users/"+this.auth.getEmailId())
-    .valueChanges().subscribe(user => {
-      this.user = user || new CafetUser();
-    })
-  }
-
-  getIngredients(): Observable<Ingredient[]> {
-    return this.db.list<Ingredient>("cafet/public/ingredients/individual").valueChanges();
-  }
-
-  setIngredient(ingredient: Ingredient, key: string) {
-    if (key === null) {
-      return this.db.list<Ingredient>("cafet/public/ingredients/individual")
-      .push(ingredient);
-    } else {
-      return this.db.list<Ingredient>("cafet/public/ingredients/individual")
-      .update(key, ingredient);
+  
+  getMe(){
+    if (!this._me){
+      this._me = this.auth.getEmailId()
+        .flatMap((emailId: string) => 
+          this.db.object<CafetUser>('cafet/users/'+emailId)
+          .valueChanges())
+        .map(user => user || new CafetUser())
+        .shareReplay(1);
     }
-  }
-
-  watchIngrGroups() {
-    return this.db.list<string>("cafet/public/ingredients/groups").valueChanges()
-    .subscribe(groups => {
-      this.ingrGroups = groups;
-    });
-  }
-
-  getUser(emailId: string): Observable<CafetUser> {
-    return this.db.object<CafetUser>("cafet/users/"+emailId).valueChanges();
+    return this._me
   }
 
   getUsers(): Observable<CafetUser[]> {
-    return this.db.list<CafetUser>("cafet/users").valueChanges().map(users => this.sortUsers(users));
+    if (!this._users){
+      this._users = this.db
+        .list<CafetUser>('cafet/users')
+        .valueChanges()
+        .shareReplay(1);
+    }
+    return this._users;
   }
 
-  getArchivesUser(emailId: string): Observable<CafetUser> {
-    return this.db.object<CafetUser>("cafet/archives/users/"+emailId).valueChanges();
+  getUser(emailId: string): Observable<CafetUser> {
+    if (!this._user[emailId]){
+      this._user[emailId] = this.db
+        .object<CafetUser>("cafet/users/"+emailId)
+        .valueChanges()
+        .shareReplay(1);
+    }
+    return this._user[emailId];
   }
 
   getArchivesUsers(): Observable<CafetUser[]> {
-    return this.db.list<CafetUser>("cafet/archives/users").valueChanges().map(users => this.sortUsers(users));
+    if (!this._archivesUsers){
+      this._archivesUsers = this.db
+        .list<CafetUser>('cafet/archives/users')
+        .valueChanges()
+        .shareReplay(1);
+    }
+    return this._archivesUsers;
+  }
+
+  getArchivesUser(emailId: string): Observable<CafetUser> {
+    if (!this._archivesUser[emailId]){
+      this._archivesUser[emailId] = this.db
+        .object<CafetUser>("cafet/users/"+emailId)
+        .valueChanges()
+        .shareReplay(1);
+    }
+    return this._archivesUser[emailId];
   }
 
   getTrezAccounts(): Observable<CafetUser[]> {
-    return this.db.list<CafetUser>("cafet/trezo/accounts").valueChanges();
+    if (!this._trezAccounts){
+      this._trezAccounts = this.db
+        .list<CafetUser>('cafet/trezo/accounts')
+        .valueChanges()
+        .shareReplay(1);
+    }
+    return this._trezAccounts;
+  }
+
+  getCafetResps() {
+    if (!this._cafetResps){
+      this._cafetResps = this.db
+        .list<CafetResp>('cafet/cafetResps/resps')
+        .valueChanges()
+        .shareReplay(1);
+    }
+    return this._cafetResps;
   }
 
   setUserAccount(user: CafetUser) {
     user.activated = true;
     return this.db.object<CafetUser>("cafet/users/"+user.emailId).set(user);
-  }
-
-  sortUsers(users: CafetUser[]): CafetUser[] {
-    return users.sort((user1, user2) => {
-      let firsts = user1.profile.firstName.localeCompare(user2.profile.firstName);
-      if (firsts == 0) {
-        return user1.profile.lastName.localeCompare(user2.profile.lastName);
-      } else {
-        return firsts;
-      }
-    });
   }
 
   getUserEmailId(email: string, exte: boolean) {
@@ -225,21 +232,33 @@ export class CafetService {
   }
 
   newDayTransaction(user: CafetUser, value: number) {
-    let date = (new Date()).getTime();
-    return this.db.object<any>("cafet/cafetResps/dayTransactions/"+user.emailId+"/"+date).set({
-      value: value,
-      date: date,
-      resp: this.auth.getEmailId()
-    });
+    const date = (new Date()).getTime();
+    return this.auth.getEmailId()
+      .first()
+      .toPromise()
+      .then(emailId =>
+          this.db
+            .object<any>('cafet/cafetResps/dayTransactions/'+user.emailId+"/"+date)
+            .set({
+              value: value,
+              date: date,
+              resp: emailId}));
   }
 
   getDayTransactions() {
-    return this.db.object<any>("cafet/cafetResps/dayTransactions").valueChanges();
+    if (!this._dayTransactions) {
+      this._dayTransactions = this.db
+        .object<any>('cafet/cafetResps/dayTransactions')
+        .valueChanges()
+        .map(dt => dt ? dt : {})
+        .shareReplay(1);
+    }
+    return this._dayTransactions;
   }
 
   validateDayTransactions() {
     Observable.zip(
-      this.db.object<any>("cafet/users").valueChanges(),
+      this.db.object<any>('cafet/users').valueChanges(),
       this.getDayTransactions()
     ).first().subscribe(
       ([users, dayTr]) => {
@@ -275,9 +294,9 @@ export class CafetService {
   setUserProfile(emailId: string, profile: CafetProfile, activated: boolean) {
     return Observable.zip(
       activated ? this.getUser(emailId) : this.getArchivesUser(emailId),
-      this.getHistory(emailId)
-    ).first().map(
-      ([user, history]) => {
+      this.getHistory(emailId))
+      .first()
+      .flatMap(([user, history]) => {
         let prefix = activated ? "": "archives/";
         let updates = {};
         updates[prefix + "users/"+emailId] = null;
@@ -288,16 +307,9 @@ export class CafetService {
         updates[prefix + "users/"+user.emailId] = user;
         updates["history/"+user.emailId] = history;
 
-        return this.db.object<any>("cafet").update(updates);
-      },
-      (err) => {
-        console.log(err)
-      }
-    );
-  }
-
-  getCafetResps() {
-    return this.db.list<CafetResp>('cafet/cafetResps/resps').valueChanges();
+        return Observable.fromPromise(this.db.object<any>("cafet").update(updates));
+      })
+      .toPromise();
   }
 
   removeCafetResp(emailId: string) {
@@ -317,12 +329,18 @@ export class CafetService {
     }
   }
 
-  getHistory(emailId: string) {
-    return this.db.list<Transaction>("cafet/history/"+emailId).valueChanges();
+  getHistory(emailId: string): Observable<Transaction[]> {
+    if (!this._history[emailId]) {
+     this._history[emailId] = this.db
+       .list<Transaction>("cafet/history/"+emailId)
+       .valueChanges()
+       .shareReplay(1);
+    }
+    return this._history[emailId];
   }
 
   accountsToPdf(users: CafetUser[]) {
-    var columns = [
+    const columns = [
       { title: "Prenom", dataKey: "firstname" },
       { title: "Nom", dataKey: "lastname" },
       { title: "Solde", dataKey: "credit" },
@@ -335,8 +353,8 @@ export class CafetService {
       { title: "+", dataKey: "plus"}
     ];
 
-    var rows = [];
-    for (let user of users) {
+    const rows = [];
+    for (const user of users) {
       rows.push({
         firstname: user.profile.firstName,
         lastname: user.profile.lastName + (user.profile.exte ? " *": ""),
@@ -345,17 +363,17 @@ export class CafetService {
       });
     }
 
-    var pdf = new jsPDF('p', 'pt');
-    var totalPagesExp = "%";
+    const pdf = new jsPDF('p', 'pt');
+    const totalPagesExp = "%";
 
-    var date = this.datepipe.transform((new Date()).getTime(), 'fullDate', '', this.d.l.locale);
+    const date = this.datepipe.transform((new Date()).getTime(), 'fullDate', '', this.d.l.locale);
 
     pdf.setProperties({
       title: `comptes_cafet_${ date.replace(/ /g, '_') }`
     });
 
-    var pageContent = function (data) {
-      var str, txtWidth, x;
+    const pageContent = function (data) {
+      let str, txtWidth, x;
 
       // HEADER
       pdf.setFontSize(16);
@@ -409,19 +427,49 @@ export class CafetService {
   }
 
   printAccountsPdf(users: CafetUser[]) {
-    var pdf = this.accountsToPdf(users);
+    const pdf = this.accountsToPdf(users);
     pdf.autoPrint();
-    this.pdf = this.sanitizer.bypassSecurityTrustResourceUrl(pdf.output('datauristring'));
-    this.pdfName = this.getAccountsPdfName();
+    return {
+      src: this.sanitizer.bypassSecurityTrustResourceUrl(pdf.output('datauristring')),
+      name: this.getAccountsPdfName()
+    };
   }
 
   saveAccountsPdf(users: CafetUser[]) {
-    var pdf = this.accountsToPdf(users);
+    const pdf = this.accountsToPdf(users);
     pdf.save(this.getAccountsPdfName());
+    return {
+      src: this.sanitizer.bypassSecurityTrustResourceUrl(pdf.output('datauristring')),
+      name: this.getAccountsPdfName()
+    };
   }
 
   getAccountsPdfName() {
     return `comptes_cafet_${ this.datepipe.transform((new Date()).getTime(), 'fullDate', '', this.d.l.locale).replace(/ /g, '_') }.pdf`
   }
+
+  // Sandwichs
+
+  /*
+  getIngredients(): Observable<Ingredient[]> {
+    return this.db.list<Ingredient>("cafet/public/ingredients/individual").valueChanges();
+  }
+
+  setIngredient(ingredient: Ingredient, key: string) {
+    if (key === null) {
+      return this.db.list<Ingredient>("cafet/public/ingredients/individual")
+        .push(ingredient);
+    } else {
+      return this.db.list<Ingredient>("cafet/public/ingredients/individual")
+        .update(key, ingredient);
+    }
+  }
+
+  watchIngrGroups() {
+    return this.db.list<string>("cafet/public/ingredients/groups").valueChanges()
+      .subscribe(groups => {
+        this.ingrGroups = groups;
+      });
+  } */
 
 }

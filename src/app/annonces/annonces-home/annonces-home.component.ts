@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
 import {DicoService} from '../../language/dico.service';
 import {AnnoncesService} from '../annonces.service';
@@ -8,20 +8,13 @@ import {AnnoncesService} from '../annonces.service';
   templateUrl: './annonces-home.component.html',
   styleUrls: ['./annonces-home.component.css']
 })
-export class AnnoncesHomeComponent implements OnInit, OnDestroy {
+export class AnnoncesHomeComponent implements OnInit {
 
   constructor(
     public annonces: AnnoncesService,
     public d: DicoService,
-    private location: Location
+    public location: Location
   ) { }
 
-  ngOnInit() {
-    this.annonces.start();
-  }
-
-  ngOnDestroy() {
-    this.annonces.stop();
-  }
-
+  ngOnInit() { }
 }

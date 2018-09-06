@@ -13,13 +13,11 @@ export class NsigmaGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ) {
-    return this.auth.waitForAccessToXToBeSet('admins')
-      .take(1)
-      .map(auth => auth.isNsigmaAdmin)
+    return this.auth.isAdminOf('nsigma')
+      .first()
       .do(is => {
         if (!is) {
-          this.router.navigateByUrl('/home');
-          return;
+          this.auth.goToHome();
         }
       });
   }

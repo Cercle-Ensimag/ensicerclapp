@@ -1,46 +1,32 @@
-import { Injectable } from '@angular/core';
-import { AngularFireDatabase } from 'angularfire2/database';
-import { ToolsService } from '../../providers/tools.service';
-import {Subscription} from '../../../../node_modules/rxjs';
+import {Injectable} from '@angular/core';
+import {AngularFireDatabase} from 'angularfire2/database';
+import {ToolsService} from '../../providers/tools.service';
+import {Observable} from '../../../../node_modules/rxjs';
+import {User} from 'firebase/app';
 
 @Injectable()
 export class AdminService {
-
-  users: any;
-
-  public usersWatcher: Subscription;
+  private _users: Observable<User[]>;
 
   constructor(
     private db: AngularFireDatabase,
     private tools: ToolsService
   ) { }
 
-  start() {
-    if (this.usersWatcher) {
-      this.stop();
-    }
-    this.usersWatcher = this.watchUsers();
-  }
-
-  stop() {
-    if (this.usersWatcher) {
-      this.usersWatcher.unsubscribe();
-      this.usersWatcher = null;
-    }
-  }
-
-  watchUsers() {
-    return this.getUsers().subscribe(users => {
-      this.users = users.filter(user => user[user.uid]);
-    })
-  }
-
   getUsers() {
-    return this.db.list<any>('users').valueChanges();
+    if (!this._users){
+      this._users = this.db
+        .list<User>('users')
+        .valueChanges()
+        .map((users: User[]) => users.filter((user: User) => !!user[user.uid]))
+        .shareReplay(1);
+    }
+    return this._users;
   }
 
   setUserAdminOf(email: string, uid: string, of: string, checked: boolean) {
-    this.db.object('users/'+this.tools.getEmailIdFromEmail(email)+'/'+uid+'/admin/'+ of +'-admin').set(checked);
+    return this.db
+      .object('users/'+this.tools.getEmailIdFromEmail(email)+'/'+uid+'/admin/'+ of +'-admin')
+      .set(checked);
   }
-
 }

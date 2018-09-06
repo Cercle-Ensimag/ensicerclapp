@@ -11,21 +11,19 @@ import {DicoService} from '../../../language/dico.service';
   styleUrls: ['./annonce-card.component.css']
 })
 export class AnnonceCardComponent implements OnInit {
-
   @Input() admin: boolean = false;
   @Input() annonce: Annonce;
 
   constructor(
-    public annonces: AnnoncesService,
-    public dialog: MatDialog,
+    private annonces: AnnoncesService,
+    private dialog: MatDialog,
     private snackBar: MatSnackBar,
+
     public d: DicoService,
     public tools: ToolsService
-  ) {
-  }
+  ) { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
   delete() {
     this.dialog.open(DeleteDialogComponent, {
@@ -35,8 +33,9 @@ export class AnnonceCardComponent implements OnInit {
       }
     }).afterClosed().subscribe(result => {
       if (result) {
-        this.annonces.deleteAnnonce(this.annonce.id);
-        this.snackBar.open("Annonce supprimée", 'ok', {duration: 2000});
+        this.annonces.deleteAnnonce(this.annonce.id).then(() =>
+          this.snackBar.open("Annonce supprimée", 'ok', {duration: 2000})
+        );
       }
     });
   }

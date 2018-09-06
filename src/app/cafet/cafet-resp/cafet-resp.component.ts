@@ -1,13 +1,14 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material';
-
-import { CafetService, CafetUser } from '../cafet-service/cafet.service';
-import { ToolsService } from '../../providers/tools.service';
-import { DeviceSizeService } from '../../providers/device-size.service';
-import { DicoService } from '../../language/dico.service';
-
-import { CafetDayHistoryComponent } from './cafet-day-history/cafet-day-history.component';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {Subject} from 'rxjs/Subject';
+import {CafetService, CafetUser} from '../cafet-service/cafet.service';
+import {ToolsService} from '../../providers/tools.service';
+import {ListService} from '../../providers/list.service';
+import {DeviceSizeService} from '../../providers/device-size.service';
+import {MatDialog, MatSnackBar} from '@angular/material';
+import {DicoService} from '../../language/dico.service';
+import {Observable} from 'rxjs/Observable';
+import {CafetHistoryComponent} from '../cafet-history/cafet-history.component';
 
 @Component({
   selector: 'app-cafet-resp',
@@ -15,80 +16,94 @@ import { CafetDayHistoryComponent } from './cafet-day-history/cafet-day-history.
   styleUrls: ['./cafet-resp.component.css']
 })
 export class CafetRespComponent implements OnInit {
+  private unsubscribe: Subject<void> = new Subject();
 
-  users: CafetUser[];
-  displayedUsers: CafetUser[] = [];
-  usersWatcher: any;
-
-  dayTransactions: any = {};
-  dayTransactionsWatcher: any;
-
-  searchCtrl: FormGroup;
-  searchWatcher1: any;
-  searchWatcher2: any;
-
-  controls: {[emailId: string]: {
-    add: FormControl,
-    sub: FormControl
-  }};
-
-  expanded: {[emailId: string]: boolean};
-  pageIndex: number = 0;
-  pageSize: number = 10;
-  error: string;
+  public formGroup: FormGroup;
+  public controls: {[emailId: string]: {
+      add: FormControl,
+      sub: FormControl
+    }};
 
   constructor(
+    private snackBar: MatSnackBar,
+    private list: ListService,
+    private dialog: MatDialog,
+    private fb: FormBuilder,
+
     public cafet: CafetService,
     public tools: ToolsService,
     public media: DeviceSizeService,
-    private fb: FormBuilder,
-    public dialog: MatDialog,
     public d: DicoService
   ) { }
 
   ngOnInit() {
-    this.createSearchForm();
-    this.usersWatcher = this.watchUsers();
-    this.dayTransactionsWatcher = this.watchDayTransactions();
+    this.initFormGroup();
+    this.list.start();
   }
 
   ngOnDestroy() {
-    this.usersWatcher.unsubscribe();
-    this.dayTransactionsWatcher.unsubscribe();
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
+    this.list.stop();
   }
 
-  watchUsers() {
-    return this.cafet.getUsers().subscribe(users => {
-      this.users = users;
-      this.controls = {};
-      this.expanded = {};
-      for (let user of users) {
-        this.controls[user.emailId] = {
-          add: new FormControl("", [Validators.required, Validators.max(1000), Validators.min(0.1)]),
-          sub: new FormControl("", [Validators.required, Validators.max(1000), Validators.min(0.1)])
-        };
-        this.expanded[user.emailId] = false;
-      }
-      this.sortUsers(this.getSearchEmail());
-    })
-  }
+  initFormGroup() {
+    this.formGroup = this.fb.group({
+      email: ['', [Validators.email]],
+      byCredit: [],
+      byDate: []
+    });
 
-  watchDayTransactions() {
-    return this.cafet.getDayTransactions().subscribe(users => {
-      if (users != null) {
-        this.dayTransactions = users;
-      }
-    })
-  }
-
-  getUserCredit(user: CafetUser): number {
-    let credit = user.credit;
-    if (this.dayTransactions[user.emailId]) {
-      Object.getOwnPropertyNames(this.dayTransactions[user.emailId]).forEach((transId) => {
-        credit += this.dayTransactions[user.emailId][transId].value;
+    this.cafet.getUsers()
+      .takeUntil(this.unsubscribe)
+      .subscribe(users => {
+        this.controls = {};
+        for (let user of users) {
+          this.controls[user.emailId] = {
+            add: new FormControl('', [Validators.required, Validators.max(1000), Validators.min(0.1)]),
+            sub: new FormControl('', [Validators.required, Validators.max(1000), Validators.min(0.1)])
+          };
+        }
       });
-    }
-    return credit;
+  }
+
+  filteredUsers(): Observable<CafetUser[]> {
+    const email = this.formGroup.get('email').value;
+    const emailId = this.tools.getEmailIdFromEmail(email.split('@')[0]);
+    return this.cafet.getUsers()
+      .map(users => {
+        users = users.filter(
+          user => user.emailId.includes(emailId)
+            || this.cafet.getUserName(user).includes(this.tools.titleCase(email))
+        );
+        if (this.formGroup.get('byDate').value) {
+          users.sort((u1, u2) => u1.lastTransactionDate - u2.lastTransactionDate);
+        }
+        if (this.formGroup.get('byCredit').value) {
+          users.sort((u1, u2) => u1.credit - u2.credit);
+        }
+        return users;
+      });
+  }
+
+  // transactions
+
+  getUserCredit(user: CafetUser): Observable<string> {
+    return this.cafet.getDayTransactions()
+      .map(dayTransactions => {
+        let credit = user.credit;
+        if (dayTransactions[user.emailId]) {
+          Object.getOwnPropertyNames(dayTransactions[user.emailId]).forEach((transId) => {
+            credit += dayTransactions[user.emailId][transId].value;
+          });
+        }
+        return credit.toFixed(2);
+      });
+  }
+
+  hasNoDayTransactions(user: CafetUser): Observable<boolean> {
+    return this.cafet.getDayTransactions()
+      .map(dayTransactions => !dayTransactions[user.emailId]);
   }
 
   transaction(user: CafetUser, add: boolean) {
@@ -98,59 +113,20 @@ export class CafetRespComponent implements OnInit {
     } else {
       value = -this.controls[user.emailId].sub.value;
     }
-    this.controls[user.emailId].add.setValue("");
-    this.controls[user.emailId].sub.setValue("");
-    this.cafet.newDayTransaction(user, value).then(
-      () => {
-        this.error = this.d.format(this.d.l.informAboutTransaction, this.cafet.getUserName(user), value.toFixed(2));
-      },
-      (err) => {
-        this.error = err;
-      }
-    );
-  }
-
-  createSearchForm() {
-    this.searchCtrl = this.fb.group({
-      email: ['', [Validators.email]]
-    });
-    if (this.searchWatcher1) {
-      this.searchWatcher1.unsubscribe();
-    }
-    this.searchWatcher1 = this.searchCtrl.get('email').valueChanges.subscribe((email) => {
-      this.sortUsers(email);
-    });
-    if (this.searchWatcher2) {
-      this.searchWatcher2.unsubscribe();
-    }
-    this.searchWatcher1 = this.searchCtrl.valueChanges.subscribe(() => {
-      this.error = null;
-    });
-  }
-
-  getSearchEmail() {
-    return this.searchCtrl.get('email').value;
-  }
-
-  sortUsers(email: string) {
-    let emailId = this.tools.getEmailIdFromEmail(email);
-    this.pageIndex = 0;
-    this.displayedUsers = this.users.filter(
-      user => user.emailId.includes(emailId)
-    );
-  }
-
-  updateList(event) {
-    this.pageIndex = event.pageIndex;
+    this.cafet.newDayTransaction(user, value)
+      .then(() => {
+        this.controls[user.emailId].add.reset();
+        this.controls[user.emailId].sub.reset();
+        this.snackBar.open(this.d.format(this.d.l.informAboutTransaction, this.cafet.getUserName(user), value.toFixed(2)), 'ok', {duration: 2000});
+      })
+      .catch(err => this.snackBar.open(err, 'ok', {duration: 2000}));
   }
 
   openHistory(user: CafetUser): void {
-    if (this.dayTransactions[user.emailId]) {
-      let dialogRef = this.dialog.open(CafetDayHistoryComponent, {
-        data: this.dayTransactions[user.emailId],
-        width: '450px'
-      });
-    }
+    this.dialog.open(CafetHistoryComponent, {
+      data: {user: user, day: true},
+      width: '450px'
+    });
   }
 
 }

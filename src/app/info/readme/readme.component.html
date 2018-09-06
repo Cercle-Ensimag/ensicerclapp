@@ -41,13 +41,13 @@
   <h3>Vote</h3>
   Vote pour une élection ou un sondage. Ton vote est totalement anonyme en base de donnée.
 
-  <div *ngIf="auth.isAdmin">
+  <div *ngIf="auth.isAdmin() | async">
     <h3>Administrateur</h3>
     Accède à la liste des utilisateurs et accorde leur des droits.<br>
     Tape le nom d'un membre dans la barre de recherche pour y accéder plus rapidement.
   </div>
 
-  <div *ngIf="auth.isVoteAdmin || auth.isAdmin">
+  <div *ngIf="canReadVotes() | async">
     <h3 >Administrateurs des votes</h3>
     Crée des srcutins et nomme les assesseurs.<br>
     <br>
@@ -63,7 +63,7 @@
     Lorsqu'un srutin est actif, tu ne peux qu'accéder à l'aperçu et aux votants.<br>
   </div>
 
-  <div *ngIf="auth.isAssessor || auth.isVoteAdmin || auth.isAdmin">
+  <div *ngIf="canReadVotesResults() | async">
     <h3>Assesseur</h3>
     Selectionne les scrutins pour lesquels tu dois assesser et ajoute des votants en face-à-face.<br>
     <br>
@@ -73,7 +73,7 @@
     Il peut être dans cette liste s'il a voté en ligne ou en face-à-face.
   </div>
 
-  <div *ngIf="auth.isEventsAdmin || auth.isAdmin">
+  <div *ngIf="canReadEventsAdmin() | async">
     <h3 >Administrateurs des événements</h3>
     Consulte les événements et nomme les respos com'.<br>
     <br>
@@ -82,7 +82,7 @@
     - le supprimer <mat-icon>delete</mat-icon><br>
   </div>
 
-  <div *ngIf="auth.isComResp || auth.isEventsAdmin || auth.isAdmin">
+  <div *ngIf="canReadEvents() | async">
     <h3>Responsable communication</h3>
     Crée des événements.<br>
     Un événement n'est éditable que par celui qui l'a créé.<br>
@@ -93,7 +93,7 @@
     - le supprimer <mat-icon>delete</mat-icon><br>
   </div>
 
-  <div *ngIf="auth.isActusAdmin || auth.isAdmin">
+  <div *ngIf="canReadActusAdmin() | async">
     <h3>Administrateurs des actualités</h3>
     Consulte les articles et nomme les journalistes.<br>
     <br>
@@ -102,7 +102,7 @@
     - le supprimer <mat-icon>delete</mat-icon><br>
   </div>
 
-  <div *ngIf="auth.isJournalist || auth.isActusAdmin || auth.isAdmin">
+  <div *ngIf="canReadActus() | async">
     <h3>Journaliste</h3>
     Crée des articles.<br>
     Un article n'est éditable que par celui qui l'a créé.<br>
@@ -113,8 +113,8 @@
     - le supprimer <mat-icon>delete</mat-icon><br>
   </div>
 
-  <div *ngIf="auth.isCafetAdmin || auth.isAdmin">
-    <h3 >Master cafet'</h3>
+  <div *ngIf="canReadCafetAdmin() | async">
+    <h3>Master cafet'</h3>
     Gère tout ce qui est en relation avec la cafet<br>
   </div>
 

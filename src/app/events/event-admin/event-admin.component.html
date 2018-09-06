@@ -1,6 +1,6 @@
 <mat-tab-group>
   <mat-tab label="{{ d.l.events }}">
-    <app-paged-grid [list]="events.events" #pages>
+    <app-paged-grid [list]="events.getEvents() | async" #pages>
       <app-event-card *ngFor="let event of pages.truncatedList()"
                                [event]="event"
                                [admin]="true">
@@ -11,33 +11,31 @@
   <mat-tab label="{{ d.l.comRespPlLabel }}">
 
     <!-- Loading -->
-    <mat-card *ngIf="!comResps" class="spinner-wrapper">
-      <mat-spinner class="spinner"></mat-spinner>
-    </mat-card>
+    <app-loading [loading]="filteredUsers() | async"></app-loading>
 
     <!-- Header display -->
-    <mat-card *ngIf="comResps">
-      <span *ngIf="error" class="error">{{ error }}</span>
+    <ng-container *ngIf="filteredUsers() | async as users">
+      <mat-card *ngIf="emailCtrl">
+        <mat-form-field [class.large]="!media.mobileSize">
+          <input matInput placeholder="{{ d.l.addComRespInfo }}" [formControl]="emailCtrl" autocomplete="off">
+          <button mat-icon-button matSuffix><mat-icon>search</mat-icon></button>
+        </mat-form-field>
+        <button mat-raised-button
+                (click)="addComResp()"
+                [disabled]="emailCtrl.invalid || users.length !== 0"
+                color="primary"
+        >{{ d.l.addComRespButtonLabel }}</button>
+      </mat-card>
 
-      <mat-form-field [class.large]="!media.mobileSize">
-        <input matInput placeholder="{{ d.l.addComRespInfo }}" [formControl]="emailCtrl" autocomplete="off">
-        <button mat-icon-button matSuffix><mat-icon>search</mat-icon></button>
-      </mat-form-field>
-      <button mat-raised-button
-        (click)="addComResp()"
-        [disabled]="emailCtrl.invalid || displayedUsers.length != 0"
-        color="primary"
-      >{{ d.l.addComRespButtonLabel }}</button>
-    </mat-card>
-
-    <!-- Users display -->
-    <mat-card *ngIf="displayedUsers.length != 0">
-      <mat-nav-list>
-        <a mat-list-item *ngFor="let user of displayedUsers">
-          {{ tools.titleCase(user.emailId.split('|').join(' ')) }}
-          <button mat-icon-button matSuffix (click)="events.removeComResp(user.emailId)"><mat-icon>delete</mat-icon></button>
-        </a>
-      </mat-nav-list>
-    </mat-card>
+      <!-- Users display -->
+      <mat-card *ngIf="users.length">
+        <mat-nav-list>
+          <a mat-list-item *ngFor="let user of users">
+            {{ tools.titleCase(user.emailId.split('|').join(' ')) }}
+            <button mat-icon-button matSuffix (click)="events.removeComResp(user.emailId)"><mat-icon>delete</mat-icon></button>
+          </a>
+        </mat-nav-list>
+      </mat-card>
+    </ng-container>
   </mat-tab>
 </mat-tab-group>

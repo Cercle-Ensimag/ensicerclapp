@@ -15,14 +15,14 @@ export class NsigmaAnnonceCardComponent implements OnInit {
   @Input() annonce: NsigmaAnnonce;
 
   constructor(
-    public nsigma: NsigmaService,
-    public dialog: MatDialog,
+    private nsigma: NsigmaService,
+    private dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private tools: ToolsService,
+
+    public tools: ToolsService,
   ) { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
   delete() {
     this.dialog.open(DeleteDialogComponent, {
@@ -32,8 +32,9 @@ export class NsigmaAnnonceCardComponent implements OnInit {
       }
     }).afterClosed().subscribe(result => {
       if (result){
-        this.nsigma.deleteNsigmaAnnonce(this.annonce.id);
-        this.snackBar.open("Annonce supprimée", 'ok', {duration: 2000});
+        this.nsigma.deleteAnnonce(this.annonce.id).then(() =>
+          this.snackBar.open("Annonce supprimée", 'ok', {duration: 2000})
+        );
       }
     });
   }

@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, Validators} from '@angular/forms';
 
-import { AuthService } from '../auth-service/auth.service';
-import { DicoService } from '../../language/dico.service';
+import {AuthService} from '../auth-service/auth.service';
+import {DicoService} from '../../language/dico.service';
 
 
 @Component({
@@ -12,22 +11,19 @@ import { DicoService } from '../../language/dico.service';
   styleUrls: ['./password-reset.component.css']
 })
 export class PasswordResetComponent implements OnInit {
-
-  email_ctrl: FormControl;
-  sent: boolean;
-  email: string;
+  public email_ctrl: FormControl;
+  public sent: boolean;
+  public email: string;
 
   constructor(
-    private auth: AuthService,
-    private router: Router,
+    public auth: AuthService,
     public d: DicoService
   ) {
     this.sent = false;
     this.email_ctrl = new FormControl('', [Validators.required, Validators.email, this.auth.emailDomainValidator]);
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
   sendEmail() {
     if (!this.email_ctrl.invalid) {
@@ -38,6 +34,6 @@ export class PasswordResetComponent implements OnInit {
   }
 
   back() {
-    this.router.navigateByUrl('/login');
+    this.auth.goToLogin();
   }
 }

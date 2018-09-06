@@ -1,8 +1,9 @@
-import { Component, Inject, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA, MatPaginator, MatTableDataSource } from '@angular/material';
+import {Component, Inject, ViewChild} from '@angular/core';
+import {MAT_DIALOG_DATA, MatPaginator, MatTableDataSource} from '@angular/material';
 
-import { CafetService, CafetUser, Transaction } from '../cafet-service/cafet.service';
-import { DicoService } from '../../language/dico.service';
+import {CafetService, CafetUser} from '../cafet-service/cafet.service';
+import {DicoService} from '../../language/dico.service';
+import {Observable} from 'rxjs/Observable';
 
 class Log {
   date: number;
@@ -15,57 +16,58 @@ class Log {
   styleUrls: ['./cafet-history.component.css']
 })
 export class CafetHistoryComponent {
-
-  isHistory: boolean;
-  history: MatTableDataSource<Log> = new MatTableDataSource<Log>([]);
-  historyWatcher: any;
-
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  private _data: Observable<MatTableDataSource<Log>>;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public user: CafetUser,
-    public dialogRef: MatDialogRef<CafetHistoryComponent>,
+    @Inject(MAT_DIALOG_DATA) private data: {user: CafetUser, day: boolean},
     public cafet: CafetService,
     public d: DicoService
   ) { }
 
-  ngOnInit() {
-    if (this.historyWatcher) {
-      this.historyWatcher.unsubscribe();
-    }
-    this.historyWatcher = this.watchHistory();
-  }
+  ngOnInit() { }
 
-  ngOnDestroy() {
-    if (this.historyWatcher) {
-      this.historyWatcher.unsubscribe();
-      this.historyWatcher = null;
-    }
-  }
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
-  watchHistory() {
-    return this.cafet.getHistory(this.user.emailId).subscribe(
-      history => {
-        const logs: Log[] = [];
-        history.reverse().forEach(trans => {
-          logs.push({
-            date: trans.date,
-            value: trans.value.toFixed(2) + '€'
+  getData(): Observable<MatTableDataSource<Log>>{
+    if (!this._data){
+      if (this.data.day) {
+        this._data = this.cafet.getDayTransactions()
+          .map(transactions => {
+            const dayTr = transactions[this.data.user.emailId];
+            const logs: Log[] = [];
+            Object.getOwnPropertyNames(dayTr).reverse().forEach(transId => {
+              logs.push({
+                date: dayTr[transId].date,
+                value: dayTr[transId].value.toFixed(2) + '€'
+              });
+            });
+            const toReturn = new MatTableDataSource<Log>([]);
+            toReturn.data = logs;
+            setTimeout(() => toReturn.paginator = this.paginator);
+            return toReturn;
           })
-        });
-        logs.push({
-          date: this.user.creationDate,
-          value: this.d.l.cafetAccountCreationDateLabel
-        });
-        this.history.data = logs;
-        setTimeout(() => this.history.paginator = this.paginator);
-        this.isHistory = true;
+          .shareReplay(1);
+      } else {
+        this._data = this.cafet.getHistory(this.data.user.emailId)
+          .map(history => {
+            const logs: Log[] = [];
+            history.reverse().forEach(trans => {
+              logs.push({
+                date: trans.date,
+                value: trans.value.toFixed(2) + '€'
+              })
+            });
+            logs.push({
+              date: this.data.user.creationDate,
+              value: this.d.l.cafetAccountCreationDateLabel
+            });
+            const toReturn = new MatTableDataSource<Log>([]);
+            toReturn.data = logs;
+            setTimeout(() => toReturn.paginator = this.paginator);
+            return toReturn;
+          }).shareReplay(1);
       }
-    )
+    }
+    return this._data;
   }
 
   isPlus(log: Log) {

@@ -12,7 +12,6 @@ export class ConditionalRouterLinkComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
 }

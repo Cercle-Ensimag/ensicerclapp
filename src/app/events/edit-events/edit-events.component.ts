@@ -9,6 +9,9 @@ import {AuthService} from '../../auth/auth-service/auth.service';
 import {ToolsService} from '../../providers/tools.service';
 import {DicoService} from '../../language/dico.service';
 import {MatSnackBar} from '@angular/material';
+import {Subject} from 'rxjs/Subject';
+
+import 'rxjs/add/operator/takeUntil';
 
 @Component({
   selector: 'app-edit-events',
@@ -16,105 +19,93 @@ import {MatSnackBar} from '@angular/material';
   styleUrls: ['./edit-events.component.css']
 })
 export class EditEventsComponent implements OnInit, OnDestroy {
-  eventCtrl: FormGroup;
+  private unsubscribe: Subject<void> = new Subject();
 
-  event: Event;
-  eventWatcher: any;
-  eventCtrlWatcher: any;
+  public id: string;
+  public formGroup: FormGroup;
 
   constructor(
     private auth: AuthService,
-    private tools: ToolsService,
-    private events: EventsService,
     private route: ActivatedRoute,
-    private location: Location,
     private fb: FormBuilder,
-    public d: DicoService,
-    private snackBar: MatSnackBar
+    private d: DicoService,
+    private snackBar: MatSnackBar,
+
+    public tools: ToolsService,
+    public events: EventsService,
+    public location: Location
   ) {}
 
   ngOnInit() {
-    const id = this.route.snapshot.paramMap.get('id');
-    this.eventWatcher = this.watchEvent(id);
+    this.id = this.route.snapshot.paramMap.get('id');
+    this.initFormGroup();
   }
 
   ngOnDestroy() {
-    this.eventWatcher.unsubscribe();
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 
-  watchEvent(eventId: string) {
-    return this.events.getEvent(eventId).subscribe((event) => {
-      if (event) {
-        this.event = event;
-      } else {
-        this.event = new Event();
-        this.event.id = this.events.getEventId();
-      }
-      this.eventCtrl = this.fb.group({
-        title: [this.event.title || "", [Validators.required, Validators.minLength(3)]],
-        description: [this.event.description || "", []],
-        image: [this.event.image || "", []],
-        start: [new Date(this.event.start) || "", [Validators.required, this.tools.dateValidator]],
-        startTime: [this.tools.getTimeFromDate(this.event.start), [Validators.required, this.tools.timeValidator]],
-        end: [new Date(this.event.end) || "", [Validators.required, this.tools.dateValidator]],
-        endTime: [this.tools.getTimeFromDate(this.event.end), [Validators.required, this.tools.timeValidator]],
-        location: [this.event.location || "", [Validators.required]],
-        asso: [this.event.asso || "", [Validators.required]],
-        price: [this.event.price || this.d.l.free, [Validators.required]]
-      })
-      if (this.eventCtrlWatcher) {
-        this.eventCtrlWatcher.unsubscribe();
-      }
-    });
+  initFormGroup() {
+    this.events.getEvent(this.id)
+      .takeUntil(this.unsubscribe)
+      .subscribe((event) => {
+        if (!event) {
+          event = new Event();
+          this.id = this.events.getEventId();
+        }
+        this.formGroup = this.fb.group({
+          title: [event.title || "", [Validators.required, Validators.minLength(3)]],
+          description: [event.description || "", []],
+          image: [event.image || "", []],
+          start: [new Date(event.start) || "", [Validators.required, this.tools.dateValidator]],
+          startTime: [this.tools.getTimeFromDate(event.start), [Validators.required, this.tools.timeValidator]],
+          end: [new Date(event.end) || "", [Validators.required, this.tools.dateValidator]],
+          endTime: [this.tools.getTimeFromDate(event.end), [Validators.required, this.tools.timeValidator]],
+          location: [event.location || "", [Validators.required]],
+          asso: [event.asso || "", [Validators.required]],
+          price: [event.price || this.d.l.free, [Validators.required]]
+        });
+
+        this.formGroup.get('start')
+          .valueChanges
+          .takeUntil(this.unsubscribe)
+          .subscribe(value => this.formGroup.get('end').setValue(value));
+      });
   }
 
-  getTitle(): string {
-    return this.eventCtrl.get('title').value;
-  }
-  getDescription(): string {
-    return this.eventCtrl.get('description').value;
-  }
-  getImage(): string {
-    return this.eventCtrl.get('image').value;
-  }
   getStart(): number {
-    let time = this.eventCtrl.get('startTime').value;
-    return this.tools.setDayTime(this.eventCtrl.get('start').value.getTime(), time + ':00');
+    let time = this.formGroup.get('startTime').value;
+    return this.tools.setDayTime(this.formGroup.get('start').value.getTime(), time + ':00');
   }
   getEnd(): number {
-    let time = this.eventCtrl.get('endTime').value;
-    return this.tools.setDayTime(this.eventCtrl.get('end').value.getTime(), time + ':00');
-  }
-  getLocation(): string {
-    return this.eventCtrl.get('location').value;
-  }
-  getAsso(): string {
-    return this.eventCtrl.get('asso').value;
-  }
-  getPrice(): string {
-    return this.eventCtrl.get('price').value;
+    let time = this.formGroup.get('endTime').value;
+    return this.tools.setDayTime(this.formGroup.get('end').value.getTime(), time + ':00');
   }
 
   submit() {
-    if (!this.eventCtrl.invalid) {
-      let event = {
-        id: this.event.id,
-        title: this.getTitle(),
-        description: this.getDescription(),
-        image: this.getImage(),
-        start: this.getStart(),
-        end: this.getEnd(),
-        location: this.getLocation(),
-        asso: this.getAsso(),
-        price: this.getPrice(),
-        groupId: this.auth.comRespGroupId
-      };
-      this.events.setEvent(event).then(() => {
-        this.snackBar.open(this.d.l.changesApplied, 'ok', {duration: 2000});
-      }).catch(reason => {
-        this.snackBar.open(reason, 'ok', {duration: 2000});
+    this.auth.getRespComId()
+      .first()
+      .subscribe((respComId: string) => {
+        const event = {
+          id: this.id,
+          title: this.formGroup.get('title').value,
+          description: this.formGroup.get('description').value,
+          image: this.formGroup.get('image').value,
+          start: this.getStart(),
+          end: this.getEnd(),
+          location: this.formGroup.get('location').value,
+          asso: this.formGroup.get('asso').value,
+          price: this.formGroup.get('price').value,
+          groupId: respComId
+        };
+        this.events.setEvent(event).then(() => {
+          this.snackBar.open(this.d.l.changesApplied, 'ok', {duration: 2000});
+          this.initFormGroup();
+        }).catch(reason => {
+          this.snackBar.open(reason, 'ok', {duration: 2000});
+        });
       });
-    }
   }
 
   back() {

@@ -1,40 +1,42 @@
 <span *ngIf="error" class="error">{{ error }}</span>
 
 <form class="center">
-  <span class="button" *ngIf="activated && user.activated">
+  <span class="button" *ngIf="user.activated">
     <button mat-icon-button (click)="archive()"><mat-icon>archive</mat-icon></button>
     <label>{{ d.l.achiveCafetUserButtonLabel }}</label>
   </span>
 
-  <span class="button" *ngIf="!activated && !user.activated">
+  <span class="button" *ngIf="!user.activated">
     <button mat-icon-button (click)="restore()"><mat-icon>restore</mat-icon></button>
     <label>{{ d.l.restoreCafetUserButtonLabel }}</label>
   </span>
 
-  <span class="button" *ngIf="!activated && !user.activated">
+  <span class="button" *ngIf="!user.activated">
     <button mat-icon-button (click)="delete()"><mat-icon>delete</mat-icon></button>
     <label>{{ d.l.deleteCafetUserButtonLabel }}</label>
   </span>
 </form>
 
-<form [formGroup]="profileCtrl" (ngSubmit)="submit()" class="container">
+<form [formGroup]="formGroup" (ngSubmit)="submit()" class="container">
 
   <mat-form-field>
     <input matInput placeholder="{{ d.l.firstNameLabel }}" formControlName="firstName" autocomplete="off">
-    <mat-error *ngIf="profileCtrl.get('firstName').invalid">{{ d.l.firstNameError }}</mat-error>
+    <mat-error *ngIf="formGroup.get('firstName').invalid">{{ d.l.firstNameError }}</mat-error>
   </mat-form-field>
 
   <mat-form-field>
     <input matInput placeholder="{{ d.l.lastNameLabel }}" formControlName="lastName" autocomplete="off">
-    <mat-error *ngIf="profileCtrl.get('lastName').invalid">{{ d.l.lastNameError }}</mat-error>
+    <mat-error *ngIf="formGroup.get('lastName').invalid">{{ d.l.lastNameError }}</mat-error>
   </mat-form-field>
 
   <mat-form-field>
     <input matInput type="email" placeholder="{{ d.l.emailLabel }}" formControlName="email" autocomplete="off">
-    <mat-error *ngIf="profileCtrl.get('email').invalid">{{ d.l.emailFormatError }}</mat-error>
+    <mat-error *ngIf="formGroup.get('email').invalid">{{ d.l.emailFormatError }}</mat-error>
   </mat-form-field>
 
-  <button mat-raised-button type="submit" color="primary"
-    [disabled]="profileCtrl.invalid"
-  >{{ d.l.okLabel }}</button>
+  <div class="center">
+    <button mat-raised-button type="submit" color="primary"
+            [disabled]="formGroup.invalid"
+    >{{ d.l.okLabel }}</button>
+  </div>
 </form>

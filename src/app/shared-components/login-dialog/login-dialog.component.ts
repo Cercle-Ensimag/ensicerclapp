@@ -7,6 +7,7 @@ import {Component, Inject, OnInit} from '@angular/core';
   styleUrls: ['./login-dialog.component.css']
 })
 export class LoginDialogComponent implements OnInit {
+  public hidePwd: boolean = true;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any

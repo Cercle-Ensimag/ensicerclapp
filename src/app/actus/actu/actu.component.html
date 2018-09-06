@@ -1,10 +1,8 @@
 <!-- Loading -->
-<div class="loading-indicator" *ngIf="!actu">
-  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
-</div>
+<app-loading [loading]="actus.getActu(id) | async"></app-loading>
 
 <!-- Actu display -->
-<mat-card *ngIf="actu">
+<mat-card *ngIf="actus.getActu(id) | async as actu">
   <mat-card-header>
     <img mat-card-avatar src="assets/img/icons/actus.png">
     <mat-card-title>{{ actu.title }}</mat-card-title>
@@ -12,12 +10,11 @@
   </mat-card-header>
   <mat-card-content>
     <markdown [data]="actu.description"></markdown>
-    <iframe *ngIf="actu.pdfLink !== ''"  [src]="this.safeUrl"></iframe><br>
+    <iframe *ngIf="actu.pdfLink !== ''"  [src]="safeUrl(actu)"></iframe><br>
     <img *ngIf="actu.image !== ''" mat-card-image src="{{ actu.image }}"><br>
   </mat-card-content>
 </mat-card>
 
-<button mat-fab class="mat-fab-bottom-right" color="primary"
-        (click)="location.back()">
-  <mat-icon>arrow_back</mat-icon>
-</button>
+<div class="mat-fab-bottom-right">
+  <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
+</div>

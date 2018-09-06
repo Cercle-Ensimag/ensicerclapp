@@ -1,4 +1,4 @@
-<app-paged-grid [list]="actus.actus" #pages>
+<app-paged-grid [list]="actus.getActus() | async" #pages>
   <app-actu-card *ngFor="let actu of pages.truncatedList()"
                  [actu]="actu"
                  [admin]="true">

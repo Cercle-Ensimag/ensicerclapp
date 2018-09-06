@@ -1,4 +1,4 @@
-<app-paged-grid [list]="vote.polls" #pages>
+<app-paged-grid [list]="vote.getStartedPolls() | async" emptyMessage="Aucun scrutin en cours" #pages>
   <app-vote-card *ngFor="let poll of pages.truncatedList()"
                  [poll]="poll">
   </app-vote-card>

@@ -1,10 +1,10 @@
-import { Component, OnInit, HostBinding } from '@angular/core';
-import { Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 
-import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
-import { AuthService } from '../auth-service/auth.service';
-import { DicoService } from '../../language/dico.service';
+import {AuthService} from '../auth-service/auth.service';
+import {DicoService} from '../../language/dico.service';
 
 @Component({
   selector: 'app-login',
@@ -12,16 +12,18 @@ import { DicoService } from '../../language/dico.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  loginCtrl: FormGroup;
-  hide = true;
+  public formGroup: FormGroup;
+  public loading: boolean = false;
+  public hide: boolean = true;
 
   constructor(
-    public auth: AuthService,
     private router: Router,
     private fb: FormBuilder,
+
+    public auth: AuthService,
     public d: DicoService
   ) {
-    this.loginCtrl = this.fb.group({
+    this.formGroup = this.fb.group({
       email: ['', [
         Validators.required,
         Validators.email,
@@ -34,23 +36,23 @@ export class LoginComponent implements OnInit {
     })
   }
 
-  getEmail(): string {
-    return this.loginCtrl.get('email').value;
-  }
-  getPassword(): string {
-    return this.loginCtrl.get('password').value;
-  }
-
   ngOnInit() {
     this.auth.resetError();
-    if (this.auth.getCurrentUser()){
-      this.router.navigateByUrl('/home');
-    }
+    this.auth.getUser()
+      .first()
+      .subscribe(user => {
+        if (user) {
+          this.auth.goToHome()
+        }
+      });
   }
 
   submit() {
-    if(this.loginCtrl.valid){
-      this.auth.login(this.getEmail(), this.getPassword());
-    }
+    this.loading = true;
+    this.auth.login(this.formGroup.get('email').value, this.formGroup.get('password').value)
+      .then(() => {
+        this.auth.goToHome();
+        this.loading = false;
+      });
   }
 }

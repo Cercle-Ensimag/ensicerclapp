@@ -1,12 +1,8 @@
-<div class="loading-indicator" *ngIf="tabGroup.selectedIndex ? !journalists : !actus.actus">
-  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
-</div>
-
-<mat-tab-group #tabGroup>
+<mat-tab-group>
 
   <!-- Actus tab -->
   <mat-tab label="{{ d.l.actus }}">
-    <app-paged-grid [list]="actus.actus" #pages>
+    <app-paged-grid [list]="actus.getActus() | async" #pages>
       <app-actu-card *ngFor="let actu of pages.truncatedList()"
                                [actu]="actu"
                                [admin]="true">
@@ -17,10 +13,10 @@
   <!-- Journalists tab -->
   <mat-tab label="{{ d.l.journalistPlLabel }}">
 
-    <app-loading [loading]="journalists"></app-loading>
+    <app-loading [loading]="filteredUsers() | async"></app-loading>
 
     <!-- Com resps -->
-    <div *ngIf="journalists">
+    <div *ngIf="filteredUsers() | async as journalists">
 
       <!-- Header display -->
       <mat-card>
@@ -30,15 +26,15 @@
         </mat-form-field>
         <button mat-raised-button
           (click)="addJournalist()"
-          [disabled]="emailCtrl.invalid || displayedUsers.length != 0"
+          [disabled]="emailCtrl.invalid || journalists.length !== 0"
           color="primary"
         >{{ d.l.addJournalistButtonLabel }}</button>
       </mat-card>
 
       <!-- Users display -->
-      <mat-card *ngIf="displayedUsers.length != 0">
+      <mat-card *ngIf="journalists.length">
         <mat-nav-list>
-          <a mat-list-item *ngFor="let user of displayedUsers">
+          <a mat-list-item *ngFor="let user of journalists">
             {{ tools.titleCase(user.emailId.split('|').join(' ')) }}
             <button mat-icon-button matSuffix (click)="actus.removeJournalist(user.emailId)"><mat-icon>delete</mat-icon></button>
           </a>

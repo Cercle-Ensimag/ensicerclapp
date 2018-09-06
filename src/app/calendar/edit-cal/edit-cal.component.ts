@@ -7,6 +7,9 @@ import {ToolsService} from '../../providers/tools.service';
 import {CalEvent, CalService, PERSOS} from '../cal-service/cal.service';
 import {DicoService} from '../../language/dico.service';
 import {MatSnackBar} from '@angular/material';
+import {Observable, Subject} from '../../../../node_modules/rxjs';
+
+import 'rxjs/add/operator/takeUntil';
 
 @Component({
   selector: 'app-edit-cal',
@@ -14,98 +17,89 @@ import {MatSnackBar} from '@angular/material';
   styleUrls: ['./edit-cal.component.css']
 })
 export class EditCalComponent implements OnInit, OnDestroy {
-  eventCtrl: FormGroup;
+  private unsubscribe: Subject<void> = new Subject();
 
-  event: CalEvent;
-  eventWatcher: any;
-  eventCtrlWatcher: any;
-  error: string;
+
+  public formGroup: FormGroup;
+  public id: string;
 
   constructor(
-    private tools: ToolsService,
     private cal: CalService,
     private route: ActivatedRoute,
-    private location: Location,
     private fb: FormBuilder,
-    public d: DicoService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+
+    public tools: ToolsService,
+    public location: Location,
+    public d: DicoService
   ) {}
 
   ngOnInit() {
-    const id = this.route.snapshot.paramMap.get('id');
-    this.eventWatcher = this.watchEvent(id);
+    this.id = this.route.snapshot.paramMap.get('id');
+    this.initFormGroup();
   }
 
   ngOnDestroy() {
-    this.eventWatcher.unsubscribe();
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
-
-  watchEvent(eventId: string) {
-    return this.cal.getEvent(eventId).subscribe((event) => {
-      if (event) {
-        this.event = event;
-      } else {
-        this.event = new CalEvent(this.cal.getEventId(), "", "", "", 1, "", PERSOS);
-      }
-      this.eventCtrl = this.fb.group({
-        title: [this.event.title || "", [Validators.required, Validators.minLength(3)]],
-        // description: [this.event.description || "", []],
-        // image: [this.event.image || "", []],
-        start: [new Date(this.event.start) || "", [Validators.required, this.tools.dateValidator]],
-        startTime: [this.tools.getTimeFromDate(this.event.start), [Validators.required, this.tools.timeValidator]],
-        end: [new Date(this.event.end) || "", [Validators.required, this.tools.dateValidator]],
-        occurences: [this.event.occurences || 1, [Validators.required, Validators.min(1), Validators.max(42)]],
-        endTime: [this.tools.getTimeFromDate(this.event.end), [Validators.required, this.tools.timeValidator]],
-        location: [this.event.location || "", []]
+  
+  initFormGroup() {
+    this.cal.getEvent(this.id)
+      .takeUntil(this.unsubscribe)
+      .flatMap((event: CalEvent) => {
+        if (event) return Observable.of(event);
+        return this.cal.getEventId()
+          .first()
+          .do(id => this.id = id)
+          .map(id => new CalEvent(id, "", "", "", 1, "", PERSOS))
+      })
+      .subscribe((event) => {
+        this.formGroup = this.fb.group({
+          title: [event.title || "", [Validators.required, Validators.minLength(3)]],
+          start: [new Date(event.start) || "", [Validators.required, this.tools.dateValidator]],
+          startTime: [this.tools.getTimeFromDate(event.start), [Validators.required, this.tools.timeValidator]],
+          end: [new Date(event.end) || "", [Validators.required, this.tools.dateValidator]],
+          occurences: [event.occurences || 1, [Validators.required, Validators.min(1), Validators.max(42)]],
+          endTime: [this.tools.getTimeFromDate(event.end), [Validators.required, this.tools.timeValidator]],
+          location: [event.location || "", []]
+        });
+        this.formGroup.get('start').valueChanges
+          .takeUntil(this.unsubscribe)
+          .subscribe(value => {
+            this.formGroup.get('end').setValue(value);
+          });
+        this.formGroup.get('startTime').valueChanges
+          .takeUntil(this.unsubscribe)
+          .subscribe(value => {
+            this.formGroup.get('endTime').setValue(value);
+          });
       });
-      if (this.eventCtrlWatcher) {
-        this.eventCtrlWatcher.unsubscribe();
-      }
-      this.eventCtrlWatcher = this.eventCtrl.valueChanges.subscribe(() => {
-        this.error = null;
-      });
-    });
   }
-
-  getTitle(): string {
-    return this.eventCtrl.get('title').value;
-  }
-  // getDescription(): string {
-  //   return this.eventCtrl.get('description').value;
-  // }
-  // getImage(): string {
-  //   return this.eventCtrl.get('image').value;
-  // }
+  
   getStart(): number {
-    let time = this.eventCtrl.get('startTime').value;
-    return this.tools.setDayTime(this.eventCtrl.get('start').value.getTime(), time + ':00');
+    let time = this.formGroup.get('startTime').value;
+    return this.tools.setDayTime(this.formGroup.get('start').value.getTime(), time + ':00');
   }
   getEnd(): number {
-    let time = this.eventCtrl.get('endTime').value;
-    return this.tools.setDayTime(this.eventCtrl.get('end').value.getTime(), time + ':00');
-  }
-  getOccurences(): number {
-    return this.eventCtrl.get('occurences').value;
-  }
-  getLocation(): string {
-    return this.eventCtrl.get('location').value;
+    let time = this.formGroup.get('endTime').value;
+    return this.tools.setDayTime(this.formGroup.get('end').value.getTime(), time + ':00');
   }
 
   submit() {
-    if (!this.eventCtrl.invalid) {
-      this.cal.setEvent(
-        new CalEvent(
-          this.event.id,
-          this.getTitle(),
-          this.getStart(),
-          this.getEnd(),
-          this.getOccurences(),
-          this.getLocation(),
-          this.event.type
-        )
-      ).then(() => {
-        this.snackBar.open(this.d.l.changesApplied, 'ok', {duration: 2000});
-      });
-    }
+    this.cal.setEvent(
+      new CalEvent(
+        this.id,
+        this.formGroup.get('title').value,
+        this.getStart(),
+        this.getEnd(),
+        this.formGroup.get('occurences').value,
+        this.formGroup.get('location').value,
+        PERSOS
+      )
+    ).then(() => {
+      this.snackBar.open(this.d.l.changesApplied, 'ok', {duration: 2000});
+      this.initFormGroup();
+    });
   }
 }

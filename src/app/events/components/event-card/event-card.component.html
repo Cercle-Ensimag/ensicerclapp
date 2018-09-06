@@ -14,7 +14,7 @@
       </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      <p>{{ tools.truncate(tools.removeTags(event.description)) }}</p>
+      <p>{{ tools.truncate(event.description) }}</p>
     </mat-card-content>
     <mat-card-actions *ngIf="admin">
       <button mat-icon-button routerLink="/events/event/{{ event.id }}"><mat-icon>search</mat-icon></button>

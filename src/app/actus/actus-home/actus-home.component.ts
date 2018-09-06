@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 
-import { ActusService } from '../actus-service/actus.service';
-import { DicoService } from '../../language/dico.service';
+import {ActusService} from '../actus-service/actus.service';
+import {DicoService} from '../../language/dico.service';
 import {Location} from '@angular/common';
 
 @Component({
@@ -9,7 +9,7 @@ import {Location} from '@angular/common';
   templateUrl: './actus-home.component.html',
   styleUrls: ['./actus-home.component.css']
 })
-export class ActusHomeComponent implements OnInit, OnDestroy {
+export class ActusHomeComponent implements OnInit {
 
   constructor(
     public actus: ActusService,
@@ -17,12 +17,6 @@ export class ActusHomeComponent implements OnInit, OnDestroy {
     public location: Location
   ) { }
 
-  ngOnInit() {
-    this.actus.start();
-  }
-
-  ngOnDestroy() {
-    this.actus.stop();
-  }
+  ngOnInit() { }
 
 }

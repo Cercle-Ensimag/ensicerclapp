@@ -1,6 +1,6 @@
-<app-loading [loading]="poll"></app-loading>
+<app-loading [loading]="vote.getPoll(this.id) | async"></app-loading>
 
-<div *ngIf="poll">
+<mat-card *ngIf="vote.getPoll(this.id) | async as poll">
   <div>
     <h1>{{ poll.title }}</h1>
     <h2 *ngIf="!poll.started">Le vote n'a pas encore débuté...</h2>
@@ -18,7 +18,7 @@
       </mat-card>
     </div>
   </div>
-</div>
+</mat-card>
 
 <div class="mat-fab-bottom-right">
   <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>

@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup} from '@angular/forms';
 
-import { ToolsService } from '../../providers/tools.service';
-import { DeviceSizeService } from '../../providers/device-size.service'
-import { AdminService } from '../admin-service/admin.service';
-import { DicoService } from '../../language/dico.service';
-import {Observable, Subscription} from '../../../../node_modules/rxjs';
+import {ToolsService} from '../../providers/tools.service';
+import {DeviceSizeService} from '../../providers/device-size.service';
+import {AdminService} from '../admin-service/admin.service';
+import {DicoService} from '../../language/dico.service';
+import {Observable} from '../../../../node_modules/rxjs';
 import {User} from 'firebase/app';
 
 @Component({
@@ -14,77 +14,49 @@ import {User} from 'firebase/app';
   styleUrls: ['./users.component.css']
 })
 export class AdminUsersComponent implements OnInit {
-
-  admins: {
-    [typeOfAdmin: string]: {[uid: string]: boolean}
-  };
-
-  adminsStrings: string[] = ['vote', 'events', 'actus', 'cafet', 'nsigma', 'annonces'];
-
-  displayedUsers: any[];
-  users: any[];
-  usersCtrl: FormGroup;
-  usersCtrlWatcher: any;
-  usersWatcher: Subscription;
-
-  pageIndex: number = 0;
-  pageSize: number = 20;
+  public formGroup: FormGroup;
+  public expandedUserUid: string = '';
+  public adminsStrings: string[] = ['vote', 'events', 'actus', 'cafet', 'nsigma', 'annonces'];
 
   constructor(
+    private fb: FormBuilder,
+
     public admin: AdminService,
     public d: DicoService,
-    private tools: ToolsService,
-    public media: DeviceSizeService,
-    private fb: FormBuilder
-  ) {
-    this.admins = {};
-    this.adminsStrings.forEach((adminString: string) => { this.admins[adminString] = {} });
-  }
+    public tools: ToolsService,
+    public media: DeviceSizeService
+  ) { }
 
   ngOnInit() {
-    this.watchSearchForm();
-    this.usersWatcher = this.admin.getUsers().subscribe((users: User[]) => {
-      this.users = users;
-      this.filterUsers();
-    });
-
+    this.initSearchForm();
   }
 
-  ngOnDestroy() {
-    this.usersWatcher.unsubscribe();
-    this.usersCtrlWatcher.unsubscribe();
-  }
-
-  watchSearchForm() {
+  initSearchForm() {
     const controlsConfig = {
       search: ['', []]
     };
     this.adminsStrings.forEach((adminString: string) => { controlsConfig[adminString + 'Admins'] = ['', []] });
 
-    this.usersCtrl = this.fb.group(controlsConfig);
-
-    if (this.usersCtrlWatcher) {
-      this.usersCtrlWatcher.unsubscribe();
-    }
-    this.usersCtrlWatcher = this.usersCtrl.valueChanges.subscribe(() => {
-      this.filterUsers();
-    });
+    this.formGroup = this.fb.group(controlsConfig);
   }
 
-  filterUsers() {
-    let emailId = this.usersCtrl.get('search').value.replace(' ', '|').toLowerCase();
-    this.pageIndex = 0;
-    this.displayedUsers = this.users.filter(
-      user => (this.checkAgainstFilters(emailId, user))
-    );
+  filteredUsers(): Observable<User[]> {
+    return this.admin.getUsers()
+        .map(users => {
+          const emailId = this.formGroup.get('search').value.replace(' ', '|').toLowerCase();
+          return users.filter(
+            user => (this.checkAgainstFilters(emailId, user))
+          );
+        })
+        .shareReplay(1);
   }
 
   checkAgainstFilters(emailId, user) {
     let userData = user[user.uid];
-    if (!userData) return true;
+    if (!userData) return false;
 
     for (const admin of this.adminsStrings){
-      if (userData.admin[admin + '-admin'] != true && this.usersCtrl.get(admin + 'Admins').value) {
+      if (!this.isUserAdminOf(user, admin) && this.formGroup.get(admin + 'Admins').value) {
         return false;
       }
     }
@@ -93,17 +65,16 @@ export class AdminUsersComponent implements OnInit {
     return emailId2.includes(emailId);
   }
 
+  setExpanded(uid: string){
+    this.expandedUserUid = uid;
+  }
+
   setUserAdminOf(email: string, uid: string, of: string, checked: boolean) {
-    this.admins[of][uid] = checked;
     this.admin.setUserAdminOf(email, uid, of, checked);
   }
 
   isUserAdminOf(user: any, of: string) {
-    if (typeof this.admins[of][user.uid] === 'undefined'){
-      return user[user.uid]['admin'][of + '-admin'] || false;
-    } else {
-      return this.admins[of][user.uid];
-    }
+    return user[user.uid]['admin'][of + '-admin'] === true;
   }
 
   getName(user: any): string {
@@ -112,9 +83,5 @@ export class AdminUsersComponent implements OnInit {
       .split('@')[0].split('.').join(' ')
       .replace(/[0-9]/g, "")
     );
-  }
-
-  updateList(event) {
-    this.pageIndex = event.pageIndex;
   }
 }

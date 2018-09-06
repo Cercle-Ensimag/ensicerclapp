@@ -14,7 +14,11 @@ if (isset($_GET['action']) && $_GET['action']=='fetch_ade' && !empty($_POST['use
 }
 else if (isset($_GET['action']) && $_GET['action']=='fetch_edt' && !empty($_GET['resources'])){
   $resources = $_GET['resources'];
-  $ics_content = file_get_contents("https://edt.grenoble-inp.fr/directCal/2017-2018/exterieur?resources=$resources");
+  $year = date('Y');
+  if (date('m') < 8) {
+    $year = $year - 1;
+  }
+  $ics_content = file_get_contents("https://edt.grenoble-inp.fr/directCal/".$year."-".($year + 1)."/exterieur?resources=$resources");
   echo $ics_content;
 }
 else {

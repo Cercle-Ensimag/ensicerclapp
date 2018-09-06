@@ -1,8 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
-
-import { AuthService } from '../../auth/auth-service/auth.service';
-import { DicoService } from '../../language/dico.service';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-legal-notice',
@@ -11,16 +7,7 @@ import { DicoService } from '../../language/dico.service';
 })
 export class LegalNoticeComponent implements OnInit {
 
-  constructor(
-    private location: Location,
-    public auth: AuthService,
-    public d: DicoService
-  ) { }
+  constructor( ) { }
 
-  ngOnInit() {
-  }
-
-  back() {
-    this.location.back();
-  }
+  ngOnInit() { }
 }

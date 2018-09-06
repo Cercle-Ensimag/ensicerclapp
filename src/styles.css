@@ -43,6 +43,10 @@ body {
   margin: auto;
 }
 
+.container.withCalendar {
+  max-width: unset !important;
+}
+
 .container > * {
   width: 100%;
 }

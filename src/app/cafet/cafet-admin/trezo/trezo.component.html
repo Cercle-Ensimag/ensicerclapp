@@ -1,111 +1,107 @@
 <!-- Loading -->
-<mat-card *ngIf="nbOfAllAccounts == 0" class="spinner-wrapper">
-  <mat-spinner class="spinner"></mat-spinner>
-</mat-card>
+<app-loading [loading]="nbOfAllAccounts | async"></app-loading>
 
-<div *ngIf="nbOfAllAccounts > 0">
+<div *ngIf="nbOfAllAccounts | async">
   <mat-card>
-    <div>{{ d.format(d.l.numberOfAllAccountsLabel, nbOfAllAccounts) }}</div>
-    <div>{{ d.format(d.l.totalOfAllAccountsLabel, totalOnAccounts.toFixed(2)) }}</div>
+    <div>Comptes enregistrés : {{ nbOfAllAccounts | async}}</div>
+    <div>Total sur les comptes : {{ totalOnAccounts | async }}€</div>
   </mat-card>
 
   <mat-card>
-    <div>{{ d.format(d.l.numberOfNegAccountsLabel, nbOfNegAccounts) }}</div>
-    <div>{{ d.format(d.l.totalOfNegativeAccountsLabel, totalOfNegative.toFixed(2)) }}</div>
+    <div>Comptes enregistrés dans le posiitif : {{ nbOfPosAccounts | async}}</div>
+    <div>Total sur les comptes dans le positif : {{ totalOfPositive | async }}€</div>
   </mat-card>
 
   <mat-card>
-    <div>{{ d.format(d.l.numberOfPosAccountsLabel, nbOfPosAccounts) }}</div>
-    <div>{{ d.format(d.l.totalOfPositiveAccountsLabel, totalOfPositive.toFixed(2)) }}</div>
+    <div>Comptes enregistrés dans le négatif : {{ nbOfNegAccounts | async}}</div>
+    <div>Total sur les comptes dans le négatif : {{ totalOfNegative | async }}€</div>
   </mat-card>
 </div>
 
 <!-- Loading -->
-<mat-card *ngIf="!trezo" class="spinner-wrapper">
-  <mat-spinner class="spinner"></mat-spinner>
-</mat-card>
+<app-loading [loading]="cafet.getTrezAccounts() | async"></app-loading>
 
-<div *ngIf="trezo">
-
+<div *ngIf="cafet.getTrezAccounts() | async as users">
   <!-- Users display, small screens -->
+  <mat-accordion *ngIf="!media.largeSize" class="client-group">
+    <mat-expansion-panel *ngFor="let user of users">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          {{ cafet.getUserName(user) }}
+        </mat-panel-title>
+        <mat-panel-description>
+          {{ user.credit }}€
+        </mat-panel-description>
+      </mat-expansion-panel-header>
 
-  <div *ngIf="media.mobileSize">
-    <mat-card *ngFor="let user of trezo">
-      <div class="client-small">
-        <span class="text">
-          <span>{{ cafet.getUserName(user) }}</span>
-        </span>
+      <form (ngSubmit)="transaction(user, false)">
         <span>
-          <button mat-icon-button (click)="openHistory(user)" class="history" matSuffix><mat-icon>history</mat-icon></button>
-          <span>{{ user.credit.toFixed(2) }}€</span>
+          <mat-form-field>
+            <input type='number' matInput placeholder="{{ d.l.substractButtonLabel }}" [formControl]="controls[user.emailId].sub" autocomplete="off">
+          </mat-form-field>
+          <button mat-button
+                  type="submit"
+                  [disabled]="controls[user.emailId].sub.invalid"
+                  color="primary"
+          >{{ d.l.substractButtonLabel }}</button>
         </span>
-      </div>
+      </form>
+      <form (ngSubmit)="transaction(user, true)">
+        <span>
+          <mat-form-field>
+            <input type='number' matInput placeholder="{{ d.l.addButtonLabel }}" [formControl]="controls[user.emailId].add" autocomplete="off">
+          </mat-form-field>
+          <button mat-button
+                  type="submit"
+                  [disabled]="controls[user.emailId].add.invalid"
+                  color="primary"
+          >{{ d.l.addButtonLabel }}</button>
+        </span>
+      </form>
+      <button *ngIf="editing" mat-icon-button (click)="openEditor(user)" matSuffix><mat-icon>edit</mat-icon></button>
+      <button mat-icon-button (click)="openHistory(user)" matSuffix><mat-icon>history</mat-icon></button>
+    </mat-expansion-panel>
+  </mat-accordion>
 
-      <span>
+  <!-- Users display, large screens -->
+  <div *ngIf="media.largeSize" class="client-group">
+    <mat-card *ngFor="let user of users">
+      <div class="client-large">
+      <span class="text">
+        <span>{{ cafet.getUserName(user) }}</span>
+      </span>
+        <span>
+          <button *ngIf="editing" mat-icon-button (click)="openEditor(user)" matSuffix><mat-icon>edit</mat-icon></button>
+          <button mat-icon-button (click)="openHistory(user)" class="history" matSuffix><mat-icon>history</mat-icon></button>
+        <span>{{ user.credit.toFixed(2) }}€</span>
+      </span>
+        <span>
         <form (ngSubmit)="transaction(user, false)">
           <mat-form-field>
             <input type='number' matInput placeholder="{{ d.l.substractButtonLabel }}" [formControl]="controls[user.emailId].sub" autocomplete="off">
           </mat-form-field>
           <button mat-button
-            type="submit"
-            [disabled]="controls[user.emailId].sub.invalid"
-            color="primary"
+                  type="submit"
+                  [disabled]="controls[user.emailId].sub.invalid"
+                  color="primary"
           >{{ d.l.substractButtonLabel }}</button>
         </form>
       </span>
 
-      <span>
+        <span>
         <form (ngSubmit)="transaction(user, true)">
           <mat-form-field>
             <input type='number' matInput placeholder="{{ d.l.addButtonLabel }}" [formControl]="controls[user.emailId].add" autocomplete="off">
           </mat-form-field>
           <button mat-button
-            type="submit"
-            [disabled]="controls[user.emailId].add.invalid"
-            color="primary"
+                  type="submit"
+                  [disabled]="controls[user.emailId].add.invalid"
+                  color="primary"
           >{{ d.l.addButtonLabel }}</button>
         </form>
       </span>
-    </mat-card>
-  </div>
-
-  <!-- Users display, large screens -->
-  <div *ngIf="!media.mobileSize">
-    <mat-card *ngFor="let user of trezo">
-      <div class="client-large">
-        <span class="text">
-          <span>{{ cafet.getUserName(user) }}</span>
-        </span>
-        <span>
-          <button mat-icon-button (click)="openHistory(user)" class="history" matSuffix><mat-icon>history</mat-icon></button>
-          <span>{{ user.credit.toFixed(2) }}€</span>
-        </span>
-        <span>
-          <form (ngSubmit)="transaction(user, false)">
-            <mat-form-field>
-              <input type='number' matInput placeholder="{{ d.l.substractButtonLabel }}" [formControl]="controls[user.emailId].sub" autocomplete="off">
-            </mat-form-field>
-            <button mat-button
-              type="submit"
-              [disabled]="controls[user.emailId].sub.invalid"
-              color="primary"
-            >{{ d.l.substractButtonLabel }}</button>
-          </form>
-        </span>
-
-        <span>
-          <form (ngSubmit)="transaction(user, true)">
-            <mat-form-field>
-              <input type='number' matInput placeholder="{{ d.l.addButtonLabel }}" [formControl]="controls[user.emailId].add" autocomplete="off">
-            </mat-form-field>
-            <button mat-button
-              type="submit"
-              [disabled]="controls[user.emailId].add.invalid"
-              color="primary"
-            >{{ d.l.addButtonLabel }}</button>
-          </form>
-        </span>
       </div>
     </mat-card>
   </div>
 </div>
+

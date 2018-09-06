@@ -1,29 +1,16 @@
-<!-- Loading -->
-<mat-card *ngIf="!users" class="spinner-wrapper">
-  <mat-spinner class="spinner"></mat-spinner>
+<!-- Header -->
+<mat-card>
+  <mat-form-field [class.large]="!media.mobileSize">
+    <input matInput placeholder="{{ d.l.addCafetRespInfo }}" [formControl]="emailCtrl" autocomplete="off">
+    <button mat-icon-button matSuffix><mat-icon>search</mat-icon></button>
+  </mat-form-field>
 </mat-card>
 
-<div *ngIf="users">
-  <!-- Header -->
-  <mat-card>
-    <form [formGroup]="searchCtrl">
-
-      <span *ngIf="error" class="error">{{ error }}</span>
-
-      <div class="container">
-        <mat-form-field>
-          <input matInput placeholder="{{ d.l.cafetSearchInfo }}" formControlName="email" autocomplete="off">
-          <button mat-icon-button matSuffix><mat-icon>search</mat-icon></button>
-        </mat-form-field>
-      </div>
-
-    </form>
-  </mat-card>
-
-  <!-- Users display, large screens -->
-  <mat-card *ngIf="displayedUsers.length > 0">
+<mat-card>
+  <app-paged-list [list]="filteredUsers() | async" emptyMessage="Aucun utilisateur archivé ne correspond." #page>
+    <!-- Users display, large screens -->
     <mat-list>
-      <mat-list-item *ngFor="let user of displayedUsers | slice:pageIndex*pageSize:(pageIndex+1)*pageSize">
+      <mat-list-item *ngFor="let user of page.truncatedList()">
         <div class="grid">
           <span>{{ cafet.getUserName(user) }}</span>
           <span>{{ user.credit.toFixed(2) }}€</span>
@@ -32,13 +19,5 @@
         </div>
       </mat-list-item>
     </mat-list>
-  </mat-card>
-
-  <!-- Paginator -->
-  <mat-paginator
-    [length]="displayedUsers.length"
-    [pageSize]="pageSize"
-    (page)="updateList($event)"
-    class="client-group"
-  ></mat-paginator>
-<div>
+  </app-paged-list>
+</mat-card>

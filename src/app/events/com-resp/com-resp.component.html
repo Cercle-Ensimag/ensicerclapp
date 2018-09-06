@@ -1,4 +1,4 @@
-<app-paged-grid [list]="events.events" #pages>
+<app-paged-grid [list]="events.getEvents() | async" #pages>
   <app-event-card *ngFor="let event of pages.truncatedList()"
                   [event]="event"
                   [admin]="true">

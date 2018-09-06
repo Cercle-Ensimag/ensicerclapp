@@ -1,4 +1,4 @@
-<app-paged-grid [list]="annonces.annonces" #pages>
+<app-paged-grid [list]="annonces.getAnnonces() | async" #pages>
   <app-annonce-card *ngFor="let annonce of pages.truncatedList()"
                     [annonce]="annonce"
                     [admin]="true">

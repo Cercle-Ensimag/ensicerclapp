@@ -1,4 +1,4 @@
-<div *ngIf="auth.getCurrentUser()" class="infos">
+<div *ngIf="auth.isLogged() | async" class="infos">
   <mat-accordion>
     <mat-expansion-panel>
       <mat-expansion-panel-header>
@@ -19,13 +19,12 @@
   </mat-accordion>
 </div>
 
-<div *ngIf="!auth.getCurrentUser()" class="infos">
+<div *ngIf="!auth.isLogged() | async" class="infos">
     <mat-card>
         <app-legal-notice></app-legal-notice>
     </mat-card>
 </div>
 
-<button mat-fab class="mat-fab-bottom-right" color="primary"
-        (click)="location.back()">
-  <mat-icon>arrow_back</mat-icon>
-</button>
+<div class="mat-fab-bottom-right">
+  <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
+</div>

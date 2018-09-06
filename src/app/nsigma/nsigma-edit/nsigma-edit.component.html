@@ -1,25 +1,24 @@
-<app-loading [loading]="nsigmaAnnonce"></app-loading>
+<!-- Loading -->
+<app-loading [loading]="formGroup"></app-loading>
 
 <!-- Nsigma annonce display -->
-<mat-card *ngIf="nsigmaAnnonce">
-  <form [formGroup]="nsigmaAnnonceCtrl" class="container">
-
-    <span *ngIf="error" class="error">{{ error }}</span>
+<mat-card *ngIf="formGroup">
+  <form [formGroup]="formGroup" class="container">
 
     <mat-form-field>
       <input matInput placeholder="{{ d.l.nsigmaTitleLabel }}" formControlName="title" autocomplete="off">
-      <mat-error *ngIf="nsigmaAnnonceCtrl.get('title').invalid">{{ d.l.nsigmaTitleTooShortError }}</mat-error>
+      <mat-error *ngIf="formGroup.get('title').invalid">{{ d.l.nsigmaTitleTooShortError }}</mat-error>
     </mat-form-field>
 
     <mat-form-field>
       <textarea matInput placeholder="{{ d.l.nsigmaDescriptionLabel }}" formControlName="description"></textarea>
-      <mat-error *ngIf="nsigmaAnnonceCtrl.get('description').invalid">{{ d.l.nsigmaDescriptionError }}</mat-error>
+      <mat-error *ngIf="formGroup.get('description').invalid">{{ d.l.nsigmaDescriptionError }}</mat-error>
     </mat-form-field>
 
-    <markdown [data]="nsigmaAnnonceCtrl.get('description').value"></markdown>
+    <markdown [data]="formGroup.get('description').value"></markdown>
 
     <mat-form-field>
-      <mat-select placeholder="{{ d.l.nsigmaTypeLabel }}" formControlName="type" [(ngModel)]="nsigmaAnnonce.type">
+      <mat-select placeholder="{{ d.l.nsigmaTypeLabel }}" formControlName="type">
         <mat-option [value]="6">Général</mat-option>
         <mat-option [value]="0">Web</mat-option>
         <mat-option [value]="1">Mobile</mat-option>
@@ -28,7 +27,7 @@
         <mat-option [value]="4">Bureautique</mat-option>
         <mat-option [value]="5">Sécurité</mat-option>
       </mat-select>
-      <mat-error *ngIf="nsigmaAnnonceCtrl.get('type').invalid">{{ d.l.nsigmaTypeError }}</mat-error>
+      <mat-error *ngIf="formGroup.get('type').invalid">{{ d.l.nsigmaTypeError }}</mat-error>
     </mat-form-field>
 
     <div class="grid-container">
@@ -36,49 +35,49 @@
         <input matInput [matDatepicker]="picker1" placeholder="{{ d.l.nsigmaStartLabel }}" formControlName="start" autocomplete="off">
         <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
         <mat-datepicker #picker1></mat-datepicker>
-        <mat-error *ngIf="nsigmaAnnonceCtrl.get('start').invalid">{{ d.l.nsigmaStartError }}</mat-error>
+        <mat-error *ngIf="formGroup.get('start').invalid">{{ d.l.nsigmaStartError }}</mat-error>
       </mat-form-field>
 
       <mat-form-field style="max-width: 200px">
         <input matInput [matDatepicker]="picker2" placeholder="{{ d.l.nsigmaEndLabel }}" formControlName="end" autocomplete="off">
         <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
         <mat-datepicker #picker2></mat-datepicker>
-        <mat-error *ngIf="nsigmaAnnonceCtrl.get('end').invalid">{{ d.l.nsigmaEndError }}</mat-error>
+        <mat-error *ngIf="formGroup.get('end').invalid">{{ d.l.nsigmaEndError }}</mat-error>
       </mat-form-field>
     </div>
 
     <mat-form-field>
       <input matInput placeholder="{{ d.l.nsigmaTechnologiesLabel }}" formControlName="technologies" autocomplete="off">
-      <mat-error *ngIf="nsigmaAnnonceCtrl.get('technologies').invalid">{{ d.l.nsigmaTechnologiesError }}</mat-error>
+      <mat-error *ngIf="formGroup.get('technologies').invalid">{{ d.l.nsigmaTechnologiesError }}</mat-error>
     </mat-form-field>
 
     <mat-form-field>
       <input matInput placeholder="{{ d.l.nsigmaDifficultyLabel }}" formControlName="difficulty" autocomplete="off">
-      <mat-error *ngIf="nsigmaAnnonceCtrl.get('difficulty').invalid">{{ d.l.nsigmaDifficultyError }}</mat-error>
+      <mat-error *ngIf="formGroup.get('difficulty').invalid">{{ d.l.nsigmaDifficultyError }}</mat-error>
     </mat-form-field>
 
     <mat-form-field>
       <input type="number" matInput placeholder="{{ d.l.nsigmaRemunerationLabel }}" formControlName="remuneration" autocomplete="off">
-      <mat-error *ngIf="nsigmaAnnonceCtrl.get('remuneration').invalid">{{ d.l.nsigmaRemunerationError }}</mat-error>
+      <mat-error *ngIf="formGroup.get('remuneration').invalid">{{ d.l.nsigmaRemunerationError }}</mat-error>
     </mat-form-field>
 
     <mat-form-field>
       <input matInput placeholder="{{ d.l.nsigmaFormLabel }}" formControlName="form" autocomplete="off">
-      <mat-error *ngIf="nsigmaAnnonceCtrl.get('form').invalid">{{ d.l.nsigmaFormError }}</mat-error>
+      <mat-error *ngIf="formGroup.get('form').invalid">{{ d.l.nsigmaFormError }}</mat-error>
     </mat-form-field>
 
-    <mat-slide-toggle formControlName="done" [checked]="nsigmaAnnonce.done" color="primary">
-      <span *ngIf="!nsigmaAnnonceCtrl.get('done').value">{{ d.l.nsigmaEnCours }}</span>
-      <span *ngIf="nsigmaAnnonceCtrl.get('done').value">{{ d.l.nsigmaFinie }}</span>
+    <mat-slide-toggle formControlName="done" color="primary">
+      <span *ngIf="!formGroup.get('done').value">{{ d.l.nsigmaEnCours }}</span>
+      <span *ngIf="formGroup.get('done').value">{{ d.l.nsigmaFinie }}</span>
     </mat-slide-toggle>
   </form>
 </mat-card>
 
 <div class="mat-fab-bottom-right">
   <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
-  <button *ngIf="nsigmaAnnonce" mat-fab color="primary"
+  <button *ngIf="formGroup" mat-fab color="primary"
           (click)="submit()"
-          [disabled]="nsigmaAnnonceCtrl.invalid || nsigmaAnnonceCtrl.pristine">
+          [disabled]="formGroup.invalid || formGroup.pristine">
     <mat-icon>save</mat-icon>
   </button>
 </div>

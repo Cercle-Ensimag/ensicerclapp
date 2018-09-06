@@ -7,6 +7,9 @@ import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
 import {DicoService} from '../../language/dico.service';
 import {MatSnackBar} from '@angular/material';
+import {Subject} from 'rxjs/Subject';
+
+import 'rxjs/add/operator/takeUntil';
 
 @Component({
   selector: 'app-annonces-edit',
@@ -14,76 +17,72 @@ import {MatSnackBar} from '@angular/material';
   styleUrls: ['./annonces-edit.component.css']
 })
 export class AnnoncesEditComponent implements OnInit, OnDestroy {
-  annonceCtrl: FormGroup;
+  private unsubscribe: Subject<void> = new Subject();
 
-  annonce: Annonce;
-  annonceWatcher: any;
-  annonceCtrlWatcher: any;
-  error: string;
+  public id: string;
+  public formGroup: FormGroup;
 
   constructor(
     private auth: AuthService,
-    private tools: ToolsService,
     private annonces: AnnoncesService,
     private route: ActivatedRoute,
-    private location: Location,
     private fb: FormBuilder,
-    public d: DicoService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+
+    public tools: ToolsService,
+    public location: Location,
+    public d: DicoService
   ) {}
 
   ngOnInit() {
-    const id = this.route.snapshot.paramMap.get('id');
-    this.annonceWatcher = this.watchAnnonce(id);
+    this.id = this.route.snapshot.paramMap.get('id');
+    this.initFormGroup();
   }
 
   ngOnDestroy() {
-    this.annonceWatcher.unsubscribe();
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 
-  watchAnnonce(annonceId: string) {
-    return this.annonces.getAnnonce(annonceId).subscribe((annonce) => {
-      if (annonce) {
-        this.annonce = annonce;
-      } else {
-        this.annonce = new Annonce();
-        this.annonce.id = this.annonces.getAnnonceId();
-      }
-      this.annonceCtrl = this.fb.group({
-        title: [this.annonce.title || '', [Validators.required, Validators.maxLength(50)]],
-        description: [this.annonce.description || '', [Validators.required, Validators.maxLength(5000)]],
-        type: [this.annonce.type || 2, [Validators.required, Validators.min(0), Validators.max(2)]],
-        start: [new Date(this.annonce.start) || '', [Validators.required, this.tools.dateValidator]],
-        length: [this.annonce.length || '', [Validators.required, Validators.maxLength(20)]],
-        technologies: [this.annonce.technologies || '', [Validators.required, Validators.maxLength(100)]],
-        contact: [this.annonce.contact || '', [Validators.required, Validators.maxLength(200)]],
-        author: [this.annonce.author || '', [Validators.required, Validators.maxLength(30)]],
-        done: [this.annonce.done || false, [Validators.required]]
-      })
-      if (this.annonceCtrlWatcher) {
-        this.annonceCtrlWatcher.unsubscribe();
-      }
-      this.annonceCtrlWatcher = this.annonceCtrl.valueChanges.subscribe(changes => {});
-    });
+  initFormGroup() {
+    this.annonces.getAnnonce(this.id)
+      .takeUntil(this.unsubscribe)
+      .subscribe((annonce) => {
+        if (!annonce) {
+          annonce = new Annonce();
+          annonce.type = 2;
+          this.id = this.annonces.getAnnonceId();
+        }
+        this.formGroup = this.fb.group({
+          title: [annonce.title || '', [Validators.required, Validators.maxLength(50)]],
+          description: [annonce.description || '', [Validators.required, Validators.maxLength(5000)]],
+          type: [annonce.type, [Validators.required, Validators.min(0), Validators.max(2)]],
+          start: [new Date(annonce.start) || '', [Validators.required, this.tools.dateValidator]],
+          length: [annonce.length || '', [Validators.required, Validators.maxLength(20)]],
+          technologies: [annonce.technologies || '', [Validators.required, Validators.maxLength(100)]],
+          contact: [annonce.contact || '', [Validators.required, Validators.maxLength(200)]],
+          author: [annonce.author || '', [Validators.required, Validators.maxLength(30)]],
+          done: [annonce.done || false, [Validators.required]]
+        });
+      });
   }
 
   submit() {
-    if (!this.annonceCtrl.invalid) {
-      const annonce = {
-        id: this.annonce.id,
-        title: this.annonceCtrl.get('title').value,
-        description: this.annonceCtrl.get('description').value,
-        type: this.annonceCtrl.get('type').value,
-        start: this.annonceCtrl.get('start').value.getTime(),
-        length: this.annonceCtrl.get('length').value,
-        technologies: this.annonceCtrl.get('technologies').value,
-        contact: this.annonceCtrl.get('contact').value,
-        author: this.annonceCtrl.get('author').value,
-        done: this.annonceCtrl.get('done').value
-      };
-      this.annonces.setAnnonce(annonce).then(() => {
-        this.snackBar.open(this.d.l.changesApplied, 'ok', {duration: 2000});
-      });
-    }
+    const annonce = {
+      id: this.id,
+      title: this.formGroup.get('title').value,
+      description: this.formGroup.get('description').value,
+      type: this.formGroup.get('type').value,
+      start: this.formGroup.get('start').value.getTime(),
+      length: this.formGroup.get('length').value,
+      technologies: this.formGroup.get('technologies').value,
+      contact: this.formGroup.get('contact').value,
+      author: this.formGroup.get('author').value,
+      done: this.formGroup.get('done').value
+    };
+    this.annonces.setAnnonce(annonce).then(() => {
+      this.snackBar.open(this.d.l.changesApplied, 'ok', {duration: 2000});
+      this.initFormGroup();
+    });
   }
 }

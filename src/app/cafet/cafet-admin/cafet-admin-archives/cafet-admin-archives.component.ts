@@ -9,6 +9,8 @@ import { DicoService } from '../../../language/dico.service';
 
 import { CafetHistoryComponent } from '../../cafet-history/cafet-history.component';
 import { EditCafetUserComponent } from '../edit-cafet-user/edit-cafet-user.component';
+import {Observable} from 'rxjs/Observable';
+import {Assessor} from '../../../vote/vote-admin/vote-admin.component';
 
 @Component({
   selector: 'app-cafet-admin-archives',
@@ -16,90 +18,39 @@ import { EditCafetUserComponent } from '../edit-cafet-user/edit-cafet-user.compo
   styleUrls: ['./cafet-admin-archives.component.css']
 })
 export class CafetAdminArchivesComponent implements OnInit {
-
-  users: CafetUser[];
-  displayedUsers: CafetUser[] = [];
-  usersWatcher: any;
-
-  searchCtrl: FormGroup;
-  searchWatcher1: any;
-  searchWatcher2: any;
-
-  pageIndex: number = 0;
-  pageSize: number = 20;
-  error: string;
+  public emailCtrl: FormControl;
 
   constructor(
+    private fb: FormBuilder,
+
     public cafet: CafetService,
     public tools: ToolsService,
     public media: DeviceSizeService,
-    private fb: FormBuilder,
     public dialog: MatDialog,
     public d: DicoService
   ) { }
 
   ngOnInit() {
-    this.createSearchForm();
-    this.usersWatcher = this.watchUsers();
+    this.emailCtrl = new FormControl('', [Validators.email]);
   }
 
-  ngOnDestroy() {
-    this.usersWatcher.unsubscribe();
-  }
-
-  watchUsers() {
-    return this.cafet.getArchivesUsers().subscribe(users => {
-      this.users = users;
-      this.sortUsers(this.getSearchEmail());
-    })
-  }
-
-  createSearchForm() {
-    this.searchCtrl = this.fb.group({
-      email: ['', [Validators.email]]
-    });
-    if (this.searchWatcher1) {
-      this.searchWatcher1.unsubscribe();
-    }
-    this.searchWatcher1 = this.searchCtrl.get('email').valueChanges.subscribe((email) => {
-      this.sortUsers(email);
-    });
-    if (this.searchWatcher2) {
-      this.searchWatcher2.unsubscribe();
-    }
-    this.searchWatcher1 = this.searchCtrl.valueChanges.subscribe(() => {
-      this.error = null;
-    });
-  }
-
-  getSearchEmail() {
-    return this.searchCtrl.get('email').value;
-  }
-
-  sortUsers(email: string) {
-    let emailId = this.tools.getEmailIdFromEmail(email);
-    this.pageIndex = 0;
-    this.displayedUsers = this.users.filter(
-      user => (
-        user.emailId.includes(emailId)
-        || this.cafet.getUserName(user).includes(this.tools.titleCase(email))
-      )
-    );
-  }
-
-  updateList(event) {
-    this.pageIndex = event.pageIndex;
+  filteredUsers(): Observable<CafetUser[]> {
+    let emailId = this.tools.getEmailIdFromEmail(this.emailCtrl.value.split('@')[0]);
+    return this.cafet.getArchivesUsers()
+      .map(users => users.filter(
+        user => user.emailId.includes(emailId)
+      ));
   }
 
   openHistory(user: CafetUser): void {
-    let dialogRef = this.dialog.open(CafetHistoryComponent, {
-      data: user,
+    this.dialog.open(CafetHistoryComponent, {
+      data: {user: user, day: false},
       width: '450px'
     });
   }
 
   openEditor(user: CafetUser): void {
-    let dialogRef = this.dialog.open(EditCafetUserComponent, {
+    this.dialog.open(EditCafetUserComponent, {
       data: user,
       width: '450px'
     });

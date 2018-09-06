@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 import {AuthService, Profile} from '../auth/auth-service/auth.service';
 import {DicoService} from '../language/dico.service';
@@ -7,16 +7,20 @@ import {DeleteDialogComponent} from '../shared-components/delete-dialog/delete-d
 import {UpdatePasswordDialogComponent} from './components/update-password-dialog/update-password-dialog.component';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {Location} from '@angular/common';
+import {Observable, Subject} from '../../../node_modules/rxjs';
+import {User} from 'firebase/app';
 
+import 'rxjs/add/operator/takeUntil';
 
 @Component({
   selector: 'app-account',
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.css']
 })
-export class AccountComponent implements OnInit {
-  password_ctrl: FormControl;
-  formGroup: FormGroup = null;
+export class AccountComponent implements OnInit, OnDestroy {
+  private unsubscribe: Subject<void> = new Subject();
+
+  public formGroup: FormGroup;
 
   constructor(
     private auth: AuthService,
@@ -24,27 +28,35 @@ export class AccountComponent implements OnInit {
     private fb: FormBuilder,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private location: Location
+
+    public location: Location
   ) { }
 
   ngOnInit() {
-    this.auth.waitForAccessToXToBeSet('profile')
-    .take(1)
-    .subscribe(_ => {
-      this.formGroup = this.fb.group({
-        first_ctrl: [this.auth.profile.name.firstName, [Validators.required]],
-        last_ctrl: [this.auth.profile.name.lastName, [Validators.required]],
-        login_ctrl: [this.auth.profile.name.login, []],
-        email_ctrl: [{ value: this.auth.getCurrentUser().email, disabled: true }, [Validators.required, Validators.email, this.auth.emailDomainValidator]]
+    Observable.combineLatest(
+      this.auth.getProfile(),
+      this.auth.getLoggedUser())
+      .takeUntil(this.unsubscribe)
+      .subscribe(([profile, user]: [Profile, User]) => {
+        this.formGroup = this.fb.group({
+          firstname: [profile.name.firstName, [Validators.required]],
+          lastname: [profile.name.lastName, [Validators.required]],
+          login: [profile.name.login, []],
+          email: [{ value: user.email, disabled: true }, [Validators.required, Validators.email, this.auth.emailDomainValidator]]
+        });
       });
-    })
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 
   updateProfile() {
     this.auth.updateProfile(new Profile(
-      this.formGroup.get('first_ctrl').value,
-      this.formGroup.get('last_ctrl').value,
-      this.formGroup.get('login_ctrl').value,
+      this.formGroup.get('firstname').value,
+      this.formGroup.get('lastname').value,
+      this.formGroup.get('login').value,
       ""
     ))
     .then(_ => {

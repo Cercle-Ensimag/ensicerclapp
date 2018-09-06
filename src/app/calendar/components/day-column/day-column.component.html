@@ -1,0 +1,33 @@
+<app-loading [loading]="cal.getMyEventsForDay(date) | async"></app-loading>
+
+<div class="day-column">
+  <mat-card *ngIf="media.largeSize" class="header center">
+    <label>{{ date | date:d.l.shortDateFormat:'':d.l.locale | uppercase }}</label>
+  </mat-card>
+  <div *ngIf="cal.getMyEventsForDay(date) | async as events">
+    <div *ngIf="events.length; else noEvents">
+      <mat-card *ngFor="let event of events" class="event center"
+                [class.border]="event.isNow()"
+                [class.perso]="event.isPerso()" [class.assos]="event.isAssos()">
+        {{ event.title }}<br>
+        <label *ngIf="event.isSingleDay()">
+          {{ event.start | date:d.l.timeFormat:'':d.l.locale }} - {{ event.end | date:d.l.timeFormat:'':d.l.locale }}
+        </label>
+        <label *ngIf="!event.isSingleDay()">
+          {{ event.start | date:d.l.shortDateTimeFormat:'':d.l.locale }} <br>à<br> {{ event.end | date:d.l.shortDateTimeFormat:'':d.l.locale }}
+        </label>
+        <br>
+        {{ event.location }}<br>
+        <button mat-icon-button *ngIf="event.isAssos() && !editing" routerLink="/events/event/{{ event.id }}"><mat-icon>search</mat-icon></button>
+        <button mat-icon-button *ngIf="event.isPerso() && editing" routerLink="/calendrier/event/{{ event.id }}/edit"><mat-icon>edit</mat-icon></button>
+        <button mat-icon-button *ngIf="event.isPerso() && editing" (click)="removeEvent(event)"><mat-icon>delete</mat-icon></button>
+      </mat-card>
+    </div>
+    <ng-template #noEvents>
+      <mat-card class="event no-events center">
+        Rien de prévu <img src="assets/img/icons/empty.png">
+      </mat-card>
+    </ng-template>
+  </div>
+
+</div>

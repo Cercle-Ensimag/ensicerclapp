@@ -6,7 +6,8 @@
       <input matInput placeholder="Nom d'utilisateur" #username>
     </mat-form-field><br>
     <mat-form-field>
-      <input matInput type="password" placeholder="Mot de passe" #password>
+      <input matInput [type]="hidePwd ? 'password' : 'text'" placeholder="Mot de passe" #password>
+      <mat-icon matSuffix (click)="hidePwd = !hidePwd">{{hidePwd ? 'visibility' : 'visibility_off'}}</mat-icon>
     </mat-form-field>
   </form>
 </mat-dialog-content>

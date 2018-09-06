@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
-import { AngularFireDatabase } from 'angularfire2/database';
+import {Injectable} from '@angular/core';
+import {AngularFireDatabase} from 'angularfire2/database';
 
-import { ToolsService } from '../../providers/tools.service';
-import { Journalist, Group } from '../actu-admin/actu-admin.component';
+import {ToolsService} from '../../providers/tools.service';
+import {Group, Journalist} from '../actu-admin/actu-admin.component';
+import {Observable} from '../../../../node_modules/rxjs';
 
 export class Actu {
   id: string;
@@ -17,40 +18,34 @@ export class Actu {
 
 @Injectable()
 export class ActusService {
-
-  actus: Actu[];
-  actusWatcher: any;
+  private _actus: Observable<Actu[]>;
+  private _journalists: Observable<Journalist[]>;
+  private _actu: { [$actuId: string]: Observable<Actu> } = {};
 
   constructor(
     private db: AngularFireDatabase,
     private tools: ToolsService
   ) { }
 
-  start() {
-    if (this.actusWatcher) {
-      this.stop();
+  getActus() {
+    if (!this._actus){
+      this._actus = this.db
+        .list<Actu>('actus/actus')
+        .valueChanges()
+        .map(annonces => annonces.reverse())
+        .shareReplay(1);
     }
-    this.actusWatcher = this.watchActus();
-  }
-
-  stop() {
-    if (this.actusWatcher) {
-      this.actusWatcher.unsubscribe();
-      this.actusWatcher = null;
-    }
-  }
-
-  watchActus() {
-    return this.db.list<Actu>('actus/actus').valueChanges().subscribe(
-      actus => {
-        this.actus = actus.reverse() || [];
-      },
-      err => {}
-    );
+    return this._actus;
   }
 
   getActu(actuId: string) {
-    return this.db.object<Actu>('actus/actus/'+actuId).valueChanges();
+    if (!this._actu[actuId]){
+      this._actu[actuId] = this.db
+        .object<Actu>('actus/actus/'+actuId)
+        .valueChanges()
+        .shareReplay(1);
+    }
+    return this._actu[actuId];
   }
 
   getActuId() {
@@ -66,7 +61,14 @@ export class ActusService {
   }
 
   getJournalists() {
-    return this.db.list<Journalist>('actus/journalists/users').valueChanges();
+    if (!this._journalists){
+      this._journalists = this.db
+        .list<Journalist>('actus/journalists/users')
+        .valueChanges()
+        .map(annonces => annonces.reverse())
+        .shareReplay(1);
+    }
+    return this._journalists;
   }
 
   removeJournalist(emailId: string) {

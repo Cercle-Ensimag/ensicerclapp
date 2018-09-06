@@ -1,9 +1,10 @@
-import { Component, OnInit, HostBinding } from '@angular/core';
-import { Router } from '@angular/router';
-import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
-import { AuthService } from '../auth-service/auth.service';
-import { DicoService } from '../../language/dico.service';
+import {AuthService} from '../auth-service/auth.service';
+import {DicoService} from '../../language/dico.service';
+import {Location} from '@angular/common';
+import {Subject} from 'rxjs/Subject';
 
 @Component({
   selector: 'app-signup',
@@ -11,16 +12,19 @@ import { DicoService } from '../../language/dico.service';
   styleUrls: ['./signup.component.css']
 })
 export class SignUpComponent implements OnInit {
-  signUpCtrl: FormGroup;
-  hide = true;
+  private unsubscribe: Subject<void> = new Subject();
+
+  public formGroup: FormGroup;
+  public hidePassword: boolean = true;
 
   constructor(
-    public auth: AuthService,
-    private router: Router,
     private fb: FormBuilder,
+
+    public auth: AuthService,
+    public location: Location,
     public d: DicoService
   ) {
-    this.signUpCtrl = this.fb.group({
+    this.formGroup = this.fb.group({
       firstName: ['', [Validators.required]],
       lastName: ['', [Validators.required]],
       email: ['', [
@@ -32,36 +36,30 @@ export class SignUpComponent implements OnInit {
         Validators.required,
         Validators.minLength(6)
       ]]
-    })
-  }
-
-  getFirstName(): string {
-    return this.signUpCtrl.get('firstName').value;
-  }
-  getLastName(): string {
-    return this.signUpCtrl.get('lastName').value;
-  }
-  getEmail(): string {
-    return this.signUpCtrl.get('email').value;
-  }
-  getPassword(): string {
-    return this.signUpCtrl.get('password').value;
+    });
   }
 
   ngOnInit() {
     this.auth.resetError();
-    if (this.auth.getCurrentUser()){
-      this.router.navigateByUrl('/home');
-    }
+    this.auth.isLogged()
+      .takeUntil(this.unsubscribe)
+      .subscribe(is => {
+        if (is) this.auth.goToHome();
+      });
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 
   submit() {
-    if(this.signUpCtrl.valid){
+    if(this.formGroup.valid){
       this.auth.createAccount(
-        this.getEmail(),
-        this.getPassword(),
-        this.getFirstName(),
-        this.getLastName()
+        this.formGroup.get('email').value,
+        this.formGroup.get('password').value,
+        this.formGroup.get('firstName').value,
+        this.formGroup.get('lastName').value
       );
     }
   }

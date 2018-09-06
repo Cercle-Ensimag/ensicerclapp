@@ -1,24 +1,26 @@
+<app-loading [loading]="formGroup"></app-loading>
+
 <mat-card *ngIf="formGroup">
   <!-- Profile form -->
   <form [formGroup]="formGroup" class="container">
     <h2>{{ d.l.accountPageTitle }}</h2>
 
     <mat-form-field>
-      <input matInput placeholder="{{ d.l.firstNameLabel }}" formControlName="first_ctrl" autocomplete="off">
-      <mat-error *ngIf="formGroup.get('first_ctrl').invalid">{{ d.l.firstNameError }}</mat-error>
+      <input matInput placeholder="{{ d.l.firstNameLabel }}" formControlName="firstname" autocomplete="off">
+      <mat-error *ngIf="formGroup.get('firstname').invalid">{{ d.l.firstNameError }}</mat-error>
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput placeholder="{{ d.l.lastNameLabel }}" formControlName="last_ctrl" autocomplete="off">
-      <mat-error *ngIf="formGroup.get('last_ctrl').invalid">{{ d.l.lastNameError }}</mat-error>
+      <input matInput placeholder="{{ d.l.lastNameLabel }}" formControlName="lastname" autocomplete="off">
+      <mat-error *ngIf="formGroup.get('lastname').invalid">{{ d.l.lastNameError }}</mat-error>
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput placeholder="{{ d.l.nicknameLabel }}" formControlName="login_ctrl" autocomplete="off">
+      <input matInput placeholder="{{ d.l.nicknameLabel }}" formControlName="login" autocomplete="off">
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput placeholder="{{ d.l.emailLabel }}" formControlName="email_ctrl" autocomplete="off">
+      <input matInput placeholder="{{ d.l.emailLabel }}" formControlName="email" autocomplete="off">
     </mat-form-field>
   </form>
   <div class="center">

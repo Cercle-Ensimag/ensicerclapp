@@ -1,7 +1,7 @@
-<app-loading [loading]="annonce"></app-loading>
+<app-loading [loading]="annonces.getAnnonce(id) | async"></app-loading>
 
 <!-- Annonce display -->
-<mat-card *ngIf="annonce">
+<mat-card *ngIf="annonces.getAnnonce(id) | async as annonce">
   <mat-card-header>
     <img mat-card-avatar src="assets/img/annonces-types/{{ annonce.type }}.png">
     <mat-card-title>{{ annonce.done ? '[Finie] ' : ''}}{{ annonce.title }}</mat-card-title>
@@ -15,7 +15,6 @@
   </mat-card-content>
 </mat-card>
 
-<button mat-fab class="mat-fab-bottom-right" color="primary"
-        (click)="location.back()">
-  <mat-icon>arrow_back</mat-icon>
-</button>
+<div class="mat-fab-bottom-right">
+  <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
+</div>

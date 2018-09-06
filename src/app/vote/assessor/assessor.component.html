@@ -1,16 +1,13 @@
 <!-- Loading -->
-<mat-card *ngIf="!polls" class="spinner-wrapper">
-  <mat-spinner class="spinner"></mat-spinner>
-</mat-card>
+<app-loading [loading]="vote.getStartedPolls() | async"></app-loading>
 
 <!-- Assessor -->
-<div *ngIf="polls && !noPollAvailaible()">
+<div *ngIf="vote.getStartedPolls() | async as polls">
 
-  <!-- Header -->
-  <mat-card>
-    <form [formGroup]="searchCtrl">
-
-      <span *ngIf="error" class="error">{{ error }}</span>
+  <ng-container *ngIf="polls.length">
+    <!-- Header -->
+    <mat-card>
+      <form [formGroup]="formGroup">
 
       <span>
         <mat-form-field [class.large]="!media.mobileSize">
@@ -24,50 +21,45 @@
         </mat-form-field>
 
         <button mat-raised-button
-          type="submit"
-          (click)="markAsVoted()"
-          [disabled]="searchCtrl.invalid || !displayedUsers || displayedUsers.length != 0 || noPollSelected()"
-          color="primary"
+                type="submit"
+                (click)="markAsVoted()"
+                [disabled]="buttonDisabled() | async"
+                color="primary"
         >{{ d.l.votedButtonLabel }}</button>
       </span>
-    </form>
-  </mat-card>
-
-  <!-- Options -->
-  <mat-expansion-panel *ngIf="polls" [expanded]="true">
-    <mat-expansion-panel-header>
-      <mat-panel-title>{{ d.l.pollChoiceLabel }}</mat-panel-title>
-    </mat-expansion-panel-header>
-
-    <mat-nav-list style="text-align: right">
-      <div *ngFor="let poll of polls">
-        <a mat-list-item *ngIf="poll.started">
-          <mat-checkbox (change)="change(poll.id, $event.checked)" color="primary">{{ poll.title }}</mat-checkbox>
-        </a>
-      </div>
-    </mat-nav-list>
-  </mat-expansion-panel>
-
-  <!-- Loading -->
-  <mat-card *ngIf="!displayedUsers" class="spinner-wrapper">
-    <mat-spinner class="spinner"></mat-spinner>
-  </mat-card>
-
-  <!-- Users -->
-  <div *ngIf="displayedUsers">
-    <mat-card *ngIf="displayedUsers.length != 0">
-      <mat-nav-list>
-        <a mat-list-item *ngFor="let user of displayedUsers | slice:pageIndex*pageSize:(pageIndex+1)*pageSize" [innerHTML]="user"></a>
-      </mat-nav-list>
+      </form>
     </mat-card>
-    <mat-paginator [length]="displayedUsers.length"
-                  [pageSize]="pageSize"
-                  (page)="updateList($event)">
-    </mat-paginator>
-  </div>
-</div>
 
-<!-- No poll -->
-<mat-card *ngIf="polls && noPollAvailaible()">
-  <h3>{{ d.l.noPoll }}</h3>
-</mat-card>
+    <!-- Options -->
+    <mat-expansion-panel *ngIf="polls" [expanded]="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>{{ d.l.pollChoiceLabel }}</mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <mat-nav-list style="text-align: right">
+        <div *ngFor="let poll of polls">
+          <a mat-list-item *ngIf="poll.started">
+            <mat-checkbox (change)="change(poll.id, $event.checked)" color="primary">{{ poll.title }}</mat-checkbox>
+          </a>
+        </div>
+      </mat-nav-list>
+    </mat-expansion-panel>
+
+    <!-- Users -->
+    <mat-card>
+      <app-paged-list [list]="filteredUsers() | async" emptyMessage="Aucun utilisateur ne correspond. aux filtres" #page>
+        <mat-nav-list>
+          <a mat-list-item *ngFor="let user of page.truncatedList()">
+            {{ user.userName }} &#8226;<small>{{ user.pollName }}</small>
+          </a>
+        </mat-nav-list>
+      </app-paged-list>
+    </mat-card>
+  </ng-container>
+
+
+  <!-- No poll -->
+  <mat-card *ngIf="!polls.leading" class="center">
+    <h3>{{ d.l.noPoll }}</h3>
+  </mat-card>
+</div>

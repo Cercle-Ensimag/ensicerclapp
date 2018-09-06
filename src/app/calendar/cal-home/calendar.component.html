@@ -1,51 +1,39 @@
-<!-- Header -->
-<mat-card class="header center">
-  <button mat-icon-button [disabled]="edit" routerLink="/calendrier/event/-/edit"><mat-icon>add_circle</mat-icon></button>
-  <button mat-icon-button *ngIf="!edit" (click)="edit=!edit" [color]="edit ? 'primary': ''"><mat-icon>edit</mat-icon></button>
-  <button mat-icon-button *ngIf="edit" (click)="edit=false"><mat-icon>close</mat-icon></button>
-  <span *ngIf="!media.mobileSize">
+<!-- Mobile -->
+<div *ngIf="!media.largeSize; else desktop">
+  <mat-card class="header center">
     <button mat-icon-button (click)="previousDay()"><mat-icon>navigate_before</mat-icon></button>
-    <label>{{ getDay(dayOffset) | date:d.l.shortDateFormat:'':d.l.locale | uppercase }}</label>
-    <button mat-icon-button (click)="nextDay()"><mat-icon>navigate_next</mat-icon></button>
-  </span>
-  <button mat-icon-button [disabled]="edit" routerLink="/calendrier/settings"><mat-icon>settings</mat-icon></button>
-  <button mat-icon-button (click)="setToToday()"><mat-icon>today</mat-icon></button>
-  <div *ngIf="media.mobileSize">
-    <button mat-icon-button (click)="previousDay()"><mat-icon>navigate_before</mat-icon></button>
-    <label>{{ getDay(dayOffset) | date:d.l.shortDateFormat:'':d.l.locale | uppercase }}</label>
-    <button mat-icon-button (click)="nextDay()"><mat-icon>navigate_next</mat-icon></button>
+    <label>{{ selectedDay | date:d.l.shortDateFormat:'':d.l.locale | uppercase }}</label>
+    <button mat-icon-button (click)="nextDay()"><mat-icon>navigate_next</mat-icon></button><br>
+    <button mat-icon-button [disabled]="editing" routerLink="/calendrier/event/-/edit"><mat-icon>add_circle</mat-icon></button>
+    <button mat-icon-button (click)="toggleEditing()" [color]="editing ? 'primary': ''"><mat-icon>{{ editing ? 'close' : 'edit'}}</mat-icon></button>
+    <input [(ngModel)]="selectedDay" [matDatepicker]="picker" style="width: 0; height: 0; padding: 0; margin: 0; border: none; visibility: hidden;">
+    <mat-datepicker [touchUi]="true" #picker></mat-datepicker>
+    <mat-datepicker-toggle [for]="picker"></mat-datepicker-toggle>
+    <button mat-icon-button [disabled]="editing" routerLink="/calendrier/settings"><mat-icon>settings</mat-icon></button>
+  </mat-card>
+
+  <app-day-column [date]="selectedDay" [editing]="editing"></app-day-column>
+</div>
+
+<!-- Desktop -->
+<ng-template #desktop>
+  <mat-card class="header desktop center" style="width: 100%">
+    <button mat-icon-button [disabled]="editing" routerLink="/calendrier/event/-/edit"><mat-icon>add_circle</mat-icon></button>
+    <button mat-icon-button (click)="toggleEditing()" [color]="editing ? 'primary': ''"><mat-icon>{{ editing ? 'close' : 'edit'}}</mat-icon></button>
+    <button mat-icon-button (click)="previousWeek()"><mat-icon>navigate_before</mat-icon></button>
+    <label>{{ daysOfTheWeek()[0] | date:d.l.shortDateFormat:'':d.l.locale | uppercase }} - {{ daysOfTheWeek()[6] | date:d.l.shortDateFormat:'':d.l.locale | uppercase }}</label>
+    <button mat-icon-button (click)="nextWeek()"><mat-icon>navigate_next</mat-icon></button>
+    <input [(ngModel)]="selectedDay" [matDatepicker]="picker2" style="width: 0; height: 0; padding: 0; margin: 0; border: none; visibility: hidden;">
+    <mat-datepicker #picker2></mat-datepicker>
+    <mat-datepicker-toggle [for]="picker2"></mat-datepicker-toggle>
+    <button mat-icon-button [disabled]="editing" routerLink="/calendrier/settings"><mat-icon>settings</mat-icon></button>
+  </mat-card>
+
+  <div style="display: grid; grid-template-columns: 14.3% 14.3% 14.3% 14.3% 14.3% 14.3% 14.3%; margin:auto;">
+    <app-day-column *ngFor="let day of daysOfTheWeek()" [editing]="editing" [date]="day"></app-day-column>
   </div>
-</mat-card>
+</ng-template>
 
-<!-- Loading -->
-<div *ngIf="!dayEvents" class="spinner-wrapper loading">
-  <mat-spinner class="spinner"></mat-spinner>
+<div class="mat-fab-bottom-right">
+  <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
 </div>
-
-<!-- Day events -->
-<div *ngIf="dayEvents && dayEvents.length > 0">
-  <mat-card *ngFor="let event of dayEvents" class="event center" [class.border]="isNow(event)">
-    {{ event.title }}<br>
-		<label *ngIf="singleDay(event)">
-	    {{ event.start | date:d.l.timeFormat:'':d.l.locale }} - {{ event.end | date:d.l.timeFormat:'':d.l.locale }}
-		</label>
-		<label *ngIf="!singleDay(event)">
-	    {{ event.start | date:d.l.shortDateTimeFormat:'':d.l.locale }} - {{ event.end | date:d.l.shortDateTimeFormat:'':d.l.locale }}
-		</label>
-		<br>
-    {{ event.location }}<br>
-    <button mat-icon-button *ngIf="event.isAssos() && !edit" routerLink="/events/event/{{ event.id }}"><mat-icon>search</mat-icon></button>
-    <button mat-icon-button *ngIf="event.isPerso() && edit" routerLink="/calendrier/event/{{ event.id }}/edit"><mat-icon>edit</mat-icon></button>
-    <button mat-icon-button *ngIf="event.isPerso() && edit" (click)="cal.removeEvent(event.id)"><mat-icon>delete</mat-icon></button>
-  </mat-card>
-</div>
-<div *ngIf="dayEvents && dayEvents.length == 0">
-  <mat-card class="event">
-    {{ d.l.noCalEvent }}
-  </mat-card>
-</div>
-
-<button mat-fab class="mat-fab-bottom-right" color="primary"
-        (click)="location.back()">
-  <mat-icon>arrow_back</mat-icon>
-</button>

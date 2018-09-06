@@ -1,11 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
-import { EventsService } from '../events-service/events.service';
-import { DicoService } from '../../language/dico.service';
-import { ToolsService } from '../../providers/tools.service'
-
-import { Event } from '../events-service/events.service';
-import { Location } from '@angular/common';
+import {EventsService} from '../events-service/events.service';
+import {DicoService} from '../../language/dico.service';
+import {ToolsService} from '../../providers/tools.service';
+import {Location} from '@angular/common';
 
 
 @Component({
@@ -13,22 +11,14 @@ import { Location } from '@angular/common';
   templateUrl: './events-home.component.html',
   styleUrls: ['./events-home.component.css']
 })
-export class EventsHomeComponent implements OnInit, OnDestroy {
-
-  now: number;
+export class EventsHomeComponent implements OnInit {
 
   constructor(
     public events: EventsService,
     public d: DicoService,
     public location: Location,
-		private tools: ToolsService
+    public tools: ToolsService
   ) { }
 
-  ngOnInit() {
-    this.events.start();
-  }
-
-  ngOnDestroy() {
-    this.events.stop();
-  }
+  ngOnInit() { }
 }

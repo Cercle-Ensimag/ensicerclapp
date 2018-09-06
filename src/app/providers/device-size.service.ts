@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 
-import { Subscription } from "rxjs/Subscription";
-import { MediaChange, ObservableMedia } from "@angular/flex-layout";
+import {Subscription} from 'rxjs/Subscription';
+import {MediaChange, ObservableMedia} from '@angular/flex-layout';
 
 @Injectable()
 export class DeviceSizeService {

@@ -10,6 +10,7 @@ export class PagedGridComponent implements OnInit {
   @Input() public pageIndex: number = 0;
   @Input() public pageSize: number = 10;
   @Input() public list: any[] = null;
+  @Input() public emptyMessage: string = 'Aucun élément à afficher !';
 
   constructor() { }
 

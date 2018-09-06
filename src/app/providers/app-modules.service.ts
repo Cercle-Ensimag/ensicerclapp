@@ -1,5 +1,7 @@
-import { Injectable } from '@angular/core';
-import { AngularFireDatabase } from 'angularfire2/database';
+import {Injectable} from '@angular/core';
+import {AngularFireDatabase} from 'angularfire2/database';
+import {Observable} from '../../../node_modules/rxjs';
+import 'rxjs/add/operator/shareReplay';
 
 export class AppModule {
   name: string;
@@ -9,40 +11,24 @@ export class AppModule {
 
 @Injectable()
 export class AppModulesService {
-
-  appModules: AppModule[];
-
-  modulesWatcher: any;
+  private _appModules: Observable<AppModule[]>;
 
   constructor(
     private db: AngularFireDatabase
   ) { }
 
-  watchModules() {
-    return this.db.list<AppModule>('admin/public/modules', ref => ref.orderByChild('order')).valueChanges()
-    .subscribe(
-      modules => {
-        this.appModules = modules;
-      }
-    );
-  }
-
-  start() {
-    if (this.modulesWatcher) {
-      this.stop();
+  getAppModules(): Observable<AppModule[]> {
+    if (!this._appModules){
+      this._appModules = Observable.merge(
+        this.db
+        .list<AppModule>('admin/public/modules', ref => ref.orderByChild('order'))
+        .valueChanges()
+        .do(modules => localStorage.setItem('appModules', JSON.stringify(modules))),
+        localStorage.getItem('appModules') ?
+          Observable.of(JSON.parse(localStorage.getItem('appModules'))) :
+          Observable.empty())
+        .shareReplay(1);
     }
-    this.modulesWatcher = this.watchModules();
-  }
-
-  stop() {
-    if (this.modulesWatcher) {
-      this.modulesWatcher.unsubscribe();
-      this.modulesWatcher = null;
-    }
-    this.appModules = null;
-  }
-
-  getAppModules(): AppModule[] {
-    return this.appModules;
+    return this._appModules;
   }
 }

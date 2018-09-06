@@ -1,0 +1,34 @@
+import { Injectable } from '@angular/core';
+import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
+
+import { AuthService } from '../../auth/auth-service/auth.service';
+
+import 'rxjs/add/operator/do';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/take';
+import {User} from 'firebase/app';
+
+@Injectable()
+export class CanActivateHome implements CanActivate {
+
+  constructor(
+    private auth: AuthService,
+    private router: Router
+  ) { }
+
+  canActivate(
+    next: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ) {
+    return this.auth.getUser()
+      .do((user: User) => {
+        if (!user) {
+          return this.auth.goToLogin();
+        }
+        if (!user.emailVerified) {
+          this.auth.goToEmailVerif();
+        }
+      })
+      .map(user => !!user);
+  }
+}

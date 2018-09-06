@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import {Injectable} from '@angular/core';
+import {FormControl} from '@angular/forms';
 
 @Injectable()
 export class ToolsService {
@@ -72,10 +72,6 @@ export class ToolsService {
       hash = ((hash << 5) + hash) + str.charCodeAt(i); /* hash * 33 + c */
     }
     return hash;
-  }
-
-  removeTags(sentence: string) : string {
-    return sentence.replace(/<[^>]*>/g, '')
   }
 
   hashStringToColor(str: string) {

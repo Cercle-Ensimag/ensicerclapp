@@ -1,7 +1,7 @@
-<app-loading [loading]="annonce"></app-loading>
+<app-loading [loading]="nsigma.getAnnonce(id) | async"></app-loading>
 
 <!-- Nsigma annonces display -->
-<mat-card *ngIf="annonce">
+<mat-card *ngIf="nsigma.getAnnonce(id) | async as annonce">
   <mat-card-header>
     <img mat-card-avatar src="assets/img/nsigma-types/{{ annonce.type }}.png">
     <mat-card-title>{{ annonce.done ? '[Recrutement terminé] ' : ''}}{{ annonce.title }}</mat-card-title>
@@ -21,7 +21,6 @@
   </mat-card-actions>
 </mat-card>
 
-<button mat-fab class="mat-fab-bottom-right" color="primary"
-        (click)="location.back()">
-  <mat-icon>arrow_back</mat-icon>
-</button>
+<div class="mat-fab-bottom-right">
+  <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
+</div>

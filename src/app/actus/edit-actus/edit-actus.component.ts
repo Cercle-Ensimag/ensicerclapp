@@ -8,6 +8,9 @@ import {Actu, ActusService} from '../actus-service/actus.service';
 import {AuthService} from '../../auth/auth-service/auth.service';
 import {DicoService} from '../../language/dico.service';
 import {MatSnackBar} from '@angular/material';
+import {Subject} from 'rxjs/Subject';
+
+import 'rxjs/add/operator/takeUntil';
 
 @Component({
   selector: 'app-edit-actus',
@@ -15,75 +18,73 @@ import {MatSnackBar} from '@angular/material';
   styleUrls: ['./edit-actus.component.css']
 })
 export class EditActusComponent implements OnInit, OnDestroy {
-  actuCtrl: FormGroup;
+  private unsubscribe: Subject<void> = new Subject();
 
-  actu: Actu;
-  actuWatcher: any;
-  actuCtrlWatcher: any;
-  error: string;
+  public formGroup: FormGroup;
+  public id: string;
 
   constructor(
     private auth: AuthService,
     private actus: ActusService,
     private route: ActivatedRoute,
-    private location: Location,
     private fb: FormBuilder,
+    private snackBar: MatSnackBar,
+
+    public location: Location,
     public d: DicoService,
-    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
-    const id = this.route.snapshot.paramMap.get('id');
-    this.actuWatcher = this.watchActu(id);
+    this.id = this.route.snapshot.paramMap.get('id');
+    this.initFormGroup();
   }
 
   ngOnDestroy() {
-    this.actuWatcher.unsubscribe();
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 
-  watchActu(actuId: string) {
-    return this.actus.getActu(actuId).subscribe((actu) => {
-      if (actu) {
-        this.actu = actu;
-      } else {
-        this.actu = new Actu();
-        this.actu.id = this.actus.getActuId();
-      }
-      this.actuCtrl = this.fb.group({
-        title: [this.actu.title || "", [Validators.required, Validators.minLength(3)]],
-        description: [this.actu.description || "", []],
-        image: [this.actu.image || "", []],
-        pdfLink: [this.actu.pdfLink || "", []],
-        date: [new Date(this.actu.date) || "", [Validators.required]],
-        author: [this.actu.author || "", [Validators.required]]
+  initFormGroup() {
+    this.actus.getActu(this.id)
+      .takeUntil(this.unsubscribe)
+      .subscribe((actu) => {
+        if (!actu) {
+          actu = new Actu();
+          this.id = this.actus.getActuId();
+        }
+        this.formGroup = this.fb.group({
+          title: [actu.title || "", [Validators.required, Validators.minLength(3)]],
+          description: [actu.description || "", []],
+          image: [actu.image || "", []],
+          pdfLink: [actu.pdfLink || "", []],
+          date: [new Date(actu.date) || "", [Validators.required]],
+          author: [actu.author || "", [Validators.required]]
+        });
       });
-      if (this.actuCtrlWatcher) {
-        this.actuCtrlWatcher.unsubscribe();
-      }
-      this.actuCtrlWatcher = this.actuCtrl.valueChanges.subscribe(() => {
-        this.error = null;
-      });
-    });
   }
 
   submit() {
-    if (!this.actuCtrl.invalid) {
-      const actu = {
-        id: this.actu.id,
-        title: this.actuCtrl.get('title').value,
-        description: this.actuCtrl.get('description').value,
-        image: this.actuCtrl.get('image').value,
-		    pdfLink: this.actuCtrl.get('pdfLink').value,
-        date: this.actuCtrl.get('date').value.getTime(),
-        author: this.actuCtrl.get('author').value,
-        groupId: this.auth.journalistGroupId
-      };
-      console.log(actu);
-      this.actus.setActu(actu).then(() => {
-        this.snackBar.open(this.d.l.changesApplied, 'ok', {duration: 2000});
-      }).catch(reason => {
-        this.snackBar.open(reason, 'ok', {duration: 2000});
+    this.auth.getJournalistId()
+      .first()
+      .subscribe(journalistId => {
+        if (!this.formGroup.invalid) {
+          const actu = {
+            id: this.id,
+            title: this.formGroup.get('title').value,
+            description: this.formGroup.get('description').value,
+            image: this.formGroup.get('image').value,
+            pdfLink: this.formGroup.get('pdfLink').value,
+            date: this.formGroup.get('date').value.getTime(),
+            author: this.formGroup.get('author').value,
+            groupId: journalistId
+          };
+          this.actus.setActu(actu).then(() => {
+            this.snackBar.open(this.d.l.changesApplied, 'ok', {duration: 2000});
+            this.initFormGroup();
+          }).catch(reason => {
+            this.snackBar.open(reason, 'ok', {duration: 2000});
+          });
+        }
       });
-    }
   }
 }

@@ -1,17 +1,22 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
-import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {Location} from '@angular/common';
+import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 
-import { DeviceSizeService } from '../../providers/device-size.service';
-import { ENSIDOMAIN, PHELMADOMAIN } from '../../auth/auth-service/auth.service';
-import { VoteService } from '../vote-service/vote.service';
-import { ListService } from '../../providers/list.service';
-import { ToolsService } from '../../providers/tools.service';
-import { DicoService } from '../../language/dico.service';
+import {DeviceSizeService} from '../../providers/device-size.service';
+import {ENSIDOMAIN, PHELMADOMAIN} from '../../auth/auth-service/auth.service';
+import {VoteService} from '../vote-service/vote.service';
+import {ListService} from '../../providers/list.service';
+import {ToolsService} from '../../providers/tools.service';
+import {DicoService} from '../../language/dico.service';
 
-import { VoteUser } from '../vote-users/vote-users.component';
-import { Poll, Choice } from '../poll/poll.component';
+import {VoteUser} from '../vote-users/vote-users.component';
+import {Poll} from '../poll/poll.component';
+import {Observable} from '../../../../node_modules/rxjs';
+
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/mergeMap';
+import {MatSnackBar} from '@angular/material';
 
 @Component({
   selector: 'app-assessor',
@@ -20,29 +25,14 @@ import { Poll, Choice } from '../poll/poll.component';
 })
 export class AssessorComponent implements OnInit, OnDestroy {
 
-  searchCtrl: FormGroup;
-  displayedUsers: string[] = [];
+  formGroup: FormGroup;
   polls: Poll[];
-  users: {
-    [pollId: string]: VoteUser[];
-  } = {};
+
   checked: {
     [pollId: string]: boolean
   } = {};
-  usersWatchers: {
-    [pollId: string]: any
-  } = {};
-  checkedWatchers: {
-    [pollId: string]: any
-  } = {};
-  searchWatcher: any;
 
   domains: string[];
-  error: string;
-
-  pageIndex: number = 0;
-  pageSize: number = 20;
-
 
   constructor(
     private vote: VoteService,
@@ -52,21 +42,20 @@ export class AssessorComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private list: ListService,
     private tools: ToolsService,
-    public d: DicoService
+    public d: DicoService,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
     this.createSearchForm();
-    this.vote.getPolls().subscribe(polls => {
+    this.vote.getStartedPolls().subscribe(polls => {
       this.polls = polls;
       this.createPollCheckboxesCtrl();
-      this.watchUsers();
     });
     this.list.start();
   }
 
   ngOnDestroy() {
-    this.stopWatchingUsers();
     this.list.stop();
   }
 
@@ -75,26 +64,17 @@ export class AssessorComponent implements OnInit, OnDestroy {
       "@" + ENSIDOMAIN,
       "@" + PHELMADOMAIN
     ];
-    this.searchCtrl = this.fb.group({
+    this.formGroup = this.fb.group({
       email: ['', [this.emailValidator]],
       domain: [this.domains[0], []]
-    });
-    if (this.searchWatcher) {
-      this.searchWatcher.unsubscribe();
-    }
-    this.searchWatcher = this.searchCtrl.get('email').valueChanges.subscribe((email) => {
-      this.sortUsers(email);
-    });
-    this.searchWatcher = this.searchCtrl.valueChanges.subscribe(() => {
-      this.error = null;
     });
   }
 
   getEmail(): string {
-    return this.searchCtrl.get('email').value;
+    return this.formGroup.get('email').value;
   }
   getDomain(): string {
-    return this.searchCtrl.get('domain').value;
+    return this.formGroup.get('domain').value;
   }
 
   createPollCheckboxesCtrl() {
@@ -104,102 +84,52 @@ export class AssessorComponent implements OnInit, OnDestroy {
     }
   }
 
-  change(pollId: string, checked: boolean) {
-    this.checked[pollId] = checked;
-    if (this.checkedWatchers[pollId]) {
-      this.checkedWatchers[pollId].unsubscribe();
-    }
-    if (checked) {
-      this.displayedUsers = null;
-      this.checkedWatchers[pollId] = this.watchPollUsers(pollId);
-    } else {
-      this.sortUsers(this.getEmail());
-    }
+  filteredUsers(): Observable<{userName: string, pollName: string}[]> {
+    return this.vote.getAllStartedPollsUsers()
+      .map((voteLists: {poll: Poll, users: VoteUser[]}[]) => {
+        let toReturn = [];
+        voteLists.filter((voteList: {poll: Poll, users: VoteUser[]}) => this.checked[voteList.poll.id])
+          .forEach((voteList: {poll: Poll, users: VoteUser[]}) => {
+          toReturn = toReturn.concat(
+            voteList.users.filter((user: VoteUser) =>
+              user.emailId.includes(this.tools.getEmailIdFromEmail(this.getEmail())))
+              .map((user: VoteUser) => ({
+                userName: this.tools.titleCase(user.emailId.split('|').join(' ')),
+                pollName: voteList.poll.title}))
+          );
+        });
+        return toReturn;
+      });
   }
 
-  sortUsers(email: string) {
-    let emailId = this.tools.getEmailIdFromEmail(email);
-    this.displayedUsers = [];
-    this.pageIndex = 0;
-    for (let poll of this.polls) {
-      if (this.checked[poll.id]) {
-        this.displayedUsers = this.displayedUsers.concat(this.users[poll.id].filter(
-          user => user.emailId.includes(emailId)
-        ). map(
-          user => this.tools.titleCase(user.emailId.split('|').join(' ')) + " <small>(" + poll.title + ")</small>"
-        ));
-      }
-    }
-  }
-
-  updateList(event) {
-    this.pageIndex = event.pageIndex;
-  }
-
-  watchUsers() {
-    this.stopWatchingUsers();
-    for (let poll of this.polls) {
-      if (this.checked[poll.id]) {
-        this.usersWatchers[poll.id] = this.watchPollUsers(poll.id);
-      }
-    }
-  }
-
-  stopWatchingUsers() {
-    if (this.polls) {
-      for (let poll of this.polls) {
-        if (this.usersWatchers[poll.id]) {
-          this.usersWatchers[poll.id].unsubscribe();
-          this.usersWatchers[poll.id] = null;
-        }
-      }
-    }
-  }
-
-  watchPollUsers(pollId) {
-    return this.vote.getUsers(pollId).subscribe(users => {
-      this.users[pollId] = users;
-      this.sortUsers(this.getEmail());
-    });
+  buttonDisabled(): Observable<boolean> {
+    return this.filteredUsers()
+      .map(users => !!users.length || this.formGroup.invalid || this.noPollSelected())
   }
 
   markAsVoted() {
-    if (!this.searchCtrl.invalid && this.displayedUsers.length == 0) {
-      let emailId = this.tools.getEmailIdFromEmail(this.getEmail());
-      let name = this.tools.titleCase(emailId.replace('|', ' ').replace('  ', ' '));
-      if (this.list.authUsers[emailId] !== this.getEmail() + this.getDomain()) {
-        this.error = this.d.format(this.d.l.notOnTheList, name);
-      } else {
-        for (let poll of this.polls) {
-          if (this.checked[poll.id]) {
-            this.vote.markAsVoted(poll.id, this.getEmail());
-          }
-        }
-        this.searchCtrl.get('email').setValue("");
-        this.searchCtrl.get('domain').setValue(this.domains[0]);
-        this.error = this.d.format(this.d.l.markedAsVoted, name);
-      }
-    }
-  }
-
-  noPollAvailaible() {
-    if (this.polls) {
+    const emailId = this.tools.getEmailIdFromEmail(this.getEmail());
+    const name = this.tools.titleCase(emailId.replace('|', ' ').replace('  ', ' '));
+    if (this.list.authUsers[emailId] !== this.getEmail() + this.getDomain()) {
+      this.snackBar.open('Utilisateur inconnu', 'ok')
+    } else {
       for (let poll of this.polls) {
-        if (poll.started) {
-          return false;
+        if (this.checked[poll.id]) {
+          this.vote.markAsVoted(poll.id, this.getEmail());
         }
       }
+      this.formGroup.get('email').setValue('');
+      this.formGroup.get('domain').setValue(this.domains[0]);
+      this.snackBar.open(this.d.format(this.d.l.markedAsVoted, name), 'ok', {duration: 2000});
     }
-    return true;
   }
 
   noPollSelected() {
-    for (let poll of this.polls) {
-      if (this.checked[poll.id]) {
-        return false;
-      }
-    }
-    return true;
+    return !this.polls.some(poll => this.checked[poll.id]);
+  }
+
+  change(id, bool) {
+    this.checked[id] = bool;
   }
 
   emailValidator (control: FormControl) {

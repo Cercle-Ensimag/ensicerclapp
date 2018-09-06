@@ -6,7 +6,7 @@
       <mat-card-subtitle> {{ actu.date | date:'fullDate':'':d.l.locale }} - <i>{{ actu.author }}</i> </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      <p>{{ tools.truncate(tools.removeTags(actu.description)) }}</p>
+      <p>{{ tools.truncate(actu.description) }}</p>
     </mat-card-content>
     <mat-card-actions *ngIf="admin">
       <button mat-icon-button routerLink="/actus/actu/{{ actu.id }}"><mat-icon>search</mat-icon></button>

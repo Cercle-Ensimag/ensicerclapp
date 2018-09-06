@@ -15,7 +15,6 @@ export class DashboardComponent implements OnInit {
     public media: DeviceSizeService
   ) { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
 }

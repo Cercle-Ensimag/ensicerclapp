@@ -1,9 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Location} from '@angular/common';
+import {MatDialog} from '@angular/material';
 
-import { CafetService, Ingredient } from '../cafet-service/cafet.service';
-import { DicoService } from '../../language/dico.service';
-import { CafetHistoryComponent } from '../cafet-history/cafet-history.component';
+import {CafetService, CafetUser} from '../cafet-service/cafet.service';
+import {DicoService} from '../../language/dico.service';
+import {CafetHistoryComponent} from '../cafet-history/cafet-history.component';
 
 @Component({
   selector: 'app-cafet',
@@ -12,29 +13,29 @@ import { CafetHistoryComponent } from '../cafet-history/cafet-history.component'
 })
 export class CafetComponent implements OnInit, OnDestroy {
 
-  creditError: string;
-  ingredients: {[group: string]: Ingredient[]};
-  weekIngredients: Ingredient[];
+  // creditError: string;
+  // ingredients: {[group: string]: Ingredient[]};
+  // weekIngredients: Ingredient[];
 
-  ingredientsWatcher: any;
+  // ingredientsWatcher: any;
 
   constructor(
+    private dialog: MatDialog,
+
     public cafet: CafetService,
-    public dialog: MatDialog,
-    public d: DicoService
+    public d: DicoService,
+    public location: Location
   ) { }
 
   ngOnInit() {
-    this.cafet.start();
-    this.ingredientsWatcher = this.watchIngredients();
+    // this.ingredientsWatcher = this.watchIngredients();
   }
 
   ngOnDestroy() {
-    this.cafet.stop();
-    this.ingredientsWatcher.unsubscribe();
+    // this.ingredientsWatcher.unsubscribe();
   }
 
-  watchIngredients() {
+  /*watchIngredients() {
     return this.cafet.getIngredients().subscribe(ingredients => {
       this.ingredients = {};
       for (let group of this.cafet.ingrGroups) {
@@ -46,27 +47,12 @@ export class CafetComponent implements OnInit, OnDestroy {
         ingredient => ingredient.ofTheWeek == true
       );
     });
-  }
+  }*/
 
-  isCreditError(): boolean {
-    if (this.cafet.user.credit < 0) {
-      this.creditError = this.d.l.negativeCreditError;
-      return true;
-    } else {
-      this.creditError = null;
-      return false;
-    }
+  openHistory(user: CafetUser): void {
+      this.dialog.open(CafetHistoryComponent, {
+        data: {user: user, day: false},
+        width: '450px'
+      });
   }
-
-  getCreditError(): string {
-    return this.creditError;
-  }
-
-  openHistory(): void {
-    let dialogRef = this.dialog.open(CafetHistoryComponent, {
-      data: this.cafet.user,
-      width: '450px'
-    });
-  }
-
 }

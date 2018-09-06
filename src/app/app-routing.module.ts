@@ -12,7 +12,6 @@ import {DashboardComponent} from './dashboard/dashboard.component';
 
 import {CafetComponent} from './cafet/cafet-home/cafet.component';
 import {CafetAdminComponent} from './cafet/cafet-admin/cafet-admin.component';
-import {CafetRespComponent} from './cafet/cafet-resp/cafet-resp.component';
 
 import {VoteComponent} from './vote/vote-all/vote.component';
 import {PollComponent} from './vote/poll/poll.component';
@@ -42,17 +41,17 @@ import {AccountComponent} from './account/account.component';
 
 import {InfoComponent} from './info/info.component';
 
-import {CanActivateHome} from './home/home-guard/home.service';
-import {CanActivateVoteAdmin} from './vote/vote-guard/vote-admin.service';
-import {CanActivateAssessor} from './vote/vote-guard/assessor.service';
-import {CanActivateEventsAdmin} from './events/events-guard/events-admin.service';
-import {CanActivateComResp} from './events/events-guard/com-resp.service';
-import {CanActivateEventsEdit} from './events/events-guard/events-edit.service';
-import {CanActivateActusAdmin} from './actus/actus-guard/actus-admin.service';
-import {CanActivateJournalist} from './actus/actus-guard/journalist.service';
-import {CanActivateActusEdit} from './actus/actus-guard/actus-edit.service';
-import {CanActivateAdmin} from './admin/guard/admin-guard.service';
-import {CanActivateCafetAdmin} from './cafet/cafet-guard/cafet-admin.service';
+import {CanActivateHome} from './home/home-guard/home.guard';
+import {CanActivateVoteAdmin} from './vote/vote-guard/vote-admin.guard';
+import {CanActivateAssessor} from './vote/vote-guard/assessor.guard';
+import {CanActivateEventsAdmin} from './events/events-guard/events-admin.guard';
+import {CanActivateComResp} from './events/events-guard/com-resp.guard';
+import {CanActivateEventsEdit} from './events/events-guard/events-edit.guard';
+import {CanActivateActusAdmin} from './actus/actus-guard/actus-admin.guard';
+import {CanActivateJournalist} from './actus/actus-guard/journalist.guard';
+import {CanActivateActusEdit} from './actus/actus-guard/actus-edit.guard';
+import {CanActivateAdmin} from './admin/admin-guard/admin-guard';
+import {CanActivateCafetAdmin} from './cafet/cafet-guard/cafet-admin.guard';
 import {CanActivateCafetResp} from './cafet/cafet-guard/cafet-resp.guard';
 import {EmailVerifGuard} from './auth/email-verif/email-verif-guard/email-verif.guard';
 import {NsigmaHomeComponent} from './nsigma/nsigma-home/nsigma-home.component';
@@ -65,6 +64,7 @@ import {NsigmaAnnonceComponent} from './nsigma/nsigma-annonce/nsigma-annonce.com
 import {NsigmaEditComponent} from './nsigma/nsigma-edit/nsigma-edit.component';
 import {AnnoncesEditComponent} from './annonces/annonces-edit/annonces-edit.component';
 import {AnnoncesAnnonceComponent} from './annonces/annonces-annonce/annonces-annonce.component';
+import {CafetRespComponent} from './cafet/cafet-resp/cafet-resp.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -117,7 +117,6 @@ const routes: Routes = [
   { path: 'annonces/annonce/:id/edit', component: AnnoncesEditComponent, canActivate: [AnnoncesGuard] },
 
   { path: 'admin', component: AdminUsersComponent, canActivate: [CanActivateHome, CanActivateAdmin] }
-
 ];
 
 @NgModule({

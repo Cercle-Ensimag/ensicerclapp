@@ -11,18 +11,17 @@ import {DicoService} from '../../../language/dico.service';
   styleUrls: ['./event-card.component.css']
 })
 export class EventCardComponent implements OnInit {
-
   @Input() admin: boolean = false;
   @Input() event: Event;
 
   constructor(
+    private events: EventsService,
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar,
+
     public d: DicoService,
     public tools: ToolsService,
-    public events: EventsService,
-    public dialog: MatDialog,
-    private snackBar: MatSnackBar
-  ) {
-  }
+  ) { }
 
   ngOnInit() {
   }
@@ -35,8 +34,9 @@ export class EventCardComponent implements OnInit {
       }
     }).afterClosed().subscribe(result => {
       if (result) {
-        this.events.deleteEvent(this.event.id);
-        this.snackBar.open("Evénement supprimé", 'ok', {duration: 2000});
+        this.events.deleteEvent(this.event.id).then(() =>
+          this.snackBar.open("Evénement supprimé", 'ok', {duration: 2000})
+        );
       }
     });
   }
