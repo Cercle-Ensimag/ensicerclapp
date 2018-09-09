@@ -8,7 +8,7 @@ To download this file, go to the parameters of the firebase project and select t
 
 ## Users lists
 
-The users lists control the users able to create an account and vote mainly.
+The users lists control the users ability to create an account and vote mainly.
 These lists must be updated regularly (at least each year).
 
 Two files are loaded when the functions are deployed : `users_emails.json` and `users_emails_exte.json`.
@@ -20,6 +20,6 @@ The format of these files is the following :
   "[id2]": "[email2]"
 }`
 
-See function `getEmailId` in `index.js` to know how ids are generated from emails. /!\ This function is also defined in the front end and must have the same output.
+See function `getEmailId` in `index.js` to know how ids are generated from emails. /!\ This function is also defined in the front end and database rules and must have the same output.
 
-To actually update the list in the database, a callback function must be triggered by writing the number of the update in the database at `/list/update`. The can be done manually from the firebase console.
+To actually update the list in the database, a callback function must be triggered by writing the number of the update in the database at `/list/update`. This can be done manually from the firebase console.
