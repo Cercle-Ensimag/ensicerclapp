@@ -31,19 +31,11 @@ export class DeviceSizeService {
   }
 
   private setMobileSize(size: string) {
-    if (size == 'xs') {
-      this.mobileSize = true;
-    } else {
-      this.mobileSize = false;
-    }
+    this.mobileSize = size == 'xs';
   }
 
   private setLargeSize(size: string) {
-    if (size == 'lg' || size == 'xl') {
-      this.largeSize = true;
-    } else {
-      this.largeSize = false;
-    }
+    this.largeSize = size == 'lg' || size == 'xl';
   }
 
 }

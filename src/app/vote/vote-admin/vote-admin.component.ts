@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
 
 import {DeviceSizeService} from '../../providers/device-size.service';
@@ -9,6 +9,7 @@ import {ToolsService} from '../../providers/tools.service';
 import {DicoService} from '../../language/dico.service';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {Observable} from 'rxjs/Observable';
+import {Location} from '@angular/common';
 
 export class Assessor {
   emailId: string;
@@ -19,28 +20,24 @@ export class Assessor {
   templateUrl: './vote-admin.component.html',
   styleUrls: ['./vote-admin.component.css']
 })
-export class VoteAdminComponent implements OnInit, OnDestroy {
-  private emailCtrl = new FormControl('', [this.auth.emailDomainValidator, Validators.email]);
-  private selectedTab = 0;
+export class VoteAdminComponent implements OnInit {
+  public emailCtrl = new FormControl('', [this.auth.emailDomainValidator, Validators.email]);
+  public selectedTab = 0;
 
   constructor(
     private auth: AuthService,
-    private vote: VoteService,
-    private media: DeviceSizeService,
     private list: ListService,
-    private tools: ToolsService,
-    private d: DicoService,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+
+    public tools: ToolsService,
+    public d: DicoService,
+    public vote: VoteService,
+    public media: DeviceSizeService,
+    public location: Location
   ) { }
 
-  ngOnInit () {
-    this.list.start();
-  }
-
-  ngOnDestroy () {
-    this.list.stop();
-  }
+  ngOnInit () { }
 
   filteredUsers(): Observable<Assessor[]> {
     let emailId = this.tools.getEmailIdFromEmail(this.emailCtrl.value);
@@ -52,13 +49,17 @@ export class VoteAdminComponent implements OnInit, OnDestroy {
 
   addAssessor() {
     const emailId = this.tools.getEmailIdFromEmail(this.emailCtrl.value);
-    if (!this.list.authUsers[emailId]) {
-      let name = this.tools.titleCase(emailId.replace('|', ' ').replace('  ', ' '));
-      this.snackBar.open(this.d.format(this.d.l.notOnTheList, name), 'ok', {duration: 2000});
-    } else {
-      this.vote.addAssessor(this.emailCtrl.value);
-      this.emailCtrl.setValue("");
-    }
+    this.list.isInList(this.emailCtrl.value)
+      .first()
+      .subscribe(inList => {
+        if (!inList) {
+          let name = this.tools.titleCase(emailId.replace('|', ' ').replace('  ', ' '));
+          this.snackBar.open(this.d.format(this.d.l.notOnTheList, name), 'ok', {duration: 2000});
+        } else {
+          this.vote.addAssessor(this.emailCtrl.value);
+          this.emailCtrl.setValue("");
+        }
+      });
   }
 
   tabChanged(event) {

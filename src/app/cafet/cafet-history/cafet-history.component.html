@@ -1,9 +1,7 @@
 <div class="history">
 
   <!-- Loading -->
-  <div *ngIf="!getData() | async" class="spinner-wrapper">
-    <mat-spinner class="spinner"></mat-spinner>
-  </div>
+  <app-loading [loading]="getData() | async" [fullPage]="false"></app-loading>
 
   <!-- History -->
   <div *ngIf="getData() | async as tabData">

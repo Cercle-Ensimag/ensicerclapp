@@ -6,3 +6,8 @@ img {
   vertical-align: middle;
   margin: 20px;
 }
+
+mat-card {
+  box-sizing: content-box;
+  margin: 2px;
+}

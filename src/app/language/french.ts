@@ -13,7 +13,7 @@ export class French {
   public static readonly applyChangesLabel = "Appliquer";
   public static readonly okLabel = "Ok";
   public static readonly changesApplied = "Changements appliqués avec succès";
-  public static readonly search = "recherche";
+  public static readonly search = "Recherche";
   public static readonly locale = "fr";
   public static readonly timeFormat = "H:mm";
   public static readonly shortDateFormat = "E d LLL";
@@ -39,10 +39,10 @@ export class French {
   public static readonly emailDomainError = "L'e-mail doit appartenir au domaine '@ensimag.fr'";
   public static readonly noEmailError = "L'e-mail est exigé";
   public static readonly emailFormatError = "L'e-mail est incorrect";
-  public static readonly beforePwdRstEmailInfo = "Un e-mail de réinitialisation de mot de passe va être envoyé à l'adresse donnée";
+  public static readonly beforePwdRstEmailInfo = "Un e-mail de réinitialisation de mot de passe va être envoyé à l'adresse donnée.";
   public static readonly sendPwdResetEmailLabel = "Envoyer l'e-mail";
-  public static readonly afterPwdRstEmailInfo = "Ouvre le lien contenu dans l'email envoyé à {0}";
-  public static readonly verificationEmailSentInfo = "Un e-mail de confirmation a probablement été envoyé.<br>Consulte tes e-mails.<br><br>Si ton adresse est incorrecte, aucun email n'a été envoyé et ton compte a été supprimé.<br><br>Pour tenter de recevoir un nouvel e-mail ou être redirigé sur la page de connexion, choisis ci-dessous :";
+  public static readonly afterPwdRstEmailInfo = "Si l'adresse <b>{0}</b> est correcte, un lien de réinitialisation lui a été envoyé.";
+  public static readonly verificationEmailSentInfo = "Un e-mail de confirmation a été envoyé à l'adresse utilisée lors de ton votre inscription.<br><br>Vérifie ta boîte e-mail et ton dossier spam puis clique sur le lien de confirmation.";
   public static readonly sendEmailAgainLabel = "Renvoyer l'email";
   public static readonly passwordTooShortError = "Mot de passe trop court";
   public static readonly toSignInLabel = "Crée-toi un compte !";
@@ -63,7 +63,7 @@ export class French {
 
   public static readonly voteAdminLabel = "Admin vote";
   public static readonly voteAdminPlLabel = "Admins vote";
-  public static readonly assessorLabel = "Assesseur"
+  public static readonly assessorLabel = "Assesseur";
   public static readonly assessorPlLabel = "Assesseurs"
   public static readonly addAssessorInfo = "Entrer l'e-mail d'un assesseur";
   public static readonly addAssessorButtonLabel = "Ajouter";
@@ -107,7 +107,7 @@ export class French {
   public static readonly voteForLabel = "Voter";
   public static readonly pollIdLabel = "ID";
   public static readonly pollTitleLabel = "Titre";
-  public static readonly pollDescriptionLabel = "Description";
+  public static readonly pollDescriptionLabel = "Description (Markdown pour la mise en forme)";
   public static readonly choiceIdLabel = "ID";
   public static readonly choiceLabelLabel = "Nom complet";
   public static readonly choiceImageLabel = "Image URL (public)";
@@ -184,7 +184,7 @@ export class French {
   public static readonly actuAuthor = "Auteur : {0}";
 
   // Cafet
-  public static readonly troll = "T'ES EN NEGATIF !!<br><small>(*non contractuel, t'as pas encore de compte)</small>";
+  public static readonly troll = "<b>Ton</b> compte est dans le <b>négatif</b>!<br><small>(*non contractuel, tu n'as pas encore de compte.)</small>";
   public static readonly creditLabel = "Solde";
   public static readonly informAboutTransaction = "Le solde du compte de {0} a bien été modifié de {1}€";
   public static readonly informAboutCafetCreation = "Le compte de {0} a bien été créé et crédité de {1}€";
@@ -195,7 +195,7 @@ export class French {
   public static readonly addButtonLabel = "Crediter";
   public static readonly substractButtonLabel = "Débiter";
   public static readonly weekIngredientLabel = "Ingrédient de la semaine";
-  public static readonly negativeCreditError = "T'ES EN NEGATIF !!<br><small>Tu devrais mettre de l'argent sur ton compte</small>";
+  public static readonly negativeCreditError = "<b>Ton</b> compte est dans le <b>négatif</b>!<small>Tu devrais mettre de l'argent sur ton compte.</small>";
   public static readonly orderByCreditLabel = "par solde";
   public static readonly orderByLastTransactionDateLabel = "par date";
 
@@ -241,13 +241,12 @@ export class French {
   public static readonly totalOfPositiveAccountsLabel = "Total sur les comptes en positif : {0}€";
 
   // Nsigma
-
   public static readonly noNsigmaAnnonce = `Aucune annonce Nsigma n'est disponible pour le moment, reviens plus tard.`;
   public static readonly confirmNsigmaAnnonceDeleteInfo = "Voulez-vous vraiment supprimer cette annonce ?";
   public static readonly confirmNsigmaAnnonceDeleteLabel = "Confirmer la suppression";
   public static readonly nsigmaTitleLabel = 'Titre';
   public static readonly nsigmaTitleTooShortError = 'Titre trop court';
-  public static readonly nsigmaDescriptionLabel = 'Description';
+  public static readonly nsigmaDescriptionLabel = "Description (Markdown pour la mise en forme)";
   public static readonly nsigmaDescriptionError = 'Description trop courte';
   public static readonly nsigmaTypeLabel = 'Type de l\'étude';
   public static readonly nsigmaTypeError = 'Type invalide';
@@ -267,12 +266,11 @@ export class French {
   public static readonly nsigmaFinie = 'Finie';
 
   // Annonce
-
   public static readonly annonceTitleLabel = 'Titre';
   public static readonly annonceTitleTooShortError = 'Titre trop court';
-  public static readonly annonceDescriptionLabel = 'Description';
+  public static readonly annonceDescriptionLabel = "Description (Markdown pour la mise en forme)";
   public static readonly annonceDescriptionError = 'Description trop courte';
-  public static readonly annonceTypeLabel = 'Type de l\'étude';
+  public static readonly annonceTypeLabel = 'Nature de l\'offre';
   public static readonly annonceTypeError = 'Type invalide';
   public static readonly annonceStartLabel = 'Début';
   public static readonly annonceStartError = 'Début invalide';

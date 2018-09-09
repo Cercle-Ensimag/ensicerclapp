@@ -1,7 +1,5 @@
 <!-- Loading -->
-<mat-card *ngIf="!filteredUsers() | async" class="spinner-wrapper">
-  <mat-spinner class="spinner"></mat-spinner>
-</mat-card>
+<app-loading [loading]="filteredUsers() | async"></app-loading>
 
 <!-- Com resps -->
 <div *ngIf="filteredUsers() | async as users">

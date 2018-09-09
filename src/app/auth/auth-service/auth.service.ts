@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Location} from '@angular/common';
 import {Router} from '@angular/router';
-import {FormControl} from '@angular/forms';
+import {AbstractControl, FormControl} from '@angular/forms';
 
 import {AngularFireAuth} from 'angularfire2/auth';
 import {AngularFireDatabase} from 'angularfire2/database';
@@ -14,7 +14,7 @@ import {ComResp} from '../../events/events-service/events.service';
 import {Journalist} from '../../actus/actu-admin/actu-admin.component';
 import {Assessor} from '../../vote/vote-admin/vote-admin.component';
 import {CafetResp} from '../../cafet/cafet-service/cafet.service';
-import {Observable, Observer, Subject} from '../../../../node_modules/rxjs';
+import {Observable, Observer} from '../../../../node_modules/rxjs';
 import {User} from 'firebase/app';
 
 export const ENSIDOMAIN = "ensimag.fr";
@@ -70,6 +70,7 @@ export class AuthService {
     private location: Location,
     private modules: AppModulesService,
     private tools: ToolsService,
+
     public d: DicoService
   ) {
     this.error_persist = false;
@@ -254,6 +255,7 @@ export class AuthService {
         this.getAdminsRes(),
         this.getLoggedUser())
         .map(([admins, user]: [string, User]): boolean => Object.values(admins).includes(user.email))
+        .catch(e => Observable.of(false))
         .shareReplay(1);
     }
     return this._isAdmin;
@@ -262,8 +264,8 @@ export class AuthService {
   isAdminOf(of: string): Observable<boolean> {
     if (!this._isAdminOf[of]){
       this._isAdminOf[of] = this.getOtherAdminsRes()
-          .map(data => data ? data[`${of}-admin`] || false : false)
-          .shareReplay(1);
+        .map(data => data ? data[`${of}-admin`] || false : false)
+        .shareReplay(1);
     }
     return this._isAdminOf[of];
   }
@@ -271,8 +273,8 @@ export class AuthService {
   hasCafetActivated(): Observable<boolean> {
     if (!this._hasCafetActivated){
       this._hasCafetActivated = this.getOtherAdminsRes()
-          .map(data => data ? data[`cafet-activated`] || false : false)
-          .shareReplay(1);
+        .map(data => data ? data[`cafet-activated`] || false : false)
+        .shareReplay(1);
     }
     return this._hasCafetActivated;
   }
@@ -280,8 +282,9 @@ export class AuthService {
   isAssessor(): Observable<boolean> {
     if (!this._isAssessor) {
       this._isAssessor = this.getAssessorRes()
-          .map(is => is != null)
-          .shareReplay(1);
+        .map(is => is != null)
+        .catch(e => Observable.of(false))
+        .shareReplay(1);
     }
     return this._isAssessor;
   }
@@ -289,8 +292,9 @@ export class AuthService {
   isCafetResp(): Observable<boolean> {
     if (!this._isCafetResp) {
       this._isCafetResp = this.getCafetRespRes()
-          .map(is => is != null)
-          .shareReplay(1);
+        .map(is => is != null)
+        .catch(e => Observable.of(false))
+        .shareReplay(1);
     }
     return this._isCafetResp;
   }
@@ -305,8 +309,9 @@ export class AuthService {
   }
 
   isRespCom(): Observable<boolean> {
-    return this.getJournalistId()
-      .map(jid => jid !== null);
+    return this.getRespComId()
+      .map(rcid => rcid !== null)
+      .catch(e => Observable.of(false));
   }
 
   getJournalistId(): Observable<string> {
@@ -320,7 +325,8 @@ export class AuthService {
 
   isJournalist(): Observable<boolean> {
     return this.getJournalistId()
-      .map(jid => jid !== null);
+      .map(jid => jid !== null)
+      .catch(e => Observable.of(false));
   }
 
   // Private res getters
@@ -397,7 +403,7 @@ export class AuthService {
 
   // Form
 
-  getEmailErrorMessage(email_ctrl: FormControl) {
+  getEmailErrorMessage(email_ctrl: AbstractControl) {
     return email_ctrl.hasError('required') ? this.d.l.noEmailError :
       email_ctrl.hasError('email') ? this.d.l.emailFormatError :
         email_ctrl.hasError('domain') ? this.d.l.emailDomainError :

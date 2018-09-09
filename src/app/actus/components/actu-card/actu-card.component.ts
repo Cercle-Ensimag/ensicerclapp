@@ -1,8 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {DeleteDialogComponent} from '../../../shared-components/delete-dialog/delete-dialog.component';
-import {Annonce} from '../../../annonces/annonces.service';
-import {ActusService} from '../../actus-service/actus.service';
+import {Actu, ActusService} from '../../actus-service/actus.service';
 import {DicoService} from '../../../language/dico.service';
 import {ToolsService} from '../../../providers/tools.service';
 
@@ -14,7 +13,7 @@ import {ToolsService} from '../../../providers/tools.service';
 export class ActuCardComponent implements OnInit {
 
   @Input() admin: boolean = false;
-  @Input() actu: Annonce;
+  @Input() actu: Actu;
 
   constructor(
     private actus: ActusService,

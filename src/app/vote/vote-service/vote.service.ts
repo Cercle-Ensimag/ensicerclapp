@@ -26,10 +26,6 @@ export class VoteService {
     private tools: ToolsService
   ) { }
 
-  start() { }
-
-  stop() { }
-
   getPolls(): Observable<Poll[]> {
     if (!this._polls){
       this._polls = this.db
@@ -136,7 +132,6 @@ export class VoteService {
   getAllStartedPollsUsers(): Observable<{poll: Poll, users: VoteUser[]}[]> {
     if (!this._allStartedPollsUsers){
       this._allStartedPollsUsers = this.getStartedPolls()
-        .do(chien => console.log(chien))
         .flatMap((polls: Poll[]) => Observable.combineLatest(
           Observable.combineLatest(polls.map((poll: Poll) => this.getUsers(poll.id))),
           Observable.of(polls)))
@@ -144,7 +139,6 @@ export class VoteService {
           poll: polls[index],
           users: users
         })))
-        .do(chien => console.log(chien, 2))
         .shareReplay(1);
     }
     return this._allStartedPollsUsers;

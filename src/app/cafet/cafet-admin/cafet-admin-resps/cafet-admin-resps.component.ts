@@ -16,7 +16,7 @@ import {MatSnackBar} from '@angular/material';
   templateUrl: './cafet-admin-resps.component.html',
   styleUrls: ['./cafet-admin-resps.component.css']
 })
-export class CafetAdminRespsComponent implements OnInit, OnDestroy {
+export class CafetAdminRespsComponent implements OnInit {
   public emailCtrl: FormControl;
 
   constructor(
@@ -33,11 +33,6 @@ export class CafetAdminRespsComponent implements OnInit, OnDestroy {
 
   ngOnInit () {
     this.emailCtrl = new FormControl('', [this.auth.emailDomainValidator, Validators.email]);
-    this.list.start();
-  }
-
-  ngOnDestroy () {
-    this.list.stop();
   }
 
   filteredUsers(): Observable<Assessor[]> {
@@ -50,15 +45,19 @@ export class CafetAdminRespsComponent implements OnInit, OnDestroy {
 
   addCafetResp() {
     let emailId = this.tools.getEmailIdFromEmail(this.emailCtrl.value);
-    if (!this.list.authUsers[emailId]) {
-      const name = this.tools.titleCase(emailId.replace('|', ' ').replace('  ', ' '));
-      this.snackBar.open(this.d.format(this.d.l.notOnTheList, name), 'ok', {duration: 2000});
-    } else {
-      this.cafet.addCafetResp({
-        emailId: emailId
+    this.list.isInList(this.emailCtrl.value)
+      .first()
+      .subscribe(inList => {
+        if (!inList) {
+          const name = this.tools.titleCase(emailId.replace('|', ' ').replace('  ', ' '));
+          this.snackBar.open(this.d.format(this.d.l.notOnTheList, name), 'ok', {duration: 2000});
+        } else {
+          this.cafet.addCafetResp({
+            emailId: emailId
+          });
+          this.emailCtrl.setValue("");
+        }
       });
-      this.emailCtrl.setValue("");
-    }
   }
 
 }

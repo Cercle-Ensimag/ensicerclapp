@@ -2,13 +2,12 @@
   <div>
     <mat-card>
       <div class="container">
+        <h2>Compte non confirmé</h2>
         <p [innerHTML]="d.l.verificationEmailSentInfo"></p>
-        <button mat-raised-button (click)="sendEmail()" color='primary'>{{ d.l.sendEmailAgainLabel }}</button>
+        <div class="center">
+          <button mat-raised-button (click)="sendEmail()" color='primary'>{{ d.l.sendEmailAgainLabel }}</button>
+        </div>
       </div>
     </mat-card>
   </div>
-</div>
-
-<div class="mat-fab-bottom-right">
-  <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
 </div>

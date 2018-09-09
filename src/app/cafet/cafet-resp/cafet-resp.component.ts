@@ -38,13 +38,11 @@ export class CafetRespComponent implements OnInit {
 
   ngOnInit() {
     this.initFormGroup();
-    this.list.start();
   }
 
   ngOnDestroy() {
     this.unsubscribe.next();
     this.unsubscribe.complete();
-    this.list.stop();
   }
 
   initFormGroup() {

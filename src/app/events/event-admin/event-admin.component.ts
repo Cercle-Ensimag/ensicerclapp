@@ -16,7 +16,7 @@ import {MatSnackBar} from '@angular/material';
   templateUrl: './event-admin.component.html',
   styleUrls: ['./event-admin.component.css']
 })
-export class EventAdminComponent implements OnInit, OnDestroy {
+export class EventAdminComponent implements OnInit {
   public emailCtrl = new FormControl('', [this.auth.emailDomainValidator, Validators.email]);
 
   constructor(
@@ -30,13 +30,7 @@ export class EventAdminComponent implements OnInit, OnDestroy {
     public d: DicoService
   ) {  }
 
-  ngOnInit () {
-    this.list.start();
-  }
-
-  ngOnDestroy () {
-    this.list.stop();
-  }
+  ngOnInit () { }
 
   filteredUsers(): Observable<Assessor[]> {
     let emailId = this.tools.getEmailIdFromEmail(this.emailCtrl.value);
@@ -48,16 +42,20 @@ export class EventAdminComponent implements OnInit, OnDestroy {
 
   addComResp() {
     let emailId = this.tools.getEmailIdFromEmail(this.emailCtrl.value);
-    if (!this.list.authUsers[emailId]) {
-      let name = this.tools.titleCase(emailId.replace('|', ' ').replace('  ', ' '));
-      this.snackBar.open(this.d.format(this.d.l.notOnTheList, name), 'ok', {duration: 2000});
-    } else {
-      this.events.addComResp(this.emailCtrl.value, {
-        groupId: emailId,
-        displayName: emailId
+    this.list.isInList(this.emailCtrl.value)
+      .first()
+      .subscribe(inList => {
+        if (!inList) {
+          let name = this.tools.titleCase(emailId.replace('|', ' ').replace('  ', ' '));
+          this.snackBar.open(this.d.format(this.d.l.notOnTheList, name), 'ok', {duration: 2000});
+        } else {
+          this.events.addComResp(this.emailCtrl.value, {
+            groupId: emailId,
+            displayName: emailId
+          });
+          this.emailCtrl.setValue("");
+        }
       });
-      this.emailCtrl.setValue("");
-    }
   }
 
 }

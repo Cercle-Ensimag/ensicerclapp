@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
+import {Location} from '@angular/common';
 
 import {AuthService} from '../auth-service/auth.service';
 import {DicoService} from '../../language/dico.service';
@@ -17,6 +18,7 @@ export class PasswordResetComponent implements OnInit {
 
   constructor(
     public auth: AuthService,
+    public location: Location,
     public d: DicoService
   ) {
     this.sent = false;
@@ -31,9 +33,5 @@ export class PasswordResetComponent implements OnInit {
       this.sent = true;
       this.email = this.email_ctrl.value;
     }
-  }
-
-  back() {
-    this.auth.goToLogin();
   }
 }

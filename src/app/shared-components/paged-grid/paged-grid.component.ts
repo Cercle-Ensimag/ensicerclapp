@@ -14,8 +14,7 @@ export class PagedGridComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
   updateList(event) {
     this.pageIndex = event.pageIndex;

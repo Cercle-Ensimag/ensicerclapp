@@ -14,8 +14,7 @@ export class PagedListComponent implements  OnInit {
 
   constructor() { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
   updateList(event) {
     this.pageIndex = event.pageIndex;

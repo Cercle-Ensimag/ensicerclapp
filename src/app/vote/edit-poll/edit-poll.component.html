@@ -10,6 +10,8 @@
       <mat-error *ngIf="formGroup.get('title').invalid">{{ d.l.pollTitleTooShortError }}</mat-error>
     </mat-form-field>
 
+    <mat-slide-toggle formControlName="started" color="primary">Start</mat-slide-toggle>
+
     <mat-form-field>
       <textarea matInput placeholder="{{ d.l.pollDescriptionLabel }}" formControlName="description"></textarea>
       <mat-error *ngIf="formGroup.get('description').invalid">{{ d.l.pollDescriptionError }}</mat-error>
@@ -39,7 +41,9 @@
       </div>
     </div>
 
-    <button mat-raised-button (click)="addChoice()" color="primary">{{ d.l.addChoiceLabel }}</button>
+    <div class="center">
+      <button mat-raised-button (click)="addChoice()" color="primary">{{ d.l.addChoiceLabel }}</button>
+    </div>
   </form>
 </mat-card>
 

@@ -13,14 +13,16 @@ import {Observable} from 'rxjs/Observable';
   styleUrls: ['./results.component.css']
 })
 export class ResultsComponent implements OnInit {
-  private id: string;
   private _totalVotes: Observable<number>;
 
+  public id: string;
+
   constructor(
-    private vote: VoteService,
     private route: ActivatedRoute,
-    private location: Location,
-    private d: DicoService
+
+    public vote: VoteService,
+    public location: Location,
+    public d: DicoService
   ) { }
 
   ngOnInit() {
@@ -40,7 +42,7 @@ export class ResultsComponent implements OnInit {
     return Observable.combineLatest(
       this.totalVotes(),
       this.vote.getResults(this.id, choiceId))
-      .map(([total, partial]) => (100 * partial/total).toFixed(2));
+      .map(([total, partial]) => total ? (100 * partial/total).toFixed(2) : '0.00');
   }
 
 }

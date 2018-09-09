@@ -12,14 +12,18 @@
       {{ d.format(d.l.eventLocation, event.location || "") }}<br>
       {{ d.format(d.l.eventPrice, event.price || d.l.free) }}
     </h4>
+    <hr>
     <div *ngIf="isInCalendar() | async; else notInCalendar">
       <button mat-icon-button disabled color="primary" ><mat-icon>event_available</mat-icon></button>
       <button mat-icon-button (click)="events.removeEventFromCalendar(event.id)"><mat-icon>event_busy</mat-icon></button>
+      Ajouté à mon planning
     </div>
     <ng-template #notInCalendar>
       <button mat-icon-button (click)="events.addEventToCalendar(event.id)"><mat-icon>event_available</mat-icon></button>
       <button mat-icon-button disabled color="primary"><mat-icon>event_busy</mat-icon></button>
+      Pas dans mon planning
     </ng-template>
+    <hr>
     <markdown [data]="event.description"></markdown>
   </mat-card-content>
   <img *ngIf="event.image !== ''" mat-card-image src="{{ event.image }}">

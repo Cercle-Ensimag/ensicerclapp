@@ -7,6 +7,7 @@ import {AdminService} from '../admin-service/admin.service';
 import {DicoService} from '../../language/dico.service';
 import {Observable} from '../../../../node_modules/rxjs';
 import {User} from 'firebase/app';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-users',
@@ -24,7 +25,8 @@ export class AdminUsersComponent implements OnInit {
     public admin: AdminService,
     public d: DicoService,
     public tools: ToolsService,
-    public media: DeviceSizeService
+    public media: DeviceSizeService,
+    public location: Location
   ) { }
 
   ngOnInit() {
@@ -52,8 +54,11 @@ export class AdminUsersComponent implements OnInit {
   }
 
   checkAgainstFilters(emailId, user) {
-    let userData = user[user.uid];
+    const userData = user[user.uid];
     if (!userData) return false;
+
+    const emailId2 = userData.admin.email.split('@')[0].replace('.', '|');
+    if (!emailId2.includes(emailId)) return false;
 
     for (const admin of this.adminsStrings){
       if (!this.isUserAdminOf(user, admin) && this.formGroup.get(admin + 'Admins').value) {
@@ -61,8 +66,7 @@ export class AdminUsersComponent implements OnInit {
       }
     }
 
-    const emailId2 = userData.admin.email.split('@')[0].replace('.', '|');
-    return emailId2.includes(emailId);
+    return true;
   }
 
   setExpanded(uid: string){
@@ -74,7 +78,7 @@ export class AdminUsersComponent implements OnInit {
   }
 
   isUserAdminOf(user: any, of: string) {
-    return user[user.uid]['admin'][of + '-admin'] === true;
+    return user[user.uid]['admin'] ? user[user.uid]['admin'][of + '-admin'] === true : false;
   }
 
   getName(user: any): string {

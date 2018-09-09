@@ -77,8 +77,8 @@ export class AccountComponent implements OnInit, OnDestroy {
           this.snackBar.open('suppression effectuée', 'ok', {duration: 2000});
           this.auth.setError(this.d.l.accountDeletedInfo, true);
         })
-        .catch(() => {
-          this.snackBar.open('erreur', 'ok', {duration: 2000});
+        .catch(err => {
+          this.snackBar.open(err, 'ok');
           this.auth.setError(this.d.l.refreshTokenInfo, true);
           this.auth.logout();
         })

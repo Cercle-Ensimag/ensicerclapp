@@ -19,7 +19,7 @@
   </mat-accordion>
 </div>
 
-<div *ngIf="!auth.isLogged() | async" class="infos">
+<div *ngIf="!(auth.isLogged() | async)" class="infos">
     <mat-card>
         <app-legal-notice></app-legal-notice>
     </mat-card>

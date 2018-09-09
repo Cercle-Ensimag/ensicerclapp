@@ -44,13 +44,11 @@ export class CafetAdminUsersComponent implements OnInit {
 
   ngOnInit() {
     this.initFormGroup();
-    this.list.start();
   }
 
   ngOnDestroy() {
     this.unsubscribe.next();
     this.unsubscribe.complete();
-    this.list.stop();
   }
 
   initFormGroup() {
@@ -83,22 +81,26 @@ export class CafetAdminUsersComponent implements OnInit {
     const emailId = this.tools.getEmailIdFromEmail(email);
     const name = this.tools.titleCase(emailId.replace('|', ' ').replace('  ', ' '));
 
-    if (!this.list.isInList(email)) {
-      this.dialog.open(DeleteDialogComponent, {
-        data: {
-          title: 'Utilisateur introuvable',
-          content: `Voulez-vous ajouter "${email}" en tant qu'externe ?`
+    this.list.isInList(email)
+      .first()
+      .subscribe(notExte => {
+        if (!notExte) {
+          this.dialog.open(DeleteDialogComponent, {
+            data: {
+              title: 'Utilisateur introuvable',
+              content: `Voulez-vous ajouter "${email}" en tant qu'externe ?`
+            }
+          }).afterClosed()
+            .first()
+            .subscribe(result => {
+              if (result) {
+                this.createCafetAccount(true);
+              }
+            });
+        } else {
+          this.createCafetAccount(false);
         }
-      }).afterClosed()
-        .first()
-        .subscribe(result => {
-          if (result) {
-            this.createCafetAccount(true);
-          }
-        });
-    } else {
-      this.createCafetAccount(false);
-    }
+      });
   }
 
   createCafetAccount(exte: boolean) {

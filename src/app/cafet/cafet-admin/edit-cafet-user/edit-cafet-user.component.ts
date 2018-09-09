@@ -15,7 +15,7 @@ export class EditCafetUserComponent {
   public formGroup: FormGroup;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) private user: CafetUser,
+    @Inject(MAT_DIALOG_DATA) public user: CafetUser,
     private dialogRef: MatDialogRef<EditCafetUserComponent>,
     private cafet: CafetService,
     private list: ListService,
@@ -35,14 +35,17 @@ export class EditCafetUserComponent {
   }
 
   submit() {
-    this.cafet.setUserProfile(this.user.emailId, {
-      firstName: this.formGroup.get('firstName').value,
-      lastName: this.formGroup.get('lastName').value,
-      email: this.formGroup.get('email').value,
-      exte: !this.list.isInList(this.formGroup.get('email').value)
-    }, this.user.activated)
-      .then(() => this.dialogRef.close())
-      .catch((err) => this.snackBar.open(err, 'ok', {duration: 2000}));
+    this.list.isInList(this.formGroup.get('email').value)
+      .first()
+      .subscribe(notExte => {
+        this.cafet.setUserProfile(this.user.emailId, {
+          firstName: this.formGroup.get('firstName').value,
+          lastName: this.formGroup.get('lastName').value,
+          email: this.formGroup.get('email').value,
+          exte: !notExte}, this.user.activated)
+          .then(() => this.dialogRef.close())
+          .catch((err) => this.snackBar.open(err, 'ok', {duration: 2000}));
+      });
   }
 
   archive() {

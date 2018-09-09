@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
 import {FormControl, Validators} from '@angular/forms';
@@ -6,7 +6,6 @@ import {FormControl, Validators} from '@angular/forms';
 import {DeviceSizeService} from '../../providers/device-size.service';
 import {AuthService} from '../../auth/auth-service/auth.service';
 import {VoteService} from '../vote-service/vote.service';
-import {ListService} from '../../providers/list.service';
 import {ToolsService} from '../../providers/tools.service';
 import {DicoService} from '../../language/dico.service';
 import {Observable} from 'rxjs/Observable';
@@ -20,27 +19,23 @@ export class VoteUser {
   templateUrl: './vote-users.component.html',
   styleUrls: ['./vote-users.component.css']
 })
-export class VoteUsersComponent implements OnInit, OnDestroy {
+export class VoteUsersComponent implements OnInit {
   private emailCtrl = new FormControl('', [this.auth.emailDomainValidator, Validators.email]);
   private id: string;
 
   constructor(
-    private vote: VoteService,
     private route: ActivatedRoute,
-    private location: Location,
+    private vote: VoteService,
     private auth: AuthService,
+
+    public location: Location,
     public media: DeviceSizeService,
-    private list: ListService,
     public tools: ToolsService,
     public d: DicoService
   ) {}
 
   ngOnInit() {
-    this.list.start();
-  }
-
-  ngOnDestroy() {
-    this.list.stop();
+    this.id = this.route.snapshot.paramMap.get('id');
   }
 
   filteredUsers(): Observable<VoteUser[]> {

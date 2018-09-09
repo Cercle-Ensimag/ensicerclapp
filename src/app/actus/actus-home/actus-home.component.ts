@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 import {ActusService} from '../actus-service/actus.service';
 import {DicoService} from '../../language/dico.service';

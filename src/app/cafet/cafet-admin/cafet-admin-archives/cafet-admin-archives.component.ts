@@ -1,5 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Component, OnInit} from '@angular/core';
+import { FormControl, FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 
 import { CafetService, CafetUser } from '../../cafet-service/cafet.service';
@@ -10,7 +10,6 @@ import { DicoService } from '../../../language/dico.service';
 import { CafetHistoryComponent } from '../../cafet-history/cafet-history.component';
 import { EditCafetUserComponent } from '../edit-cafet-user/edit-cafet-user.component';
 import {Observable} from 'rxjs/Observable';
-import {Assessor} from '../../../vote/vote-admin/vote-admin.component';
 
 @Component({
   selector: 'app-cafet-admin-archives',
@@ -21,8 +20,6 @@ export class CafetAdminArchivesComponent implements OnInit {
   public emailCtrl: FormControl;
 
   constructor(
-    private fb: FormBuilder,
-
     public cafet: CafetService,
     public tools: ToolsService,
     public media: DeviceSizeService,

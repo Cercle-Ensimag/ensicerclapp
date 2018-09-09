@@ -11,7 +11,7 @@
     </mat-paginator>
   </div>
 
-  <p *ngIf="!list.length" class="center">
+  <mat-card *ngIf="!list.length" class="center">
     {{ emptyMessage }} <img src="assets/img/icons/empty.png">
-  </p>
+  </mat-card>
 </div>

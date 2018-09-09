@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {NsigmaService} from '../nsigma.service';
 import {DicoService} from '../../language/dico.service';
 import {ToolsService} from '../../providers/tools.service';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-nsigma-admin',
@@ -14,6 +15,7 @@ export class NsigmaAdminComponent implements OnInit {
     public nsigma: NsigmaService,
     public d: DicoService,
     public tools: ToolsService,
+    public location: Location
   ) {}
 
   ngOnInit() { }

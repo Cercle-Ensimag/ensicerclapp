@@ -12,7 +12,7 @@ import {DicoService} from '../../language/dico.service';
 
 import {VoteUser} from '../vote-users/vote-users.component';
 import {Poll} from '../poll/poll.component';
-import {Observable} from '../../../../node_modules/rxjs';
+import {Observable, Subject} from '../../../../node_modules/rxjs';
 
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/mergeMap';
@@ -24,39 +24,42 @@ import {MatSnackBar} from '@angular/material';
   styleUrls: ['./assessor.component.css']
 })
 export class AssessorComponent implements OnInit, OnDestroy {
+  private unsubscribe: Subject<void> = new Subject();
 
-  formGroup: FormGroup;
-  polls: Poll[];
-
-  checked: {
+  public formGroup: FormGroup;
+  public polls: Poll[];
+  public checked: {
     [pollId: string]: boolean
   } = {};
 
-  domains: string[];
+  public domains: string[];
 
   constructor(
-    private vote: VoteService,
+    private snackBar: MatSnackBar,
     private route: ActivatedRoute,
-    private location: Location,
-    public media: DeviceSizeService,
     private fb: FormBuilder,
     private list: ListService,
-    private tools: ToolsService,
-    public d: DicoService,
-    private snackBar: MatSnackBar
+
+    public vote: VoteService,
+    public location: Location,
+    public media: DeviceSizeService,
+    public tools: ToolsService,
+    public d: DicoService
   ) {}
 
   ngOnInit() {
     this.createSearchForm();
-    this.vote.getStartedPolls().subscribe(polls => {
-      this.polls = polls;
-      this.createPollCheckboxesCtrl();
-    });
-    this.list.start();
+    this.vote.getStartedPolls()
+      .takeUntil(this.unsubscribe)
+      .subscribe(polls => {
+        this.polls = polls;
+        this.createPollCheckboxesCtrl();
+      });
   }
 
   ngOnDestroy() {
-    this.list.stop();
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 
   createSearchForm() {
@@ -109,19 +112,24 @@ export class AssessorComponent implements OnInit, OnDestroy {
 
   markAsVoted() {
     const emailId = this.tools.getEmailIdFromEmail(this.getEmail());
+    const email = this.getEmail() + this.getDomain();
     const name = this.tools.titleCase(emailId.replace('|', ' ').replace('  ', ' '));
-    if (this.list.authUsers[emailId] !== this.getEmail() + this.getDomain()) {
-      this.snackBar.open('Utilisateur inconnu', 'ok')
-    } else {
-      for (let poll of this.polls) {
-        if (this.checked[poll.id]) {
-          this.vote.markAsVoted(poll.id, this.getEmail());
+    this.list.isInList(email)
+      .first()
+      .subscribe(inList => {
+        if (!inList) {
+          this.snackBar.open('Utilisateur inconnu', 'ok')
+        } else {
+          for (let poll of this.polls) {
+            if (this.checked[poll.id]) {
+              this.vote.markAsVoted(poll.id, this.getEmail());
+            }
+          }
+          this.formGroup.get('email').setValue('');
+          this.formGroup.get('domain').setValue(this.domains[0]);
+          this.snackBar.open(this.d.format(this.d.l.markedAsVoted, name), 'ok', {duration: 2000});
         }
-      }
-      this.formGroup.get('email').setValue('');
-      this.formGroup.get('domain').setValue(this.domains[0]);
-      this.snackBar.open(this.d.format(this.d.l.markedAsVoted, name), 'ok', {duration: 2000});
-    }
+      });
   }
 
   noPollSelected() {

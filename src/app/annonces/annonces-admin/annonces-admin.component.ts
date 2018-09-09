@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AnnoncesService} from '../annonces.service';
 import {DicoService} from '../../language/dico.service';
-import {ToolsService} from '../../providers/tools.service';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-annonces-admin',
@@ -12,7 +12,8 @@ export class AnnoncesAdminComponent implements OnInit {
 
   constructor(
     public annonces: AnnoncesService,
-    public d: DicoService
+    public d: DicoService,
+    public location: Location
   ) {}
 
   ngOnInit() { }

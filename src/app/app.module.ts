@@ -138,8 +138,6 @@ import {EventCardComponent} from './events/components/event-card/event-card.comp
 import {ActuCardComponent} from './actus/components/actu-card/actu-card.component';
 import {NsigmaAnnonceCardComponent} from './nsigma/components/nsigma-annonce-card/nsigma-annonce-card.component';
 import {PagedListComponent} from './shared-components/paged-list/paged-list.component';
-import {UsersService} from './shared-components/filter-add-users/users.service';
-import {FilterAddUsersComponent} from './shared-components/filter-add-users/filter-add-users.component';
 import {UpdatePasswordDialogComponent} from './account/components/update-password-dialog/update-password-dialog.component';
 import {DayColumnComponent} from './calendar/components/day-column/day-column.component';
 import {CafetRespComponent} from './cafet/cafet-resp/cafet-resp.component';
@@ -178,7 +176,6 @@ import 'hammerjs';
     ActuCardComponent,
     PagedGridComponent,
     PagedListComponent,
-    FilterAddUsersComponent,
     UpdatePasswordDialogComponent,
     DayColumnComponent,
     CafetRespComponent,
@@ -200,7 +197,7 @@ import 'hammerjs';
     })
   ],
   providers: [
-    AuthService, VoteService, AdminService, CafetService, EventsService, ActusService, NsigmaService, NsigmaGuard, AnnoncesService, AnnoncesGuard, CalService, UsersService,
+    AuthService, VoteService, AdminService, CafetService, EventsService, ActusService, NsigmaService, NsigmaGuard, AnnoncesService, AnnoncesGuard, CalService,
     AppModulesService, DeviceSizeService, ListService, ToolsService,
     CanActivateHome, CanActivateVoteAdmin, CanActivateAssessor, CanActivateEventsAdmin, CanActivateComResp, CanActivateEventsEdit, CanActivateActusAdmin, CanActivateJournalist, CanActivateCafetResp, CanActivateActusEdit, CanActivateAdmin, CanActivateCafetAdmin, EmailVerifGuard,
     DicoService, DatePipe

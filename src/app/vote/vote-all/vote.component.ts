@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { VoteService } from '../vote-service/vote.service';
 import { DicoService } from '../../language/dico.service';
 import {Location} from '@angular/common';
@@ -9,23 +9,13 @@ import {Location} from '@angular/common';
   templateUrl: './vote.component.html',
   styleUrls: ['./vote.component.css']
 })
-export class VoteComponent {
-
-  noPoll: boolean;
-
+export class VoteComponent implements OnInit {
   constructor(
     public vote: VoteService,
     public d: DicoService,
     public location: Location
-  ) {
-    this.noPoll = true;
-  }
+  ) { }
 
-  ngOnInit() {
-    this.vote.start();
-  }
+  ngOnInit() {}
 
-  ngOnDestroy() {
-    this.vote.stop();
-  }
 }

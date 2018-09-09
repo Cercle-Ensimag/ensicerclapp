@@ -3,7 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
-import {Choice, Poll} from '../poll/poll.component';
+import {Poll} from '../poll/poll.component';
 
 import {VoteService} from '../vote-service/vote.service';
 import {DicoService} from '../../language/dico.service';
@@ -18,25 +18,24 @@ import {Subject} from 'rxjs/Subject';
   styleUrls: ['./edit-poll.component.css']
 })
 export class EditPollComponent implements OnInit, OnDestroy {
-  private formGroup: FormGroup;
   private unsubscribe: Subject<void> = new Subject();
   private id: string;
 
-  choices: {
+  public formGroup: FormGroup;
+  public choices: {
     id: string,
     ctrl: FormGroup
-  }[];
+  }[] = [];
 
   constructor(
+    private snackBar: MatSnackBar,
     private vote: VoteService,
     private route: ActivatedRoute,
-    private location: Location,
     private fb: FormBuilder,
-    private d: DicoService,
-    private snackBar: MatSnackBar
-  ) {
-    this.choices = [];
-  }
+
+    public location: Location,
+    public d: DicoService,
+  ) { }
 
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
@@ -114,17 +113,20 @@ export class EditPollComponent implements OnInit, OnDestroy {
         short: choice.ctrl.get('short').value
       };
     }
-    let poll = {
+    const poll = {
       id: this.id,
       title: this.formGroup.get('title').value,
       description: this.formGroup.get('description').value,
       started: this.formGroup.get('started').value,
       choices: choices
     };
+
+    console.log(poll);
+
     this.vote.setPoll(poll)
       .then(
       () => {
-        this.snackBar.open("modifications enregistrées", 'ok', {duration: 2000})
+        this.snackBar.open("modifications enregistrées", 'ok', {duration: 2000});
         this.initFormGroup();
       }
     );

@@ -2,7 +2,7 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 
 // Fetch the service account key JSON file contents
-var serviceAccount = require("./ensicerclapp-admin-sdk-credential.json");
+const serviceAccount = require("./ensicerclapp-admin-sdk-credential.json");
 
 // Initialize the app with a service account, granting admin privileges
 admin.initializeApp({
@@ -74,10 +74,10 @@ exports.onCreateAccount = functions.auth.user().onCreate(event => {
   const user = event.data;
   const emailId = getEmailId(user.email);
 
-  var refs = {uid: user.uid};
+  const refs = {uid: user.uid};
   refs[user.uid+"/admin/email"] = user.email;
 
-  var updates = {};
+  const updates = {};
 
   if (!verifyEmail(user.email)) {
     // invalid email, delete account
@@ -132,7 +132,7 @@ exports.onCreateAccount = functions.auth.user().onCreate(event => {
 exports.onDeleteAccount = functions.auth.user().onDelete(event => {
   const user = event.data;
   const emailId = getEmailId(user.email);
-  var updates = {};
+  const updates = {};
 
   // /!\ Any information deleted here must refer to user.uid /!\
   // because this function is called when deleting unauthorised users

@@ -10,6 +10,7 @@ import {DicoService} from '../../language/dico.service';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {Subject} from 'rxjs/Subject';
 import {Observable} from 'rxjs/Observable';
+import {Location} from '@angular/common';
 
 export class Journalist {
   emailId: string;
@@ -41,15 +42,14 @@ export class ActuAdminComponent implements OnInit, OnDestroy {
     public media: DeviceSizeService,
     public list: ListService,
     public d: DicoService,
+    public location: Location
   ) {}
 
   ngOnInit () {
     this.emailCtrl = new FormControl('', [this.auth.emailDomainValidator, Validators.email]);
-    this.list.start();
   }
 
   ngOnDestroy () {
-    this.list.stop();
     this.unsubscribe.next();
     this.unsubscribe.complete();
   }
@@ -64,16 +64,20 @@ export class ActuAdminComponent implements OnInit, OnDestroy {
 
   addJournalist() {
     const emailId = this.tools.getEmailIdFromEmail(this.emailCtrl.value);
-    if (!this.list.authUsers[emailId]) {
-      let name = this.tools.titleCase(emailId.replace('|', ' ').replace('  ', ' '));
-      this.snackBar.open(this.d.format(this.d.l.notOnTheList, name), 'ok', {duration: 2000});
-    } else {
-      this.actus.addJournalist(this.emailCtrl.value, {
-        groupId: emailId,
-        displayName: emailId
+    this.list.isInList(this.emailCtrl.value)
+      .first()
+      .subscribe(inList => {
+        if (!inList) {
+          let name = this.tools.titleCase(emailId.replace('|', ' ').replace('  ', ' '));
+          this.snackBar.open(this.d.format(this.d.l.notOnTheList, name), 'ok', {duration: 2000});
+        } else {
+          this.actus.addJournalist(this.emailCtrl.value, {
+            groupId: emailId,
+            displayName: emailId
+          });
+          this.emailCtrl.setValue("");
+        }
       });
-      this.emailCtrl.setValue("");
-    }
   }
 
   /*add(emailId: string){

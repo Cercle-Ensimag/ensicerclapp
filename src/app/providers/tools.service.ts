@@ -12,7 +12,7 @@ export class ToolsService {
 
   titleCase(str) {
     str = str.toLowerCase().split(' ');
-    for (var i = 0; i < str.length; i++) {
+    for (let i = 0; i < str.length; i++) {
       str[i] = str[i].charAt(0).toUpperCase() + str[i].slice(1);
     }
     return str.join(' ');
@@ -55,10 +55,10 @@ export class ToolsService {
   }
 
   round(number: number, precision: number) {
-  	var factor = Math.pow(10, precision);
-  	var tempNumber = number * factor;
-  	var roundedTempNumber = Math.round(tempNumber);
-  	return roundedTempNumber / factor;
+    const factor = Math.pow(10, precision);
+    const tempNumber = number * factor;
+    const roundedTempNumber = Math.round(tempNumber);
+    return roundedTempNumber / factor;
   }
 
   // TODO: Transformer en pipe.
@@ -67,18 +67,18 @@ export class ToolsService {
   }
 
   djb2(str: string){
-    var hash = 5381;
-    for (var i = 0; i < str.length; i++) {
+    let hash = 5381;
+    for (let i = 0; i < str.length; i++) {
       hash = ((hash << 5) + hash) + str.charCodeAt(i); /* hash * 33 + c */
     }
     return hash;
   }
 
   hashStringToColor(str: string) {
-    var hash = this.djb2(str);
-    var r = (hash & 0xFF0000) >> 16;
-    var g = (hash & 0x00FF00) >> 8;
-    var b = hash & 0x0000FF;
+    const hash = this.djb2(str);
+    const r = (hash & 0xFF0000) >> 16;
+    const g = (hash & 0x00FF00) >> 8;
+    const b = hash & 0x0000FF;
     return "#" + ("0" + r.toString(16)).substr(-2) + ("0" + g.toString(16)).substr(-2) + ("0" + b.toString(16)).substr(-2);
   }
 

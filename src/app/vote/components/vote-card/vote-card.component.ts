@@ -16,10 +16,11 @@ export class VoteCardComponent implements OnInit {
   @Input() poll: Poll;
 
   constructor(
-    private tools: ToolsService,
-    private vote: VoteService,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+
+    public vote: VoteService,
+    public tools: ToolsService,
   ) { }
 
   ngOnInit() { }

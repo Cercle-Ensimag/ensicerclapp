@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
 
@@ -30,15 +30,17 @@ export class Poll {
   styleUrls: ['./poll.component.css']
 })
 export class PollComponent implements OnInit {
-  private id: string;
+  public id: string;
 
   constructor(
-    private vote: VoteService,
-    private route: ActivatedRoute,
-    private location: Location,
-    private snackBar: MatSnackBar,
-    private d: DicoService,
     private dialog: MatDialog,
+    private route: ActivatedRoute,
+    private snackBar: MatSnackBar,
+
+    public vote: VoteService,
+    public d: DicoService,
+    public location: Location,
+
   ) { }
 
   ngOnInit() {

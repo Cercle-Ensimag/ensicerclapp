@@ -12,6 +12,7 @@
   </mat-tab>
 
   <mat-tab label="{{ d.l.assessorPlLabel }}">
+    <app-loading [loading]="filteredUsers() | async" [fullPage]="false"></app-loading>
     <!-- Users display -->
     <div *ngIf="filteredUsers() | async as users">
       <mat-card>
@@ -35,9 +36,6 @@
           </a>
         </mat-nav-list>
       </mat-card>
-    </div>
-    <div *ngIf="!filteredUsers() | async" class="loading-indicator">
-      <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
     </div>
   </mat-tab>
 </mat-tab-group>

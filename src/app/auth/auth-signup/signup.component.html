@@ -20,14 +20,11 @@
         </mat-form-field>
 
         <mat-form-field>
-          <input matInput placeholder="{{ d.l.passwordlLabel }}" formControlName="password" [type]="hide ? 'password' : 'text'" autocomplete="off">
-          <mat-icon matSuffix (click)="hidePassword = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+          <input matInput placeholder="{{ d.l.passwordlLabel }}" formControlName="password" [type]="hidePassword ? 'password' : 'text'" autocomplete="off">
+          <mat-icon matSuffix (click)="hidePassword = !hidePassword">{{hidePassword ? 'visibility' : 'visibility_off'}}</mat-icon>
           <mat-error *ngIf="formGroup.get('password').invalid">{{ d.l.passwordTooShortError }}</mat-error>
         </mat-form-field>
 
-        <button mat-raised-button type="submit" color="primary"
-          [disabled]="formGroup.invalid"
-        >{{ d.l.signUpButtonLabel }}</button>
       </form>
     </mat-card>
   </div>
@@ -35,4 +32,9 @@
 
 <div class="mat-fab-bottom-right">
   <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
+  <button mat-fab color="primary"
+          (click)="submit()"
+          [disabled]="formGroup.invalid">
+    <mat-icon>send</mat-icon>
+  </button>
 </div>

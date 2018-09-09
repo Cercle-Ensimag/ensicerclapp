@@ -57,9 +57,7 @@
     </mat-card>
   </ng-container>
 
-
-  <!-- No poll -->
-  <mat-card *ngIf="!polls.leading" class="center">
-    <h3>{{ d.l.noPoll }}</h3>
+  <mat-card *ngIf="!polls.length" class="center">
+    Pas de scrutin en cours. <img src="assets/img/icons/empty.png">
   </mat-card>
 </div>

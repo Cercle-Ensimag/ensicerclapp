@@ -8,9 +8,9 @@ import { Component, Input, OnInit } from '@angular/core';
 export class LoadingComponent implements OnInit {
 
   @Input() public loading: any = null;
+  @Input() public fullPage: boolean = true;
 
   constructor() { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 }

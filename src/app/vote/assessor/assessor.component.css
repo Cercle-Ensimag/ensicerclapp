@@ -19,6 +19,11 @@ mat-card {
   margin-bottom: 4px;
 }
 
+mat-card img {
+  vertical-align: middle;
+  margin: 20px !important;
+}
+
 mat-expansion-panel {
   margin-bottom: 4px;
 }

@@ -101,7 +101,7 @@ export class CalService {
     if (!this._coursesEvents) {
       this._coursesEvents = this.getSettings()
         .flatMap((settings: Settings) => {
-          if (!settings.resources){
+          if (!settings || !settings.resources){
             return Observable.of([])
           }
           return this.getCalFromAde(settings.resources)

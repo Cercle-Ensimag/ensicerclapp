@@ -3,7 +3,7 @@ import {AngularFireDatabase} from 'angularfire2/database';
 import {Observable} from 'rxjs/Observable';
 import {DatePipe} from '@angular/common';
 import {DicoService} from '../../language/dico.service';
-import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import {DomSanitizer} from '@angular/platform-browser';
 
 import {AuthService} from '../../auth/auth-service/auth.service';
 import {ToolsService} from '../../providers/tools.service';
@@ -163,7 +163,7 @@ export class CafetService {
     let refs = {
       credit: user.credit,
       lastTransactionDate: user.lastTransactionDate
-    }
+    };
     return this.db.object<any>("cafet/users/"+user.emailId).update(refs);
   }
 

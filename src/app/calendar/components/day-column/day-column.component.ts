@@ -15,10 +15,10 @@ export class DayColumnComponent implements OnInit {
   @Input() editing: boolean = false;
 
   constructor(
-    private media: DeviceSizeService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
 
+    public media: DeviceSizeService,
     public cal: CalService,
     public d: DicoService
   ) { }
