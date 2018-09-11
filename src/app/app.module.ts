@@ -143,6 +143,7 @@ import {DayColumnComponent} from './calendar/components/day-column/day-column.co
 import {CafetRespComponent} from './cafet/cafet-resp/cafet-resp.component';
 
 import 'hammerjs';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
   declarations: [
@@ -196,7 +197,8 @@ import 'hammerjs';
           sanitize: true
         }
       }
-    })
+    }),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
     AuthService, VoteService, AdminService, CafetService, EventsService, ActusService, NsigmaService, NsigmaGuard, AnnoncesService, AnnoncesGuard, CalService,
