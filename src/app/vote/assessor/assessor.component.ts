@@ -1,3 +1,5 @@
+
+import {first, map, takeUntil} from 'rxjs/operators';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
@@ -12,10 +14,10 @@ import {DicoService} from '../../language/dico.service';
 
 import {VoteUser} from '../vote-users/vote-users.component';
 import {Poll} from '../poll/poll.component';
-import {Observable, Subject} from '../../../../node_modules/rxjs';
+import {Observable, Subject} from 'rxjs';
 
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/mergeMap';
+
+
 import {MatSnackBar} from '@angular/material';
 
 @Component({
@@ -49,8 +51,8 @@ export class AssessorComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.createSearchForm();
-    this.vote.getStartedPolls()
-      .takeUntil(this.unsubscribe)
+    this.vote.getStartedPolls().pipe(
+      takeUntil(this.unsubscribe))
       .subscribe(polls => {
         this.polls = polls;
         this.createPollCheckboxesCtrl();
@@ -88,8 +90,8 @@ export class AssessorComponent implements OnInit, OnDestroy {
   }
 
   filteredUsers(): Observable<{userName: string, pollName: string}[]> {
-    return this.vote.getAllStartedPollsUsers()
-      .map((voteLists: {poll: Poll, users: VoteUser[]}[]) => {
+    return this.vote.getAllStartedPollsUsers().pipe(
+      map((voteLists: {poll: Poll, users: VoteUser[]}[]) => {
         let toReturn = [];
         voteLists.filter((voteList: {poll: Poll, users: VoteUser[]}) => this.checked[voteList.poll.id])
           .forEach((voteList: {poll: Poll, users: VoteUser[]}) => {
@@ -102,12 +104,12 @@ export class AssessorComponent implements OnInit, OnDestroy {
           );
         });
         return toReturn;
-      });
+      }));
   }
 
   buttonDisabled(): Observable<boolean> {
-    return this.filteredUsers()
-      .map(users => !!users.length || this.formGroup.invalid || this.noPollSelected())
+    return this.filteredUsers().pipe(
+      map(users => !!users.length || this.formGroup.invalid || this.noPollSelected()))
   }
 
   markAsVoted() {
@@ -115,7 +117,7 @@ export class AssessorComponent implements OnInit, OnDestroy {
     const email = this.getEmail() + this.getDomain();
     const name = this.tools.titleCase(emailId.replace('|', ' ').replace('  ', ' '));
     this.list.isInList(email)
-      .first()
+      .pipe(first())
       .subscribe(inList => {
         if (!inList) {
           this.snackBar.open('Utilisateur inconnu', 'ok')

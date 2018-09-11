@@ -4,7 +4,8 @@ import {MatDialog, MatSnackBar} from '@angular/material';
 import {DeleteDialogComponent} from '../../../shared-components/delete-dialog/delete-dialog.component';
 import {VoteService} from '../../vote-service/vote.service';
 import {Poll} from '../../poll/poll.component';
-import {Observable} from '../../../../../node_modules/rxjs';
+import {Observable, of} from 'rxjs';
+import {flatMap, map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-vote-card',
@@ -18,35 +19,36 @@ export class VoteCardComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
-
     public vote: VoteService,
     public tools: ToolsService,
-  ) { }
+  ) {
+  }
 
-  ngOnInit() { }
+  ngOnInit() {
+  }
 
   delete() {
     this.dialog.open(DeleteDialogComponent, {
       data: {
-        title: "Confirmation de la suppression",
+        title: 'Confirmation de la suppression',
         content: `Êtes-vous certain de vouloir supprimer le scrutin "${this.poll.title}" ?`
       }
     }).afterClosed().subscribe(result => {
       if (result) {
         this.vote.deletePoll(this.poll.id).then(() =>
-          this.snackBar.open("Scrutin supprimé", 'ok', {duration: 2000})
+          this.snackBar.open('Scrutin supprimé', 'ok', {duration: 2000})
         );
       }
     });
   }
 
   linkEnabled(): Observable<boolean> {
-    return Observable.of(this.admin)
-      .flatMap(is => is ? Observable.of(false) : this.vote.alreadyVotedTo(this.poll.id).map(has => !has))
+    return of(this.admin).pipe(
+      flatMap(is => is ? of(false) : this.vote.alreadyVotedTo(this.poll.id).pipe(map(has => !has))));
   }
 
   setStarted(started: boolean) {
-    this.vote.setStarted(this.poll.id, started);
+    return this.vote.setStarted(this.poll.id, started);
   }
 
   choicesString(): string {

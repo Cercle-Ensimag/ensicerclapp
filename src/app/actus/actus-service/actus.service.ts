@@ -1,9 +1,11 @@
 import {Injectable} from '@angular/core';
-import {AngularFireDatabase} from 'angularfire2/database';
+import {AngularFireDatabase} from '@angular/fire/database';
 
 import {ToolsService} from '../../providers/tools.service';
 import {Group, Journalist} from '../actu-admin/actu-admin.component';
-import {Observable} from '../../../../node_modules/rxjs';
+
+import {Observable} from 'rxjs';
+import {map, shareReplay} from 'rxjs/operators';
 
 export class Actu {
   id: string;
@@ -31,9 +33,9 @@ export class ActusService {
     if (!this._actus){
       this._actus = this.db
         .list<Actu>('actus/actus')
-        .valueChanges()
-        .map(annonces => annonces.reverse())
-        .shareReplay(1);
+        .valueChanges().pipe(
+        map(annonces => annonces.reverse()))
+        .pipe(shareReplay(1));
     }
     return this._actus;
   }
@@ -43,7 +45,7 @@ export class ActusService {
       this._actu[actuId] = this.db
         .object<Actu>('actus/actus/'+actuId)
         .valueChanges()
-        .shareReplay(1);
+        .pipe(shareReplay(1));
     }
     return this._actu[actuId];
   }
@@ -64,9 +66,9 @@ export class ActusService {
     if (!this._journalists){
       this._journalists = this.db
         .list<Journalist>('actus/journalists/users')
-        .valueChanges()
-        .map(annonces => annonces.reverse())
-        .shareReplay(1);
+        .valueChanges().pipe(
+        map(annonces => annonces.reverse()))
+        .pipe(shareReplay(1));
     }
     return this._journalists;
   }

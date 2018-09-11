@@ -1,3 +1,5 @@
+
+import {takeUntil} from 'rxjs/operators';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Annonce, AnnoncesService} from '../../annonces/annonces.service';
@@ -7,9 +9,9 @@ import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
 import {DicoService} from '../../language/dico.service';
 import {MatSnackBar} from '@angular/material';
-import {Subject} from 'rxjs/Subject';
+import {Subject} from 'rxjs';
 
-import 'rxjs/add/operator/takeUntil';
+
 
 @Component({
   selector: 'app-annonces-edit',
@@ -45,8 +47,8 @@ export class AnnoncesEditComponent implements OnInit, OnDestroy {
   }
 
   initFormGroup() {
-    this.annonces.getAnnonce(this.id)
-      .takeUntil(this.unsubscribe)
+    this.annonces.getAnnonce(this.id).pipe(
+      takeUntil(this.unsubscribe))
       .subscribe((annonce) => {
         if (!annonce) {
           annonce = new Annonce();

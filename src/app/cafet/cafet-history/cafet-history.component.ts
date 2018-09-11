@@ -1,9 +1,11 @@
+
+import {map, shareReplay} from 'rxjs/operators';
 import {Component, Inject, ViewChild} from '@angular/core';
 import {MAT_DIALOG_DATA, MatPaginator, MatTableDataSource} from '@angular/material';
 
 import {CafetService, CafetUser} from '../cafet-service/cafet.service';
 import {DicoService} from '../../language/dico.service';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 
 class Log {
   date: number;
@@ -30,8 +32,8 @@ export class CafetHistoryComponent {
   getData(): Observable<MatTableDataSource<Log>>{
     if (!this._data){
       if (this.data.day) {
-        this._data = this.cafet.getDayTransactions()
-          .map(transactions => {
+        this._data = this.cafet.getDayTransactions().pipe(
+          map(transactions => {
             const dayTr = transactions[this.data.user.emailId];
             const logs: Log[] = [];
             Object.getOwnPropertyNames(dayTr).reverse().forEach(transId => {
@@ -44,13 +46,13 @@ export class CafetHistoryComponent {
             toReturn.data = logs;
             setTimeout(() => toReturn.paginator = this.paginator);
             return toReturn;
-          })
-          .shareReplay(1);
+          }),
+          shareReplay(1));
       } else {
-        this._data = this.cafet.getHistory(this.data.user.emailId)
-          .map(history => {
+        this._data = this.cafet.getHistory(this.data.user.emailId).pipe(
+          map(history => {
             const logs: Log[] = [];
-            history.reverse().forEach(trans => {
+            history.forEach(trans => {
               logs.push({
                 date: trans.date,
                 value: trans.value.toFixed(2) + '€'
@@ -64,7 +66,8 @@ export class CafetHistoryComponent {
             toReturn.data = logs;
             setTimeout(() => toReturn.paginator = this.paginator);
             return toReturn;
-          }).shareReplay(1);
+          }),
+          shareReplay(1));
       }
     }
     return this._data;

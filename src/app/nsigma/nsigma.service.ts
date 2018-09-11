@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import {AngularFireDatabase} from 'angularfire2/database';
+import {AngularFireDatabase} from '@angular/fire/database';
 
-import {ToolsService} from '../providers/tools.service';
-import {Observable} from '../../../node_modules/rxjs';
+import {Observable} from 'rxjs';
+import {map, shareReplay} from 'rxjs/operators';
 
 export class NsigmaAnnonce {
   id: string;
@@ -24,17 +24,16 @@ export class NsigmaService {
   private _annonce: { [ $annonceId: string ]: Observable<NsigmaAnnonce> } = {};
 
   constructor(
-    private db: AngularFireDatabase,
-    private tools: ToolsService
-  ) { }
+    private db: AngularFireDatabase) { }
 
   getAnnonces(): Observable<NsigmaAnnonce[]> {
     if (!this._annonces){
       this._annonces = this.db
         .list<NsigmaAnnonce>('nsigma/annonces')
         .valueChanges()
-        .map(annonces => annonces.reverse())
-        .shareReplay(1);
+        .pipe(
+          map(annonces => annonces.reverse()),
+          shareReplay(1));
     }
     return this._annonces;
   }
@@ -44,7 +43,7 @@ export class NsigmaService {
       this._annonce[nsigmaAnnonceId] = this.db
         .object<NsigmaAnnonce>('nsigma/annonces/' + nsigmaAnnonceId)
         .valueChanges()
-        .shareReplay(1)
+        .pipe(shareReplay(1))
     }
     return this._annonce[nsigmaAnnonceId];
   }

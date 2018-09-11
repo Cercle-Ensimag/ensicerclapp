@@ -1,14 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Subject} from 'rxjs/Subject';
+import {Subject, Observable} from 'rxjs';
 import {CafetService, CafetUser} from '../cafet-service/cafet.service';
 import {ToolsService} from '../../providers/tools.service';
 import {ListService} from '../../providers/list.service';
 import {DeviceSizeService} from '../../providers/device-size.service';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {DicoService} from '../../language/dico.service';
-import {Observable} from 'rxjs/Observable';
 import {CafetHistoryComponent} from '../cafet-history/cafet-history.component';
+import {map, takeUntil} from 'rxjs/operators';
 
 @Component({
   selector: 'app-cafet-resp',
@@ -53,7 +53,7 @@ export class CafetRespComponent implements OnInit {
     });
 
     this.cafet.getUsers()
-      .takeUntil(this.unsubscribe)
+      .pipe(takeUntil(this.unsubscribe))
       .subscribe(users => {
         this.controls = {};
         for (let user of users) {
@@ -68,8 +68,8 @@ export class CafetRespComponent implements OnInit {
   filteredUsers(): Observable<CafetUser[]> {
     const email = this.formGroup.get('email').value;
     const emailId = this.tools.getEmailIdFromEmail(email.split('@')[0]);
-    return this.cafet.getUsers()
-      .map(users => {
+    return this.cafet.getUsers().pipe(
+      map(users => {
         users = users.filter(
           user => user.emailId.includes(emailId)
             || this.cafet.getUserName(user).includes(this.tools.titleCase(email))
@@ -81,14 +81,14 @@ export class CafetRespComponent implements OnInit {
           users.sort((u1, u2) => u1.credit - u2.credit);
         }
         return users;
-      });
+      }));
   }
 
   // transactions
 
   getUserCredit(user: CafetUser): Observable<string> {
-    return this.cafet.getDayTransactions()
-      .map(dayTransactions => {
+    return this.cafet.getDayTransactions().pipe(
+      map(dayTransactions => {
         let credit = user.credit;
         if (dayTransactions[user.emailId]) {
           Object.getOwnPropertyNames(dayTransactions[user.emailId]).forEach((transId) => {
@@ -96,12 +96,12 @@ export class CafetRespComponent implements OnInit {
           });
         }
         return credit.toFixed(2);
-      });
+      }));
   }
 
   hasNoDayTransactions(user: CafetUser): Observable<boolean> {
-    return this.cafet.getDayTransactions()
-      .map(dayTransactions => !dayTransactions[user.emailId]);
+    return this.cafet.getDayTransactions().pipe(
+      map(dayTransactions => !dayTransactions[user.emailId]));
   }
 
   transaction(user: CafetUser, add: boolean) {

@@ -1,26 +1,28 @@
-import { Injectable } from '@angular/core';
+import {map, shareReplay} from 'rxjs/operators';
+import {Injectable} from '@angular/core';
 
-import { AngularFireDatabase } from 'angularfire2/database';
+import {AngularFireDatabase} from '@angular/fire/database';
 
-import { ToolsService } from './tools.service';
-import {Observable} from 'rxjs/Observable';
+import {ToolsService} from './tools.service';
+import {Observable} from 'rxjs';
 
 @Injectable()
 export class ListService {
-  private _email: { [$emailId: string]: Observable<string>} = {};
-  private _inList: { [$emailId: string]: Observable<boolean>} = {};
+  private _email: { [$emailId: string]: Observable<string> } = {};
+  private _inList: { [$emailId: string]: Observable<boolean> } = {};
 
   constructor(
     private db: AngularFireDatabase,
     private tools: ToolsService
-  ) { }
+  ) {
+  }
 
   getEmail(emailId: string): Observable<string> {
-    if (!this._email[emailId]){
+    if (!this._email[emailId]) {
       this._email[emailId] = this.db
         .object<any>('list/users/' + emailId)
         .valueChanges()
-        .shareReplay(1);
+        .pipe(shareReplay(1));
     }
     return this._email[emailId];
   }
@@ -28,11 +30,12 @@ export class ListService {
   isInList(email: string): Observable<boolean> {
     const emailId = this.tools.getEmailIdFromEmail(email);
 
-    if (!this._inList[emailId]){
-      this._inList[emailId] = this.getEmail(emailId)
-        .map(emailRetrieved => emailRetrieved === email.toLowerCase())
-        .shareReplay(1);
+    if (!this._inList[emailId]) {
+      this._inList[emailId] = this.getEmail(emailId).pipe(
+        map(emailRetrieved => emailRetrieved === email.toLowerCase()),
+        shareReplay(1));
     }
+
     return this._inList[emailId];
   }
 

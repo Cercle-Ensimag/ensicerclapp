@@ -1,5 +1,5 @@
 import { Component, OnInit} from '@angular/core';
-import { FormControl, FormBuilder, Validators } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 
 import { CafetService, CafetUser } from '../../cafet-service/cafet.service';
@@ -9,7 +9,8 @@ import { DicoService } from '../../../language/dico.service';
 
 import { CafetHistoryComponent } from '../../cafet-history/cafet-history.component';
 import { EditCafetUserComponent } from '../edit-cafet-user/edit-cafet-user.component';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-cafet-admin-archives',
@@ -33,10 +34,10 @@ export class CafetAdminArchivesComponent implements OnInit {
 
   filteredUsers(): Observable<CafetUser[]> {
     let emailId = this.tools.getEmailIdFromEmail(this.emailCtrl.value.split('@')[0]);
-    return this.cafet.getArchivesUsers()
-      .map(users => users.filter(
+    return this.cafet.getArchivesUsers().pipe(
+      map(users => users.filter(
         user => user.emailId.includes(emailId)
-      ));
+      )));
   }
 
   openHistory(user: CafetUser): void {

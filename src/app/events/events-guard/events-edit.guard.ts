@@ -1,27 +1,27 @@
-import { Injectable } from '@angular/core';
-import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
+import {Injectable} from '@angular/core';
+import {CanActivate} from '@angular/router';
 
-import { AuthService } from '../../auth/auth-service/auth.service';
-import {Observable} from '../../../../node_modules/rxjs';
+import {AuthService} from '../../auth/auth-service/auth.service';
+import {zip} from 'rxjs';
+import {first, map, tap} from 'rxjs/operators';
 
 @Injectable()
 export class CanActivateEventsEdit implements CanActivate {
 
-  constructor(private auth: AuthService, private router: Router) { }
+  constructor(private auth: AuthService) { }
 
   canActivate(
-    next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ) {
-    return Observable.zip(
+    ) {
+    return zip(
       this.auth.isAdminOf('events'),
       this.auth.isRespCom()
-    ).first()
-      .map(([isAdminOfEvents, b2]) => isAdminOfEvents || b2)
-      .do(is => {
+    ).pipe(
+      first(),
+      map(([isAdminOfEvents, b2]) => isAdminOfEvents || b2),
+      tap(is => {
         if (!is) {
           this.auth.goToHome();
         }
-      });
+      }));
   }
 }

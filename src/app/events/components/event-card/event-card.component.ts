@@ -49,11 +49,11 @@ export class EventCardComponent implements OnInit {
     return this.event.start < Date.now() && this.isNotPassed();
   }
 
-  color(event: Event) {
+  color() {
     if (this.isNow()) {
       return "primary";
     } else {
-      return "";
+      return '';
     }
   }
 

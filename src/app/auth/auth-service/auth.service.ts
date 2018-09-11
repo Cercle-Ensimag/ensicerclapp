@@ -1,10 +1,12 @@
-import {Injectable} from '@angular/core';
+import {combineLatest, from, Observable, Observer, of} from 'rxjs';
+import {catchError, filter, first, flatMap, map, mergeMap, shareReplay} from 'rxjs/operators';
+import {Injectable, NgZone} from '@angular/core';
 import {Location} from '@angular/common';
 import {Router} from '@angular/router';
 import {AbstractControl, FormControl} from '@angular/forms';
 
-import {AngularFireAuth} from 'angularfire2/auth';
-import {AngularFireDatabase} from 'angularfire2/database';
+import {AngularFireAuth} from '@angular/fire/auth';
+import {AngularFireDatabase} from '@angular/fire/database';
 
 import {AppModulesService} from '../../providers/app-modules.service';
 import {ToolsService} from '../../providers/tools.service';
@@ -14,12 +16,13 @@ import {ComResp} from '../../events/events-service/events.service';
 import {Journalist} from '../../actus/actu-admin/actu-admin.component';
 import {Assessor} from '../../vote/vote-admin/vote-admin.component';
 import {CafetResp} from '../../cafet/cafet-service/cafet.service';
-import {Observable, Observer} from '../../../../node_modules/rxjs';
 import {User} from 'firebase/app';
 import {MatSnackBar} from '@angular/material';
 
-export const ENSIDOMAIN = "ensimag.fr";
-export const PHELMADOMAIN = "phelma.grenoble-inp.fr";
+import * as firebase from 'firebase';
+
+export const ENSIDOMAIN = 'ensimag.fr';
+export const PHELMADOMAIN = 'phelma.grenoble-inp.fr';
 
 export class Profile {
   name: {
@@ -56,13 +59,14 @@ export class AuthService {
   private _profile: Observable<any> = null;
 
   private _isAdmin: Observable<any> = null;
-  private _isAdminOf: { [of: string]: Observable<boolean>} = {};
+  private _isAdminOf: { [of: string]: Observable<boolean> } = {};
   private _hasCafetActivated: Observable<boolean>;
   private _isAssessor: Observable<boolean>;
   private _isCafetResp: Observable<boolean>;
   private _respComId: Observable<string>;
   private _journalistId: Observable<string>;
   private _isLogged: Observable<boolean>;
+  private _isLoggedAndHasEmailVerified: Observable<boolean>;
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -71,27 +75,27 @@ export class AuthService {
     private location: Location,
     private modules: AppModulesService,
     private tools: ToolsService,
-
-    public d: DicoService,
-    public snackBar: MatSnackBar
+    private d: DicoService,
+    private snackBar: MatSnackBar,
+    private ngZone: NgZone
   ) {
     this.error_persist = false;
     this.afAuth.auth.onIdTokenChanged((user: User) => this.redirectOnTokenChange(user));
   }
 
   redirectOnTokenChange(user: any) {
-    if (!user) return this.goToLogin();
+    if (!user) return;
 
-    if (this.location.path() === '/login') {
+    if (['/login', '/signup'].includes(this.location.path())) {
       return this.goToHome();
     }
 
     if (this.location.path() === '/email_verif') {
       this.getUser()
-      .first()
-      .subscribe(user => {
-        if (user.emailVerified) this.goToHome();
-      });
+        .pipe(first())
+        .subscribe(user => {
+          if (user.emailVerified) this.goToHome();
+        });
     }
   }
 
@@ -112,52 +116,52 @@ export class AuthService {
     firstName: string, lastName: string
   ) {
     this.afAuth.auth.createUserWithEmailAndPassword(email, password)
-    .then((user) => {
-      this.sendEmailVerification(user);
-      this.setProfile(user, firstName, lastName);
-      this.updateProfileFromUser(user, new Profile(firstName, lastName, '', ''));
-    })
-    .catch((err) => {
-      this.onLoginError(err);
-      this.snackBar.open(err, 'ok');
-    });
+      .then((uc: firebase.auth.UserCredential) => {
+        this.sendEmailVerification(uc.user);
+        this.setProfile(uc.user, firstName, lastName);
+        this.updateProfileFromUser(uc.user, new Profile(firstName, lastName, '', ''));
+      })
+      .catch((err) => {
+        this.onLoginError(err);
+        this.snackBar.open(err, 'ok');
+      });
   }
 
   deleteAccount(): Promise<any> {
     return this.getLoggedUser()
-      .first()
-      .flatMap((user: User) => Observable.fromPromise(user.delete()))
+      .pipe(
+        first(),
+        flatMap((user: User) => from(user.delete())))
       .toPromise();
   }
 
   updatePassword(password: string): Promise<any> {
     return this.getLoggedUser()
-      .first()
-      .flatMap((user: User) => Observable.fromPromise(user.updatePassword(password)))
+      .pipe(
+        first(),
+        flatMap((user: User) => from(user.updatePassword(password))))
       .toPromise();
   }
 
   updateProfile(p: Profile): Promise<any> {
     return this.getLoggedUser()
-      .first()
-      .flatMap((user: User) => Observable.fromPromise(this.updateProfileFromUser(user, p)))
+      .pipe(
+        first(),
+        flatMap((user: User) => from(this.updateProfileFromUser(user, p))))
       .toPromise();
   }
 
   setProfile(user: any, firstName: string, lastName: string) {
     user.updateProfile({
-      displayName: firstName + " " + lastName,
-      photoURL: ""
+      displayName: firstName + ' ' + lastName,
+      photoURL: ''
     })
-      .catch((err) => { console.log(err) });
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   // Errors
-
-  private onLoginError(error: any) {
-    console.log(error);
-    this.error = error;
-  }
 
   setError(message: string, persist: boolean) {
     this.error = message;
@@ -175,111 +179,134 @@ export class AuthService {
   sendEmailVerification(user: any) {
     // user.sendEmailVerification({ url: environment.host.domain + '#/home'})
     user.sendEmailVerification()
-    .then(
-      () => {
-        this.goToEmailVerif();
-        console.log('Verification email sent to ' + user.email);
-      },
-      (err) => { console.log(err) }
-    );
+      .then(
+        () => {
+          this.goToEmailVerif();
+          console.log('Verification email sent to ' + user.email);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
   }
 
   sendPasswordResetEmail(email: string) {
     this.afAuth.auth.sendPasswordResetEmail(email)
-    .catch((err) => { console.log(err) });
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   confirmPasswordReset(code: string, password: string) {
     this.afAuth.auth.confirmPasswordReset(code, password)
-    .catch((err) => { console.log(err) });
+      .catch((err) => {
+        console.log(err);
+      });
   }
-
-  // Getters
 
   getAuthState(): Observable<User> {
     return this.afAuth.authState;
   }
 
+  // Getters
+
   getUser(): Observable<User> {
-    if (!this._user){
+    if (!this._user) {
       this._user = new Observable<User>((observer: Observer<User>) => {
-          this.afAuth.auth.onIdTokenChanged((user) => {
-            observer.next(user ? user : null);
-          });
-        })
-        .shareReplay(1);
+        this.afAuth.auth.onIdTokenChanged((user) => {
+          observer.next(user ? user : null);
+        });
+      }).pipe(
+        shareReplay(1));
     }
     return this._user;
   }
 
   getLoggedUser(): Observable<User> {
-    if (!this._loggedUser){
+    if (!this._loggedUser) {
       this._loggedUser = this.getUser()
-        .filter(user => !!user)
-        .shareReplay(1);
+        .pipe(
+          filter(user => !!user),
+          shareReplay(1)
+        );
     }
     return this._loggedUser;
   }
 
   isLogged(): Observable<boolean> {
-    if (!this._isLogged){
+    if (!this._isLogged) {
       this._isLogged = this.getUser()
-        .map(user => !!user)
-        .shareReplay(1);
+        .pipe(
+          map(user => !!user),
+          shareReplay(1));
     }
     return this._isLogged;
   }
 
+  isLoggedAndHasEmailVerified(): Observable<boolean> {
+    if (!this._isLoggedAndHasEmailVerified) {
+      this._isLoggedAndHasEmailVerified = this.getUser()
+        .pipe(
+          map(user => !!user && user.emailVerified),
+          shareReplay(1));
+    }
+    return this._isLoggedAndHasEmailVerified;
+  }
+
   getEmailId(): Observable<string> {
     return this.getLoggedUser()
-      .filter((user: User) => !!user )
-      .map((user: User) => this.tools.getEmailIdFromEmail(user.email));
+      .pipe(
+        map((user: User) => this.tools.getEmailIdFromEmail(user.email)));
   }
 
   getUserAccountPath(): Observable<string> {
     return this.getLoggedUser()
-      .filter((user: User) => !!user )
-      .map((user: User) => this.getUserAccountPathFromUser(user));
+      .pipe(
+        map((user: User) => this.getUserAccountPathFromUser(user)));
   }
 
   getProfile(): Observable<Profile> {
-    if (!this._profile){
+    if (!this._profile) {
       this._profile = this.getUserAccountPath()
-        .flatMap((accountPath: string) =>
-          this.db
-            .object<Profile>(accountPath+'/account/')
-            .valueChanges())
-        .shareReplay(1);
+        .pipe(
+          mergeMap((accountPath: string) =>
+            this.db
+              .object<Profile>(accountPath + '/account/')
+              .valueChanges()),
+          shareReplay(1));
     }
     return this._profile;
   }
 
   isAdmin(): Observable<boolean> {
-    if (!this._isAdmin){
-      this._isAdmin = Observable.combineLatest(
+    if (!this._isAdmin) {
+      this._isAdmin = combineLatest(
         this.getAdminsRes(),
         this.getLoggedUser())
-        .map(([admins, user]: [string, User]): boolean => Object.values(admins).includes(user.email))
-        .catch(e => Observable.of(false))
-        .shareReplay(1);
+        .pipe(
+          map(([admins, user]: [string, User]): boolean => Object.values(admins).includes(user.email)),
+          catchError(() => of(false)),
+          shareReplay(1));
     }
     return this._isAdmin;
   }
 
   isAdminOf(of: string): Observable<boolean> {
-    if (!this._isAdminOf[of]){
+    if (!this._isAdminOf[of]) {
       this._isAdminOf[of] = this.getOtherAdminsRes()
-        .map(data => data ? data[`${of}-admin`] || false : false)
-        .shareReplay(1);
+        .pipe(
+          map(data => data ? data[`${of}-admin`] || false : false),
+          shareReplay(1));
     }
     return this._isAdminOf[of];
   }
 
   hasCafetActivated(): Observable<boolean> {
-    if (!this._hasCafetActivated){
+    if (!this._hasCafetActivated) {
       this._hasCafetActivated = this.getOtherAdminsRes()
-        .map(data => data ? data[`cafet-activated`] || false : false)
-        .shareReplay(1);
+        .pipe(
+          map(data => data ? data[`cafet-activated`] || false : false),
+          shareReplay(1));
     }
     return this._hasCafetActivated;
   }
@@ -287,9 +314,10 @@ export class AuthService {
   isAssessor(): Observable<boolean> {
     if (!this._isAssessor) {
       this._isAssessor = this.getAssessorRes()
-        .map(is => is != null)
-        .catch(e => Observable.of(false))
-        .shareReplay(1);
+        .pipe(
+          map(is => is != null),
+          catchError(() => of(false)),
+          shareReplay(1));
     }
     return this._isAssessor;
   }
@@ -297,116 +325,119 @@ export class AuthService {
   isCafetResp(): Observable<boolean> {
     if (!this._isCafetResp) {
       this._isCafetResp = this.getCafetRespRes()
-        .map(is => is != null)
-        .catch(e => Observable.of(false))
-        .shareReplay(1);
+        .pipe(
+          map(is => is != null),
+          catchError(() => of(false)),
+          shareReplay(1));
     }
     return this._isCafetResp;
   }
 
   getRespComId(): Observable<string> {
-    if (!this._respComId){
+    if (!this._respComId) {
       this._respComId = this.getComRespRes()
-          .map(resp => resp ? resp.groupId : null)
-          .shareReplay(1);
+        .pipe(
+          map(resp => resp ? resp.groupId : null),
+          shareReplay(1));
     }
     return this._respComId;
   }
 
   isRespCom(): Observable<boolean> {
     return this.getRespComId()
-      .map(rcid => rcid !== null)
-      .catch(e => Observable.of(false));
+      .pipe(
+        map(rcid => rcid !== null),
+        catchError(() => of(false)));
   }
 
   getJournalistId(): Observable<string> {
-    if (!this._journalistId){
+    if (!this._journalistId) {
       this._journalistId = this.getJournalistRes()
-          .map(user => user ? user.groupId : null)
-          .shareReplay(1);
+        .pipe(
+          map(user => user ? user.groupId : null),
+          shareReplay(1));
     }
     return this._journalistId;
   }
 
   isJournalist(): Observable<boolean> {
     return this.getJournalistId()
-      .map(jid => jid !== null)
-      .catch(e => Observable.of(false));
+      .pipe(
+        map(jid => jid !== null),
+        catchError(() => of(false)));
   }
 
-  // Private res getters
-
   getAdminsRes(): Observable<string> {
-    if (!this._adminsRes){
+    if (!this._adminsRes) {
       this._adminsRes = this.db
         .object<string>('admin/private/admins')
         .valueChanges()
-        .shareReplay(1);
+        .pipe(shareReplay(1));
     }
     return this._adminsRes;
   }
 
+  // Private res getters
+
   getOtherAdminsRes(): Observable<string> {
     if (!this._otherAdminsRes) {
-      this._otherAdminsRes = this.getUserAccountPath()
-        .flatMap((accountPath: string) =>
+      this._otherAdminsRes = this.getUserAccountPath().pipe(
+        mergeMap((accountPath: string) =>
           this.db.object<string>(accountPath + '/admin')
             .valueChanges()
-        )
-        .shareReplay(1);
+        ))
+        .pipe(shareReplay(1));
     }
     return this._otherAdminsRes;
   }
 
   getAssessorRes(): Observable<Assessor> {
     if (!this._assessorRes) {
-      this._assessorRes = this.getEmailId()
-        .flatMap((emailId: string) =>
-          this.db.object<Assessor>('vote/assessors/'+ emailId)
+      this._assessorRes = this.getEmailId().pipe(
+        mergeMap((emailId: string) =>
+          this.db.object<Assessor>('vote/assessors/' + emailId)
             .valueChanges()
-        )
-        .shareReplay(1);
+        ))
+        .pipe(shareReplay(1));
     }
     return this._assessorRes;
   }
 
   getCafetRespRes(): Observable<CafetResp> {
     if (!this._cafetRespRes) {
-      this._cafetRespRes = this.getEmailId()
-        .flatMap((emailId: string) =>
-          this.db.object<CafetResp>('cafet/cafetResps/resps/'+ emailId)
+      this._cafetRespRes = this.getEmailId().pipe(
+        mergeMap((emailId: string) =>
+          this.db.object<CafetResp>('cafet/cafetResps/resps/' + emailId)
             .valueChanges()
-        )
-        .shareReplay(1);
+        ))
+        .pipe(shareReplay(1));
     }
     return this._cafetRespRes;
   }
 
   getJournalistRes(): Observable<Journalist> {
     if (!this._journalistRes) {
-      this._journalistRes = this.getEmailId()
-        .flatMap((emailId: string) =>
-          this.db.object<Journalist>('actus/journalists/users/'+ emailId)
+      this._journalistRes = this.getEmailId().pipe(
+        mergeMap((emailId: string) =>
+          this.db.object<Journalist>('actus/journalists/users/' + emailId)
             .valueChanges()
-        )
-        .shareReplay(1);
+        ))
+        .pipe(shareReplay(1));
     }
     return this._journalistRes;
   }
 
   getComRespRes(): Observable<ComResp> {
     if (!this._comRespRes) {
-      this._comRespRes = this.getEmailId()
-        .flatMap((emailId: string) =>
-          this.db.object<ComResp>('events/com-resps/resps/'+ emailId)
+      this._comRespRes = this.getEmailId().pipe(
+        mergeMap((emailId: string) =>
+          this.db.object<ComResp>('events/com-resps/resps/' + emailId)
             .valueChanges()
-        )
-        .shareReplay(1);
+        ))
+        .pipe(shareReplay(1));
     }
     return this._comRespRes;
   }
-
-  // Form
 
   getEmailErrorMessage(email_ctrl: AbstractControl) {
     return email_ctrl.hasError('required') ? this.d.l.noEmailError :
@@ -415,38 +446,45 @@ export class AuthService {
           '';
   }
 
-  // Helpers
+  // Form
 
   updateProfileFromUser(user: User, p: Profile): Promise<any> {
-    return this.db.object(this.getUserAccountPathFromUser(user)+'/account').set(p);
+    return this.db.object(this.getUserAccountPathFromUser(user) + '/account').set(p);
   }
 
-  getUserAccountPathFromUser(user: User) {
-    return "users/" + this.tools.getEmailIdFromEmail(user.email) + '/' + user.uid;
+  // Helpers
+
+  getUserAccountPathFromUser(user: User) {
+    return 'users/' + this.tools.getEmailIdFromEmail(user.email) + '/' + user.uid;
   }
 
   emailDomainValidator(control: FormControl) {
     let email = control.value;
-    if (email && email.indexOf("@") != -1) {
-      let [_, domain] = email.split("@");
+    if (email && email.indexOf('@') != -1) {
+      const domain = email.split('@')[1];
       if (domain !== ENSIDOMAIN && domain !== PHELMADOMAIN) {
-        return { domain: { parsedDomain: domain } };
+        return {domain: {parsedDomain: domain}};
       }
     }
     return null;
   }
 
-  // Router +
-
   goToLogin() {
-    this.router.navigateByUrl('/login');
+    this.ngZone.run(() => this.router.navigateByUrl('/login'));
   }
 
+  // Router +
+
   goToEmailVerif() {
-    this.router.navigateByUrl('/email_verif');
+    this.ngZone.run(() => this.router.navigateByUrl('/email_verif'));
   }
 
   goToHome() {
-    this.router.navigateByUrl('/home');
+    this.ngZone.run(() => this.router.navigateByUrl('/home'));
+  }
+
+  private onLoginError(error: any) {
+    console.log(error);
+    this.error = error;
   }
 }

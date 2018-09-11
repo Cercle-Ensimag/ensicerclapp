@@ -1,4 +1,5 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {takeUntil} from 'rxjs/operators';
+import {Component, NgZone, OnDestroy, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
 import {FormBuilder, FormGroup} from '@angular/forms';
 
@@ -10,8 +11,7 @@ import {HttpClient} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {Router} from '@angular/router';
 
-import {Subject} from 'rxjs/Subject';
-import 'rxjs/add/operator/takeUntil';
+import {Subject} from 'rxjs';
 
 @Component({
   selector: 'app-cal-settings',
@@ -31,6 +31,7 @@ export class CalSettingsComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private http: HttpClient,
     private router: Router,
+    private ngZone: NgZone,
 
     public d: DicoService,
     public cal: CalService,
@@ -38,8 +39,8 @@ export class CalSettingsComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.cal.getSettings()
-      .takeUntil(this.unsubscribe)
+    this.cal.getSettings().pipe(
+      takeUntil(this.unsubscribe))
       .subscribe(settings => {
         if (!settings) settings = {resources: ''};
         this.formGroup = this.fb.group({
@@ -60,7 +61,7 @@ export class CalSettingsComponent implements OnInit, OnDestroy {
       )
     ).then(() => {
       this.snackBar.open("Ressources mises à jour", 'ok', {duration: 2000});
-      this.router.navigateByUrl('/calendrier');
+      this.ngZone.run(() => this.router.navigateByUrl('/calendrier'));
     });
   }
 

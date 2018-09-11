@@ -1,10 +1,11 @@
+import {takeUntil} from 'rxjs/operators';
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 import {AuthService} from '../auth-service/auth.service';
 import {DicoService} from '../../language/dico.service';
 import {Location} from '@angular/common';
-import {Subject} from 'rxjs/Subject';
+import {Subject} from 'rxjs';
 
 @Component({
   selector: 'app-signup',
@@ -41,8 +42,8 @@ export class SignUpComponent implements OnInit {
 
   ngOnInit() {
     this.auth.resetError();
-    this.auth.isLogged()
-      .takeUntil(this.unsubscribe)
+    this.auth.isLogged().pipe(
+      takeUntil(this.unsubscribe))
       .subscribe(is => {
         if (is) this.auth.goToHome();
       });

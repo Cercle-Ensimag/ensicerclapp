@@ -1,10 +1,12 @@
 import {Injectable} from '@angular/core';
-import {AngularFireDatabase} from 'angularfire2/database';
+import {AngularFireDatabase} from '@angular/fire/database';
 
 import {ToolsService} from '../../providers/tools.service';
 import {AuthService} from '../../auth/auth-service/auth.service';
-import {Observable} from '../../../../node_modules/rxjs';
 import {CalEvent} from '../../calendar/cal-service/cal.service';
+
+import {first, map, mergeMap, shareReplay} from 'rxjs/operators';
+import {from, Observable} from 'rxjs';
 
 export class Event {
   id: string;
@@ -15,7 +17,7 @@ export class Event {
   end: number;
   location: string;
   price: string;
-	asso: string;
+  asso: string;
   groupId: string;
 }
 
@@ -35,44 +37,42 @@ export class EventsService {
   private _activeEvents: Observable<Event[]>;
   private _event: { [$eventId: string]: Observable<Event> } = {};
   private _comResps: Observable<ComResp[]>;
-  private _eventInCalendar: { [$eventId: string]: Observable<CalEvent> }  = {};
+  private _eventInCalendar: { [$eventId: string]: Observable<CalEvent> } = {};
 
   constructor(
     private db: AngularFireDatabase,
     private tools: ToolsService,
     private auth: AuthService
-  ) { }
-
-  start() { }
-
-  stop() { }
+  ) {
+  }
 
   getEvents(): Observable<Event[]> {
-    if (!this._events){
+    if (!this._events) {
       this._events = this.db
         .list<Event>('events/events', ref => ref.orderByChild('start'))
-        .valueChanges()
-        .map((events: Event[]) => events.reverse())
-        .shareReplay(1);
+        .valueChanges().pipe(
+          map((events: Event[]) => events.reverse()), // Pour l'admin, on veut voir les passés en dernier.
+          shareReplay(1));
     }
     return this._events;
   }
 
   getActiveEvents(): Observable<Event[]> {
-    if (!this._activeEvents){
-      this._activeEvents = this.getEvents()
-        .map((events: Event[]) => events.filter(event => event.end > Date.now()))
-        .shareReplay(1);
+    if (!this._activeEvents) {
+      this._activeEvents = this.getEvents().pipe(
+        // Il faut les plus proches en haut
+        map((events: Event[]) => events.filter(event => event.end > Date.now()).reverse()),
+        shareReplay(1));
     }
     return this._activeEvents;
   }
 
   getEvent(eventId: string): Observable<Event> {
-    if (!this._event[eventId]){
+    if (!this._event[eventId]) {
       this._event[eventId] = this.db
-        .object<Event>('events/events/'+eventId)
+        .object<Event>('events/events/' + eventId)
         .valueChanges()
-        .shareReplay(1);
+        .pipe(shareReplay(1));
     }
     return this._event[eventId];
   }
@@ -82,11 +82,11 @@ export class EventsService {
   }
 
   setEvent(event: Event) {
-    return this.db.object<Event>('events/events/'+event.id).set(event);
+    return this.db.object<Event>('events/events/' + event.id).set(event);
   }
 
   deleteEvent(eventId: string) {
-    return this.db.object<Event>('events/events/'+eventId).set(null);
+    return this.db.object<Event>('events/events/' + eventId).set(null);
   }
 
   getComResps(): Observable<ComResp[]> {
@@ -94,51 +94,51 @@ export class EventsService {
       this._comResps = this.db
         .list<ComResp>('events/com-resps/resps')
         .valueChanges()
-        .shareReplay(1);
+        .pipe(shareReplay(1));
     }
     return this._comResps;
   }
 
   removeComResp(emailId: string) {
-    return this.db.object<ComResp>('events/com-resps/resps/'+emailId).remove();
+    return this.db.object<ComResp>('events/com-resps/resps/' + emailId).remove();
   }
 
   addComResp(email: string, group: Group) {
     let emailId = this.tools.getEmailIdFromEmail(email);
-    return this.db.object<Group>('events/com-resps/groups/'+group.groupId).set(group)
-    .then(() => {
-      return this.db.object<ComResp>('events/com-resps/resps/'+emailId).set({
-        emailId: emailId,
-        groupId: group.groupId
+    return this.db.object<Group>('events/com-resps/groups/' + group.groupId).set(group)
+      .then(() => {
+        return this.db.object<ComResp>('events/com-resps/resps/' + emailId).set({
+          emailId: emailId,
+          groupId: group.groupId
+        });
       });
-    });
   }
 
   addEventToCalendar(eventId: string) {
-    return this.auth.getUser()
-      .first()
-      .flatMap(user => Observable.fromPromise(
-        this.db.object('calendar/users/'+user.uid+'/assos/'+eventId).set(eventId)
-      ))
-      .toPromise()
+    return this.auth.getUser().pipe(
+      first(),
+      mergeMap(user => from(
+        this.db.object('calendar/users/' + user.uid + '/assos/' + eventId).set(eventId)
+      )),)
+      .toPromise();
   }
 
   removeEventFromCalendar(eventId: string) {
-    return this.auth.getUser()
-      .first()
-      .flatMap(user => Observable.fromPromise(
-        this.db.object('calendar/users/'+user.uid+'/assos/'+eventId).set(null)
-      ))
-      .toPromise()
+    return this.auth.getUser().pipe(
+      first(),
+      mergeMap(user => from(
+        this.db.object('calendar/users/' + user.uid + '/assos/' + eventId).set(null)
+      )),)
+      .toPromise();
   }
 
   getEventInCalendar(eventId: string): Observable<CalEvent> {
     if (!this._eventInCalendar[eventId]) {
-      this._eventInCalendar[eventId] = this.auth.getUser()
-        .flatMap(user =>
-          this.db.object<CalEvent>('calendar/users/'+user.uid+'/assos/'+eventId).valueChanges()
-        )
-        .shareReplay(1);
+      this._eventInCalendar[eventId] = this.auth.getUser().pipe(
+        mergeMap(user =>
+          this.db.object<CalEvent>('calendar/users/' + user.uid + '/assos/' + eventId).valueChanges()
+        ))
+        .pipe(shareReplay(1));
     }
     return this._eventInCalendar[eventId];
   }

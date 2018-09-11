@@ -8,8 +8,9 @@ import {DeviceSizeService} from '../../../providers/device-size.service';
 import {DicoService} from '../../../language/dico.service';
 
 import {CafetHistoryComponent} from '../../cafet-history/cafet-history.component';
-import {Subject} from 'rxjs/Subject';
-import {Observable} from 'rxjs/Observable';
+
+import {Subject, Observable} from 'rxjs';
+import {map, takeUntil} from 'rxjs/operators';
 
 @Component({
   selector: 'app-trezo',
@@ -45,7 +46,7 @@ export class TrezoComponent implements OnInit {
 
   initFormGroup() {
     this.cafet.getTrezAccounts()
-      .takeUntil(this.unsubscribe)
+      .pipe(takeUntil(this.unsubscribe))
       .subscribe(users => {
         this.controls = {};
         for (let user of users) {
@@ -85,32 +86,32 @@ export class TrezoComponent implements OnInit {
 
   // Credits
   get totalOfPositive(): Observable<string> {
-    return this.cafet.getUsers()
-      .map(users => users.filter(user => user.credit >= 0).reduce((sum, user) => sum + user.credit, 0).toFixed(2))
+    return this.cafet.getUsers().pipe(
+      map(users => users.filter(user => user.credit >= 0).reduce((sum, user) => sum + user.credit, 0).toFixed(2)));
   }
 
   get totalOfNegative(): Observable<string> {
-    return this.cafet.getUsers()
-      .map(users => users.filter(user => user.credit < 0).reduce((sum, user) => sum + user.credit, 0).toFixed(2))
+    return this.cafet.getUsers().pipe(
+      map(users => users.filter(user => user.credit < 0).reduce((sum, user) => sum + user.credit, 0).toFixed(2)));
   }
 
   get totalOnAccounts(): Observable<string> {
-    return this.cafet.getUsers()
-      .map(users => users.reduce((sum, user) => sum + user.credit, 0).toFixed(2))
+    return this.cafet.getUsers().pipe(
+      map(users => users.reduce((sum, user) => sum + user.credit, 0).toFixed(2)));
   }
 
   get nbOfPosAccounts(): Observable<number> {
-    return this.cafet.getUsers()
-      .map(users => users.filter(user => user.credit >= 0).length)
+    return this.cafet.getUsers().pipe(
+      map(users => users.filter(user => user.credit >= 0).length));
   }
 
   get nbOfNegAccounts(): Observable<number> {
-    return this.cafet.getUsers()
-      .map(users => users.filter(user => user.credit < 0).length)
+    return this.cafet.getUsers().pipe(
+      map(users => users.filter(user => user.credit < 0).length));
   }
 
   get nbOfAllAccounts(): Observable<number> {
-    return this.cafet.getUsers()
-      .map(users => users.length)
+    return this.cafet.getUsers().pipe(
+      map(users => users.length));
   }
 }

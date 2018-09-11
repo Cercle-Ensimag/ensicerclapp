@@ -1,3 +1,5 @@
+
+import {first, map} from 'rxjs/operators';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
 
@@ -8,8 +10,7 @@ import {ListService} from '../../providers/list.service';
 import {ToolsService} from '../../providers/tools.service';
 import {DicoService} from '../../language/dico.service';
 import {MatDialog, MatSnackBar} from '@angular/material';
-import {Subject} from 'rxjs/Subject';
-import {Observable} from 'rxjs/Observable';
+import {Subject, Observable} from 'rxjs';
 import {Location} from '@angular/common';
 
 export class Journalist {
@@ -56,16 +57,16 @@ export class ActuAdminComponent implements OnInit, OnDestroy {
 
   filteredUsers(): Observable<Journalist[]> {
     let emailId = this.tools.getEmailIdFromEmail(this.emailCtrl.value.split('@')[0]);
-    return this.actus.getJournalists()
-      .map(journalists => journalists.filter(
+    return this.actus.getJournalists().pipe(
+      map(journalists => journalists.filter(
         user => user.emailId.includes(emailId)
-      ));
+      )));
   }
 
   addJournalist() {
     const emailId = this.tools.getEmailIdFromEmail(this.emailCtrl.value);
-    this.list.isInList(this.emailCtrl.value)
-      .first()
+    this.list.isInList(this.emailCtrl.value).pipe(
+      first())
       .subscribe(inList => {
         if (!inList) {
           let name = this.tools.titleCase(emailId.replace('|', ' ').replace('  ', ' '));
@@ -75,7 +76,7 @@ export class ActuAdminComponent implements OnInit, OnDestroy {
             groupId: emailId,
             displayName: emailId
           });
-          this.emailCtrl.setValue("");
+          this.emailCtrl.setValue('');
         }
       });
   }

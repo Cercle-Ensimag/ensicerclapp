@@ -1,7 +1,7 @@
 <div class="home-container" [class.is-mobile]="media.mobileSize">
 
   <mat-toolbar color="primary" class="toolbar">
-    <button mat-icon-button (click)="snav.toggle()" *ngIf="auth.isLogged() | async"><mat-icon>menu</mat-icon></button>
+    <button mat-icon-button (click)="snav.toggle()" *ngIf="auth.isLoggedAndHasEmailVerified() | async"><mat-icon>menu</mat-icon></button>
     <!-- <button mat-icon-button routerLink='/home' class="homebtn" [disabled]="!auth.getUser()"><mat-icon>home</mat-icon></button> -->
     <h1 class="app-name" routerLink='/home'>
       <img src="/assets/img/logo.svg">
@@ -30,7 +30,7 @@
 
     <!-- Side bar -->
     <mat-sidenav #snav [mode]="media.mobileSize ? 'over' : 'side'" [fixedInViewport]="media.mobileSize" fixedTopGap="56">
-      <ng-container *ngIf="auth.isLogged() | async">
+      <ng-container *ngIf="auth.isLoggedAndHasEmailVerified() | async">
         <ng-container *ngIf="modules.getAppModules() | async as appModules">
           <mat-nav-list>
             <div *ngFor="let module of appModules">

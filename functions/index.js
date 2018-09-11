@@ -155,6 +155,6 @@ exports.onDeleteAccount = functions.auth.user().onDelete(event => {
  * Load or update the list of authorised users
  */
 exports.updateList = functions.database.ref('/list/update')
-.onWrite(event => {
+.onWrite(() => {
   return db.ref("/list/users").set(Object.assign({}, usersEmailIds, usersEmailExteIds));
 });

@@ -3,8 +3,8 @@ import {Component, OnDestroy} from '@angular/core';
 import {AuthService} from '../auth-service/auth.service';
 import {DicoService} from '../../language/dico.service';
 import {Location} from '@angular/common';
-import {Subject} from 'rxjs/Subject';
-
+import {Subject} from 'rxjs';
+import {first, takeUntil} from 'rxjs/operators';
 
 @Component({
   selector: 'app-email-verif',
@@ -22,8 +22,8 @@ export class EmailVerifComponent implements OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.auth.getLoggedUser()
-      .takeUntil(this.unsubscribe)
+    this.auth.getLoggedUser().pipe(
+      takeUntil(this.unsubscribe))
       .subscribe(user => {
         if (user.emailVerified) this.auth.goToHome();
       });
@@ -36,7 +36,7 @@ export class EmailVerifComponent implements OnDestroy {
 
   sendEmail() {
     this.auth.getUser()
-      .first()
+      .pipe(first())
       .subscribe(user => this.auth.sendEmailVerification(user));
   }
 }

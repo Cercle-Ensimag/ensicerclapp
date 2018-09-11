@@ -10,9 +10,9 @@ import {ListService} from '../../../providers/list.service';
 
 import {CafetHistoryComponent} from '../../cafet-history/cafet-history.component';
 import {EditCafetUserComponent} from '../edit-cafet-user/edit-cafet-user.component';
-import {Observable} from 'rxjs/Observable';
-import {Subject} from 'rxjs/Subject';
+import {Observable, Subject} from 'rxjs';
 import {DeleteDialogComponent} from '../../../shared-components/delete-dialog/delete-dialog.component';
+import {first, map, takeUntil} from 'rxjs/operators';
 
 
 @Component({
@@ -21,26 +21,27 @@ import {DeleteDialogComponent} from '../../../shared-components/delete-dialog/de
   styleUrls: ['./cafet-admin-users.component.css']
 })
 export class CafetAdminUsersComponent implements OnInit {
-  private unsubscribe: Subject<void> = new Subject();
-
   public formGroup: FormGroup;
-  public controls: {[emailId: string]: {
-    add: FormControl,
-    sub: FormControl
-  }};
+  public controls: {
+    [emailId: string]: {
+      add: FormControl,
+      sub: FormControl
+    }
+  };
   public editing: boolean;
+  private unsubscribe: Subject<void> = new Subject();
 
   constructor(
     private list: ListService,
     private fb: FormBuilder,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
-
     public cafet: CafetService,
     public tools: ToolsService,
     public media: DeviceSizeService,
     public d: DicoService
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     this.initFormGroup();
@@ -62,27 +63,26 @@ export class CafetAdminUsersComponent implements OnInit {
     });
 
     this.cafet.getUsers()
-      .takeUntil(this.unsubscribe)
+      .pipe(takeUntil(this.unsubscribe))
       .subscribe(users => {
-      this.controls = {};
-      for (let user of users) {
-        this.controls[user.emailId] = {
-          add: new FormControl('', [Validators.required, Validators.max(1000), Validators.min(0.1)]),
-          sub: new FormControl('', [Validators.required, Validators.max(1000), Validators.min(0.1)])
-        };
-      }
-    });
+        this.controls = {};
+        for (let user of users) {
+          this.controls[user.emailId] = {
+            add: new FormControl('', [Validators.required, Validators.max(1000), Validators.min(0.1)]),
+            sub: new FormControl('', [Validators.required, Validators.max(1000), Validators.min(0.1)])
+          };
+        }
+      });
   }
 
   // Accounts
 
   tryCreateCafetAccount() {
     const email = this.formGroup.get('email').value;
-    const emailId = this.tools.getEmailIdFromEmail(email);
-    const name = this.tools.titleCase(emailId.replace('|', ' ').replace('  ', ' '));
+
 
     this.list.isInList(email)
-      .first()
+      .pipe(first())
       .subscribe(notExte => {
         if (!notExte) {
           this.dialog.open(DeleteDialogComponent, {
@@ -91,7 +91,7 @@ export class CafetAdminUsersComponent implements OnInit {
               content: `Voulez-vous ajouter "${email}" en tant qu'externe ?`
             }
           }).afterClosed()
-            .first()
+            .pipe(first())
             .subscribe(result => {
               if (result) {
                 this.createCafetAccount(true);
@@ -110,7 +110,7 @@ export class CafetAdminUsersComponent implements OnInit {
     const user = {
       credit: 0,
       activated: true,
-      emailId: (exte ? '%exte%': '') +  emailId,
+      emailId: (exte ? '%exte%' : '') + emailId,
       creationDate: (new Date()).getTime(),
       lastTransactionDate: (new Date()).getTime(),
       profile: {
@@ -138,8 +138,8 @@ export class CafetAdminUsersComponent implements OnInit {
   filteredUsers(): Observable<CafetUser[]> {
     const email = this.formGroup.get('email').value;
     const emailId = this.tools.getEmailIdFromEmail(email.split('@')[0]);
-    return this.cafet.getUsers()
-      .map(users => {
+    return this.cafet.getUsers().pipe(
+      map(users => {
         users = users.filter(
           user => user.emailId.includes(emailId)
             || this.cafet.getUserName(user).includes(this.tools.titleCase(email))
@@ -151,14 +151,14 @@ export class CafetAdminUsersComponent implements OnInit {
           users.sort((u1, u2) => u1.credit - u2.credit);
         }
         return users;
-      });
+      }));
   }
 
   // transactions
 
   transaction(user: CafetUser, add: boolean) {
     let value;
-    if (add){
+    if (add) {
       value = this.controls[user.emailId].add.value;
     } else {
       value = -this.controls[user.emailId].sub.value;

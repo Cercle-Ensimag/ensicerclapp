@@ -1,10 +1,12 @@
+
+import {map} from 'rxjs/operators';
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
 
 import {DicoService} from '../../language/dico.service';
 import {EventsService} from '../events-service/events.service';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-event',
@@ -27,7 +29,7 @@ export class EventComponent implements OnInit {
   }
 
   isInCalendar(): Observable<boolean> {
-    return this.events.getEventInCalendar(this.id)
-      .map(event => event != null);
+    return this.events.getEventInCalendar(this.id).pipe(
+      map(event => event != null));
   }
 }

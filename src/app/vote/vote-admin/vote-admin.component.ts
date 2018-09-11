@@ -1,3 +1,5 @@
+
+import {first, map} from 'rxjs/operators';
 import {Component, OnInit} from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
 
@@ -8,7 +10,7 @@ import {ListService} from '../../providers/list.service';
 import {ToolsService} from '../../providers/tools.service';
 import {DicoService} from '../../language/dico.service';
 import {MatDialog, MatSnackBar} from '@angular/material';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 import {Location} from '@angular/common';
 
 export class Assessor {
@@ -41,23 +43,23 @@ export class VoteAdminComponent implements OnInit {
 
   filteredUsers(): Observable<Assessor[]> {
     let emailId = this.tools.getEmailIdFromEmail(this.emailCtrl.value);
-    return this.vote.getAssessors()
-      .map(users => users.filter(
+    return this.vote.getAssessors().pipe(
+      map(users => users.filter(
         user => user.emailId.includes(emailId)
-      ));
+      )));
   }
 
   addAssessor() {
     const emailId = this.tools.getEmailIdFromEmail(this.emailCtrl.value);
-    this.list.isInList(this.emailCtrl.value)
-      .first()
+    this.list.isInList(this.emailCtrl.value).pipe(
+      first())
       .subscribe(inList => {
         if (!inList) {
           let name = this.tools.titleCase(emailId.replace('|', ' ').replace('  ', ' '));
           this.snackBar.open(this.d.format(this.d.l.notOnTheList, name), 'ok', {duration: 2000});
         } else {
           this.vote.addAssessor(this.emailCtrl.value);
-          this.emailCtrl.setValue("");
+          this.emailCtrl.setValue('');
         }
       });
   }

@@ -1,7 +1,8 @@
+import {shareReplay, tap} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
-import {AngularFireDatabase} from 'angularfire2/database';
-import {Observable} from '../../../node_modules/rxjs';
-import 'rxjs/add/operator/shareReplay';
+import {AngularFireDatabase} from '@angular/fire/database';
+import {EMPTY, merge, Observable, of} from 'rxjs';
+
 
 export class AppModule {
   name: string;
@@ -15,19 +16,21 @@ export class AppModulesService {
 
   constructor(
     private db: AngularFireDatabase
-  ) { }
+  ) {
+  }
 
   getAppModules(): Observable<AppModule[]> {
-    if (!this._appModules){
-      this._appModules = Observable.merge(
+    if (!this._appModules) {
+      this._appModules = merge(
         this.db
-        .list<AppModule>('admin/public/modules', ref => ref.orderByChild('order'))
-        .valueChanges()
-        .do(modules => localStorage.setItem('appModules', JSON.stringify(modules))),
+          .list<AppModule>('admin/public/modules', ref => ref.orderByChild('order'))
+          .valueChanges()
+          .pipe(
+            tap(modules => localStorage.setItem('appModules', JSON.stringify(modules)))),
         localStorage.getItem('appModules') ?
-          Observable.of(JSON.parse(localStorage.getItem('appModules'))) :
-          Observable.empty())
-        .shareReplay(1);
+          of(JSON.parse(localStorage.getItem('appModules'))) :
+          EMPTY)
+        .pipe(shareReplay(1));
     }
     return this._appModules;
   }

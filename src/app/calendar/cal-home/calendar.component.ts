@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 
-import {CalService} from '../cal-service/cal.service';
 import {DicoService} from '../../language/dico.service';
 import {DeviceSizeService} from '../../providers/device-size.service';
 import {Location} from '@angular/common';
@@ -18,8 +17,6 @@ export class CalendarComponent implements OnInit {
   public selectedDay: Date = new Date();
 
   constructor(
-    private cal: CalService,
-
     public media: DeviceSizeService,
     public location: Location,
     public d: DicoService

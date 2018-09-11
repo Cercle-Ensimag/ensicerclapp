@@ -1,3 +1,5 @@
+
+import {first} from 'rxjs/operators';
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
@@ -53,8 +55,8 @@ export class PollComponent implements OnInit {
         title: "Confirmation du vote",
         content: `Êtes-vous certain de vouloir voter pour "${choice.label}" ?`
       }
-    }).afterClosed()
-      .first()
+    }).afterClosed().pipe(
+      first())
       .subscribe(result => {
         if (result) {
           this.vote.sendVote(this.id, choice.id)

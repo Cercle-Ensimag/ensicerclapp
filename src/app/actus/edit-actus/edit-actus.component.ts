@@ -1,3 +1,5 @@
+
+import {first, takeUntil} from 'rxjs/operators';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
@@ -8,9 +10,9 @@ import {Actu, ActusService} from '../actus-service/actus.service';
 import {AuthService} from '../../auth/auth-service/auth.service';
 import {DicoService} from '../../language/dico.service';
 import {MatSnackBar} from '@angular/material';
-import {Subject} from 'rxjs/Subject';
+import {Subject} from 'rxjs';
 
-import 'rxjs/add/operator/takeUntil';
+
 
 @Component({
   selector: 'app-edit-actus',
@@ -45,27 +47,27 @@ export class EditActusComponent implements OnInit, OnDestroy {
   }
 
   initFormGroup() {
-    this.actus.getActu(this.id)
-      .takeUntil(this.unsubscribe)
+    this.actus.getActu(this.id).pipe(
+      takeUntil(this.unsubscribe))
       .subscribe((actu) => {
         if (!actu) {
           actu = new Actu();
           this.id = this.actus.getActuId();
         }
         this.formGroup = this.fb.group({
-          title: [actu.title || "", [Validators.required, Validators.minLength(3)]],
-          description: [actu.description || "", []],
-          image: [actu.image || "", []],
-          pdfLink: [actu.pdfLink || "", []],
-          date: [new Date(actu.date) || "", [Validators.required]],
-          author: [actu.author || "", [Validators.required]]
+          title: [actu.title || '', [Validators.required, Validators.minLength(3)]],
+          description: [actu.description || '', []],
+          image: [actu.image || '', []],
+          pdfLink: [actu.pdfLink || '', []],
+          date: [new Date(actu.date) || '', [Validators.required]],
+          author: [actu.author || '', [Validators.required]]
         });
       });
   }
 
   submit() {
     this.auth.getJournalistId()
-      .first()
+      .pipe(first())
       .subscribe(journalistId => {
         if (!this.formGroup.invalid) {
           const actu = {

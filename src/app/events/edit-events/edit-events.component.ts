@@ -1,3 +1,5 @@
+
+import {first, takeUntil} from 'rxjs/operators';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
@@ -9,9 +11,9 @@ import {AuthService} from '../../auth/auth-service/auth.service';
 import {ToolsService} from '../../providers/tools.service';
 import {DicoService} from '../../language/dico.service';
 import {MatSnackBar} from '@angular/material';
-import {Subject} from 'rxjs/Subject';
+import {Subject} from 'rxjs';
 
-import 'rxjs/add/operator/takeUntil';
+
 
 @Component({
   selector: 'app-edit-events',
@@ -47,29 +49,29 @@ export class EditEventsComponent implements OnInit, OnDestroy {
   }
 
   initFormGroup() {
-    this.events.getEvent(this.id)
-      .takeUntil(this.unsubscribe)
+    this.events.getEvent(this.id).pipe(
+      takeUntil(this.unsubscribe))
       .subscribe((event) => {
         if (!event) {
           event = new Event();
           this.id = this.events.getEventId();
         }
         this.formGroup = this.fb.group({
-          title: [event.title || "", [Validators.required, Validators.minLength(3)]],
-          description: [event.description || "", []],
-          image: [event.image || "", []],
-          start: [new Date(event.start) || "", [Validators.required, this.tools.dateValidator]],
+          title: [event.title || '', [Validators.required, Validators.minLength(3)]],
+          description: [event.description || '', []],
+          image: [event.image || '', []],
+          start: [new Date(event.start) || '', [Validators.required, this.tools.dateValidator]],
           startTime: [this.tools.getTimeFromDate(event.start), [Validators.required, this.tools.timeValidator]],
-          end: [new Date(event.end) || "", [Validators.required, this.tools.dateValidator]],
+          end: [new Date(event.end) || '', [Validators.required, this.tools.dateValidator]],
           endTime: [this.tools.getTimeFromDate(event.end), [Validators.required, this.tools.timeValidator]],
-          location: [event.location || "", [Validators.required]],
-          asso: [event.asso || "", [Validators.required]],
+          location: [event.location || '', [Validators.required]],
+          asso: [event.asso || '', [Validators.required]],
           price: [event.price || this.d.l.free, [Validators.required]]
         });
 
         this.formGroup.get('start')
-          .valueChanges
-          .takeUntil(this.unsubscribe)
+          .valueChanges.pipe(
+          takeUntil(this.unsubscribe))
           .subscribe(value => this.formGroup.get('end').setValue(value));
       });
   }
@@ -85,7 +87,7 @@ export class EditEventsComponent implements OnInit, OnDestroy {
 
   submit() {
     this.auth.getRespComId()
-      .first()
+      .pipe(first())
       .subscribe((respComId: string) => {
         const event = {
           id: this.id,

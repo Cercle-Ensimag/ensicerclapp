@@ -1,3 +1,5 @@
+
+import {takeUntil} from 'rxjs/operators';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../auth/auth-service/auth.service';
@@ -7,9 +9,9 @@ import {Location} from '@angular/common';
 import {DicoService} from '../../language/dico.service';
 import {NsigmaAnnonce, NsigmaService} from '../nsigma.service';
 import {MatSnackBar} from '@angular/material';
-import {Subject} from 'rxjs/Subject';
+import {Subject} from 'rxjs';
 
-import 'rxjs/add/operator/takeUntil';
+
 
 @Component({
   selector: 'app-nsigma-edit',
@@ -46,8 +48,8 @@ export class NsigmaEditComponent implements OnInit, OnDestroy {
 
   initFormGroup() {
     return this.nsigma
-      .getAnnonce(this.id)
-      .takeUntil(this.unsubscribe)
+      .getAnnonce(this.id).pipe(
+      takeUntil(this.unsubscribe))
       .subscribe((annonce) => {
         if (!annonce) {
           annonce = new NsigmaAnnonce();
@@ -67,8 +69,8 @@ export class NsigmaEditComponent implements OnInit, OnDestroy {
           done: [annonce.done || false, [Validators.required]]
         });
         this.formGroup.get('start')
-          .valueChanges
-          .takeUntil(this.unsubscribe)
+          .valueChanges.pipe(
+          takeUntil(this.unsubscribe))
           .subscribe(value => this.formGroup.get('end').setValue(value));
     });
   }

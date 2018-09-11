@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
 
 import {DeviceSizeService} from '../../../providers/device-size.service';
@@ -7,9 +7,10 @@ import {AuthService} from '../../../auth/auth-service/auth.service';
 import {ListService} from '../../../providers/list.service';
 import {ToolsService} from '../../../providers/tools.service';
 import {DicoService} from '../../../language/dico.service';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 import {Assessor} from '../../../vote/vote-admin/vote-admin.component';
 import {MatSnackBar} from '@angular/material';
+import {first, map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-cafet-admin-resps',
@@ -37,16 +38,16 @@ export class CafetAdminRespsComponent implements OnInit {
 
   filteredUsers(): Observable<Assessor[]> {
     let emailId = this.tools.getEmailIdFromEmail(this.emailCtrl.value.split('@')[0]);
-    return this.cafet.getCafetResps()
-      .map(users => users.filter(
+    return this.cafet.getCafetResps().pipe(
+      map(users => users.filter(
         user => user.emailId.includes(emailId)
-      ));
+      )));
   }
 
   addCafetResp() {
     let emailId = this.tools.getEmailIdFromEmail(this.emailCtrl.value);
     this.list.isInList(this.emailCtrl.value)
-      .first()
+      .pipe(first())
       .subscribe(inList => {
         if (!inList) {
           const name = this.tools.titleCase(emailId.replace('|', ' ').replace('  ', ' '));
@@ -54,8 +55,7 @@ export class CafetAdminRespsComponent implements OnInit {
         } else {
           this.cafet.addCafetResp({
             emailId: emailId
-          });
-          this.emailCtrl.setValue("");
+          }).then(() => this.emailCtrl.reset());
         }
       });
   }

@@ -2,7 +2,9 @@ import {Component, OnInit} from '@angular/core';
 
 import {AuthService} from '../../auth/auth-service/auth.service';
 import {DicoService} from '../../language/dico.service';
-import {Observable} from 'rxjs/Observable';
+
+import {combineLatest} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-readme',
@@ -14,60 +16,62 @@ export class ReadmeComponent implements OnInit {
   constructor(
     public auth: AuthService,
     public d: DicoService
-  ) { }
+  ) {
+  }
+
+  ngOnInit() {
+  }
 
   canReadVotes() {
-    return Observable.combineLatest(
+    return combineLatest(
       this.auth.isAdminOf('vote'),
       this.auth.isAdmin()
-    ).map(([b1, b2]) => b1 || b2);
+    ).pipe(map(([b1, b2]) => b1 || b2));
   }
 
   canReadVotesResults() {
-    return Observable.combineLatest(
+    return combineLatest(
       this.auth.isAdminOf('vote'),
       this.auth.isAssessor(),
       this.auth.isAdmin()
-    ).map(([b1, b2, b3]) => b1 || b2 || b3);
+    ).pipe(map(([b1, b2, b3]) => b1 || b2 || b3));
   }
 
   canReadEventsAdmin() {
-    return Observable.combineLatest(
+    return combineLatest(
       this.auth.isAdminOf('events'),
       this.auth.isAdmin()
-    ).map(([b1, b2]) => b1 || b2);
+    ).pipe(map(([b1, b2]) => b1 || b2));
   }
 
   canReadEvents() {
-    return Observable.combineLatest(
+    return combineLatest(
       this.auth.isAdminOf('events'),
       this.auth.isRespCom(),
       this.auth.isAdmin()
-    ).map(([b1, b2, b3]) => b1 || b2 || b3);
+    ).pipe(map(([b1, b2, b3]) => b1 || b2 || b3));
   }
 
   canReadActusAdmin() {
-    return Observable.combineLatest(
+    return combineLatest(
       this.auth.isAdminOf('vote'),
       this.auth.isAdmin()
-    ).map(([b1, b2]) => b1 || b2);
+    ).pipe(map(([b1, b2]) => b1 || b2));
   }
 
   canReadActus() {
-    return Observable.combineLatest(
+    return combineLatest(
       this.auth.isAdminOf('vote'),
       this.auth.isJournalist(),
       this.auth.isAdmin()
-    ).map(([b1, b2, b3]) => b1 || b2 || b3);
+    ).pipe(map(([b1, b2, b3]) => b1 || b2 || b3));
   }
 
   canReadCafetAdmin() {
-    return Observable.combineLatest(
+    return combineLatest(
       this.auth.isAdmin(),
       this.auth.isAdminOf('cafet')
-    ).map(([b1, b2]) => b1 || b2);
+    ).pipe(map(([b1, b2]) => b1 || b2));
   }
-
-  ngOnInit() { }
 
 }

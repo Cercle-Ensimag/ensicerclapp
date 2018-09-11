@@ -1,4 +1,6 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+
+import {first, map} from 'rxjs/operators';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
 
 import {DeviceSizeService} from '../../providers/device-size.service';
@@ -7,7 +9,7 @@ import {AuthService} from '../../auth/auth-service/auth.service';
 import {ListService} from '../../providers/list.service';
 import {ToolsService} from '../../providers/tools.service';
 import {DicoService} from '../../language/dico.service';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 import {Assessor} from '../../vote/vote-admin/vote-admin.component';
 import {MatSnackBar} from '@angular/material';
 
@@ -34,16 +36,16 @@ export class EventAdminComponent implements OnInit {
 
   filteredUsers(): Observable<Assessor[]> {
     let emailId = this.tools.getEmailIdFromEmail(this.emailCtrl.value);
-    return this.events.getComResps()
-      .map(users => users.filter(
+    return this.events.getComResps().pipe(
+      map(users => users.filter(
         user => user.emailId.includes(emailId)
-      ));
+      )));
   }
 
   addComResp() {
     let emailId = this.tools.getEmailIdFromEmail(this.emailCtrl.value);
     this.list.isInList(this.emailCtrl.value)
-      .first()
+      .pipe(first())
       .subscribe(inList => {
         if (!inList) {
           let name = this.tools.titleCase(emailId.replace('|', ' ').replace('  ', ' '));
@@ -53,7 +55,7 @@ export class EventAdminComponent implements OnInit {
             groupId: emailId,
             displayName: emailId
           });
-          this.emailCtrl.setValue("");
+          this.emailCtrl.setValue('');
         }
       });
   }

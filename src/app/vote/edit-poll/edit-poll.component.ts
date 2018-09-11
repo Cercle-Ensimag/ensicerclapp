@@ -1,3 +1,5 @@
+
+import {takeUntil} from 'rxjs/operators';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
@@ -9,8 +11,8 @@ import {VoteService} from '../vote-service/vote.service';
 import {DicoService} from '../../language/dico.service';
 import {MatSnackBar} from '@angular/material';
 
-import 'rxjs/add/operator/takeUntil';
-import {Subject} from 'rxjs/Subject';
+
+import {Subject} from 'rxjs';
 
 @Component({
   selector: 'app-edit-poll',
@@ -48,22 +50,22 @@ export class EditPollComponent implements OnInit, OnDestroy {
   }
 
   initFormGroup() {
-    this.vote.getPoll(this.id)
-      .takeUntil(this.unsubscribe)
+    this.vote.getPoll(this.id).pipe(
+      takeUntil(this.unsubscribe))
       .subscribe((poll) => {
         if (!poll){
           poll = new Poll();
           this.id = this.vote.getPollId();
         }
         this.formGroup = this.fb.group({
-          title: [poll.title || "", [Validators.required, Validators.minLength(3)]],
-          description: [poll.description || "", []],
-          started: [poll.started || "", []]
+          title: [poll.title || '', [Validators.required, Validators.minLength(3)]],
+          description: [poll.description || '', []],
+          started: [poll.started || '', []]
         });
       });
 
-    this.vote.getChoices(this.id)
-      .takeUntil(this.unsubscribe)
+    this.vote.getChoices(this.id).pipe(
+      takeUntil(this.unsubscribe))
       .subscribe((choices) => {
         this.choices = choices.map(choice => ({
             id: choice.id,
@@ -81,9 +83,9 @@ export class EditPollComponent implements OnInit, OnDestroy {
     this.choices.push({
       id: this.vote.getChoiceId(this.id),
       ctrl: this.fb.group({
-        label: ["", [Validators.required]],
-        image: ["", []],
-        short: ["", []]
+        label: ['', [Validators.required]],
+        image: ['', []],
+        short: ['', []]
       })
     });
   }

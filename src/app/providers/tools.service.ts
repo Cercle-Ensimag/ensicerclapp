@@ -32,7 +32,7 @@ export class ToolsService {
     return null;
   }
 
-  dateValidator(control: FormControl) {
+  dateValidator() {
     /*
     if (!control.value.toString().match(/^(Mon|Tue|Wed|Thu|Fri|Sat|Sun) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) ([0-2][0-9]|3[0-2]) 20[1-9][0-9]/)){
       return { error: true };
@@ -43,7 +43,7 @@ export class ToolsService {
 
   getTimeFromDate(date: any) {
     if (!date) {
-      return "";
+      return '';
     }
     return (new Date(date)).toString().split(' ')[4].substring(0, 5);
   }

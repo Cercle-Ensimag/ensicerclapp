@@ -72,7 +72,7 @@ def computeEmailId():
     """
     Returns a string that evalutes to the user emailId
     """
-    return "request.auth.token.email.replace('@ensimag.fr', '').replace('.', '|')"
+    return "request.auth.token.email.split('@')[0].replace('.', '|')"
 
 def isMember():
     """
@@ -86,7 +86,7 @@ def hasAllowedEmail(email):
     Returns a condition that is true if the given email is authorized to have an
     account
     """
-    return email + ".endsWith('@ensimag.fr')"
+    return email + ".endsWith('@ensimag.fr')" || email + ".endsWith('@phelma.grenoble-inp.fr')"
 
 def validateUid(uid):
     """

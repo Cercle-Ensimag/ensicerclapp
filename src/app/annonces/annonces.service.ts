@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
-import {AngularFireDatabase} from 'angularfire2/database';
-import {Observable} from '../../../node_modules/rxjs';
+import {AngularFireDatabase} from '@angular/fire/database';
+import {Observable} from 'rxjs';
+import {map, shareReplay} from 'rxjs/operators';
 
 export class Annonce {
   id: string;
@@ -29,8 +30,9 @@ export class AnnoncesService {
       this._annonces = this.db
         .list<Annonce>('annonces/annonces')
         .valueChanges()
-        .map(annonces => annonces.reverse())
-        .shareReplay(1);
+        .pipe(
+          map(annonces => annonces.reverse()),
+          shareReplay(1));
     }
     return this._annonces;
   }
@@ -40,7 +42,7 @@ export class AnnoncesService {
       this._annonce[annonceId] = this.db
         .object<Annonce>('/annonces/annonces/' + annonceId)
         .valueChanges()
-        .shareReplay(1);
+        .pipe(shareReplay(1));
     }
     return this._annonce[annonceId];
   }

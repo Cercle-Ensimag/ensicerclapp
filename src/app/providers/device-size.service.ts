@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 
-import {Subscription} from 'rxjs/Subscription';
+import {Subscription} from 'rxjs';
 import {MediaChange, ObservableMedia} from '@angular/flex-layout';
 
 @Injectable()

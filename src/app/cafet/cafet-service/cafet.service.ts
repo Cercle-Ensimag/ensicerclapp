@@ -1,6 +1,8 @@
+import {Observable, zip, from} from 'rxjs';
+import {first, map, mergeMap, shareReplay} from 'rxjs/operators';
+
 import {Injectable} from '@angular/core';
-import {AngularFireDatabase} from 'angularfire2/database';
-import {Observable} from 'rxjs/Observable';
+import {AngularFireDatabase} from '@angular/fire/database';
 import {DatePipe} from '@angular/common';
 import {DicoService} from '../../language/dico.service';
 import {DomSanitizer} from '@angular/platform-browser';
@@ -8,9 +10,7 @@ import {DomSanitizer} from '@angular/platform-browser';
 import {AuthService} from '../../auth/auth-service/auth.service';
 import {ToolsService} from '../../providers/tools.service';
 
-import 'rxjs/add/operator/first';
-import 'rxjs/add/observable/zip';
-import 'rxjs/add/operator/map';
+
 import {DayTransaction} from '../cafet-admin/cafet-admin-accounts/cafet-admin-accounts.component';
 
 declare var jsPDF: any;
@@ -76,12 +76,12 @@ export class CafetService {
   
   getMe(){
     if (!this._me){
-      this._me = this.auth.getEmailId()
-        .flatMap((emailId: string) => 
+      this._me = this.auth.getEmailId().pipe(
+        mergeMap((emailId: string) => 
           this.db.object<CafetUser>('cafet/users/'+emailId)
-          .valueChanges())
-        .map(user => user || new CafetUser())
-        .shareReplay(1);
+          .valueChanges()),
+        map(user => user || new CafetUser()),
+        shareReplay(1));
     }
     return this._me
   }
@@ -91,7 +91,7 @@ export class CafetService {
       this._users = this.db
         .list<CafetUser>('cafet/users')
         .valueChanges()
-        .shareReplay(1);
+        .pipe(shareReplay(1));
     }
     return this._users;
   }
@@ -101,7 +101,7 @@ export class CafetService {
       this._user[emailId] = this.db
         .object<CafetUser>("cafet/users/"+emailId)
         .valueChanges()
-        .shareReplay(1);
+        .pipe(shareReplay(1));
     }
     return this._user[emailId];
   }
@@ -111,7 +111,7 @@ export class CafetService {
       this._archivesUsers = this.db
         .list<CafetUser>('cafet/archives/users')
         .valueChanges()
-        .shareReplay(1);
+        .pipe(shareReplay(1));
     }
     return this._archivesUsers;
   }
@@ -121,7 +121,7 @@ export class CafetService {
       this._archivesUser[emailId] = this.db
         .object<CafetUser>("cafet/users/"+emailId)
         .valueChanges()
-        .shareReplay(1);
+        .pipe(shareReplay(1));
     }
     return this._archivesUser[emailId];
   }
@@ -131,7 +131,7 @@ export class CafetService {
       this._trezAccounts = this.db
         .list<CafetUser>('cafet/trezo/accounts')
         .valueChanges()
-        .shareReplay(1);
+        .pipe(shareReplay(1));
     }
     return this._trezAccounts;
   }
@@ -141,7 +141,7 @@ export class CafetService {
       this._cafetResps = this.db
         .list<CafetResp>('cafet/cafetResps/resps')
         .valueChanges()
-        .shareReplay(1);
+        .pipe(shareReplay(1));
     }
     return this._cafetResps;
   }
@@ -233,8 +233,8 @@ export class CafetService {
 
   newDayTransaction(user: CafetUser, value: number) {
     const date = (new Date()).getTime();
-    return this.auth.getEmailId()
-      .first()
+    return this.auth.getEmailId().pipe(
+      first())
       .toPromise()
       .then(emailId =>
           this.db
@@ -249,18 +249,18 @@ export class CafetService {
     if (!this._dayTransactions) {
       this._dayTransactions = this.db
         .object<any>('cafet/cafetResps/dayTransactions')
-        .valueChanges()
-        .map(dt => dt ? dt : {})
-        .shareReplay(1);
+        .valueChanges().pipe(
+        map(dt => dt ? dt : {}))
+        .pipe(shareReplay(1));
     }
     return this._dayTransactions;
   }
 
   validateDayTransactions() {
-    Observable.zip(
+    zip(
       this.db.object<any>('cafet/users').valueChanges(),
       this.getDayTransactions()
-    ).first().subscribe(
+    ).pipe(first()).subscribe(
       ([users, dayTr]) => {
         let updates = {};
         if (users != null && dayTr != null) {
@@ -273,7 +273,7 @@ export class CafetService {
                 oldCredit: updates['users/'+emailId+'/credit'],
                 newCredit: updates['users/'+emailId+'/credit'] + dayTr[emailId][transId].value,
                 date: dayTr[emailId][transId].date
-              }
+              };
               updates['users/'+emailId+'/credit'] += dayTr[emailId][transId].value;
               updates['cafetResps/dayTransactions/'+emailId+'/'+transId] = null
             });
@@ -292,12 +292,12 @@ export class CafetService {
   }
 
   setUserProfile(emailId: string, profile: CafetProfile, activated: boolean) {
-    return Observable.zip(
+    return zip(
       activated ? this.getUser(emailId) : this.getArchivesUser(emailId),
-      this.getHistory(emailId))
-      .first()
-      .flatMap(([user, history]) => {
-        let prefix = activated ? "": "archives/";
+      this.getHistory(emailId)).pipe(
+      first(),
+      mergeMap(([user, history]) => {
+        let prefix = activated ? '': "archives/";
         let updates = {};
         updates[prefix + "users/"+emailId] = null;
         updates["history/"+emailId] = null;
@@ -307,8 +307,8 @@ export class CafetService {
         updates[prefix + "users/"+user.emailId] = user;
         updates["history/"+user.emailId] = history;
 
-        return Observable.fromPromise(this.db.object<any>("cafet").update(updates));
-      })
+        return from(this.db.object<any>("cafet").update(updates));
+      }),)
       .toPromise();
   }
 
@@ -322,9 +322,9 @@ export class CafetService {
 
   getUserName(user: CafetUser) {
     if (!user.profile) {
-      return this.tools.titleCase(user.emailId.split('|').join(' ').replace(/^%[a-z]+%/, ""));
+      return this.tools.titleCase(user.emailId.split('|').join(' ').replace(/^%[a-z]+%/, ''));
     } else {
-      let exte = user.profile.exte ? " *": "";
+      let exte = user.profile.exte ? " *": '';
       return this.tools.titleCase(user.profile.firstName + " " + user.profile.lastName) + exte;
     }
   }
@@ -332,9 +332,11 @@ export class CafetService {
   getHistory(emailId: string): Observable<Transaction[]> {
     if (!this._history[emailId]) {
      this._history[emailId] = this.db
-       .list<Transaction>("cafet/history/"+emailId)
+       .list<Transaction>("cafet/history/"+emailId, ref => ref.orderByChild('date'))
        .valueChanges()
-       .shareReplay(1);
+       .pipe(
+         map(transactions => transactions.reverse()),
+         shareReplay(1));
     }
     return this._history[emailId];
   }
@@ -348,7 +350,7 @@ export class CafetService {
       { title: "-", dataKey: "minus"},
       { title: "-", dataKey: "minus"},
       { title: "-", dataKey: "minus"},
-      { title: "", dataKey: "div" },
+      { title: '', dataKey: "div" },
       { title: "+", dataKey: "plus"},
       { title: "+", dataKey: "plus"}
     ];
@@ -357,9 +359,9 @@ export class CafetService {
     for (const user of users) {
       rows.push({
         firstname: user.profile.firstName,
-        lastname: user.profile.lastName + (user.profile.exte ? " *": ""),
+        lastname: user.profile.lastName + (user.profile.exte ? " *": ''),
         credit: user.credit.toFixed(2) + "€",
-        minus1: user.credit < 0 ? "*********" : ""
+        minus1: user.credit < 0 ? "*********" : ''
       });
     }
 

@@ -5,6 +5,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {CafetService, CafetUser} from '../../cafet-service/cafet.service';
 import {DicoService} from '../../../language/dico.service';
 import {ListService} from '../../../providers/list.service';
+import {first} from 'rxjs/operators';
 
 @Component({
   selector: 'app-edit-cafet-user',
@@ -36,7 +37,7 @@ export class EditCafetUserComponent {
 
   submit() {
     this.list.isInList(this.formGroup.get('email').value)
-      .first()
+      .pipe(first())
       .subscribe(notExte => {
         this.cafet.setUserProfile(this.user.emailId, {
           firstName: this.formGroup.get('firstName').value,

@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
@@ -8,7 +10,7 @@ import {AuthService} from '../../auth/auth-service/auth.service';
 import {VoteService} from '../vote-service/vote.service';
 import {ToolsService} from '../../providers/tools.service';
 import {DicoService} from '../../language/dico.service';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 
 export class VoteUser {
   emailId: string;
@@ -40,10 +42,10 @@ export class VoteUsersComponent implements OnInit {
 
   filteredUsers(): Observable<VoteUser[]> {
     let emailId = this.tools.getEmailIdFromEmail(this.emailCtrl.value);
-    return this.vote.getUsers(this.id)
-      .map(users => users.filter(
+    return this.vote.getUsers(this.id).pipe(
+      map(users => users.filter(
         user => user.emailId.includes(emailId)
-      ));
+      )));
   }
 
 }

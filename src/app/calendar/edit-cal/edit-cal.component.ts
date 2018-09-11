@@ -7,9 +7,10 @@ import {ToolsService} from '../../providers/tools.service';
 import {CalEvent, CalService, PERSOS} from '../cal-service/cal.service';
 import {DicoService} from '../../language/dico.service';
 import {MatSnackBar} from '@angular/material';
-import {Observable, Subject} from '../../../../node_modules/rxjs';
 
-import 'rxjs/add/operator/takeUntil';
+import {of, Subject} from 'rxjs';
+import {first, flatMap, map, takeUntil, tap} from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-edit-cal',
@@ -46,31 +47,33 @@ export class EditCalComponent implements OnInit, OnDestroy {
   
   initFormGroup() {
     this.cal.getEvent(this.id)
-      .takeUntil(this.unsubscribe)
-      .flatMap((event: CalEvent) => {
-        if (event) return Observable.of(event);
-        return this.cal.getEventId()
-          .first()
-          .do(id => this.id = id)
-          .map(id => new CalEvent(id, "", "", "", 1, "", PERSOS))
-      })
+      .pipe(
+        takeUntil(this.unsubscribe),
+        flatMap((event: CalEvent) => {
+          if (event) return of(event);
+          return this.cal.getEventId().pipe(
+            first(),
+            tap(id => this.id = id),
+            map(id => new CalEvent(id, '', '', '', 1, '', PERSOS)));
+
+        }))
       .subscribe((event) => {
         this.formGroup = this.fb.group({
-          title: [event.title || "", [Validators.required, Validators.minLength(3)]],
-          start: [new Date(event.start) || "", [Validators.required, this.tools.dateValidator]],
+          title: [event.title || '', [Validators.required, Validators.minLength(3)]],
+          start: [new Date(event.start) || '', [Validators.required, this.tools.dateValidator]],
           startTime: [this.tools.getTimeFromDate(event.start), [Validators.required, this.tools.timeValidator]],
-          end: [new Date(event.end) || "", [Validators.required, this.tools.dateValidator]],
+          end: [new Date(event.end) || '', [Validators.required, this.tools.dateValidator]],
           occurences: [event.occurences || 1, [Validators.required, Validators.min(1), Validators.max(42)]],
           endTime: [this.tools.getTimeFromDate(event.end), [Validators.required, this.tools.timeValidator]],
-          location: [event.location || "", []]
+          location: [event.location || '', []]
         });
         this.formGroup.get('start').valueChanges
-          .takeUntil(this.unsubscribe)
+          .pipe(takeUntil(this.unsubscribe))
           .subscribe(value => {
             this.formGroup.get('end').setValue(value);
           });
         this.formGroup.get('startTime').valueChanges
-          .takeUntil(this.unsubscribe)
+          .pipe(takeUntil(this.unsubscribe))
           .subscribe(value => {
             this.formGroup.get('endTime').setValue(value);
           });

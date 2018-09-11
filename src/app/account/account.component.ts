@@ -7,10 +7,10 @@ import {DeleteDialogComponent} from '../shared-components/delete-dialog/delete-d
 import {UpdatePasswordDialogComponent} from './components/update-password-dialog/update-password-dialog.component';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {Location} from '@angular/common';
-import {Observable, Subject} from '../../../node_modules/rxjs';
-import {User} from 'firebase/app';
+import {Subject, combineLatest} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 
-import 'rxjs/add/operator/takeUntil';
+import {User} from 'firebase/app';
 
 @Component({
   selector: 'app-account',
@@ -33,10 +33,10 @@ export class AccountComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    Observable.combineLatest(
+    combineLatest(
       this.auth.getProfile(),
       this.auth.getLoggedUser())
-      .takeUntil(this.unsubscribe)
+      .pipe(takeUntil(this.unsubscribe))
       .subscribe(([profile, user]: [Profile, User]) => {
         this.formGroup = this.fb.group({
           firstname: [profile.name.firstName, [Validators.required]],
@@ -57,9 +57,9 @@ export class AccountComponent implements OnInit, OnDestroy {
       this.formGroup.get('firstname').value,
       this.formGroup.get('lastname').value,
       this.formGroup.get('login').value,
-      ""
+      ''
     ))
-    .then(_ => {
+    .then(() => {
       this.snackBar.open(this.d.l.changesApplied, 'ok', {duration: 2000});
     });
   }

@@ -23,9 +23,9 @@ export class French {
 
   // Auth
   public static readonly logOutLabel = "Déconnexion";
-  public static readonly signInPageTitle = "Identifie-toi<br><small>ou crée un compte si tu n'en a pas encore !</small>";
+  public static readonly signInPageTitle = "Identifie-toi<br><small>ou crée un compte si tu n'en as pas encore !</small>";
   public static readonly signInButtonLabel = "Connexion";
-  public static readonly signUpPageTitle = "Crée-toi un compte";
+  public static readonly signUpPageTitle = "Inscription";
   public static readonly signUpButtonLabel = "Créer le compte";
   public static readonly firstNameLabel = "Prénom";
   public static readonly firstNameError = "Prénom exigé";
@@ -64,7 +64,7 @@ export class French {
   public static readonly voteAdminLabel = "Admin vote";
   public static readonly voteAdminPlLabel = "Admins vote";
   public static readonly assessorLabel = "Assesseur";
-  public static readonly assessorPlLabel = "Assesseurs"
+  public static readonly assessorPlLabel = "Assesseurs";
   public static readonly addAssessorInfo = "Entrer l'e-mail d'un assesseur";
   public static readonly addAssessorButtonLabel = "Ajouter";
 
@@ -144,8 +144,8 @@ export class French {
   public static readonly eventAssoLabel = "Association";
   public static readonly eventPriceLabel = "PAF";
   public static readonly eventTitleTooShortError = "Titre trop court";
-  public static readonly eventDescriptionError = "";
-  public static readonly eventImageError = "";
+  public static readonly eventDescriptionError = '';
+  public static readonly eventImageError = '';
   public static readonly eventStartError = "Date de début requise";
   public static readonly eventEndError = "Date de fin requise";
   public static readonly eventStartTimeError = "Heure de début requise";
@@ -175,9 +175,9 @@ export class French {
   public static readonly actuDateLabel = "Date";
   public static readonly actuAuthorLabel = "Auteur";
   public static readonly actuTitleTooShortError = "Titre trop court";
-  public static readonly actuDescriptionError = "";
-  public static readonly actuImageError = "";
-  public static readonly actuPdfLinkError = "";
+  public static readonly actuDescriptionError = '';
+  public static readonly actuImageError = '';
+  public static readonly actuPdfLinkError = '';
   public static readonly actuDateError = "Date requise";
   public static readonly actuAuthorError = "Auteur requis";
   public static readonly actuDate = "Date : {0}";
@@ -230,7 +230,7 @@ export class French {
   public static readonly calSettingsTitle = "Paramètres du calendrier";
   public static readonly noCalEvent = "Rien de prévu";
   public static readonly eventOccurencesLabel = "Occurences";
-  public static readonly eventOccurencesError = "";
+  public static readonly eventOccurencesError = '';
 
   public static readonly cafetTrezoLabel = "Trezo";
   public static readonly numberOfAllAccountsLabel = "Nombre de comptes total : {0}";

@@ -5,6 +5,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 import {AuthService} from '../auth-service/auth.service';
 import {DicoService} from '../../language/dico.service';
+import {first} from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -39,7 +40,7 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     this.auth.resetError();
     this.auth.getUser()
-      .first()
+      .pipe(first())
       .subscribe(user => {
         if (user) {
           this.auth.goToHome()

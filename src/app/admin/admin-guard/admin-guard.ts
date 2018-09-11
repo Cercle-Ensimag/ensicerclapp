@@ -1,25 +1,25 @@
 import {Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot} from '@angular/router';
+import {CanActivate} from '@angular/router';
 
 import {AuthService} from '../../auth/auth-service/auth.service';
+import {first, tap} from 'rxjs/operators';
 
 @Injectable()
 export class CanActivateAdmin implements CanActivate {
 
   constructor(
     private auth: AuthService,
-  ) { }
+  ) {
+  }
 
   canActivate(
-    next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ) {
-    return this.auth.isAdmin()
-      .first()
-      .do(is => {
+    ) {
+    return this.auth.isAdmin().pipe(
+      first(),
+      tap(is => {
         if (!is) {
           this.auth.goToHome();
         }
-      });
+      }));
   }
 }

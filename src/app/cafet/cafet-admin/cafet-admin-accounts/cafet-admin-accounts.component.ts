@@ -1,8 +1,10 @@
+
+import {map, first, shareReplay} from 'rxjs/operators';
 import {Component, OnInit} from '@angular/core';
 
 import {CafetService, CafetUser} from '../../cafet-service/cafet.service';
 import {DicoService} from '../../../language/dico.service';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 
 export class DayUser {
   user: CafetUser;
@@ -34,8 +36,8 @@ export class CafetAdminAccountsComponent implements OnInit {
 
   getDayTransactions() {
     if (!this._dayTransactions){
-      this._dayTransactions = this.cafet.getDayTransactions()
-        .map(users => {
+      this._dayTransactions = this.cafet.getDayTransactions().pipe(
+        map(users => {
           const dayTransactions = [];
           Object.getOwnPropertyNames(users).forEach((emailId) => {
             const transactions = [];
@@ -60,8 +62,8 @@ export class CafetAdminAccountsComponent implements OnInit {
             })
           });
           return dayTransactions;
-        })
-        .shareReplay(1);
+        }))
+        .pipe(shareReplay(1));
     }
     return this._dayTransactions;
   }
@@ -75,14 +77,14 @@ export class CafetAdminAccountsComponent implements OnInit {
   }
 
   printAccountsPdf() {
-    this.cafet.getUsers()
-      .first()
+    this.cafet.getUsers().pipe(
+      first())
       .subscribe(users => { this.pdf = this.cafet.printAccountsPdf(users);});
   }
 
   saveAccountsPdf() {
-    this.cafet.getUsers()
-      .first()
+    this.cafet.getUsers().pipe(
+      first())
       .subscribe(users => { this.pdf = this.cafet.saveAccountsPdf(users);});
   }
 

@@ -1,3 +1,5 @@
+
+import {map, shareReplay} from 'rxjs/operators';
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 
@@ -5,7 +7,7 @@ import {ToolsService} from '../../providers/tools.service';
 import {DeviceSizeService} from '../../providers/device-size.service';
 import {AdminService} from '../admin-service/admin.service';
 import {DicoService} from '../../language/dico.service';
-import {Observable} from '../../../../node_modules/rxjs';
+import {Observable} from 'rxjs';
 import {User} from 'firebase/app';
 import {Location} from '@angular/common';
 
@@ -43,14 +45,14 @@ export class AdminUsersComponent implements OnInit {
   }
 
   filteredUsers(): Observable<User[]> {
-    return this.admin.getUsers()
-        .map(users => {
+    return this.admin.getUsers().pipe(
+        map(users => {
           const emailId = this.formGroup.get('search').value.replace(' ', '|').toLowerCase();
           return users.filter(
             user => (this.checkAgainstFilters(emailId, user))
           );
-        })
-        .shareReplay(1);
+        }))
+        .pipe(shareReplay(1));
   }
 
   checkAgainstFilters(emailId, user) {
@@ -85,7 +87,7 @@ export class AdminUsersComponent implements OnInit {
     return this.tools.titleCase(
       user[user.uid].admin.email
       .split('@')[0].split('.').join(' ')
-      .replace(/[0-9]/g, "")
+      .replace(/[0-9]/g, '')
     );
   }
 }

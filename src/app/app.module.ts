@@ -8,10 +8,10 @@ import {HttpClientModule} from '@angular/common/http';
 import {DatePipe} from '@angular/common';
 import {MarkdownModule, MarkedOptions} from 'ngx-markdown';
 // angularfire modules
-import {AngularFireModule} from 'angularfire2';
-import {AngularFireAuthModule} from 'angularfire2/auth';
-import {AngularFireDatabaseModule} from 'angularfire2/database';
-import {AngularFireStorageModule} from 'angularfire2/storage';
+import {AngularFireModule} from '@angular/fire';
+import {AngularFireAuthModule} from '@angular/fire/auth';
+import {AngularFireDatabaseModule} from '@angular/fire/database';
+import {AngularFireStorageModule} from '@angular/fire/storage';
 // components
 import {AppComponent} from './app.component';
 import {AppRoutingModule} from './app-routing.module';
@@ -190,9 +190,11 @@ import 'hammerjs';
     MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule, MatToolbarModule, MatSidenavModule, MatListModule, MatCardModule, MatSnackBarModule, MatSlideToggleModule, MatTabsModule, MatExpansionModule, MatCheckboxModule, MatPaginatorModule, MatDatepickerModule, MatNativeDateModule, MatSelectModule, MatDialogModule, MatProgressSpinnerModule, MatTableModule,
     FlexLayoutModule,
     MarkdownModule.forRoot({
-      provide: MarkedOptions,
-      useValue: {
-        sanitize: true
+      markedOptions: {
+        provide: MarkedOptions,
+        useValue: {
+          sanitize: true
+        }
       }
     })
   ],
