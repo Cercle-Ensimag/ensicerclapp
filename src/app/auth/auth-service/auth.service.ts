@@ -16,6 +16,7 @@ import {Assessor} from '../../vote/vote-admin/vote-admin.component';
 import {CafetResp} from '../../cafet/cafet-service/cafet.service';
 import {Observable, Observer} from '../../../../node_modules/rxjs';
 import {User} from 'firebase/app';
+import {MatSnackBar} from '@angular/material';
 
 export const ENSIDOMAIN = "ensimag.fr";
 export const PHELMADOMAIN = "phelma.grenoble-inp.fr";
@@ -71,7 +72,8 @@ export class AuthService {
     private modules: AppModulesService,
     private tools: ToolsService,
 
-    public d: DicoService
+    public d: DicoService,
+    public snackBar: MatSnackBar
   ) {
     this.error_persist = false;
     this.afAuth.auth.onIdTokenChanged((user: User) => this.redirectOnTokenChange(user));
@@ -115,7 +117,10 @@ export class AuthService {
       this.setProfile(user, firstName, lastName);
       this.updateProfileFromUser(user, new Profile(firstName, lastName, '', ''));
     })
-    .catch((err) => { this.onLoginError(err); })
+    .catch((err) => {
+      this.onLoginError(err);
+      this.snackBar.open(err, 'ok');
+    });
   }
 
   deleteAccount(): Promise<any> {

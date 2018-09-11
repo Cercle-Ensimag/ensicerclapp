@@ -97,6 +97,6 @@ button.mat-fab-bottom-right {
   right: 28px;
 }
 
-button.mat-fab[ng-reflect-disabled="true"] {
+button.mat-fab[ng-reflect-disabled="true"], button.mat-fab[disabled] {
   background-color: #dcdcdc !important;
 }
