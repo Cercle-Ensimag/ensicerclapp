@@ -117,7 +117,6 @@ button.mat-fab[ng-reflect-disabled="true"], button.mat-fab[disabled] {
   left: 0;
   bottom: 0;
   right: 0;
-  transform: translateX(-50%);
 }
 
 .double-bounce1, .double-bounce2 {
