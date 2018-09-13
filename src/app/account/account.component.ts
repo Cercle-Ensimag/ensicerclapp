@@ -39,9 +39,9 @@ export class AccountComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe))
       .subscribe(([profile, user]: [Profile, User]) => {
         this.formGroup = this.fb.group({
-          firstname: [profile.name.firstName, [Validators.required]],
-          lastname: [profile.name.lastName, [Validators.required]],
-          login: [profile.name.login, []],
+          firstname: [profile.name.firstName, [Validators.required, Validators.maxLength(30)]],
+          lastname: [profile.name.lastName, [Validators.required, Validators.maxLength(30)]],
+          login: [profile.name.login, [Validators.maxLength(30)]],
           email: [{ value: user.email, disabled: true }, [Validators.required, Validators.email, this.auth.emailDomainValidator]]
         });
       });

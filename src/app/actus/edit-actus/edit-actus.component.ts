@@ -55,12 +55,12 @@ export class EditActusComponent implements OnInit, OnDestroy {
           this.id = this.actus.getActuId();
         }
         this.formGroup = this.fb.group({
-          title: [actu.title || '', [Validators.required, Validators.minLength(3)]],
-          description: [actu.description || '', []],
-          image: [actu.image || '', []],
-          pdfLink: [actu.pdfLink || '', []],
+          title: [actu.title || '', [Validators.required, Validators.maxLength(30)]],
+          description: [actu.description || '', [Validators.maxLength(2000)]],
+          image: [actu.image || '', [Validators.maxLength(500)]],
+          pdfLink: [actu.pdfLink || '', [Validators.maxLength(500)]],
           date: [new Date(actu.date) || '', [Validators.required]],
-          author: [actu.author || '', [Validators.required]]
+          author: [actu.author || '', [Validators.required, Validators.maxLength(50)]]
         });
       });
   }

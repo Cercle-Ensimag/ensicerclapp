@@ -26,8 +26,8 @@ export class EditCafetUserComponent {
     public d: DicoService
   ) {
     this.formGroup = this.fb.group({
-      firstName: [this.user.profile.firstName, [Validators.required, Validators.minLength(2)]],
-      lastName: [this.user.profile.lastName, [Validators.required, Validators.minLength(2)]],
+      firstName: [this.user.profile.firstName, [Validators.required, Validators.maxLength(30)]],
+      lastName: [this.user.profile.lastName, [Validators.required, Validators.maxLength(30)]],
       email: [this.user.profile.email, [
         Validators.required,
         Validators.email

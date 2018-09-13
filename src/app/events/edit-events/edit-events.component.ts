@@ -57,16 +57,16 @@ export class EditEventsComponent implements OnInit, OnDestroy {
           this.id = this.events.getEventId();
         }
         this.formGroup = this.fb.group({
-          title: [event.title || '', [Validators.required, Validators.minLength(3)]],
-          description: [event.description || '', []],
-          image: [event.image || '', []],
+          title: [event.title || '', [Validators.required, Validators.maxLength(50)]],
+          description: [event.description || '', [Validators.maxLength(2000)]],
+          image: [event.image || '', [Validators.maxLength(500)]],
           start: [new Date(event.start) || '', [Validators.required, this.tools.dateValidator]],
           startTime: [this.tools.getTimeFromDate(event.start), [Validators.required, this.tools.timeValidator]],
           end: [new Date(event.end) || '', [Validators.required, this.tools.dateValidator]],
           endTime: [this.tools.getTimeFromDate(event.end), [Validators.required, this.tools.timeValidator]],
-          location: [event.location || '', [Validators.required]],
-          asso: [event.asso || '', [Validators.required]],
-          price: [event.price || this.d.l.free, [Validators.required]]
+          location: [event.location || '', [Validators.required, Validators.maxLength(100)]],
+          asso: [event.asso || '', [Validators.required, Validators.maxLength(30)]],
+          price: [event.price || this.d.l.free, [Validators.required, Validators.maxLength(50)]]
         });
 
         this.formGroup.get('start')
