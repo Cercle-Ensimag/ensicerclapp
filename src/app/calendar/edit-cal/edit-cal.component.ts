@@ -59,13 +59,13 @@ export class EditCalComponent implements OnInit, OnDestroy {
         }))
       .subscribe((event) => {
         this.formGroup = this.fb.group({
-          title: [event.title || '', [Validators.required, Validators.minLength(3)]],
+          title: [event.title || '', [Validators.required, Validators.maxLength(50)]],
           start: [new Date(event.start) || '', [Validators.required, this.tools.dateValidator]],
           startTime: [this.tools.getTimeFromDate(event.start), [Validators.required, this.tools.timeValidator]],
           end: [new Date(event.end) || '', [Validators.required, this.tools.dateValidator]],
           occurences: [event.occurences || 1, [Validators.required, Validators.min(1), Validators.max(42)]],
           endTime: [this.tools.getTimeFromDate(event.end), [Validators.required, this.tools.timeValidator]],
-          location: [event.location || '', []]
+          location: [event.location || '', [Validators.maxLength(30)]]
         });
         this.formGroup.get('start').valueChanges
           .pipe(takeUntil(this.unsubscribe))

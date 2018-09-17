@@ -1,4 +1,4 @@
-<app-loading [loading]="modules.getAppModules()"></app-loading>
+<app-loading [loading]="modules.getAppModules() | async"></app-loading>
 
 <!-- Modules display -->
 <div *ngIf="modules.getAppModules() | async as appModules" class="grid-container">

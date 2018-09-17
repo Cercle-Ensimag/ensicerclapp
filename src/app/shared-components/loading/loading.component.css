@@ -4,7 +4,7 @@
   height: 100vh;
   background-color: rgba(0,0,0,0.05);
   z-index: 10;
-  top: 64px;
+  top: 0;
   left: 0;
 }
 

@@ -54,9 +54,9 @@ export class CafetAdminUsersComponent implements OnInit {
 
   initFormGroup() {
     this.formGroup = this.fb.group({
-      firstName: ['', [Validators.required, Validators.minLength(2)]],
-      lastName: ['', [Validators.required, Validators.minLength(2)]],
-      email: ['', [Validators.email]],
+      firstName: ['', [Validators.required, Validators.maxLength(30)]],
+      lastName: ['', [Validators.required, Validators.maxLength(30)]],
+      email: ['', [Validators.email, Validators.maxLength(50)]],
       credit: [0, []],
       byCredit: [],
       byDate: []

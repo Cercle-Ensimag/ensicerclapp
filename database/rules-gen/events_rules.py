@@ -69,7 +69,7 @@ class EventRules (EventsListRules):
         self.indexOn = ["start"]
 
         self.add(IdRules("id", self.eventId))
-        self.add(StringRules("title", 40))
+        self.add(StringRules("title", 50))
         self.add(StringRules("description", 2000))
         self.add(StringRules("image", 500))
         self.add(NumberRules("start"))

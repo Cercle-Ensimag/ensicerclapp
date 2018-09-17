@@ -58,8 +58,8 @@ export class EditPollComponent implements OnInit, OnDestroy {
           this.id = this.vote.getPollId();
         }
         this.formGroup = this.fb.group({
-          title: [poll.title || '', [Validators.required, Validators.minLength(3)]],
-          description: [poll.description || '', []],
+          title: [poll.title || '', [Validators.required, Validators.minLength(3), Validators.maxLength(500)]],
+          description: [poll.description || '', [Validators.maxLength(30)]],
           started: [poll.started || '', []]
         });
       });
@@ -70,9 +70,9 @@ export class EditPollComponent implements OnInit, OnDestroy {
         this.choices = choices.map(choice => ({
             id: choice.id,
             ctrl: this.fb.group({
-              label: [choice.label, [Validators.required]],
-              image: [choice.image, []],
-              short: [choice.short, []]
+              label: [choice.label, [Validators.required, Validators.maxLength(30)]],
+              image: [choice.image, [Validators.maxLength(500)]],
+              short: [choice.short, [Validators.maxLength(30)]]
             })
           })
         );
@@ -83,9 +83,9 @@ export class EditPollComponent implements OnInit, OnDestroy {
     this.choices.push({
       id: this.vote.getChoiceId(this.id),
       ctrl: this.fb.group({
-        label: ['', [Validators.required]],
-        image: ['', []],
-        short: ['', []]
+        label: ['', [Validators.required, Validators.maxLength(30)]],
+        image: ['', [Validators.maxLength(500)]],
+        short: ['', [Validators.maxLength(30)]]
       })
     });
   }

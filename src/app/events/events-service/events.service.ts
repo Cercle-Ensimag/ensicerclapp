@@ -6,7 +6,7 @@ import {AuthService} from '../../auth/auth-service/auth.service';
 import {CalEvent} from '../../calendar/cal-service/cal.service';
 
 import {first, map, mergeMap, shareReplay} from 'rxjs/operators';
-import {from, Observable} from 'rxjs';
+import {combineLatest, from, Observable} from 'rxjs';
 
 export class Event {
   id: string;
@@ -65,6 +65,14 @@ export class EventsService {
         shareReplay(1));
     }
     return this._activeEvents;
+  }
+
+  getEventsImRespoOf(): Observable<Event[]> {
+    return combineLatest(
+      this.getEvents(),
+      this.auth.getRespComId()
+    ).pipe(
+      map(([events, comId]: [Event[], string]) => events.filter(event => event.groupId === comId)));
   }
 
   getEvent(eventId: string): Observable<Event> {

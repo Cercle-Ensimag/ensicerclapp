@@ -34,55 +34,55 @@
         <ng-container *ngIf="modules.getAppModules() | async as appModules">
           <mat-nav-list>
             <div *ngFor="let module of appModules">
-              <a mat-list-item
+              <a mat-list-item (click)="snav.close()"
                  *ngIf="!module.disabled"
                  routerLink="/{{ module.name }}"><img mat-list-avatar src="assets/img/icons/{{module.name}}.png">{{ module.displayName }}</a>
             </div>
-            <a mat-list-item
+            <a mat-list-item (click)="snav.close()"
                *ngIf="auth.isAdmin() | async"
                routerLink="/admin"
             > <img mat-list-avatar src="assets/img/icons/admin.png"> {{ d.l.adminLabel }}</a>
-            <a mat-list-item
+            <a mat-list-item (click)="snav.close()"
                *ngIf="auth.isAdminOf('actus') | async"
                routerLink="/actus/admin"
             > <img mat-list-avatar src="assets/img/icons/admin.png"> {{ d.l.actusAdminLabel }}</a>
-            <a mat-list-item
+            <a mat-list-item (click)="snav.close()"
                *ngIf="auth.isJournalist() | async"
                routerLink="/actus/journalist"
             > <img mat-list-avatar src="assets/img/icons/admin.png">{{ d.l.journalistLabel }}</a>
-            <a mat-list-item
+            <a mat-list-item (click)="snav.close()"
                *ngIf="auth.isAdminOf('annonces') | async"
                routerLink="/annonces/admin"
             > <img mat-list-avatar src="assets/img/icons/admin.png">{{ d.l.annoncesAdminLabel }}</a>
-            <a mat-list-item
+            <a mat-list-item (click)="snav.close()"
                *ngIf="auth.isAdminOf('cafet') | async"
                routerLink="/cafet/admin"
             > <img mat-list-avatar src="assets/img/icons/admin.png">{{ d.l.cafetAdminLabel }}</a>
-            <a mat-list-item
+            <a mat-list-item (click)="snav.close()"
                *ngIf="auth.isCafetResp() | async"
                routerLink="/cafet/resp"
             > <img mat-list-avatar src="assets/img/icons/admin.png">{{ d.l.cafetRespLabel }}</a>
-            <a mat-list-item
+            <a mat-list-item (click)="snav.close()"
                *ngIf="auth.isAdminOf('events') | async"
                routerLink="/events/admin"
             > <img mat-list-avatar src="assets/img/icons/admin.png"> {{ d.l.eventsAdminLabel }}</a>
-            <a mat-list-item
+            <a mat-list-item (click)="snav.close()"
                *ngIf="auth.isRespCom() | async"
                routerLink="/events/com-resp"
             > <img mat-list-avatar src="assets/img/icons/admin.png"> {{ d.l.comRespLabel }}</a>
-            <a mat-list-item
+            <a mat-list-item (click)="snav.close()"
                *ngIf="auth.isAdminOf('nsigma') | async"
                routerLink="/nsigma/admin"
             > <img mat-list-avatar src="assets/img/icons/admin.png">{{ d.l.nsigmaAdminLabel }}</a>
-            <a mat-list-item
+            <a mat-list-item (click)="snav.close()"
                *ngIf="auth.isAdminOf('vote') | async"
                routerLink="/votes/admin"
             > <img mat-list-avatar src="assets/img/icons/admin.png"> {{ d.l.voteAdminLabel }}</a>
-            <a mat-list-item
+            <a mat-list-item (click)="snav.close()"
                *ngIf="auth.isAssessor() | async"
                routerLink="/votes/assessor"
             > <img mat-list-avatar src="assets/img/icons/admin.png"> {{ d.l.assessorLabel }}</a>
-            <a mat-list-item
+            <a mat-list-item (click)="snav.close()"
                (click)="snav.toggle(); auth.logout()"
             > <img mat-list-avatar src="assets/img/icons/logout.png"> {{ d.l.logOutLabel }}</a>
           </mat-nav-list>
@@ -91,7 +91,7 @@
     </mat-sidenav>
 
     <!-- Content -->
-    <mat-sidenav-content>
+    <mat-sidenav-content (swiperight)="snav.open()" (swipeleft)="snav.close()">
       <div class="container" [class.withCalendar]="location.path() === '/calendrier'">
         <div>
           <!-- Navigate from the different modules of the app (cafet, vote, calendar, ...) -->
