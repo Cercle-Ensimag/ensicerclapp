@@ -117,7 +117,7 @@ exports.onCreateAccount = functions.auth.user().onCreate(event => {
       ){
         updates["logs/errors/account/"+getTime()] = 'User '+emailId+' created a new account';
       } else {
-        updates["logs/errors/account/"+getTime()] = 'User '+emailId+' created a first account';
+        updates["logs/account/"+getTime()] = 'User '+emailId+' created a first account';
       }
 
       // db request
