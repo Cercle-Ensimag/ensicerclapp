@@ -91,7 +91,7 @@
     </mat-sidenav>
 
     <!-- Content -->
-    <mat-sidenav-content (swiperight)="snav.open()" (swipeleft)="snav.close()" [style.touch-action]="'pan-y'">
+    <mat-sidenav-content (swiperight)="openSnav()" (swipeleft)="snav.close()">
       <div class="container" [class.withCalendar]="location.path() === '/calendrier'">
         <div>
           <!-- Navigate from the different modules of the app (cafet, vote, calendar, ...) -->

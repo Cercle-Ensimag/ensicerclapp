@@ -1,5 +1,5 @@
 // angular modules
-import {BrowserModule} from '@angular/platform-browser';
+import {BrowserModule, HAMMER_GESTURE_CONFIG} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -144,6 +144,7 @@ import {CafetRespComponent} from './cafet/cafet-resp/cafet-resp.component';
 
 import 'hammerjs';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import {HammerFix} from '../HammerFix';
 
 @NgModule({
   declarations: [
@@ -204,7 +205,12 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     AuthService, VoteService, AdminService, CafetService, EventsService, ActusService, NsigmaService, NsigmaGuard, AnnoncesService, AnnoncesGuard, CalService,
     AppModulesService, DeviceSizeService, ListService, ToolsService,
     CanActivateHome, CanActivateVoteAdmin, CanActivateAssessor, CanActivateEventsAdmin, CanActivateComResp, CanActivateEventsEdit, CanActivateActusAdmin, CanActivateJournalist, CanActivateCafetResp, CanActivateActusEdit, CanActivateAdmin, CanActivateCafetAdmin, EmailVerifGuard,
-    DicoService, DatePipe
+    DicoService, DatePipe,
+    {
+      // hammer instantion with custom config for scroll fix
+      provide: HAMMER_GESTURE_CONFIG,
+      useClass: HammerFix,
+    }
   ],
   entryComponents: [
     CafetHistoryComponent,
