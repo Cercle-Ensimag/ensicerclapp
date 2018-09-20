@@ -1,5 +1,5 @@
 import {combineLatest, from, Observable, Observer, of} from 'rxjs';
-import {catchError, filter, first, flatMap, map, mergeMap, shareReplay} from 'rxjs/operators';
+import {catchError, filter, first, flatMap, map, mergeMap, shareReplay, tap} from 'rxjs/operators';
 import {Injectable, NgZone} from '@angular/core';
 import {Location} from '@angular/common';
 import {Router} from '@angular/router';
@@ -67,6 +67,7 @@ export class AuthService {
   private _journalistId: Observable<string>;
   private _isLogged: Observable<boolean>;
   private _isLoggedAndHasEmailVerified: Observable<boolean>;
+  private _connectionEstablished: Observable<boolean>;
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -84,9 +85,20 @@ export class AuthService {
   }
 
   redirectOnTokenChange(user: any) {
-    if (!user) return;
+    // Not logged
+    if (!user){
+      if (!['/login', '/signup', '/password_reset', '/infos', '/email_verif'].includes(this.location.path()))
+        return this.goToLogin();
 
-    if (['/login', '/signup'].includes(this.location.path())) {
+      return;
+    }
+
+    // Logged
+    if (!user.emailVerified) {
+      this.goToEmailVerif();
+    }
+
+    if (['/login', '/signup', '/password_reset'].includes(this.location.path())) {
       return this.goToHome();
     }
 
@@ -108,7 +120,7 @@ export class AuthService {
 
   logout() {
     this.afAuth.auth.signOut()
-      .then(() => this.goToHome());
+      .then(() => this.goToLogin());
   }
 
   createAccount(
@@ -220,6 +232,18 @@ export class AuthService {
         shareReplay(1));
     }
     return this._user;
+  }
+
+  isConnectionEstablished(): Observable<boolean> {
+    if (!this._connectionEstablished) {
+      this._connectionEstablished = this.db
+        .object<boolean>('.info/connected')
+        .valueChanges()
+        .pipe(
+          tap(is => console.log('connected', is)),
+          shareReplay());
+    }
+    return this._connectionEstablished;
   }
 
   getLoggedUser(): Observable<User> {

@@ -83,7 +83,7 @@
                routerLink="/votes/assessor"
             > <img mat-list-avatar src="assets/img/icons/admin.png"> {{ d.l.assessorLabel }}</a>
             <a mat-list-item (click)="snav.close()"
-               (click)="snav.toggle(); auth.logout()"
+               (click)="snav.close(); auth.logout()"
             > <img mat-list-avatar src="assets/img/icons/logout.png"> {{ d.l.logOutLabel }}</a>
           </mat-nav-list>
         </ng-container>
@@ -94,6 +94,7 @@
     <mat-sidenav-content (swiperight)="openSnav()" (swipeleft)="snav.close()">
       <div class="container" [class.withCalendar]="location.path() === '/calendrier'">
         <div>
+          <!--<app-loading [loading]="this.auth.isConnectionEstablished() | async"></app-loading>-->
           <!-- Navigate from the different modules of the app (cafet, vote, calendar, ...) -->
           <router-outlet></router-outlet>
         </div>

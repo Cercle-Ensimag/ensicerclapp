@@ -18,6 +18,7 @@ export const PERSOS = "persos";
 export const ASSOS = "assos";
 
 const DAY_LENGTH = 24 * 60 * 60* 1000;
+const WEEK_LENGTH = 7 * DAY_LENGTH;
 
 export class CalEvent {
   id: string;
@@ -91,10 +92,6 @@ export class CalService {
     private http: HttpClient
   ) { }
 
-  start () { }
-
-  stop() { }
-
   getCoursesEvents(): Observable<CalEvent[]> {
     if (!this._coursesEvents) {
       this._coursesEvents = this.getSettings()
@@ -153,7 +150,7 @@ export class CalService {
             events.forEach(event => {
               for (let i = 0; i < event.occurences; i++){
                 toReturn.push(new CalEvent(
-                  event.id, event.title, event.start + DAY_LENGTH * i, event.end + DAY_LENGTH * i, 1, event.location, PERSOS
+                  event.id, event.title, event.start + WEEK_LENGTH * i, event.end + WEEK_LENGTH * i, 1, event.location, PERSOS
                 ));
               }
             });
