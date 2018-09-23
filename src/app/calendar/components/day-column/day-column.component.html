@@ -7,7 +7,7 @@
   <div *ngIf="cal.getMyEventsForDay(date) | async as events">
     <div *ngIf="events.length; else noEvents">
       <mat-card *ngFor="let event of events" class="event center"
-                [class.border]="event.isNow()"
+                [class.border]="event.isNow() && event.isCourse()"
                 [class.perso]="event.isPerso()" [class.assos]="event.isAssos()">
         {{ event.title }}<br>
         <label *ngIf="event.isSingleDay()">

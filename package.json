@@ -38,6 +38,7 @@
     "jspdf-autotable": "^2.3.2",
     "ng2-pdf-viewer": "^5.1.2",
     "ngx-markdown": "^6.2.0",
+    "replace-in-file": "^3.4.2",
     "rxjs": "^6.3.2",
     "rxjs-compat": "^6.3.2",
     "zone.js": "^0.8.26"

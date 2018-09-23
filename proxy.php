@@ -1,6 +1,5 @@
 <?php
-header('Access-Control-Allow-Origin: https://www.cercle-ensimag.fr');
-header('Access-Control-Allow-Origin: http://localhost:4200');
+header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Headers: Content-Type');
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && empty($_POST))
