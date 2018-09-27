@@ -31,9 +31,10 @@ export class VoteService {
 
   getPolls(): Observable<Poll[]> {
     if (!this._polls) {
-      this._polls = this.db
-        .list<Poll>('vote/polls')
-        .valueChanges()
+      this._polls = this.tools.enableCache(
+        this.db
+          .list<Poll>('vote/polls')
+          .valueChanges(), '_polls')
         .pipe(shareReplay(1));
     }
     return this._polls;
@@ -47,12 +48,11 @@ export class VoteService {
 
   getPoll(id: string): Observable<Poll> {
     if (!this._poll[id]) {
-      this._poll[id] = this.auth.getEmailId().pipe(
-        mergeMap(() =>
-          this.db
-            .object<Poll>('vote/polls/' + id)
-            .valueChanges()),
-        shareReplay(1));
+      this._poll[id] = this.tools.enableCache(
+        this.db
+          .object<Poll>('vote/polls/' + id)
+          .valueChanges(), `_poll_${id}`)
+        .pipe(shareReplay(1));
     }
     return this._poll[id];
   }

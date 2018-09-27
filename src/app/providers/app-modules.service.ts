@@ -1,7 +1,8 @@
-import {shareReplay, tap} from 'rxjs/operators';
+import {shareReplay} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
 import {AngularFireDatabase} from '@angular/fire/database';
-import {EMPTY, merge, Observable, of} from 'rxjs';
+import {Observable} from 'rxjs';
+import {ToolsService} from './tools.service';
 
 
 export class AppModule {
@@ -15,21 +16,18 @@ export class AppModulesService {
   private _appModules: Observable<AppModule[]>;
 
   constructor(
-    private db: AngularFireDatabase
+    private db: AngularFireDatabase,
+    private tools: ToolsService
   ) {
   }
 
   getAppModules(): Observable<AppModule[]> {
     if (!this._appModules) {
-      this._appModules = merge(
+      this._appModules = this.tools.enableCache(
         this.db
           .list<AppModule>('admin/public/modules', ref => ref.orderByChild('order'))
-          .valueChanges()
-          .pipe(
-            tap(modules => localStorage.setItem('appModules', JSON.stringify(modules)))),
-        localStorage.getItem('appModules') ?
-          of(JSON.parse(localStorage.getItem('appModules'))) :
-          EMPTY)
+          .valueChanges(),
+        '_appModules')
         .pipe(shareReplay(1));
     }
     return this._appModules;

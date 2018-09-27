@@ -48,9 +48,11 @@ export class EventsService {
 
   getEvents(): Observable<Event[]> {
     if (!this._events) {
-      this._events = this.db
-        .list<Event>('events/events', ref => ref.orderByChild('start'))
-        .valueChanges().pipe(
+      this._events = this.tools.enableCache(
+        this.db
+          .list<Event>('events/events', ref => ref.orderByChild('start'))
+          .valueChanges(), '_events')
+        .pipe(
           map((events: Event[]) => events.reverse()), // Pour l'admin, on veut voir les passés en dernier.
           shareReplay(1));
     }
@@ -77,10 +79,11 @@ export class EventsService {
 
   getEvent(eventId: string): Observable<Event> {
     if (!this._event[eventId]) {
-      this._event[eventId] = this.db
-        .object<Event>('events/events/' + eventId)
-        .valueChanges()
-        .pipe(shareReplay(1));
+      this._event[eventId] = this.tools.enableCache(
+        this.db
+          .object<Event>('events/events/' + eventId)
+          .valueChanges(), `_event${eventId}`)
+          .pipe(shareReplay(1));
     }
     return this._event[eventId];
   }

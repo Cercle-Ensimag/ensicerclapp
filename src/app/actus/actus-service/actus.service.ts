@@ -31,10 +31,11 @@ export class ActusService {
 
   getActus() {
     if (!this._actus){
-      this._actus = this.db
-        .list<Actu>('actus/actus')
-        .valueChanges().pipe(
-        map(annonces => annonces.reverse()))
+      this._actus = this.tools.enableCache(
+        this.db
+          .list<Actu>('actus/actus')
+          .valueChanges().pipe(
+          map(annonces => annonces.reverse())), '_actus')
         .pipe(shareReplay(1));
     }
     return this._actus;
@@ -42,9 +43,10 @@ export class ActusService {
 
   getActu(actuId: string) {
     if (!this._actu[actuId]){
-      this._actu[actuId] = this.db
-        .object<Actu>('actus/actus/'+actuId)
-        .valueChanges()
+      this._actu[actuId] = this.tools.enableCache(
+        this.db
+          .object<Actu>('actus/actus/'+actuId)
+          .valueChanges(), `_actu_${actuId}`)
         .pipe(shareReplay(1));
     }
     return this._actu[actuId];

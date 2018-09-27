@@ -12,6 +12,7 @@ import {environment} from '../../../environments/environment';
 
 import {combineLatest, merge, of, from, EMPTY, Observable} from 'rxjs';
 import {first, map, mergeMap, shareReplay, tap} from 'rxjs/operators';
+import {ToolsService} from '../../providers/tools.service';
 
 export const COURSE = "course";
 export const PERSOS = "persos";
@@ -89,6 +90,7 @@ export class CalService {
     private auth: AuthService,
     private db: AngularFireDatabase,
     private events: EventsService,
+    private tools: ToolsService,
     private http: HttpClient
   ) { }
 
@@ -163,17 +165,17 @@ export class CalService {
   
   getMyEvents(): Observable<CalEvent[]> {
     if (!this._myEvents){
-      this._myEvents = merge(
+      this._myEvents = this.tools.enableCache(
         combineLatest(
           this.getAssosEventsITakePart(),
           this.getCoursesEvents(),
           this.getPersosEvents())
           .pipe(
           map(([asso, courses, perso]: [CalEvent[], CalEvent[], CalEvent[]]) =>
-            asso.concat(courses).concat(perso).sort((event1, event2) => event1.start - event2.start)),
-          tap(events => localStorage.setItem('myEvents', JSON.stringify(events))),),
-        localStorage.getItem('myEvents') ?
-          of(JSON.parse(localStorage.getItem('myEvents')).map(event => new CalEvent(
+            asso.concat(courses).concat(perso).sort((event1, event2) => event1.start - event2.start))),
+        '_myEvents',
+        true,
+        event => new CalEvent(
             event.id,
             event.title,
             event.start,
@@ -181,8 +183,7 @@ export class CalService {
             event.occurences,
             event.location,
             event.type
-          ))) :
-          EMPTY)
+          ))
         .pipe(shareReplay(1));
     }
     return this._myEvents;
@@ -206,11 +207,11 @@ export class CalService {
 
   getCalFromAde(resources: string): Observable<string> {
     if (!this._calFromAde){
-      this._calFromAde = merge(
+      this._calFromAde = this.tools.enableCache(
         this.http
-          .get(this.getCoursesURL(resources), { responseType: 'text' })
-            .pipe(tap(cal => localStorage.setItem('calFromADE', cal))),
-        localStorage.getItem('calFromADE') ? of(localStorage.getItem('calFromADE')) : EMPTY)
+          .get(this.getCoursesURL(resources), { responseType: 'text' }),
+        '_calFromADE',
+        false)
         .pipe(shareReplay(1));
     }
     return this._calFromAde;

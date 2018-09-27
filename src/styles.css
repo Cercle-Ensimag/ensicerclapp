@@ -77,6 +77,7 @@ div.mat-fab-bottom-right {
   position: fixed !important;
   bottom: 28px;
   right: 28px;
+  z-index: 11;
 }
 
 div.mat-fab-bottom-right button:not(:last-child) {

@@ -1,12 +1,12 @@
 {
-  "index": "/",
+  "index": "/index.html",
   "assetGroups": [
     {
       "name": "app",
       "installMode": "prefetch",
       "resources": {
         "files": [
-          "/",
+          "/index.html",
           "/*.css",
           "/*.js"
         ]

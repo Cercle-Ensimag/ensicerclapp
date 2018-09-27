@@ -1,10 +1,23 @@
 import {Injectable} from '@angular/core';
 import {FormControl} from '@angular/forms';
+import {Observable, merge, of, EMPTY} from 'rxjs';
+import {map, tap} from 'rxjs/operators';
 
 @Injectable()
 export class ToolsService {
 
   constructor() { }
+
+  // Turn an observable into a cached observable (use only if results can be stored as JSON)
+  enableCache(toCache: Observable<any>, identifier: string, json: boolean = true, mapTo: Function = null) {
+    return merge(
+      toCache.pipe(tap(result => localStorage.setItem(identifier, json ? JSON.stringify(result) : result))),
+      localStorage.getItem(identifier) ? of(
+        json ? ( mapTo ? JSON.parse(localStorage.getItem(identifier)).map(mapTo) : JSON.parse(localStorage.getItem(identifier)) ) :
+          localStorage.getItem(identifier)) :
+        EMPTY);
+  }
+
 
   getEmailIdFromEmail(email: string) {
     return email.toLowerCase().split("@")[0].replace('.', '|');

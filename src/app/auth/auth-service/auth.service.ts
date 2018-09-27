@@ -1,5 +1,5 @@
 import {combineLatest, from, Observable, Observer, of} from 'rxjs';
-import {catchError, filter, first, flatMap, map, mergeMap, shareReplay, tap} from 'rxjs/operators';
+import {catchError, debounceTime, filter, first, flatMap, map, mergeMap, shareReplay, tap} from 'rxjs/operators';
 import {Injectable, NgZone} from '@angular/core';
 import {Location} from '@angular/common';
 import {Router} from '@angular/router';
@@ -68,6 +68,7 @@ export class AuthService {
   private _isLogged: Observable<boolean>;
   private _isLoggedAndHasEmailVerified: Observable<boolean>;
   private _connectionEstablished: Observable<boolean>;
+  private _offline: Observable<boolean>;
 
   constructor(
     private afAuth: AngularFireAuth,
@@ -241,9 +242,21 @@ export class AuthService {
         .valueChanges()
         .pipe(
           tap(is => console.log('connected', is)),
-          shareReplay());
+          shareReplay(1));
     }
     return this._connectionEstablished;
+  }
+
+  isOffline(): Observable<boolean> {
+    if (!this._offline) {
+      this._offline = this.isConnectionEstablished()
+        .pipe(
+          debounceTime(2000),
+          map(is => !is),
+          tap(is => console.log('offline', is)),
+          shareReplay(1));
+    }
+    return this._offline;
   }
 
   getLoggedUser(): Observable<User> {

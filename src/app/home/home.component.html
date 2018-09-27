@@ -1,6 +1,6 @@
 <div class="home-container" [class.is-mobile]="media.mobileSize">
 
-  <mat-toolbar color="primary" class="toolbar">
+  <mat-toolbar color="primary" class="toolbar" [class.is-offline]="auth.isOffline() | async">
     <button mat-icon-button (click)="snav.toggle()" *ngIf="auth.isLoggedAndHasEmailVerified() | async"><mat-icon>menu</mat-icon></button>
     <!-- <button mat-icon-button routerLink='/home' class="homebtn" [disabled]="!auth.getUser()"><mat-icon>home</mat-icon></button> -->
     <h1 class="app-name" routerLink='/home'>
