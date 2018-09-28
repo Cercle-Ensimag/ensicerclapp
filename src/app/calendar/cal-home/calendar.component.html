@@ -21,7 +21,7 @@
     <button mat-icon-button [disabled]="editing" routerLink="/calendrier/event/-/edit"><mat-icon>add_circle</mat-icon></button>
     <button mat-icon-button (click)="toggleEditing()" [color]="editing ? 'primary': ''"><mat-icon>{{ editing ? 'close' : 'edit'}}</mat-icon></button>
     <button mat-icon-button (click)="previousWeek()"><mat-icon>navigate_before</mat-icon></button>
-    <label>{{ daysOfTheWeek()[0] | date:d.l.shortDateFormat:'':d.l.locale | uppercase }} - {{ daysOfTheWeek()[6] | date:d.l.shortDateFormat:'':d.l.locale | uppercase }}</label>
+    <label>{{ daysOfTheWeek[0] | date:d.l.shortDateFormat:'':d.l.locale | uppercase }} - {{ daysOfTheWeek[6] | date:d.l.shortDateFormat:'':d.l.locale | uppercase }}</label>
     <button mat-icon-button (click)="nextWeek()"><mat-icon>navigate_next</mat-icon></button>
     <input [(ngModel)]="selectedDay" [matDatepicker]="picker2" style="width: 0; height: 0; padding: 0; margin: 0; border: none; visibility: hidden;">
     <mat-datepicker #picker2></mat-datepicker>
@@ -30,7 +30,7 @@
   </mat-card>
 
   <div style="display: grid; grid-template-columns: 14.3% 14.3% 14.3% 14.3% 14.3% 14.3% 14.3%; margin:auto;">
-    <app-day-column *ngFor="let day of daysOfTheWeek()" [editing]="editing" [date]="day"></app-day-column>
+    <app-day-column *ngFor="let day of daysOfTheWeek" [editing]="editing" [date]="day"></app-day-column>
   </div>
 </ng-template>
 

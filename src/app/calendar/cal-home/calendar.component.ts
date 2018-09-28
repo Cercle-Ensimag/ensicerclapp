@@ -4,7 +4,6 @@ import {DicoService} from '../../language/dico.service';
 import {DeviceSizeService} from '../../providers/device-size.service';
 import {Location} from '@angular/common';
 
-
 const DAY_LENGTH = 24 * 60 * 60* 1000;
 
 @Component({
@@ -14,6 +13,7 @@ const DAY_LENGTH = 24 * 60 * 60* 1000;
 })
 export class CalendarComponent implements OnInit {
   public editing: boolean;
+  public daysOfTheWeek = [];
   public selectedDay: Date = new Date();
 
   constructor(
@@ -24,14 +24,15 @@ export class CalendarComponent implements OnInit {
 
   ngOnInit() {
     this.selectedDay = new Date();
+    this.updateDaysOfTheWeek();
   }
 
-  daysOfTheWeek() {
+  updateDaysOfTheWeek() {
     let monday = new Date(this.selectedDay);
     while (monday.getDay()!== 1){
       monday = new Date(monday.getTime() - DAY_LENGTH);
     }
-    return [
+    this.daysOfTheWeek = [
       monday,
       new Date(monday.getTime() + DAY_LENGTH),
       new Date(monday.getTime() + DAY_LENGTH * 2),
@@ -56,9 +57,11 @@ export class CalendarComponent implements OnInit {
 
   previousWeek() {
     this.selectedDay = new Date(this.selectedDay.getTime() - DAY_LENGTH * 7);
+    this.updateDaysOfTheWeek();
   }
 
   nextWeek() {
     this.selectedDay = new Date(this.selectedDay.getTime() + DAY_LENGTH * 7);
+    this.updateDaysOfTheWeek();
   }
 }
