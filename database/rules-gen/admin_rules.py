@@ -1,5 +1,5 @@
 from RulesPattern import RulesPattern
-from common import OtherRules, StringRules, BooleanRules, doAnd, isAdmin, isMember, hasAllowedEmail
+from common import OtherRules, StringRules, BooleanRules, NumberRules, doAnd, isAdmin, isMember, hasAllowedEmail
 
 class AdminRules (RulesPattern):
     def build(self):
@@ -25,12 +25,17 @@ class ModulesRules (PublicRules):
         self.add(ModuleRules())
 
 class ModuleRules (ModulesRules):
-    def build(self):
-        self.label = "$module"
+	def build(self):
+		self.label = "$module"
 
-        self.add(StringRules("name", 30))
-        self.add(BooleanRules("disabled"))
-        self.add(OtherRules())
+		self.add(StringRules("name", 30))
+		self.add(StringRules("displayName", 30))
+		self.add(StringRules("fullName", 200))
+		self.add(StringRules("description", 500))
+		self.add(BooleanRules("disabled"))
+		self.add(BooleanRules("restricted"))
+		self.add(NumberRules("order"))
+		self.add(OtherRules())
 
 
 # private node

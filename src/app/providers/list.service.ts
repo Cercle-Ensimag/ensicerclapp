@@ -1,8 +1,9 @@
-import {map, shareReplay} from 'rxjs/operators';
+import {map, mergeMap, shareReplay} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
-
 import {AngularFireDatabase} from '@angular/fire/database';
+import {User} from 'firebase/app';
 
+import {AuthService} from '../auth/auth-service/auth.service';
 import {ToolsService} from './tools.service';
 import {Observable} from 'rxjs';
 
@@ -10,10 +11,12 @@ import {Observable} from 'rxjs';
 export class ListService {
   private _email: { [$emailId: string]: Observable<string> } = {};
   private _inList: { [$emailId: string]: Observable<boolean> } = {};
+	private _isActive: Observable<boolean>;
 
   constructor(
     private db: AngularFireDatabase,
-    private tools: ToolsService
+    private tools: ToolsService,
+		private auth: AuthService
   ) {
   }
 
@@ -38,5 +41,19 @@ export class ListService {
 
     return this._inList[emailId];
   }
+
+	isLoggedUserInList(): Observable<boolean> {
+		if (!this._isActive) {
+			this._isActive = this.auth.getLoggedUser()
+			.pipe(
+				mergeMap(
+					(user: User) => this.getEmail(this.tools.getEmailIdFromEmail(user.email))
+					.pipe(map(email => email === user.email))
+				),
+				shareReplay(1)
+			);
+		}
+		return this._isActive;
+	}
 
 }

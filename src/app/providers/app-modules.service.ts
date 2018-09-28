@@ -8,7 +8,11 @@ import {ToolsService} from './tools.service';
 export class AppModule {
   name: string;
   displayName: string;
+	fullName: string;
+	description: string;
   disabled: boolean;
+	restricted: boolean;
+	order: number;
 }
 
 @Injectable()
