@@ -115,8 +115,7 @@ export class AuthService {
   // Methods
 
   login(email: string, password: string) {
-    return this.afAuth.auth.signInWithEmailAndPassword(email, password)
-      .catch(err => this.onLoginError(err));
+    return this.afAuth.auth.signInWithEmailAndPassword(email, password);
   }
 
   logout() {
@@ -520,7 +519,7 @@ export class AuthService {
     this.ngZone.run(() => this.router.navigateByUrl('/home'));
   }
 
-  private onLoginError(error: any) {
+  onLoginError(error: any) {
     console.log(error);
     this.error = error;
   }
