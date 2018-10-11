@@ -19,8 +19,6 @@
         <br>
         {{ event.location }}<br>
         <button mat-icon-button *ngIf="event.isAssos() && !editing" routerLink="/events/event/{{ event.id }}"><mat-icon>search</mat-icon></button>
-        <button mat-icon-button *ngIf="event.isPerso() && editing" routerLink="/calendrier/event/{{ event.id }}/edit"><mat-icon>edit</mat-icon></button>
-        <button mat-icon-button *ngIf="event.isPerso() && editing" (click)="removeEvent(event)"><mat-icon>delete</mat-icon></button>
       </mat-card>
     </div>
     <ng-template #noEvents>

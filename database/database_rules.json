@@ -278,8 +278,8 @@
 					},
 					"assos": {
 						".read" : "$userId === auth.uid",
+						".write" : "$userId === auth.uid",
 						"$eventId": {
-							".write" : "$userId === auth.uid",
 							"eventId": { ".validate" : "newData.val() === $eventId" },
 							"$other": { ".validate" : "false" },
 						},

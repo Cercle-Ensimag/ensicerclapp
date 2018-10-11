@@ -70,7 +70,7 @@ body {
 }
 
 .center, mat-card-actions {
-  text-align: center;
+  text-align: center !important;
 }
 
 div.mat-fab-bottom-right {

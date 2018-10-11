@@ -57,6 +57,7 @@ import {EditActusComponent} from './actus/edit-actus/edit-actus.component';
 import {CalendarComponent} from './calendar/cal-home/calendar.component';
 import {EditCalComponent} from './calendar/edit-cal/edit-cal.component';
 import {CalSettingsComponent} from './calendar/cal-settings/cal-settings.component';
+import {CalEditAllComponent} from './calendar/cal-edit-all/cal-edit-all.component';
 
 import {AccountComponent} from './account/account.component';
 
@@ -181,6 +182,7 @@ import {HammerFix} from '../HammerFix';
     UpdatePasswordDialogComponent,
     DayColumnComponent,
     CafetRespComponent,
+    CalEditAllComponent,
   ],
   imports: [
     BrowserModule,

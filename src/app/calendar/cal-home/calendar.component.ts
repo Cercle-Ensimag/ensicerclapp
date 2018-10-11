@@ -12,7 +12,6 @@ const DAY_LENGTH = 24 * 60 * 60* 1000;
   styleUrls: ['./calendar.component.css']
 })
 export class CalendarComponent implements OnInit {
-  public editing: boolean;
   public daysOfTheWeek = [];
   public selectedDay: Date = new Date();
 
@@ -41,10 +40,6 @@ export class CalendarComponent implements OnInit {
       new Date(monday.getTime() + DAY_LENGTH * 5),
       new Date(monday.getTime() + DAY_LENGTH * 6)
     ];
-  }
-
-  toggleEditing() {
-    this.editing = !this.editing;
   }
 
   previousDay() {

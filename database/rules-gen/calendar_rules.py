@@ -46,6 +46,7 @@ class AssosEventsRules (UserRules):
     def build(self):
         self.label = "assos"
         self.read = validateUid(self.uid)
+        self.write = validateUid(self.uid)
         self.add(AssosEventRules())
 
 class AssosEventRules (AssosEventsRules):
@@ -55,7 +56,6 @@ class AssosEventRules (AssosEventsRules):
 
     def build(self):
         self.label = self.eventId
-        self.write = validateUid(self.uid)
         self.add(IdRules("eventId", self.eventId))
         self.add(OtherRules())
 

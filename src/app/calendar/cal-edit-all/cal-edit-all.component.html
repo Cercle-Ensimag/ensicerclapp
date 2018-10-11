@@ -1,0 +1,52 @@
+<app-loading [loading]="!loading"></app-loading>
+
+<mat-tab-group>
+
+  <mat-tab *ngIf="cal.getPersosEvents() | async as events; else loading" label="Personnels">
+		<app-paged-grid [list]="events" emptyMessage="Aucun événement personnel" #pagesPerso>
+      <mat-card *ngFor="let event of pagesPerso.truncatedList()" class="event center">
+        {{ event.title }}<br>
+        <label *ngIf="event.isSingleDay()">
+					{{ event.start | date:d.l.shortDateTimeFormat:'':d.l.locale }} à {{ event.end | date:d.l.timeFormat:'':d.l.locale }}
+        </label>
+        <label *ngIf="!event.isSingleDay()">
+          {{ event.start | date:d.l.shortDateTimeFormat:'':d.l.locale }} <br>à<br> {{ event.end | date:d.l.shortDateTimeFormat:'':d.l.locale }}
+        </label>
+        <br>
+        {{ event.location }}<br>
+        <button mat-icon-button routerLink="/calendrier/event/{{ event.id }}/edit"><mat-icon>edit</mat-icon></button>
+        <button mat-icon-button (click)="removePersoEvent(event)"><mat-icon>delete</mat-icon></button>
+      </mat-card>
+		</app-paged-grid>
+  </mat-tab>
+
+  <mat-tab *ngIf="cal.getAssosEventsITakePart() | async as events; else loading"  label="Associatifs">
+		<div *ngIf="cal.getEventIdsWithNoEvents() | async as ids;">
+			<mat-card *ngIf="ids.length > 0" class="center">
+				<div class="error">
+					{{ ids.length }} abonnements à des événements supprimés<br><br>
+					<button mat-raised-button (click)="cal.removeEventsFromCalendar(ids)">Effacer</button>
+				</div>
+			</mat-card>
+		</div>
+		<app-paged-grid [list]="events" emptyMessage="Aucun événement associatif" #pagesAssos>
+			<mat-card *ngFor="let event of pagesAssos.truncatedList()" class="event center">
+				{{ event.title }}<br>
+				<label *ngIf="event.isSingleDay()">
+					{{ event.start | date:d.l.shortDateTimeFormat:'':d.l.locale }} à {{ event.end | date:d.l.timeFormat:'':d.l.locale }}
+				</label>
+				<label *ngIf="!event.isSingleDay()">
+					{{ event.start | date:d.l.shortDateTimeFormat:'':d.l.locale }} <br>à<br> {{ event.end | date:d.l.shortDateTimeFormat:'':d.l.locale }}
+				</label>
+				<br>
+				{{ event.location }}<br>
+				<button mat-icon-button routerLink="/events/event/{{ event.id }}"><mat-icon>search</mat-icon></button>
+			</mat-card>
+		</app-paged-grid>
+  </mat-tab>
+
+</mat-tab-group>
+
+<div class="mat-fab-bottom-right">
+  <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
+</div>
