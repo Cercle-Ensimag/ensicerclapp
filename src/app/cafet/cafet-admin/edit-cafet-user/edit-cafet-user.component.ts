@@ -42,7 +42,7 @@ export class EditCafetUserComponent {
         this.cafet.setUserProfile(this.user.emailId, {
           firstName: this.formGroup.get('firstName').value,
           lastName: this.formGroup.get('lastName').value,
-          email: this.formGroup.get('email').value,
+          email: this.formGroup.get('email').value.toLowerCase(),
           exte: !notExte}, this.user.activated)
           .then(() => this.dialogRef.close())
           .catch((err) => this.snackBar.open(err, 'ok', {duration: 2000}));
