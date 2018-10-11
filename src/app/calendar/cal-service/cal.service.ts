@@ -106,7 +106,7 @@ export class CalService {
             return this.getCalFromAde(settings.resources)
               .pipe(
                 map(cal => parseICS(cal).map((event: {name: string, startDate: any, endDate: any, location: any}) => new CalEvent(
-                '', event.name.replace(/\\,/g, ','), event.startDate, event.endDate, 1, event.location, COURSE
+                '', event.name.replace(/\\,/g, ', '), event.startDate, event.endDate, 1, event.location.replace(/\\,/g, ', '), COURSE
               ))))
           }),
           shareReplay(1));
