@@ -73,11 +73,11 @@ export class CafetService {
     public d: DicoService,
     public sanitizer: DomSanitizer
   ) { }
-  
+
   getMe(){
     if (!this._me){
       this._me = this.auth.getEmailId().pipe(
-        mergeMap((emailId: string) => 
+        mergeMap((emailId: string) =>
           this.db.object<CafetUser>('cafet/users/'+emailId)
           .valueChanges()),
         map(user => user || new CafetUser()),
@@ -360,7 +360,7 @@ export class CafetService {
       rows.push({
         firstname: user.profile.firstName,
         lastname: user.profile.lastName + (user.profile.exte ? " *": ''),
-        credit: user.credit.toFixed(2) + "€",
+        credit: user.credit.toFixed(2),
         minus1: user.credit < 0 ? "*********" : ''
       });
     }
@@ -375,27 +375,25 @@ export class CafetService {
     });
 
     const pageContent = function (data) {
-      let str, txtWidth, x;
-
       // HEADER
       pdf.setFontSize(16);
       pdf.setTextColor(40);
-      pdf.setFontStyle('normal');
+      pdf.setFontType('normal');
 
-      str = `Comptes cafet du ${ date }`;
-      txtWidth = pdf.getStringUnitWidth(str)*pdf.internal.getFontSize()/pdf.internal.scaleFactor;
-      x = (pdf.internal.pageSize.width - txtWidth) / 2;
+      const header = `Comptes cafet du ${ date }`;
+      const header_w = pdf.getStringUnitWidth(header)*pdf.internal.getFontSize()/pdf.internal.scaleFactor;
+      const header_x = (pdf.internal.pageSize.getWidth() - header_w) / 2;
 
-      pdf.text(str, x, 50);
+      pdf.text(header, header_x, 40);
 
       // FOOTER
       pdf.setFontSize(8);
 
-      str = "Page " + data.pageCount + " / " + totalPagesExp;
-      txtWidth = pdf.getStringUnitWidth(str)*pdf.internal.getFontSize()/pdf.internal.scaleFactor;
-      x = pdf.internal.pageSize.width - txtWidth - 20;
+      const footer = "Page " + data.pageCount + " / " + totalPagesExp;
+      const footer_w = pdf.getStringUnitWidth(footer)*pdf.internal.getFontSize()/pdf.internal.scaleFactor;
+      const footer_x = pdf.internal.pageSize.getWidth() - footer_w - 20;
 
-      pdf.text(str, x, pdf.internal.pageSize.height - 20);
+      pdf.text(footer, footer_x, pdf.internal.pageSize.getHeight() - 20);
 
     };
 
