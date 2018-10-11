@@ -85,6 +85,7 @@ export class CalService {
   private _myEventsForDay: { [$dayString: string]: Observable<CalEvent[]> } = {};
   private _settings: Observable<Settings>;
   private _event: { [$eventId: string]: Observable<CalEvent> } = {};
+	private _settingsChanged: boolean = false;
 
   constructor(
     private auth: AuthService,
@@ -139,7 +140,7 @@ export class CalService {
     }
     return this._assosEventsITakePart;
   }
-  
+
   getPersosEvents(): Observable<CalEvent[]> {
     if (!this._persosEvents) {
       this._persosEvents = this.auth.getUser()
@@ -162,7 +163,7 @@ export class CalService {
     }
     return this._persosEvents;
   }
-  
+
   getMyEvents(): Observable<CalEvent[]> {
     if (!this._myEvents){
       this._myEvents = this.tools.enableCache(
@@ -206,7 +207,8 @@ export class CalService {
   }
 
   getCalFromAde(resources: string): Observable<string> {
-    if (!this._calFromAde){
+    if (!this._calFromAde || this._settingsChanged){
+			this._settingsChanged = false;
       this._calFromAde = this.tools.enableCache(
         this.http
           .get(this.getCoursesURL(resources), { responseType: 'text' }),
@@ -221,10 +223,12 @@ export class CalService {
     if (!this._settings){
       this._settings = this.auth.getLoggedUser()
         .pipe(
-          mergeMap(user =>
-            this.db
+          mergeMap(user => {
+						this._settingsChanged = true;
+						return this.db
               .object<Settings>('calendar/users/'+user.uid+'/settings')
-              .valueChanges()),
+              .valueChanges()
+					}),
           shareReplay(1));
     }
     return this._settings;
