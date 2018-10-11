@@ -76,13 +76,13 @@ export class CalSettingsComponent implements OnInit, OnDestroy {
       let snackBarRef = this.snackBar.open('Connexion à ADE...');
       this.http.post(environment.proxy.domain + 'action=fetch_ade', credentials, { responseType: 'text'}).subscribe(
 				(text: string) => {
-	        if (text.startsWith('invalid')) return this.snackBar.open(`Identifiants incorrects`, 'ok', {duration: 2000});
+	        if (text.startsWith('invalid')) return this.snackBar.open('Identifiants incorrects', 'ok', {duration: 2000});
 	        this.formGroup.get('resources').setValue(text);
 	        this.submit();
 	      },
 				(error) => {
 					snackBarRef.dismiss();
-					this.snackBar.open("Erreur : " + error.message, 'ok', {duration: 2000});
+					this.snackBar.open('Echec de la connexion', 'ok', {duration: 2000});
 				}
 			);
     });
