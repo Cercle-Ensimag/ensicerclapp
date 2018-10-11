@@ -12,6 +12,8 @@ import {DeleteDialogComponent} from '../../shared-components/delete-dialog/delet
 })
 export class CalEditAllComponent implements OnInit {
 
+	public loading: boolean;
+	
   constructor(
     public d: DicoService,
     public cal: CalService,
