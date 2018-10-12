@@ -21,3 +21,7 @@
   right: 0;
   transform: translateX(-100%);
 }
+
+mat-progress-spinner {
+	margin: auto;
+}
