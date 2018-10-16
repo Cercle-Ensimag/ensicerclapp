@@ -91,7 +91,12 @@ export class CafetService {
       this._users = this.db
         .list<CafetUser>('cafet/users')
         .valueChanges()
-        .pipe(shareReplay(1));
+        .pipe(
+					map(users => users.sort(
+						(u1, u2) => this.getUserName(u1).localeCompare(this.getUserName(u2))
+					)),
+					shareReplay(1)
+				);
     }
     return this._users;
   }
