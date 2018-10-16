@@ -12,7 +12,6 @@ import {MatDialog, MatSnackBar} from '@angular/material';
 })
 export class DayColumnComponent implements OnInit {
   @Input() date: Date = new Date();
-  @Input() editing: boolean = false;
 
   constructor(
     private dialog: MatDialog,
@@ -25,19 +24,4 @@ export class DayColumnComponent implements OnInit {
 
   ngOnInit() { }
 
-  removeEvent(event) {
-    this.dialog.open(DeleteDialogComponent, {
-      data: {
-        title: "Confirmation de la suppression",
-        content: `Êtes-vous certain de vouloir supprimer "${event.title}" ?`
-      }
-    }).afterClosed().subscribe(result => {
-      if (result) {
-        this.cal.removeEvent(event.id).then(() =>
-          this.snackBar.open("Evénement supprimé", 'ok', {duration: 2000})
-        )
-      }
-    });
-
-  }
 }

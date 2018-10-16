@@ -2,6 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 import {AuthService, Profile} from '../auth/auth-service/auth.service';
+import {ListService} from '../providers/list.service';
 import {DicoService} from '../language/dico.service';
 import {DeleteDialogComponent} from '../shared-components/delete-dialog/delete-dialog.component';
 import {UpdatePasswordDialogComponent} from './components/update-password-dialog/update-password-dialog.component';
@@ -21,6 +22,7 @@ export class AccountComponent implements OnInit, OnDestroy {
   private unsubscribe: Subject<void> = new Subject();
 
   public formGroup: FormGroup;
+	public active: boolean;
 
   constructor(
     private auth: AuthService,
@@ -28,22 +30,24 @@ export class AccountComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
-
+		public list: ListService,
     public location: Location
   ) { }
 
   ngOnInit() {
     combineLatest(
       this.auth.getProfile(),
-      this.auth.getLoggedUser())
+      this.auth.getLoggedUser(),
+			this.list.isLoggedUserInList())
       .pipe(takeUntil(this.unsubscribe))
-      .subscribe(([profile, user]: [Profile, User]) => {
+      .subscribe(([profile, user, active]: [Profile, User, boolean]) => {
         this.formGroup = this.fb.group({
           firstname: [profile.name.firstName, [Validators.required, Validators.maxLength(30)]],
           lastname: [profile.name.lastName, [Validators.required, Validators.maxLength(30)]],
           login: [profile.name.login, [Validators.maxLength(30)]],
           email: [{ value: user.email, disabled: true }, [Validators.required, Validators.email, this.auth.emailDomainValidator]]
         });
+				this.active = active;
       });
   }
 

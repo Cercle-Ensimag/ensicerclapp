@@ -4,7 +4,7 @@
   <app-loading [loading]="getData() | async" [fullPage]="false"></app-loading>
 
   <!-- History -->
-  <div *ngIf="getData() | async as tabData">
+  <div *ngIf="getData() | async as tabData" tabindex="0">
 
     <mat-table [dataSource]="tabData">
 
@@ -25,8 +25,9 @@
 
     </mat-table>
 
-    <mat-paginator [pageSizeOptions]="[5, 10, 20]">
+    <mat-paginator pageSize="12">
     </mat-paginator>
 
   </div>
+	<br>
 </div>

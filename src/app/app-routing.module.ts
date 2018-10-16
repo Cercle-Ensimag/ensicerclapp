@@ -36,6 +36,7 @@ import {EditActusComponent} from './actus/edit-actus/edit-actus.component';
 import {CalendarComponent} from './calendar/cal-home/calendar.component';
 import {EditCalComponent} from './calendar/edit-cal/edit-cal.component';
 import {CalSettingsComponent} from './calendar/cal-settings/cal-settings.component';
+import {CalEditAllComponent} from './calendar/cal-edit-all/cal-edit-all.component';
 
 import {AccountComponent} from './account/account.component';
 
@@ -104,6 +105,7 @@ const routes: Routes = [
 
   { path: 'calendrier', component: CalendarComponent/*, canActivate: [CanActivateHome] */},
   { path: 'calendrier/settings', component: CalSettingsComponent/*, canActivate: [CanActivateHome] */},
+  { path: 'calendrier/edit', component: CalEditAllComponent/*, canActivate: [CanActivateHome] */},
   { path: 'calendrier/event/:id/edit', component: EditCalComponent/*, canActivate: [CanActivateHome] */},
 
   { path: 'nsigma', component: NsigmaHomeComponent/*, canActivate: [CanActivateHome] */},

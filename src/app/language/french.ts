@@ -49,6 +49,7 @@ export class French {
   public static readonly passwordForgottenLabel = "Mot de passe oublié ?";
   public static readonly accountPageTitle = "Informations personnelles";
   public static readonly deleteAccountButtonLabel = "Supprimer le compte";
+	public static readonly outdatedAccountInfo = "Ton compte n'est plus actif... si tu es encore à l'Ensimag, contacte-nous pour le réactiver"
   public static readonly deleteAccountInfo = "Tu es sur le point de supprimer ton compte !";
   public static readonly refreshTokenInfo = "Cette opréation nécéssite de s'être identifié recemment";
   public static readonly confimDeleteAccountButtonLabel = "Supprimer le compte";
