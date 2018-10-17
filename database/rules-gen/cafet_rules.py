@@ -159,9 +159,10 @@ class ArchivedUserRules (UserRules):
 
 # users node
 class ActiveUsersRules (ArchivesRules):
-    def build(self):
-        self.label = "users"
-        self.add(ActiveUserRules())
+	def build(self):
+		self.label = "users"
+		self.read = isCafetResp()
+		self.add(ActiveUserRules())
 
 class ActiveUserRules (UserRules):
     def build(self):

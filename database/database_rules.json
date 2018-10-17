@@ -158,6 +158,7 @@
 				"$other": { ".validate" : "false" },
 			},
 			"users": {
+				".read" : "root.child('cafet/cafetResps/resps/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')).exists() && auth !== null && auth.token.email_verified == true",
 				"$emailId": {
 					".read" : "(auth !== null && auth.token.email_verified == true) && (root.child('users/'+$emailId+'/'+auth.uid).exists()) && (auth.token.email === root.child('list/users/'+$emailId).val())",
 					".validate" : "(data.exists() && newData.exists()) || ((!data.exists()) && ((!root.child('cafet/history/'+$emailId).exists()) || ((root.child('cafet/archives/users/'+$emailId+'/credit').val() === newData.child('credit').val()) && (root.child('cafet/archives/users/'+$emailId+'/creationDate').val() === newData.child('creationDate').val())))) || (!newData.exists() && !root.child('cafet/cafetResps/dayTransactions/'+$emailId).exists())",
@@ -318,6 +319,9 @@
 					"$emailId": {
 						"emailId": { ".validate" : "newData.val() === $emailId" },
 						"groupId": { ".validate" : "root.child('events/com-resps/groups/'+newData.val()).exists()" },
+						"groupIds": {
+							"$groupId": { ".validate" : "root.child('events/com-resps/groups/'+newData.val()).exists()" },
+						},
 						"$other": { ".validate" : "false" },
 					},
 				},
@@ -338,6 +342,9 @@
 					"asso": { ".validate" : "newData.isString() && newData.val().length <= 30" },
 					"price": { ".validate" : "newData.isString() && newData.val().length <= 50" },
 					"groupId": { ".validate" : "root.child('events/com-resps/resps/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/groupId').val() === newData.val()" },
+					"groupIds": {
+						"$groupId": { ".validate" : "root.child('events/com-resps/resps/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/groupId').val() === newData.val()" },
+					},
 					"$other": { ".validate" : "false" },
 				},
 			},

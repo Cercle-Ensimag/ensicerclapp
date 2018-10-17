@@ -42,6 +42,7 @@ class UserRules (UsersRules):
         self.label = "$emailId"
         self.add(IdRules("emailId", self.label))
         self.add(GroupIdRules())
+        self.add(GroupIdsRules())
         self.add(OtherRules())
 
 class GroupIdRules (UserRules):
@@ -49,6 +50,17 @@ class GroupIdRules (UserRules):
         self.label = "groupId"
         self.validate = "root.child('events/com-resps/groups/'+newData.val()).exists()"
         self.inLine = True
+
+class GroupIdsRules (UserRules):
+	def build(self):
+		self.label = "groupIds"
+		self.add(GroupIdListRules())
+
+class GroupIdListRules (GroupIdsRules):
+	def build(self):
+		self.label = "$groupId"
+		self.validate = "root.child('events/com-resps/groups/'+newData.val()).exists()"
+		self.inLine = True
 
 
 # events node
@@ -78,6 +90,7 @@ class EventRules (EventsListRules):
         self.add(StringRules("asso", 30))
         self.add(StringRules("price", 50))
         self.add(EventGroupIdRules())
+        self.add(EventGroupIdsRules())
         self.add(OtherRules())
 
 class EventGroupIdRules (EventRules):
@@ -85,3 +98,14 @@ class EventGroupIdRules (EventRules):
         self.label = "groupId"
         self.validate = comRespGroupExists()
         self.inLine = True
+
+class EventGroupIdsRules (EventRules):
+	def build(self):
+		self.label = "groupIds"
+		self.add(EventGroupIdList())
+
+class EventGroupIdList (EventGroupIdsRules):
+	def build(self):
+		self.label = "$groupId"
+		self.validate = comRespGroupExists()
+		self.inLine = True
