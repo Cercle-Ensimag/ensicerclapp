@@ -77,6 +77,7 @@ export class CalSettingsComponent implements OnInit, OnDestroy {
       this.http.post(environment.proxy.domain + 'action=fetch_ade', credentials, { responseType: 'text'}).subscribe(
 				(text: string) => {
 	        if (text.startsWith('invalid')) return this.snackBar.open('Identifiants incorrects', 'ok', {duration: 2000});
+	        if (text.startsWith('dangerous')) return this.snackBar.open('Caractère dangereux, désolé', 'ok', {duration: 2000});
 	        this.formGroup.get('resources').setValue(text);
 	        this.submit();
 	      },
