@@ -54,6 +54,10 @@ export class LoginComponent implements OnInit {
       .then(() => {
         this.auth.goToHome();
         this.loading = false;
+      })
+      .catch(err => {
+        this.auth.onLoginError(err);
+        this.loading = false;
       });
   }
 }

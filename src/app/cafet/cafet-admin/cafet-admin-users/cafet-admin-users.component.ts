@@ -144,6 +144,12 @@ export class CafetAdminUsersComponent implements OnInit {
           user => user.emailId.includes(emailId)
             || this.cafet.getUserName(user).includes(this.tools.titleCase(email))
         );
+        users.sort((u1, u2) => {
+          if (u1.profile.firstName < u2.profile.firstName) return -1;
+          if (u1.profile.firstName > u2.profile.firstName) return 1;
+          if (u1.profile.lastName < u2.profile.lastName) return -1;
+          return 1;
+        });
         if (this.formGroup.get('byDate').value) {
           users.sort((u1, u2) => u1.lastTransactionDate - u2.lastTransactionDate);
         }
