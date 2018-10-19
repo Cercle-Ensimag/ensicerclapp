@@ -33,7 +33,7 @@ export class CafetAdminArchivesComponent implements OnInit {
   }
 
   filteredUsers(): Observable<CafetUser[]> {
-    let emailId = this.tools.getEmailIdFromEmail(this.emailCtrl.value.split('@')[0]);
+    let emailId = this.tools.getEmailIdFromEmail(this.emailCtrl.value);
     return this.cafet.getArchivesUsers().pipe(
       map(users => users.filter(
         user => user.emailId.includes(emailId)
