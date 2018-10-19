@@ -1,10 +1,10 @@
-<mat-tab-group>
+<mat-tab-group dynamicHeight (selectedIndexChange)="index=$event">
 
   <!-- Clients tab -->
   <mat-tab label="{{ d.l.clientListLabel }}">
 
     <!-- Clients -->
-    <app-cafet-admin-users></app-cafet-admin-users>
+    <app-cafet-admin-users *ngIf="index == 0"></app-cafet-admin-users>
 
   </mat-tab>
 
@@ -12,7 +12,7 @@
   <mat-tab label="{{ d.l.cafetAccountsLabel }}">
 
     <!-- Accounts -->
-    <app-cafet-admin-accounts></app-cafet-admin-accounts>
+    <app-cafet-admin-accounts *ngIf="index == 1"></app-cafet-admin-accounts>
 
   </mat-tab>
 
@@ -20,7 +20,7 @@
   <mat-tab label="{{ d.l.cafetArchivesLabel }}">
 
     <!-- Archives -->
-    <app-cafet-admin-archives></app-cafet-admin-archives>
+    <app-cafet-admin-archives *ngIf="index == 2"></app-cafet-admin-archives>
 
   </mat-tab>
 
@@ -28,7 +28,7 @@
   <mat-tab label="{{ d.l.cafetRespPlLabel }}">
 
     <!-- Resps -->
-    <app-cafet-admin-resps></app-cafet-admin-resps>
+    <app-cafet-admin-resps *ngIf="index == 3"></app-cafet-admin-resps>
 
   </mat-tab>
 
@@ -36,7 +36,7 @@
   <mat-tab label="{{ d.l.cafetTrezoLabel }}">
 
     <!-- Resps -->
-    <app-trezo></app-trezo>
+    <app-trezo *ngIf="index == 4"></app-trezo>
 
   </mat-tab>
 

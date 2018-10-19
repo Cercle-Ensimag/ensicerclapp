@@ -9,6 +9,8 @@ import {CafetService} from '../cafet-service/cafet.service';
 })
 export class CafetAdminComponent {
 
+	public index=0;
+	
   constructor(
     public cafet: CafetService,
     public d: DicoService
