@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {Location} from '@angular/common';
 import {Subject, Observable} from 'rxjs';
 import {CafetService, CafetUser} from '../cafet-service/cafet.service';
 import {ToolsService} from '../../providers/tools.service';
@@ -30,6 +31,7 @@ export class CafetRespComponent implements OnInit {
     private dialog: MatDialog,
     private fb: FormBuilder,
 
+		public location: Location,
     public cafet: CafetService,
     public tools: ToolsService,
     public media: DeviceSizeService,

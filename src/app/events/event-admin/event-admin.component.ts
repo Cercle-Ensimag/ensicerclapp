@@ -2,6 +2,7 @@
 import {first, map} from 'rxjs/operators';
 import {Component, OnInit} from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
+import {Location} from '@angular/common';
 
 import {DeviceSizeService} from '../../providers/device-size.service';
 import {EventsService} from '../events-service/events.service';
@@ -26,6 +27,7 @@ export class EventAdminComponent implements OnInit {
     private snackBar: MatSnackBar,
     private list: ListService,
 
+		public location: Location,
     public events: EventsService,
     public media: DeviceSizeService,
     public tools: ToolsService,
