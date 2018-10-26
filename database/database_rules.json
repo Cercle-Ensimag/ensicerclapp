@@ -138,7 +138,7 @@
 			"archives": {
 				"users": {
 					"$emailId": {
-						".validate" : "(data.exists() && newData.exists()) || ((!data.exists()) && ((!root.child('cafet/history/'+$emailId).exists()) || ((root.child('cafet/users/'+$emailId+'/credit').val() === newData.child('credit').val()) && (root.child('cafet/users/'+$emailId+'/creationDate').val() === newData.child('creationDate').val()))))",
+						".validate" : "(data.exists() && (newData.exists() && newData.val() !== null)) || ((!data.exists()) && ((!root.child('cafet/history/'+$emailId).exists()) || ((root.child('cafet/users/'+$emailId+'/credit').val() === newData.child('credit').val()) && (root.child('cafet/users/'+$emailId+'/creationDate').val() === newData.child('creationDate').val()))))",
 						"emailId": { ".validate" : "newData.val() === $emailId" },
 						"activated": { ".validate" : "newData.isBoolean()" },
 						"credit": { ".validate" : "newData.isNumber()" },
@@ -161,7 +161,7 @@
 				".read" : "root.child('cafet/cafetResps/resps/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')).exists() && auth !== null && auth.token.email_verified == true",
 				"$emailId": {
 					".read" : "(auth !== null && auth.token.email_verified == true) && (root.child('users/'+$emailId+'/'+auth.uid).exists()) && (auth.token.email === root.child('list/users/'+$emailId).val())",
-					".validate" : "(data.exists() && newData.exists()) || ((!data.exists()) && ((!root.child('cafet/history/'+$emailId).exists()) || ((root.child('cafet/archives/users/'+$emailId+'/credit').val() === newData.child('credit').val()) && (root.child('cafet/archives/users/'+$emailId+'/creationDate').val() === newData.child('creationDate').val())))) || (!newData.exists() && !root.child('cafet/cafetResps/dayTransactions/'+$emailId).exists())",
+					".validate" : "(data.exists() && (newData.exists() && newData.val() !== null)) || ((!data.exists()) && ((!root.child('cafet/history/'+$emailId).exists()) || ((root.child('cafet/archives/users/'+$emailId+'/credit').val() === newData.child('credit').val()) && (root.child('cafet/archives/users/'+$emailId+'/creationDate').val() === newData.child('creationDate').val())))) || (data.exists() && (!newData.exists() || newData.val() === null) && !root.child('cafet/cafetResps/dayTransactions/'+$emailId).exists())",
 					"emailId": { ".validate" : "newData.val() === $emailId" },
 					"activated": { ".validate" : "newData.isBoolean()" },
 					"credit": { ".validate" : "newData.isNumber()" },

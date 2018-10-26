@@ -142,10 +142,10 @@ class ArchivedUsersRules (ArchivesRules):
 class ArchivedUserRules (UserRules):
     def build(self):
         super().build()
-        stillUser = "data.exists() && newData.exists()"
+        stillUser = "data.exists() && (newData.exists() && newData.val() !== null)"
 
         # when creating a user/changing id, make sure he doesn't already exists
-        noHistory = "!root.child('cafet/history/'+$emailId).exists()"
+        noHistory = "!root.child('cafet/history/'+" + self.emailId + ").exists()"
 
         # when archiving a user, writen user should be the same as the one that was active
         sameCredit = "root.child('cafet/users/'+" + self.emailId + "+'/credit').val() === newData.child('credit').val()"
@@ -167,10 +167,10 @@ class ActiveUsersRules (ArchivesRules):
 class ActiveUserRules (UserRules):
     def build(self):
         super().build()
-        modifUser = "data.exists() && newData.exists()"
+        modifUser = "data.exists() && (newData.exists() && newData.val() !== null)"
 
         # when creating a user/changing id, make sure he doesn't already exists
-        noHistory = "!root.child('cafet/history/'+$emailId).exists()"
+        noHistory = "!root.child('cafet/history/'+" + self.emailId + ").exists()"
 
         # when restoring a user, writen user should be the same as the one that was archived
         sameCredit = "root.child('cafet/archives/users/'+" + self.emailId + "+'/credit').val() === newData.child('credit').val()"
@@ -180,7 +180,7 @@ class ActiveUserRules (UserRules):
         newUser = doAnd([ "!data.exists()", doOr([ noHistory, sameUser ])])
 
         # check for day transactions before deleting/changing id
-        deleteUser = "!newData.exists() && !root.child('cafet/cafetResps/dayTransactions/'+" + self.label + ").exists()"
+        deleteUser = "data.exists() && (!newData.exists() || newData.val() === null) && !root.child('cafet/cafetResps/dayTransactions/'+" + self.emailId + ").exists()"
 
         self.validate = doOr([modifUser, newUser, deleteUser])
         self.read = verifyEmailId(self.emailId);

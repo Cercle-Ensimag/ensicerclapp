@@ -55,7 +55,7 @@ export class CafetAdminRespsComponent implements OnInit {
         } else {
           this.cafet.addCafetResp({
             emailId: emailId
-          }).then(() => this.emailCtrl.reset());
+          }).then(() => this.emailCtrl.setValue(""));
         }
       });
   }

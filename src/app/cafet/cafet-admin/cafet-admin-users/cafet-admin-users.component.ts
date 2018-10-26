@@ -75,10 +75,14 @@ export class CafetAdminUsersComponent implements OnInit {
       });
   }
 
+	getEmail(): string {
+		return this.formGroup.get('email').value.toLowerCase();
+	}
+
   // Accounts
 
   tryCreateCafetAccount() {
-    const email = this.formGroup.get('email').value;
+    const email = this.getEmail();
 
 
     this.list.isInList(email)
@@ -104,7 +108,7 @@ export class CafetAdminUsersComponent implements OnInit {
   }
 
   createCafetAccount(exte: boolean) {
-    const email = this.formGroup.get('email').value;
+    const email = this.getEmail();
     const emailId = this.tools.getEmailIdFromEmail(email);
     const credit = this.formGroup.get('credit').value;
     const user = {
@@ -116,7 +120,7 @@ export class CafetAdminUsersComponent implements OnInit {
       profile: {
         firstName: this.tools.titleCase(this.formGroup.get('firstName').value),
         lastName: this.tools.titleCase(this.formGroup.get('lastName').value),
-        email: this.tools.titleCase(this.formGroup.get('email').value),
+        email: email,
         exte: exte
       }
     };
@@ -136,7 +140,7 @@ export class CafetAdminUsersComponent implements OnInit {
   }
 
   filteredUsers(): Observable<CafetUser[]> {
-    const email = this.formGroup.get('email').value;
+    const email = this.getEmail();
     const emailId = this.tools.getEmailIdFromEmail(email.split('@')[0]);
     return this.cafet.getUsers().pipe(
       map(users => {

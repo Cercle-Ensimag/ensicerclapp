@@ -262,34 +262,34 @@ export class CafetService {
   }
 
   validateDayTransactions() {
-    zip(
+    return zip(
       this.db.object<any>('cafet/users').valueChanges(),
       this.getDayTransactions()
-    ).pipe(first()).subscribe(
-      ([users, dayTr]) => {
-        let updates = {};
-        if (users != null && dayTr != null) {
-          Object.getOwnPropertyNames(dayTr).forEach(emailId => {
-            updates['users/'+emailId+'/credit'] = users[emailId].credit;
-            Object.getOwnPropertyNames(dayTr[emailId]).forEach(transId => {
-              updates['users/'+emailId+'/lastTransactionDate'] = dayTr[emailId][transId].date;
-              updates['history/'+emailId+'/'+transId] = {
-                value: dayTr[emailId][transId].value,
-                oldCredit: updates['users/'+emailId+'/credit'],
-                newCredit: updates['users/'+emailId+'/credit'] + dayTr[emailId][transId].value,
-                date: dayTr[emailId][transId].date
-              };
-              updates['users/'+emailId+'/credit'] += dayTr[emailId][transId].value;
-              updates['cafetResps/dayTransactions/'+emailId+'/'+transId] = null
-            });
-          });
-          this.db.object<any>('cafet').update(updates);
-        }
-      },
-      (err) => {
-        console.log(err)
-      }
-    );
+    ).pipe(first(), mergeMap(
+			([users, dayTr]) => {
+				let updates = {};
+				if (users != null && dayTr != null) {
+					Object.getOwnPropertyNames(dayTr).forEach(emailId => {
+						if (!users[emailId]) {
+							throw 'user "' + emailId + '" does not exist';
+						}
+						updates['users/'+emailId+'/credit'] = users[emailId].credit;
+						Object.getOwnPropertyNames(dayTr[emailId]).forEach(transId => {
+							updates['users/'+emailId+'/lastTransactionDate'] = dayTr[emailId][transId].date;
+							updates['history/'+emailId+'/'+transId] = {
+								value: dayTr[emailId][transId].value,
+								oldCredit: updates['users/'+emailId+'/credit'],
+								newCredit: updates['users/'+emailId+'/credit'] + dayTr[emailId][transId].value,
+								date: dayTr[emailId][transId].date
+							};
+							updates['users/'+emailId+'/credit'] += dayTr[emailId][transId].value;
+							updates['cafetResps/dayTransactions/'+emailId+'/'+transId] = null
+						});
+					});
+					return from(this.db.object<any>('cafet').update(updates));
+				}
+			}))
+			.toPromise();
   }
 
   deleteDayTransaction(emailId: string, transId: string) {
@@ -313,7 +313,7 @@ export class CafetService {
         updates["history/"+user.emailId] = history;
 
         return from(this.db.object<any>("cafet").update(updates));
-      }),)
+      }))
       .toPromise();
   }
 
