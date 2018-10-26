@@ -1,6 +1,7 @@
 
 import {map, first, shareReplay} from 'rxjs/operators';
 import {Component, OnInit} from '@angular/core';
+import {MatDialog, MatSnackBar} from '@angular/material';
 
 import {CafetService, CafetUser} from '../../cafet-service/cafet.service';
 import {DicoService} from '../../../language/dico.service';
@@ -28,6 +29,8 @@ export class CafetAdminAccountsComponent implements OnInit {
   private _dayTransactions: Observable<any>;
 
   constructor(
+		private snackBar: MatSnackBar,
+		private dialog: MatDialog,
     public cafet: CafetService,
     public d: DicoService
   ) { }
@@ -69,7 +72,12 @@ export class CafetAdminAccountsComponent implements OnInit {
   }
 
   validateDayTransactions() {
-    this.cafet.validateDayTransactions();
+    this.cafet.validateDayTransactions().then(
+			() => {},
+			(error) => {
+				this.snackBar.open(error, 'ok', {duration: 2000});
+			}
+		);
   }
 
   deleteDayTransaction(emailId: string, transId: string) {
