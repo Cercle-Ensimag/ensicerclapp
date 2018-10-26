@@ -1,44 +1,46 @@
 <app-loading [loading]="formGroup"></app-loading>
 
-<!-- Actu display -->
-<mat-card *ngIf="formGroup">
-  <form [formGroup]="formGroup" class="container">
+<div class="thin-container">
+	<!-- Actu display -->
+	<mat-card *ngIf="formGroup">
+	  <form [formGroup]="formGroup" class="container">
 
-    <mat-form-field>
-      <input matInput placeholder="{{ d.l.actuTitleLabel }}" formControlName="title" autocomplete="off">
-      <mat-error *ngIf="formGroup.get('title').invalid">{{ d.l.actuTitleTooShortError }}</mat-error>
-    </mat-form-field>
+	    <mat-form-field>
+	      <input matInput placeholder="{{ d.l.actuTitleLabel }}" formControlName="title" autocomplete="off">
+	      <mat-error *ngIf="formGroup.get('title').invalid">{{ d.l.actuTitleTooShortError }}</mat-error>
+	    </mat-form-field>
 
-    <mat-form-field>
-      <textarea matInput placeholder="{{ d.l.actuDescriptionLabel }}" formControlName="description"></textarea>
-      <mat-error *ngIf="formGroup.get('description').invalid">{{ d.l.actuDescriptionError }}</mat-error>
-    </mat-form-field>
+	    <mat-form-field>
+	      <textarea matInput placeholder="{{ d.l.actuDescriptionLabel }}" formControlName="description"></textarea>
+	      <mat-error *ngIf="formGroup.get('description').invalid">{{ d.l.actuDescriptionError }}</mat-error>
+	    </mat-form-field>
 
-    <markdown [data]="formGroup.get('description').value"></markdown>
+	    <markdown [data]="formGroup.get('description').value"></markdown>
 
-    <mat-form-field>
-      <input matInput placeholder="{{ d.l.actuImageLabel }}" formControlName="image" autocomplete="off">
-      <mat-error *ngIf="formGroup.get('image').invalid">{{ d.l.actuImageError }}</mat-error>
-    </mat-form-field>
+	    <mat-form-field>
+	      <input matInput placeholder="{{ d.l.actuImageLabel }}" formControlName="image" autocomplete="off">
+	      <mat-error *ngIf="formGroup.get('image').invalid">{{ d.l.actuImageError }}</mat-error>
+	    </mat-form-field>
 
-    <mat-form-field>
-      <input matInput placeholder="{{ d.l.actuPdfLinkLabel }}" formControlName="pdfLink" autocomplete="off">
-      <mat-error *ngIf="formGroup.get('pdfLink').invalid">{{ d.l.actuPdfLinkError }}</mat-error>
-    </mat-form-field>
+	    <mat-form-field>
+	      <input matInput placeholder="{{ d.l.actuPdfLinkLabel }}" formControlName="pdfLink" autocomplete="off">
+	      <mat-error *ngIf="formGroup.get('pdfLink').invalid">{{ d.l.actuPdfLinkError }}</mat-error>
+	    </mat-form-field>
 
-    <mat-form-field>
-      <input matInput [matDatepicker]="picker" placeholder="{{ d.l.actuDateLabel }}" formControlName="date" autocomplete="off">
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-      <mat-error *ngIf="formGroup.get('date').invalid">{{ d.l.actuDateError }}</mat-error>
-    </mat-form-field>
+	    <mat-form-field>
+	      <input matInput [matDatepicker]="picker" placeholder="{{ d.l.actuDateLabel }}" formControlName="date" autocomplete="off">
+	      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+	      <mat-datepicker #picker></mat-datepicker>
+	      <mat-error *ngIf="formGroup.get('date').invalid">{{ d.l.actuDateError }}</mat-error>
+	    </mat-form-field>
 
-    <mat-form-field>
-      <input matInput placeholder="{{ d.l.actuAuthorLabel }}" formControlName="author" autocomplete="off">
-      <mat-error *ngIf="formGroup.get('author').invalid">{{ d.l.actuAuthorError }}</mat-error>
-    </mat-form-field>
-  </form>
-</mat-card>
+	    <mat-form-field>
+	      <input matInput placeholder="{{ d.l.actuAuthorLabel }}" formControlName="author" autocomplete="off">
+	      <mat-error *ngIf="formGroup.get('author').invalid">{{ d.l.actuAuthorError }}</mat-error>
+	    </mat-form-field>
+	  </form>
+	</mat-card>
+</div>
 
 <div class="mat-fab-bottom-right">
   <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>

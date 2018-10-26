@@ -1,19 +1,21 @@
 <!-- Loading -->
 <app-loading [loading]="actus.getActu(id) | async"></app-loading>
 
-<!-- Actu display -->
-<mat-card *ngIf="actus.getActu(id) | async as actu">
-  <mat-card-header>
-    <img mat-card-avatar src="assets/img/icons/actus.png">
-    <mat-card-title>{{ actu.title }}</mat-card-title>
-    <mat-card-subtitle> {{ actu.date | date:'fullDate':'':d.l.locale }} - <i>{{ actu.author }}</i> </mat-card-subtitle>
-  </mat-card-header>
-  <mat-card-content>
-    <markdown [data]="actu.description"></markdown>
-    <iframe *ngIf="actu.pdfLink !== ''"  [src]="safeUrl(actu)"></iframe><br>
-    <img *ngIf="actu.image !== ''" mat-card-image src="{{ actu.image }}"><br>
-  </mat-card-content>
-</mat-card>
+<!-- <div class="thin-container"> -->
+	<!-- Actu display -->
+	<mat-card *ngIf="actus.getActu(id) | async as actu">
+	  <mat-card-header>
+	    <img mat-card-avatar src="assets/img/icons/actus.png">
+	    <mat-card-title>{{ actu.title }}</mat-card-title>
+	    <mat-card-subtitle> {{ actu.date | date:'fullDate':'':d.l.locale }} - <i>{{ actu.author }}</i> </mat-card-subtitle>
+	  </mat-card-header>
+	  <mat-card-content>
+	    <markdown [data]="actu.description"></markdown>
+	    <iframe *ngIf="actu.pdfLink !== ''"  [src]="safeUrl(actu)"></iframe><br>
+	    <img *ngIf="actu.image !== ''" mat-card-image src="{{ actu.image }}"><br>
+	  </mat-card-content>
+	</mat-card>
+<!-- </div> -->
 
 <div class="mat-fab-bottom-right">
   <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>

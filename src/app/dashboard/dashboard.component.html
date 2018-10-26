@@ -1,17 +1,19 @@
 <app-loading [loading]="modules.getAppModules() | async"></app-loading>
 
 <!-- Modules display -->
-<div *ngIf="getModules() | async as appModules" class="grid-container">
-  <div *ngFor="let module of appModules">
-    <mat-card routerLink="/{{ module.name }}">
-      <mat-card-header>
-        <img mat-card-avatar src="assets/img/icons/{{ module.name }}.png">
-        <mat-card-title>{{ module.displayName }}</mat-card-title>
-        <mat-card-subtitle> {{ module.fullName }} </mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <p>{{ module.description }}</p>
-      </mat-card-content>
-    </mat-card>
-  </div>
+<div class="grid-container-wrapper">
+	<div *ngIf="getModules() | async as appModules" class="grid-container">
+	  <div *ngFor="let module of appModules" class="wrapper">
+	    <mat-card routerLink="/{{ module.name }}" class="click">
+	      <mat-card-header>
+	        <img mat-card-avatar src="assets/img/icons/{{ module.name }}.png">
+	        <mat-card-title>{{ module.displayName }}</mat-card-title>
+	        <mat-card-subtitle> {{ module.fullName }} </mat-card-subtitle>
+	      </mat-card-header>
+	      <mat-card-content>
+	        <p>{{ module.description }}</p>
+	      </mat-card-content>
+	    </mat-card>
+	  </div>
+	</div>
 </div>

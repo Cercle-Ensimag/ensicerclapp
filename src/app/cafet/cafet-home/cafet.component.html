@@ -1,7 +1,7 @@
 <app-loading [loading]="cafet.getMe() | async"></app-loading>
 
 <!-- Compte -->
-<div *ngIf="cafet.getMe() | async as me">
+<div *ngIf="cafet.getMe() | async as me" class="thin-container">
   <div *ngIf="me.activated" class="center">
     <!-- Credit -->
     <mat-card>

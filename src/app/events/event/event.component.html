@@ -1,33 +1,35 @@
 <!-- Loading -->
 <app-loading [loading]="events.getEvent(id) | async"></app-loading>
 
-<!-- Event display -->
-<mat-card *ngIf="events.getEvent(id) | async as event">
-  <h2>{{ event.title }}</h2>
-  <mat-card-content class="description">
-    <h4>
-      {{ d.format(d.l.eventStart, event.start | date:d.l.longDateTimeFormat:'':d.l.locale) }}<br>
-      {{ d.format(d.l.eventEnd, event.end | date:d.l.longDateTimeFormat:'':d.l.locale) }}<br>
-			{{ d.format(d.l.eventOrganizer, event.asso) }}<br>
-      {{ d.format(d.l.eventLocation, event.location || "") }}<br>
-      {{ d.format(d.l.eventPrice, event.price || d.l.free) }}
-    </h4>
-    <hr>
-    <div *ngIf="isInCalendar() | async; else notInCalendar">
-      <button mat-icon-button disabled color="primary" ><mat-icon>event_available</mat-icon></button>
-      <button mat-icon-button (click)="events.removeEventFromCalendar(event.id)"><mat-icon>event_busy</mat-icon></button>
-      Ajouté à mon planning
-    </div>
-    <ng-template #notInCalendar>
-      <button mat-icon-button (click)="events.addEventToCalendar(event.id)"><mat-icon>event_available</mat-icon></button>
-      <button mat-icon-button disabled color="primary"><mat-icon>event_busy</mat-icon></button>
-      Pas dans mon planning
-    </ng-template>
-    <hr>
-    <markdown [data]="event.description"></markdown>
-  </mat-card-content>
-  <img *ngIf="event.image !== ''" mat-card-image src="{{ event.image }}">
-</mat-card>
+<div class="thin-container">
+	<!-- Event display -->
+	<mat-card *ngIf="events.getEvent(id) | async as event">
+	  <h2>{{ event.title }}</h2>
+	  <mat-card-content class="description">
+	    <h4>
+	      {{ d.format(d.l.eventStart, event.start | date:d.l.longDateTimeFormat:'':d.l.locale) }}<br>
+	      {{ d.format(d.l.eventEnd, event.end | date:d.l.longDateTimeFormat:'':d.l.locale) }}<br>
+				{{ d.format(d.l.eventOrganizer, event.asso) }}<br>
+	      {{ d.format(d.l.eventLocation, event.location || "") }}<br>
+	      {{ d.format(d.l.eventPrice, event.price || d.l.free) }}
+	    </h4>
+	    <hr>
+	    <div *ngIf="isInCalendar() | async; else notInCalendar">
+	      <button mat-icon-button disabled color="primary" ><mat-icon>event_available</mat-icon></button>
+	      <button mat-icon-button (click)="events.removeEventFromCalendar(event.id)"><mat-icon>event_busy</mat-icon></button>
+	      Ajouté à mon planning
+	    </div>
+	    <ng-template #notInCalendar>
+	      <button mat-icon-button (click)="events.addEventToCalendar(event.id)"><mat-icon>event_available</mat-icon></button>
+	      <button mat-icon-button disabled color="primary"><mat-icon>event_busy</mat-icon></button>
+	      Pas dans mon planning
+	    </ng-template>
+	    <hr>
+	    <markdown [data]="event.description"></markdown>
+	  </mat-card-content>
+	  <img *ngIf="event.image !== ''" mat-card-image src="{{ event.image }}">
+	</mat-card>
+</div>
 
 <div class="mat-fab-bottom-right">
   <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>

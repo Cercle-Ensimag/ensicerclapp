@@ -1,8 +1,10 @@
-<app-paged-grid [list]="annonces.getAnnonces() | async" emptyMessage="Aucune annonce" #pages>
-  <app-annonce-card *ngFor="let annonce of pages.truncatedList()"
-                    [annonce]="annonce">
-  </app-annonce-card>
-</app-paged-grid>
+<div class="item">
+	<app-paged-grid [list]="annonces.getAnnonces() | async" emptyMessage="Aucune annonce" #pages>
+	  <app-annonce-card *ngFor="let annonce of pages.truncatedList()"
+	                    [annonce]="annonce">
+	  </app-annonce-card>
+	</app-paged-grid>
+</div>
 
 <div class="mat-fab-bottom-right">
   <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>

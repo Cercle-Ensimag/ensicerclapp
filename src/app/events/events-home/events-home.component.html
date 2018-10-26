@@ -1,8 +1,10 @@
-<app-paged-grid [list]="events.getActiveEvents() | async" emptyMessage="Aucun événement à venir" #pages>
-  <app-event-card *ngFor="let event of pages.truncatedList()"
-                  [event]="event">
-  </app-event-card>
-</app-paged-grid>
+<div class="item">
+	<app-paged-grid [list]="events.getActiveEvents() | async" emptyMessage="Aucun événement à venir" #pages>
+		<app-event-card *ngFor="let event of pages.truncatedList()"
+		                [event]="event">
+		</app-event-card>
+	</app-paged-grid>
+</div>
 
 <div class="mat-fab-bottom-right">
   <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>

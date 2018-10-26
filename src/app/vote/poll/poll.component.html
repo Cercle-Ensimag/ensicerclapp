@@ -1,24 +1,28 @@
 <app-loading [loading]="vote.getPoll(this.id) | async"></app-loading>
 
-<mat-card *ngIf="vote.getPoll(this.id) | async as poll">
-  <div>
-    <h1>{{ poll.title }}</h1>
-    <mat-error *ngIf="!poll.started">Le vote n'a pas encore débuté...</mat-error>
-    <markdown [data]="poll.description"></markdown>
-  </div>
+<div *ngIf="vote.getPoll(this.id) | async as poll">
+	<mat-card class="item">
+	  <div>
+	    <h1>{{ poll.title }}</h1>
+	    <mat-error *ngIf="!poll.started">Le vote n'a pas encore débuté...</mat-error>
+	    <markdown [data]="poll.description"></markdown>
+	  </div>
+	</mat-card>
 
-  <div class="grid-container">
-    <div *ngFor="let choice of choices">
-      <mat-card class="wrapper">
-        <mat-card-title>{{ choice.label }}</mat-card-title>
-        <img mat-card-image src="{{ choice.image }}" alt="{{ choice.label }} - image" class="image">
-        <mat-card-actions>
-          <button mat-raised-button [disabled]="!poll.started" (click)="choose(choice);" color="primary">{{ d.l.voteForLabel }} {{ choice.short || choice.label }}</button>
-        </mat-card-actions>
-      </mat-card>
-    </div>
-  </div>
-</mat-card>
+	<div class="grid-container-wrapper">
+		<div class="grid-container">
+			<div *ngFor="let choice of vote.getChoices(this.id) | async" class="wrapper">
+				<mat-card>
+					<mat-card-title>{{ choice.label }}</mat-card-title>
+					<img mat-card-image src="{{ choice.image }}" alt="{{ choice.label }} - image" class="image">
+					<mat-card-actions>
+						<button mat-raised-button [disabled]="!poll.started" (click)="choose(choice);" color="primary">{{ d.l.voteForLabel }} {{ choice.short || choice.label }}</button>
+					</mat-card-actions>
+				</mat-card>
+			</div>
+		</div>
+	</div>
+</div>
 
 <div class="mat-fab-bottom-right">
   <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>

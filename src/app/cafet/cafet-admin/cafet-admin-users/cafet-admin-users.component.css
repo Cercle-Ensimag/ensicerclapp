@@ -2,6 +2,10 @@ mat-form-field {
   width: 100%;
 }
 
+mat-panel-title {
+	width: 250px;
+}
+
 mat-checkbox {
   margin-left: 12px;
   margin-right: 12px;
@@ -11,6 +15,12 @@ mat-checkbox {
   display: grid;
   grid-template-columns: auto 40px;
   margin: 0;
+}
+
+.accounts-search, .accordion-container {
+	margin: 5px;
+	margin-left: 0px;
+	margin-right: 0px;
 }
 
 .accounts-search-lg {
@@ -77,7 +87,6 @@ mat-checkbox {
 
 
 .client-group {
-  margin-top: 4px;
 }
 
 .client-group button {

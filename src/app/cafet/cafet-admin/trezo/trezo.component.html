@@ -21,7 +21,7 @@
 <!-- Loading -->
 <app-loading [loading]="cafet.getTrezAccounts() | async"></app-loading>
 
-<div *ngIf="cafet.getTrezAccounts() | async as users">
+<div *ngIf="cafet.getTrezAccounts() | async as users" class="accordion-container">
   <!-- Users display, small screens -->
   <mat-accordion *ngIf="!media.largeSize" class="client-group">
     <mat-expansion-panel *ngFor="let user of users">
@@ -30,7 +30,7 @@
           {{ cafet.getUserName(user) }}
         </mat-panel-title>
         <mat-panel-description>
-          {{ user.credit }}€
+          {{ user.credit.toFixed(2) }}€
         </mat-panel-description>
       </mat-expansion-panel-header>
 
@@ -104,4 +104,3 @@
     </mat-card>
   </div>
 </div>
-

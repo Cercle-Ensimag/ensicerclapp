@@ -1,15 +1,5 @@
-mat-card {
-}
-
 .infos {
-  margin: auto;
-  max-width: 600px;
-}
-
-.info {
-  margin: auto;
-  text-align: left;
-  max-width: 600px;
+  margin: 5px;
 }
 
 mat-icon {

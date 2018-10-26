@@ -1,4 +1,5 @@
-mat-card {
-  text-align: left;
+.item {
   margin: 5px;
+	margin-top: 0px;
+	margin-bottom: 0px;
 }

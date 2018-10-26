@@ -1,13 +1,15 @@
-<mat-tab-group>
+<mat-tab-group class="tab-group-container">
 
   <!-- Actus tab -->
   <mat-tab label="{{ d.l.actus }}">
-    <app-paged-grid [list]="actus.getActus() | async" #pages>
-      <app-actu-card *ngFor="let actu of pages.truncatedList()"
-                               [actu]="actu"
-                               [admin]="true">
-      </app-actu-card>
-    </app-paged-grid>
+		<div class="tab-content-container">
+	    <app-paged-grid [list]="actus.getActus() | async" #pages>
+	      <app-actu-card *ngFor="let actu of pages.truncatedList()"
+	                               [actu]="actu"
+	                               [admin]="true">
+	      </app-actu-card>
+	    </app-paged-grid>
+		</div>
   </mat-tab>
 
   <!-- Journalists tab -->
@@ -16,7 +18,7 @@
     <app-loading [loading]="filteredUsers() | async"></app-loading>
 
     <!-- Com resps -->
-    <div *ngIf="filteredUsers() | async as journalists">
+    <div *ngIf="filteredUsers() | async as journalists" class="tab-content-container">
 
       <!-- Header display -->
       <mat-card>

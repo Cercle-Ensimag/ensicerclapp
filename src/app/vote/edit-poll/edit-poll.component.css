@@ -8,8 +8,13 @@ button {
   border-color: #333;
   border-style: dashed;
   padding: 1em;
+	margin: 2px;
 }
 
 mat-icon {
   cursor: pointer;
+}
+
+mat-card {
+	margin: 5px;
 }

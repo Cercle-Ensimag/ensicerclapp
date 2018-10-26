@@ -4,6 +4,5 @@ button {
 }
 
 mat-card {
-  max-width: 500px;
-  margin: auto;
+	margin: 5px;
 }

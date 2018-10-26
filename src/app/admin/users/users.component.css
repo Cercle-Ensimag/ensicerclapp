@@ -4,13 +4,8 @@ mat-slide-toggle {
   margin-bottom: 8px;
 }
 
-.width {
-  max-width: 1000px;
-  margin: auto
-}
-
-.group {
-  margin-bottom: 4px;
+.item {
+  margin: 5px;
 }
 
 .search {
@@ -22,10 +17,6 @@ mat-checkbox {
   margin-right: 12px;
 }
 
-mat-paginator {
-  margin-top: 4px;
-}
-
-.mat-expansion-panel-header-title {
-  max-width: 300px;
+mat-panel-title {
+  width: 250px;
 }

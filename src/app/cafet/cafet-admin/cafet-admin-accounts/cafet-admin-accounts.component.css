@@ -2,12 +2,10 @@ mat-form-field {
   width: 100%;
 }
 
-.error button {
-  margin: 4px;
-}
-
-.accounts-card {
-  margin-bottom: 4px;
+mat-card {
+  margin: 5px;
+	margin-left: 0px;
+	margin-right: 0px;
 }
 
 .accounts-card button {

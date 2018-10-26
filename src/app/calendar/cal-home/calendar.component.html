@@ -1,6 +1,6 @@
 <!-- Mobile -->
-<div *ngIf="!media.largeSize; else desktop">
-  <mat-card class="header center">
+<div *ngIf="!media.largeSize; else desktop" class="thin-container">
+  <mat-card class="item header center">
     <button mat-icon-button (click)="previousDay()"><mat-icon>navigate_before</mat-icon></button>
     <label>{{ selectedDay | date:d.l.shortDateFormat:'':d.l.locale | uppercase }}</label>
     <button mat-icon-button (click)="nextDay()"><mat-icon>navigate_next</mat-icon></button><br>
@@ -17,7 +17,7 @@
 
 <!-- Desktop -->
 <ng-template #desktop>
-  <mat-card class="header desktop center" style="width: 100%">
+  <mat-card class="item header center">
     <button mat-icon-button routerLink="/calendrier/event/-/edit"><mat-icon>add_circle</mat-icon></button>
     <button mat-icon-button routerLink="/calendrier/edit"><mat-icon>edit</mat-icon></button>
     <button mat-icon-button (click)="previousWeek()"><mat-icon>navigate_before</mat-icon></button>
@@ -29,7 +29,7 @@
     <button mat-icon-button routerLink="/calendrier/settings"><mat-icon>settings</mat-icon></button>
   </mat-card>
 
-  <div style="display: grid; grid-template-columns: 14.3% 14.3% 14.3% 14.3% 14.3% 14.3% 14.3%; margin:auto;">
+	<div class="columns">
     <app-day-column *ngFor="let day of daysOfTheWeek" [date]="day"></app-day-column>
   </div>
 </ng-template>

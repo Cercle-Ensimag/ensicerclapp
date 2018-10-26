@@ -11,6 +11,6 @@ mat-form-field {
   width: 400px;
 }
 
-mat-card {
-  margin-bottom: 4px;
+.item {
+	margin: 5px;
 }

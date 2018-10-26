@@ -1,14 +1,13 @@
-button {
-    margin-top: 2em;
-    max-width: 200px;
+mat-card {
+	margin: 5px;
 }
 
-mat-card {
-  max-width: 500px;
-  margin: auto;
+button {
+  margin-top: 2em;
+  max-width: 200px;
 }
 
 mat-form-field {
-    margin-top: 0.3em;
-    margin-bottom: 0.3em;
+  margin-top: 0.3em;
+  margin-bottom: 0.3em;
 }

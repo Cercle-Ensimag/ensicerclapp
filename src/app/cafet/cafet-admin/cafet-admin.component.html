@@ -4,23 +4,29 @@
   <mat-tab label="{{ d.l.clientListLabel }}">
 
     <!-- Clients -->
-    <app-cafet-admin-users *ngIf="index == 0"></app-cafet-admin-users>
+		<div class="tab-content-container">
+	    <app-cafet-admin-users *ngIf="index == 0"></app-cafet-admin-users>
+		</div>
 
   </mat-tab>
 
   <!-- Accounts tab -->
   <mat-tab label="{{ d.l.cafetAccountsLabel }}">
 
-    <!-- Accounts -->
-    <app-cafet-admin-accounts *ngIf="index == 1"></app-cafet-admin-accounts>
+		<!-- Accounts -->
+		<div class="tab-content-container">
+	    <app-cafet-admin-accounts *ngIf="index == 1"></app-cafet-admin-accounts>
+		</div>
 
   </mat-tab>
 
   <!-- Archives tab -->
   <mat-tab label="{{ d.l.cafetArchivesLabel }}">
 
-    <!-- Archives -->
-    <app-cafet-admin-archives *ngIf="index == 2"></app-cafet-admin-archives>
+		<!-- Archives -->
+		<div class="tab-content-container">
+			<app-cafet-admin-archives *ngIf="index == 2"></app-cafet-admin-archives>
+		</div>
 
   </mat-tab>
 
@@ -28,16 +34,20 @@
   <mat-tab label="{{ d.l.cafetRespPlLabel }}">
 
     <!-- Resps -->
-    <app-cafet-admin-resps *ngIf="index == 3"></app-cafet-admin-resps>
+		<div class="tab-content-container">
+			<app-cafet-admin-resps *ngIf="index == 3"></app-cafet-admin-resps>
+		</div>
 
   </mat-tab>
 
   <!-- Resps tab -->
   <mat-tab label="{{ d.l.cafetTrezoLabel }}">
 
-    <!-- Resps -->
-    <app-trezo *ngIf="index == 4"></app-trezo>
-
+		<!-- Resps -->
+		<div class="tab-content-container">
+	    <app-trezo *ngIf="index == 4"></app-trezo>
+		</div>
+		
   </mat-tab>
 
 </mat-tab-group>

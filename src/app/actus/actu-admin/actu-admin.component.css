@@ -1,5 +1,7 @@
 mat-card {
-  margin-top: 4px;
+  margin: 5px;
+	margin-left: 0px;
+	margin-right: 0px;
 }
 
 mat-card button {
@@ -10,11 +12,6 @@ mat-card button {
 mat-slide-toggle {
   margin-left: 16px;
   margin-right: 16px;
-}
-
-.message {
-  max-width: 500px;
-  margin: auto;
 }
 
 mat-form-field {

@@ -1,10 +1,10 @@
 .day-column {
-  margin-left: .5%;
-  margin-right: .5%;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 
 .event, .header {
-  margin-top: 4px;
+  margin-top: 5px;
 }
 
 .event.perso {
@@ -24,11 +24,6 @@
 .border {
   background-color: #3fb551;
   color: #e8f6ea;
-}
-
-mat-card {
-  max-width: 600px;
-  margin: auto;
 }
 
 .no-events{

@@ -4,8 +4,7 @@ mat-card.button {
 }
 
 mat-card {
-  max-width: 600px;
-  margin: auto;
+	margin: 5px;
 }
 
 iframe {

@@ -1,8 +1,10 @@
-<app-paged-grid [list]="nsigma.getAnnonces() | async" emptyMessage="Nsigma ne recrute pas en ce moment" #pages>
-  <app-nsigma-annonce-card *ngFor="let annonce of pages.truncatedList()"
-                           [annonce]="annonce">
-  </app-nsigma-annonce-card>
-</app-paged-grid>
+<div class="item">
+	<app-paged-grid [list]="nsigma.getAnnonces() | async" emptyMessage="Nsigma ne recrute pas en ce moment" #pages>
+	  <app-nsigma-annonce-card *ngFor="let annonce of pages.truncatedList()"
+	                           [annonce]="annonce">
+	  </app-nsigma-annonce-card>
+	</app-paged-grid>
+</div>
 
 <div class="mat-fab-bottom-right">
   <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>

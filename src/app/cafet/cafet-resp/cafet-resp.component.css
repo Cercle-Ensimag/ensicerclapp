@@ -7,10 +7,18 @@ mat-checkbox {
   margin-right: 12px;
 }
 
+mat-panel-title {
+	width: 250px;
+}
+
 .search-box {
   display: grid;
   grid-template-columns: auto 40px;
   margin: 0;
+}
+
+.accounts-search, .accordion-container {
+	margin: 5px;
 }
 
 .accounts-search-lg {
@@ -77,7 +85,6 @@ mat-checkbox {
 
 
 .client-group {
-  margin-top: 4px;
 }
 
 .client-group button {

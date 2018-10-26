@@ -1,13 +1,12 @@
+mat-card {
+	margin: 5px;
+}
 
 .description {
   text-align:left;
 }
+
 .description button {
   margin-left: 8px;
   margin-right: 8px;
-}
-
-mat-card {
-  max-width: 600px;
-  margin: auto;
 }

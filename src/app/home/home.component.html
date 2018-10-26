@@ -2,11 +2,12 @@
 
   <mat-toolbar color="primary" class="toolbar" [class.is-offline]="auth.isOffline() | async">
     <button mat-icon-button (click)="snav.toggle()" *ngIf="auth.isLoggedAndHasEmailVerified() | async"><mat-icon>menu</mat-icon></button>
-    <!-- <button mat-icon-button routerLink='/home' class="homebtn" [disabled]="!auth.getUser()"><mat-icon>home</mat-icon></button> -->
-    <h1 class="app-name" routerLink='/home'>
-      <img src="/assets/img/logo.svg">
-      <span>{{ d.l.appName }}</span>
-    </h1>
+		<div class="click">
+			<h1 class="app-name" routerLink='/home'>
+	      <img src="/assets/img/logo.svg">
+	      <span>{{ d.l.appName }}</span>
+	    </h1>
+		</div>
     <div class="right-btns">
       <button *ngIf="this.location.path() !== '/infos'" mat-icon-button routerLink="/infos">
         <mat-icon>info</mat-icon>

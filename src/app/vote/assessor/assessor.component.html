@@ -4,9 +4,9 @@
 <!-- Assessor -->
 <div *ngIf="vote.getStartedPolls() | async as polls">
 
-  <ng-container *ngIf="polls.length">
+  <ng-container *ngIf="polls.length" class="content">
     <!-- Header -->
-    <mat-card>
+    <mat-card class="item">
       <form [formGroup]="formGroup">
 
       <span>
@@ -31,22 +31,24 @@
     </mat-card>
 
     <!-- Options -->
-    <mat-expansion-panel *ngIf="polls" [expanded]="true">
-      <mat-expansion-panel-header>
-        <mat-panel-title>{{ d.l.pollChoiceLabel }}</mat-panel-title>
-      </mat-expansion-panel-header>
+		<div class="item">
+	    <mat-expansion-panel *ngIf="polls" [expanded]="true">
+	      <mat-expansion-panel-header>
+	        <mat-panel-title>{{ d.l.pollChoiceLabel }}</mat-panel-title>
+	      </mat-expansion-panel-header>
 
-      <mat-nav-list style="text-align: right">
-        <div *ngFor="let poll of polls">
-          <a mat-list-item *ngIf="poll.started">
-            <mat-checkbox (change)="change(poll.id, $event.checked)" color="primary">{{ poll.title }}</mat-checkbox>
-          </a>
-        </div>
-      </mat-nav-list>
-    </mat-expansion-panel>
+	      <mat-nav-list style="text-align: right">
+	        <div *ngFor="let poll of polls">
+	          <a mat-list-item *ngIf="poll.started">
+	            <mat-checkbox (change)="change(poll.id, $event.checked)" color="primary">{{ poll.title }}</mat-checkbox>
+	          </a>
+	        </div>
+	      </mat-nav-list>
+	    </mat-expansion-panel>
+		</div>
 
     <!-- Users -->
-    <mat-card>
+    <mat-card class="item">
       <app-paged-list [list]="filteredUsers() | async" emptyMessage="Aucun utilisateur ne correspond. aux filtres" #page>
         <mat-nav-list>
           <a mat-list-item *ngFor="let user of page.truncatedList()">

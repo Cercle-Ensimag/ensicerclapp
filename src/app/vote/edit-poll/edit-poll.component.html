@@ -21,7 +21,7 @@
 
     <div class="grid-container">
       <div *ngFor="let choice of choices">
-        <div class="wrapper border">
+        <div class="border">
           <form [formGroup]="choice.ctrl" class="container">
             <mat-form-field>
               <input matInput placeholder="{{ d.l.choiceLabelLabel }}" formControlName="label" autocomplete="off">

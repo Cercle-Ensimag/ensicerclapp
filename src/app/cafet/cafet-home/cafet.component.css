@@ -1,13 +1,7 @@
 mat-card {
-  margin: auto;
-  margin-bottom: 4px;
-  max-width: 500px;
+  margin: 5px;
 }
 
 mat-error {
   display: block;
-}
-
-.loading {
-  margin-top: 30px;
 }

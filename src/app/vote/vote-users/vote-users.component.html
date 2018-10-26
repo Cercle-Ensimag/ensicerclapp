@@ -3,7 +3,7 @@
 
 <!-- Users display -->
 <div *ngIf="filteredUsers() | async as users">
-  <mat-card>
+  <mat-card class="item">
     <h3>{{ d.format(d.l.nbVoteUsersLabel, users.length) }}</h3>
     <mat-form-field [class.large]="!media.mobileSize">
       <input matInput placeholder="{{ d.l.search }}" [formControl]="emailCtrl" autocomplete="off">
@@ -11,7 +11,7 @@
     </mat-form-field>
   </mat-card>
 
-  <mat-card>
+  <mat-card class="item">
     <mat-nav-list>
       <app-paged-list [list]="users" emptyMessage="Aucun votant ne correspond aux filtres." #page>
         <a mat-list-item *ngFor="let user of page.truncatedList()">

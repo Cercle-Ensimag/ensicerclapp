@@ -15,15 +15,11 @@ mat-form-field {
   max-width: 150px;
 }
 
-mat-card {
-  margin-bottom: 4px;
+.item {
+	margin: 5px;
 }
 
 mat-card img {
   vertical-align: middle;
   margin: 20px !important;
-}
-
-mat-expansion-panel {
-  margin-bottom: 4px;
 }

@@ -1,8 +1,10 @@
-<app-paged-grid [list]="actus.getActus() | async" emptyMessage="Aucune actualité" #pages>
-  <app-actu-card *ngFor="let actu of pages.truncatedList()"
-                 [actu]="actu">
-  </app-actu-card>
-</app-paged-grid>
+<div class="item">
+	<app-paged-grid [list]="actus.getActus() | async" emptyMessage="Aucune actualité" #pages>
+	  <app-actu-card *ngFor="let actu of pages.truncatedList()"
+	                 [actu]="actu">
+	  </app-actu-card>
+	</app-paged-grid>
+</div>
 
 <div class="mat-fab-bottom-right">
   <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
