@@ -60,7 +60,7 @@ export class EditPollComponent implements OnInit, OnDestroy {
         this.formGroup = this.fb.group({
           title: [poll.title || '', [Validators.required, Validators.minLength(3), Validators.maxLength(500)]],
           description: [poll.description || '', [Validators.maxLength(30)]],
-          started: [poll.started || '', []]
+          started: [poll.started || false, []]
         });
       });
 
@@ -122,8 +122,6 @@ export class EditPollComponent implements OnInit, OnDestroy {
       started: this.formGroup.get('started').value,
       choices: choices
     };
-
-    console.log(poll);
 
     this.vote.setPoll(poll)
       .then(
