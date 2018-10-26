@@ -10,7 +10,7 @@
         <button mat-icon-button matSuffix><mat-icon>search</mat-icon></button>
       </mat-form-field>
       <div class="center">
-       <mat-checkbox *ngFor="let adminString of adminsStrings" [formControlName]="adminString + 'Admins'" color="primary">{{ d.l[adminString + 'AdminLabel'] }}</mat-checkbox>
+       <mat-checkbox *ngFor="let adminString of adminsStrings" [formControlName]="adminString + 'Admins'" color="primary">{{ d.l[adminString + 'AdminPlLabel'] }}</mat-checkbox>
       </div>
     </form>
   </mat-card>

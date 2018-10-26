@@ -58,7 +58,7 @@ export class AnnoncesEditComponent implements OnInit, OnDestroy {
         this.formGroup = this.fb.group({
           title: [annonce.title || '', [Validators.required, Validators.maxLength(50)]],
           description: [annonce.description || '', [Validators.required, Validators.maxLength(5000)]],
-          type: [annonce.type, [Validators.required, Validators.min(0), Validators.max(2)]],
+          type: [annonce.type || 0, [Validators.required, Validators.min(0), Validators.max(2)]],
           start: [new Date(annonce.start) || '', [Validators.required, this.tools.dateValidator]],
           length: [annonce.length || '', [Validators.required, Validators.maxLength(20)]],
           technologies: [annonce.technologies || '', [Validators.required, Validators.maxLength(100)]],

@@ -28,13 +28,13 @@ export class AnnonceCardComponent implements OnInit {
   delete() {
     this.dialog.open(DeleteDialogComponent, {
       data: {
-        title: "Confirmation de la suppression",
-        content: `Êtes-vous certain de vouloir supprimer "${this.annonce.title}" ?`
+        title: this.d.l.deleteAnnounceDialogTitle,
+        content: this.d.format(this.d.l.deleteAnnounceDialogContent, this.annonce.title)
       }
     }).afterClosed().subscribe(result => {
       if (result) {
         this.annonces.deleteAnnonce(this.annonce.id).then(() =>
-          this.snackBar.open("Annonce supprimée", 'ok', {duration: 2000})
+          this.snackBar.open(this.d.l.deletedAnnounceInfo, this.d.l.okLabel, {duration: 2000})
         );
       }
     });

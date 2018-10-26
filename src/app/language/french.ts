@@ -5,21 +5,137 @@ registerLocaleData(localeFr);
 export class French {
   // Common
   public static readonly appName = "Cercle Ensimag";
+	public static readonly okLabel = "Ok";
+	public static readonly errorLabel = "Erreur";
+	public static readonly cancelLabel = "Annuler";
+	public static readonly search = "Recherche";
   public static readonly backLabel = "Retour";
   public static readonly confirmLabel = "Confimer";
-  public static readonly cancelLabel = "Annuler";
   public static readonly agreeLabel = "Accepter";
   public static readonly modifyLabel = "Modifier";
-  public static readonly applyChangesLabel = "Appliquer";
-  public static readonly okLabel = "Ok";
+	public static readonly applyChangesLabel = "Appliquer";
   public static readonly changesApplied = "Changements appliqués avec succès";
-  public static readonly search = "Recherche";
   public static readonly locale = "fr";
   public static readonly timeFormat = "H:mm";
   public static readonly shortDateFormat = "E d LLL";
   public static readonly longDateFormat = "EEEE d LLLL";
   public static readonly shortDateTimeFormat = "E d LLL H:mm";
   public static readonly longDateTimeFormat = "EEEE d LLLL H:mm";
+	// -> form errors
+	public static readonly passwordError = "Mot de passe invalide";
+	public static readonly firstNameError = "Prénom invalide";
+	public static readonly lastNameError = "Nom de famille invalide";
+	// -> auth errors
+	public static readonly refreshTokenInfo = "Cette opréation nécéssite de s'être identifié recemment";
+
+	// Account
+	// -> update password dialog
+	public static readonly changePasswordTitle = "Changement de mot de passe";
+	public static readonly changePasswordInfo = "Saisissez votre nouveau mot de passe :";
+	public static readonly passwordConfirmationError = "Confirmation invalide";
+	public static readonly pwdChangeValidationButtonLabel = "Mettre à jour le mot de passe";
+	// -> component
+	public static readonly accountPageTitle = "Informations personnelles";
+	public static readonly outdatedAccountInfo = "Ton compte n'est plus actif... si tu es encore à l'Ensimag, contacte-nous pour le réactiver"
+	public static readonly changePasswordButtonLabel = "Changer le mot de passe";
+	public static readonly deleteAccountButtonLabel = "Supprimer le compte";
+	public static readonly deleteAccountDialogTitle = "Confirmation de la suppression";
+	public static readonly deleteAccountDialogContent = "Êtes-vous certain de vouloir supprimer votre compte ?";
+	public static readonly deletedAccountInfo = "Suppression effectuée";
+
+	// Actus
+	// -> admin
+	public static readonly actus = "Actualités";
+	// -> actus-home
+	public static readonly noActu = "Aucune actualité";
+	// -> component/actu-card
+	public static readonly deleteActuDialogTitle = "Confirmation de la suppression";
+	public static readonly deleteActuDialogContent = "Êtes-vous certain de vouloir supprimer \"{0}\" ?";
+	public static readonly deletedActuInfo = "Actualité supprimée";
+	// edit-actus
+	public static readonly actuTitleLabel = "Titre";
+	public static readonly actuTitleError = "Titre invalide";
+	public static readonly actuDescriptionLabel = "Description (Markdown pour la mise en forme)";
+	public static readonly actuDescriptionError = "Description invalide";
+	public static readonly actuImageLabel = "URL de l'image";
+	public static readonly actuImageError = "URL invalide";
+	public static readonly actuPdfLinkLabel = "URL du document pdf";
+	public static readonly actuPdfLinkError = "URL invalide";
+	public static readonly actuDateLabel = "Date";
+	public static readonly actuDateError = "Date invalide";
+	public static readonly actuAuthorLabel = "Auteur";
+	public static readonly actuAuthorError = "Auteur invalide";
+
+	// Admin
+	public static readonly adminLabel = "Admin";
+	public static readonly nbMembersLabel = "{0} membres";
+
+	public static readonly voteAdminLabel = "Admin vote";
+	public static readonly voteAdminPlLabel = "Admins vote";
+	public static readonly assessorLabel = "Assesseur";
+	public static readonly assessorPlLabel = "Assesseurs";
+	public static readonly addAssessorInfo = "Entrer l'e-mail d'un assesseur";
+	public static readonly addAssessorButtonLabel = "Ajouter";
+
+	public static readonly cafetAdminLabel = "Master cafet";
+	public static readonly cafetAdminPlLabel = "Masters cafet";
+	public static readonly cafetRespLabel = "Respo cafet";
+	public static readonly cafetRespPlLabel = "Respos cafet";
+	public static readonly addCafetRespInfo = "Entrer l'e-mail d'un respo cafet";
+	public static readonly addCafetRespButtonLabel = "Ajouter";
+
+	public static readonly eventsAdminLabel = "Admin events";
+	public static readonly eventsAdminPlLabel = "Admins events";
+	public static readonly comRespLabel = "Respo com'";
+	public static readonly comRespPlLabel = "Respos com'";
+	public static readonly addComRespInfo = "Entrer l'e-mail d'un respo com";
+	public static readonly addComRespButtonLabel = "Ajouter";
+
+	public static readonly nsigmaAdminLabel = 'Admin Nsigma';
+	public static readonly nsigmaAdminPlLabel = 'Admins Nsigma';
+
+	public static readonly announcesAdminLabel = 'Admin announces';
+	public static readonly announcesAdminPlLabel = 'Admins announces';
+
+	public static readonly actusAdminLabel = "Admin actus";
+	public static readonly actusAdminPlLabel = "Admins actus";
+	public static readonly journalistLabel = "Journaliste";
+	public static readonly journalistPlLabel = "Journalistes";
+	public static readonly addJournalistInfo = "Entrer l'e-mail d'un journaliste";
+	public static readonly addJournalistButtonLabel = "Ajouter";
+
+	// Annonce
+	public static readonly announceDone = "Finie";
+	// -> annonce-annonce
+	public static readonly announceTechnologiesIntro = "Technologies : ";
+	public static readonly announceDurationIntro = "Durée : ";
+	// -> annonce-edit
+	public static readonly announceOngoing = 'En cours';
+	public static readonly announceTitleLabel = "Titre";
+	public static readonly announceTitleError = "Titre invalide";
+	public static readonly announceDescriptionLabel = "Description (Markdown pour la mise en forme)";
+	public static readonly announceDescriptionError = "Description invalide";
+	public static readonly announceTypeLabel = "Nature de l'offre";
+	public static readonly announceTypeError = "Type invalide";
+	public static readonly announceType0 = "Durée déterminée";
+	public static readonly announceType1 = "Durée indéterminée";
+	public static readonly announceType2 = "Générale";
+	public static readonly announceStartLabel = 'Date de début';
+	public static readonly announceStartError = 'Date invalide';
+	public static readonly announceLengthLabel = 'Durée';
+	public static readonly announceLengthError = 'Durée invalide';
+	public static readonly announceContactLabel = 'Contact';
+	public static readonly announceContactError = 'Contact invalide';
+	public static readonly announceAuthorLabel = 'Auteur';
+	public static readonly announceAuthorError = 'Auteur invalide';
+	public static readonly announceTechnologiesLabel = 'Technologies';
+	public static readonly announceTechnologiesError = 'Technologies invalides';
+	// -> annonce-home
+	public static readonly noAnnounce = 'Aucune annonce';
+	// -> annonce-card
+	public static readonly deleteAnnounceDialogTitle = "Confirmation de la suppression";
+	public static readonly deleteAnnounceDialogContent = "Êtes-vous certain de vouloir supprimer \"{0}\" ?";
+	public static readonly deletedAnnounceInfo = "Annonce supprimée";
 
   // Auth
   public static readonly logOutLabel = "Déconnexion";
@@ -28,9 +144,7 @@ export class French {
   public static readonly signUpPageTitle = "Inscription";
   public static readonly signUpButtonLabel = "Créer le compte";
   public static readonly firstNameLabel = "Prénom";
-  public static readonly firstNameError = "Prénom exigé";
   public static readonly lastNameLabel = "Nom de famille";
-  public static readonly lastNameError = "Nom de famille exigé";
   public static readonly nicknameLabel = "Surnom";
   public static readonly passwordlLabel = "Mot de passe";
   public static readonly askForExistingPwdLabel = "Entre ton mot de passe";
@@ -47,55 +161,9 @@ export class French {
   public static readonly passwordTooShortError = "Mot de passe trop court";
   public static readonly toSignInLabel = "Crée-toi un compte !";
   public static readonly passwordForgottenLabel = "Mot de passe oublié ?";
-  public static readonly accountPageTitle = "Informations personnelles";
-  public static readonly deleteAccountButtonLabel = "Supprimer le compte";
-	public static readonly outdatedAccountInfo = "Ton compte n'est plus actif... si tu es encore à l'Ensimag, contacte-nous pour le réactiver"
   public static readonly deleteAccountInfo = "Tu es sur le point de supprimer ton compte !";
-  public static readonly refreshTokenInfo = "Cette opréation nécéssite de s'être identifié recemment";
   public static readonly confimDeleteAccountButtonLabel = "Supprimer le compte";
-  public static readonly accountDeletedInfo = "Ton compte a été correctement supprimé";
   public static readonly passwordChangedInfo = "Ton mot de passe a été modifié avec succès";
-  public static readonly changePasswordButtonLabel = "Changer le mot de passe";
-  public static readonly changePasswordInfo = "Tu es sur le point de changer de mot de passe";
-
-  // Admin
-  public static readonly adminLabel = "Admin";
-  public static readonly nbMembersLabel = "{0} membres";
-
-  public static readonly voteAdminLabel = "Admin vote";
-  public static readonly voteAdminPlLabel = "Admins vote";
-  public static readonly assessorLabel = "Assesseur";
-  public static readonly assessorPlLabel = "Assesseurs";
-  public static readonly addAssessorInfo = "Entrer l'e-mail d'un assesseur";
-  public static readonly addAssessorButtonLabel = "Ajouter";
-
-  public static readonly cafetAdminLabel = "Master cafet";
-  public static readonly cafetAdminPlLabel = "Masters cafet";
-  public static readonly cafetRespLabel = "Respo cafet";
-  public static readonly cafetRespPlLabel = "Respos cafet";
-  public static readonly addCafetRespInfo = "Entrer l'e-mail d'un respo cafet";
-  public static readonly addCafetRespButtonLabel = "Ajouter";
-
-  public static readonly eventsAdminLabel = "Admin events";
-  public static readonly eventsAdminPlLabel = "Admins events";
-  public static readonly comRespLabel = "Respo com'";
-  public static readonly comRespPlLabel = "Respos com'";
-  public static readonly addComRespInfo = "Entrer l'e-mail d'un respo com";
-  public static readonly addComRespButtonLabel = "Ajouter";
-
-  public static readonly nsigmaAdminLabel = 'Admin Nsigma';
-  public static readonly nsigmaAdminPlLabel = 'Admins Nsigma';
-
-  public static readonly annoncesAdminLabel = 'Admin annonces';
-  public static readonly annoncesAdminPlLabel = 'Admins annonces';
-
-  public static readonly actusAdminLabel = "Admin actus";
-  public static readonly actusAdminPlLabel = "Admins actus";
-  public static readonly journalistLabel = "Journaliste";
-  public static readonly journalistPlLabel = "Journalistes";
-  public static readonly addJournalistInfo = "Entrer l'e-mail d'un journaliste";
-  public static readonly addJournalistButtonLabel = "Ajouter";
-
 
   // Vote
   public static readonly polls = "Scrutins";
@@ -161,28 +229,6 @@ export class French {
   public static readonly eventPrice = "PAF : {0}";
   public static readonly free = "Gratuit";
 
-  // Actus
-  public static readonly actus = "Actualités";
-  public static readonly noActu = "Aucun article, pour le moment ;)";
-  public static readonly addActuLabel = "Créer un nouvel article";
-  public static readonly confirmActuDeleteLabel = "Supprimer";
-  public static readonly confirmActuDeleteInfo = "Tu es sur le point de supprimer l'article<br>\"{0}\".<br>En es-tu sûr ?";
-
-  public static readonly actuIdLabel = "ID";
-  public static readonly actuTitleLabel = "Titre";
-  public static readonly actuDescriptionLabel = "Description (Markdown pour la mise en forme)";
-  public static readonly actuImageLabel = "URL de l'image";
-  public static readonly actuPdfLinkLabel = "URL du document pdf";
-  public static readonly actuDateLabel = "Date";
-  public static readonly actuAuthorLabel = "Auteur";
-  public static readonly actuTitleTooShortError = "Titre trop court";
-  public static readonly actuDescriptionError = '';
-  public static readonly actuImageError = '';
-  public static readonly actuPdfLinkError = '';
-  public static readonly actuDateError = "Date requise";
-  public static readonly actuAuthorError = "Auteur requis";
-  public static readonly actuDate = "Date : {0}";
-  public static readonly actuAuthor = "Auteur : {0}";
 
   // Cafet
   public static readonly troll = "<b>Ton</b> compte est dans le <b>négatif</b>!<br><small>(*non contractuel, tu n'as pas encore de compte.)</small>";
@@ -242,8 +288,8 @@ export class French {
   public static readonly totalOfPositiveAccountsLabel = "Total sur les comptes en positif : {0}€";
 
   // Nsigma
-  public static readonly noNsigmaAnnonce = `Aucune annonce Nsigma n'est disponible pour le moment, reviens plus tard.`;
-  public static readonly confirmNsigmaAnnonceDeleteInfo = "Voulez-vous vraiment supprimer cette annonce ?";
+  public static readonly noNsigmaAnnonce = `Aucune announce Nsigma n'est disponible pour le moment, reviens plus tard.`;
+  public static readonly confirmNsigmaAnnonceDeleteInfo = "Voulez-vous vraiment supprimer cette announce ?";
   public static readonly confirmNsigmaAnnonceDeleteLabel = "Confirmer la suppression";
   public static readonly nsigmaTitleLabel = 'Titre';
   public static readonly nsigmaTitleTooShortError = 'Titre trop court';
@@ -266,25 +312,6 @@ export class French {
   public static readonly nsigmaEnCours = 'En cours';
   public static readonly nsigmaFinie = 'Finie';
 
-  // Annonce
-  public static readonly annonceTitleLabel = 'Titre';
-  public static readonly annonceTitleTooShortError = 'Titre trop court';
-  public static readonly annonceDescriptionLabel = "Description (Markdown pour la mise en forme)";
-  public static readonly annonceDescriptionError = 'Description trop courte';
-  public static readonly annonceTypeLabel = 'Nature de l\'offre';
-  public static readonly annonceTypeError = 'Type invalide';
-  public static readonly annonceStartLabel = 'Début';
-  public static readonly annonceStartError = 'Début invalide';
-  public static readonly annonceLengthLabel = 'Durée';
-  public static readonly annonceLengthError = 'Durée invalide';
-  public static readonly annonceContactLabel = 'Contact';
-  public static readonly annonceContactError = 'Contact invalide';
-  public static readonly annonceAuthorLabel = 'Auteur';
-  public static readonly annonceAuthorError = 'Auteur invalide';
-  public static readonly annonceTechnologiesLabel = 'Technologies';
-  public static readonly annonceTechnologiesError = 'Technologies invalides';
-  public static readonly annonceEnCours = 'En cours';
-  public static readonly annonceFinie = 'Finie';
 
   // Info
   public static readonly legalNoticeLabel = "Mentions légales";

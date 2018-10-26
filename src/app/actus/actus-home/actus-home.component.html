@@ -1,5 +1,5 @@
 <div class="item">
-	<app-paged-grid [list]="actus.getActus() | async" emptyMessage="Aucune actualité" #pages>
+	<app-paged-grid [list]="actus.getActus() | async" emptyMessage="{{ d.l.noActu }}" #pages>
 	  <app-actu-card *ngFor="let actu of pages.truncatedList()"
 	                 [actu]="actu">
 	  </app-actu-card>

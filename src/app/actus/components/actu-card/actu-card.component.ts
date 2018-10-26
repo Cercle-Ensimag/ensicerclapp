@@ -29,13 +29,13 @@ export class ActuCardComponent implements OnInit {
   delete() {
     this.dialog.open(DeleteDialogComponent, {
       data: {
-        title: "Confirmation de la suppression",
-        content: `Êtes-vous certain de vouloir supprimer "${this.actu.title}" ?`
+        title: this.d.l.deleteActuDialogTitle,
+        content: this.d.format(this.d.l.deleteActuDialogContent, this.actu.title)
       }
     }).afterClosed().subscribe(result => {
       if (result) {
         this.actus.deleteActu(this.actu.id).then(() =>
-          this.snackBar.open("Actualité supprimée", 'ok', {duration: 2000})
+          this.snackBar.open(this.d.l.deletedActuInfo, this.d.l.okLabel, {duration: 2000})
         );
       }
     });

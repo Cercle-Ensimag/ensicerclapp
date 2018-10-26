@@ -71,15 +71,15 @@ export class AccountComponent implements OnInit, OnDestroy {
   deleteAccount() {
     this.dialog.open(DeleteDialogComponent, {
       data: {
-        title: "Confirmation de la suppression",
-        content: `Êtes-vous certain de vouloir supprimer votre compte ?`
+        title: this.d.l.deleteAccountDialogTitle,
+        content: this.d.l.deleteAccountDialogContent
       }
     }).afterClosed().subscribe(result => {
       if (result){
         this.auth.deleteAccount()
         .then(() => {
-          this.snackBar.open('suppression effectuée', 'ok', {duration: 2000});
-          this.auth.setError(this.d.l.accountDeletedInfo, true);
+          this.snackBar.open(this.d.l.deletedAccountInfo, this.d.l.okLabel, {duration: 2000});
+          this.auth.setError(this.d.l.deletedAccountInfo, true);
         })
         .catch(err => {
           this.snackBar.open(err, 'ok');
@@ -101,7 +101,7 @@ export class AccountComponent implements OnInit, OnDestroy {
           this.auth.logout();
         })
         .catch(() => {
-          this.snackBar.open('erreur', 'ok', {duration: 2000});
+          this.snackBar.open(this.d.l.errorLabel, this.d.l.okLabel, {duration: 2000});
           this.auth.setError(this.d.l.refreshTokenInfo, true);
           this.auth.goToLogin();
         })

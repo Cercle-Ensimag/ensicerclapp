@@ -1,5 +1,5 @@
 <div class="item">
-	<app-paged-grid [list]="annonces.getAnnonces() | async" emptyMessage="Aucune annonce" #pages>
+	<app-paged-grid [list]="annonces.getAnnonces() | async" emptyMessage="{{ d.l.noAnnounce }}" #pages>
 	  <app-annonce-card *ngFor="let annonce of pages.truncatedList()"
 	                    [annonce]="annonce">
 	  </app-annonce-card>

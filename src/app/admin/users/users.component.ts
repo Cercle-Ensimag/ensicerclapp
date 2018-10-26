@@ -39,7 +39,7 @@ export class AdminUsersComponent implements OnInit {
     const controlsConfig = {
       search: ['', []]
     };
-    this.adminsStrings.forEach((adminString: string) => { controlsConfig[adminString + 'Admins'] = ['', []] });
+    this.adminsStrings.forEach((adminString: string) => { controlsConfig[adminString + 'Admins'] = [false, []] });
 
     this.formGroup = this.fb.group(controlsConfig);
   }

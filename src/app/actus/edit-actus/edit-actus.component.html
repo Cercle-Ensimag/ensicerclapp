@@ -7,7 +7,7 @@
 
 	    <mat-form-field>
 	      <input matInput placeholder="{{ d.l.actuTitleLabel }}" formControlName="title" autocomplete="off">
-	      <mat-error *ngIf="formGroup.get('title').invalid">{{ d.l.actuTitleTooShortError }}</mat-error>
+	      <mat-error *ngIf="formGroup.get('title').invalid">{{ d.l.actuTitleError }}</mat-error>
 	    </mat-form-field>
 
 	    <mat-form-field>
