@@ -1,16 +1,7 @@
 <mat-card class="thin-container">
-  <b>Tu n'as pas encore de compte à la cafet</b><br><br>
-  Contacte les respo' cafet afin que ces derniers te créent un compte !<br><br>
+	<div [innerHTML]="d.l.noCafetAccountInfo">
+	</div>
   <div class="center">
     <img src="assets/img/icons/empty.png">
   </div>
 </mat-card>
-
-<!-- <mat-card>
-  <p [innerHTML]="d.l.accountRequestInfo"></p>
-  <button mat-raised-button
-    (click)="cafet.sendAccountRequest()"
-    [disabled]="cafet.user.emailId"
-    color="primary"
-  >{{ d.l.accountRequestButtonLabel }}</button>
-</mat-card> -->

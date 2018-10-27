@@ -1,5 +1,6 @@
 import {MAT_DIALOG_DATA} from '@angular/material';
 import {Component, Inject, OnInit} from '@angular/core';
+import {DicoService} from "../../language/dico.service";
 
 @Component({
   selector: 'app-login-dialog',
@@ -10,7 +11,8 @@ export class LoginDialogComponent implements OnInit {
   public hidePwd: boolean = true;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
+		public d: DicoService
   ) {}
 
   ngOnInit() { }

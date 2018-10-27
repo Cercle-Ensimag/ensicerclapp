@@ -13,7 +13,7 @@ import {DeleteDialogComponent} from '../../shared-components/delete-dialog/delet
 export class CalEditAllComponent implements OnInit {
 
 	public loading: boolean;
-	
+
   constructor(
     public d: DicoService,
     public cal: CalService,
@@ -28,13 +28,13 @@ export class CalEditAllComponent implements OnInit {
   removePersoEvent(event) {
     this.dialog.open(DeleteDialogComponent, {
       data: {
-        title: "Confirmation de la suppression",
-        content: `Êtes-vous certain de vouloir supprimer "${event.title}" ?`
+        title: this.d.l.deletePersoEventDialogTitle,
+        content: this.d.format(this.d.l.deletePersoEventDialogContent, event.title)
       }
     }).afterClosed().subscribe(result => {
       if (result) {
         this.cal.removeEvent(event.id).then(() =>
-          this.snackBar.open("Evénement supprimé", 'ok', {duration: 2000})
+          this.snackBar.open(this.d.l.deletedPersoEventInfo, this.d.l.okLabel, {duration: 2000})
         )
       }
     });

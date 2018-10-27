@@ -1,5 +1,5 @@
 <div class="item">
-	<app-paged-grid [list]="nsigma.getAnnonces() | async" emptyMessage="Nsigma ne recrute pas en ce moment" #pages>
+	<app-paged-grid [list]="nsigma.getAnnonces() | async" emptyMessage="{{ d.l.noNsigmaAnnonce }}" #pages>
 	  <app-nsigma-annonce-card *ngFor="let annonce of pages.truncatedList()"
 	                           [annonce]="annonce">
 	  </app-nsigma-annonce-card>

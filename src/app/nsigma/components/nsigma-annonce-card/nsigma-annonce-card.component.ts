@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {DicoService} from '../../../language/dico.service';
 import {NsigmaAnnonce, NsigmaService} from '../../nsigma.service';
 import {DeleteDialogComponent} from '../../../shared-components/delete-dialog/delete-dialog.component';
 import {MatDialog, MatSnackBar} from '@angular/material';
@@ -19,6 +20,7 @@ export class NsigmaAnnonceCardComponent implements OnInit {
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
 
+		public d: DicoService,
     public tools: ToolsService,
   ) { }
 
@@ -27,13 +29,13 @@ export class NsigmaAnnonceCardComponent implements OnInit {
   delete() {
     this.dialog.open(DeleteDialogComponent, {
       data: {
-        title: "Confirmation de la suppression",
-        content: `Êtes-vous certain de vouloir supprimer "${this.annonce.title}" ?`
+        title: this.d.l.deleteNsigmaAnnounceDialogTitle,
+        content: this.d.format(this.d.l.deleteNsigmaAnnounceDialogContent, this.annonce.title)
       }
     }).afterClosed().subscribe(result => {
       if (result){
         this.nsigma.deleteAnnonce(this.annonce.id).then(() =>
-          this.snackBar.open("Annonce supprimée", 'ok', {duration: 2000})
+          this.snackBar.open(this.d.l.deletedNsigmaAnnounceInfo, this.d.l.okLabel, {duration: 2000})
         );
       }
     });

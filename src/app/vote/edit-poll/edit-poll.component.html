@@ -7,10 +7,10 @@
 
     <mat-form-field>
       <input matInput placeholder="{{ d.l.pollTitleLabel }}" formControlName="title" autocomplete="off">
-      <mat-error *ngIf="formGroup.get('title').invalid">{{ d.l.pollTitleTooShortError }}</mat-error>
+      <mat-error *ngIf="formGroup.get('title').invalid">{{ d.l.pollTitleError }}</mat-error>
     </mat-form-field>
 
-    <mat-slide-toggle formControlName="started" color="primary">Start</mat-slide-toggle>
+    <mat-slide-toggle formControlName="started" color="primary">{{ d.l.startLabel }}</mat-slide-toggle>
 
     <mat-form-field>
       <textarea matInput placeholder="{{ d.l.pollDescriptionLabel }}" formControlName="description"></textarea>
@@ -24,7 +24,7 @@
         <div class="border">
           <form [formGroup]="choice.ctrl" class="container">
             <mat-form-field>
-              <input matInput placeholder="{{ d.l.choiceLabelLabel }}" formControlName="label" autocomplete="off">
+              <input matInput placeholder="{{ d.l.choiceTitleLabel }}" formControlName="label" autocomplete="off">
               <mat-error *ngIf="choice.ctrl.get('label').invalid"></mat-error>
             </mat-form-field>
             <mat-form-field>
@@ -32,7 +32,7 @@
               <mat-error *ngIf="choice.ctrl.get('image').invalid"></mat-error>
             </mat-form-field>
             <mat-form-field>
-              <input matInput placeholder="{{ d.l.choiceShortLabelLabel }}" formControlName="short" autocomplete="off">
+              <input matInput placeholder="{{ d.l.choiceShortNameLabel }}" formControlName="short" autocomplete="off">
               <mat-error *ngIf="choice.ctrl.get('short').invalid"></mat-error>
             </mat-form-field>
             <mat-icon (click)="removeChoice(choice.id)">delete</mat-icon>

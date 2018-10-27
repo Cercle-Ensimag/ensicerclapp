@@ -17,12 +17,12 @@
 	    <div *ngIf="isInCalendar() | async; else notInCalendar">
 	      <button mat-icon-button disabled color="primary" ><mat-icon>event_available</mat-icon></button>
 	      <button mat-icon-button (click)="events.removeEventFromCalendar(event.id)"><mat-icon>event_busy</mat-icon></button>
-	      Ajouté à mon planning
+	      {{ d.l.participate }}
 	    </div>
 	    <ng-template #notInCalendar>
 	      <button mat-icon-button (click)="events.addEventToCalendar(event.id)"><mat-icon>event_available</mat-icon></button>
 	      <button mat-icon-button disabled color="primary"><mat-icon>event_busy</mat-icon></button>
-	      Pas dans mon planning
+	      {{ d.l.doNotParticipate }}
 	    </ng-template>
 	    <hr>
 	    <markdown [data]="event.description"></markdown>

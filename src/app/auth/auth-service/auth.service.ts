@@ -21,8 +21,7 @@ import {MatSnackBar} from '@angular/material';
 
 import * as firebase from 'firebase';
 
-export const ENSIDOMAIN = 'ensimag.fr';
-export const PHELMADOMAIN = 'phelma.grenoble-inp.fr';
+export const DOMAINS = ['ensimag.fr', 'phelma.grenoble-inp.fr']
 
 export class Profile {
   name: {
@@ -135,7 +134,7 @@ export class AuthService {
       })
       .catch((err) => {
         this.onLoginError(err);
-        this.snackBar.open(err, 'ok');
+        this.snackBar.open(err, this.d.l.okLabel);
       });
   }
 
@@ -498,9 +497,12 @@ export class AuthService {
     let email = control.value;
     if (email && email.indexOf('@') != -1) {
       const domain = email.split('@')[1];
-      if (domain !== ENSIDOMAIN && domain !== PHELMADOMAIN) {
-        return {domain: {parsedDomain: domain}};
-      }
+			for (let testDomain of DOMAINS) {
+				if (domain === testDomain) {
+					return null;
+				}
+			}
+			return {domain: {parsedDomain: domain}};
     }
     return null;
   }
@@ -521,6 +523,6 @@ export class AuthService {
 
   onLoginError(error: any) {
     console.log(error);
-    this.error = error;
+    this.setError(error, false);
   }
 }

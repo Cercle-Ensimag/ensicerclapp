@@ -1,4 +1,6 @@
 import {Component, OnInit} from '@angular/core';
+import {DicoService} from '../../language/dico.service'
+
 
 @Component({
   selector: 'app-legal-notice',
@@ -7,7 +9,9 @@ import {Component, OnInit} from '@angular/core';
 })
 export class LegalNoticeComponent implements OnInit {
 
-  constructor( ) { }
+  constructor(
+    public d: DicoService
+	) { }
 
   ngOnInit() { }
 }

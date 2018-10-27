@@ -71,9 +71,9 @@ export class TrezoComponent implements OnInit {
       .then(() => {
         this.controls[user.emailId].add.setValue('');
         this.controls[user.emailId].sub.setValue('');
-        this.snackBar.open(this.d.format(this.d.l.informAboutTransaction, this.cafet.getUserName(user), value.toFixed(2)), 'ok', {duration: 2000});
+        this.snackBar.open(this.d.format(this.d.l.informAboutTransaction, this.cafet.getUserName(user), value.toFixed(2)), this.d.l.okLabel, {duration: 2000});
       })
-      .catch((err) => this.snackBar.open(err, 'ok', {duration: 2000}));
+      .catch((err) => this.snackBar.open(err, this.d.l.okLabel, {duration: 2000}));
   }
 
   openHistory(user: CafetUser): void {

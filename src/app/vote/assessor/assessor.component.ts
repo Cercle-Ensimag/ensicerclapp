@@ -5,8 +5,8 @@ import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 
+import {DOMAINS} from '../../auth/auth-service/auth.service';
 import {DeviceSizeService} from '../../providers/device-size.service';
-import {ENSIDOMAIN, PHELMADOMAIN} from '../../auth/auth-service/auth.service';
 import {VoteService} from '../vote-service/vote.service';
 import {ListService} from '../../providers/list.service';
 import {ToolsService} from '../../providers/tools.service';
@@ -65,10 +65,7 @@ export class AssessorComponent implements OnInit, OnDestroy {
   }
 
   createSearchForm() {
-    this.domains = [
-      "@" + ENSIDOMAIN,
-      "@" + PHELMADOMAIN
-    ];
+    this.domains = DOMAINS.map(domain => "@" + domain);
     this.formGroup = this.fb.group({
       email: ['', [this.emailValidator]],
       domain: [this.domains[0], []]
@@ -115,12 +112,12 @@ export class AssessorComponent implements OnInit, OnDestroy {
   markAsVoted() {
     const emailId = this.tools.getEmailIdFromEmail(this.getEmail());
     const email = this.getEmail() + this.getDomain();
-    const name = this.tools.titleCase(emailId.replace('|', ' ').replace('  ', ' '));
+    const name = this.tools.getNameFromEmailId(emailId);
     this.list.isInList(email)
       .pipe(first())
       .subscribe(inList => {
         if (!inList) {
-          this.snackBar.open('Utilisateur inconnu', 'ok')
+          this.snackBar.open(this.d.format(this.d.l.unknownUserInfo, email), this.d.l.okLabel);
         } else {
           for (let poll of this.polls) {
             if (this.checked[poll.id]) {
@@ -129,7 +126,7 @@ export class AssessorComponent implements OnInit, OnDestroy {
           }
           this.formGroup.get('email').setValue('');
           this.formGroup.get('domain').setValue(this.domains[0]);
-          this.snackBar.open(this.d.format(this.d.l.markedAsVoted, name), 'ok', {duration: 2000});
+          this.snackBar.open(this.d.format(this.d.l.markedAsVoted, name), this.d.l.okLabel, {duration: 2000});
         }
       });
   }

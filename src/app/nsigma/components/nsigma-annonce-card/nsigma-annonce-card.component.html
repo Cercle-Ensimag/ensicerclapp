@@ -2,8 +2,8 @@
   <mat-card>
     <mat-card-header>
       <img mat-card-avatar src="assets/img/nsigma-types/{{ annonce.type }}.png">
-      <mat-card-title>{{ annonce.done ? '[Recrutement terminé] ' : ''}}{{ annonce.title }}</mat-card-title>
-      <mat-card-subtitle> {{ annonce.remuneration }} € - {{ annonce.technologies }} - difficulté : {{ annonce.difficulty }} </mat-card-subtitle>
+      <mat-card-title>{{ annonce.done ? '[' + d.l.nsigmaAnnounceDone + '] ' : ''}}{{ annonce.title }}</mat-card-title>
+      <mat-card-subtitle> {{ annonce.remuneration }} € - {{ annonce.technologies }} - {{ annonce.difficulty }} </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
       <p>{{ tools.truncate(annonce.description) }}</p>

@@ -2,10 +2,10 @@
   <div>
     <mat-card>
       <div class="container">
-        <h2>Compte non confirmé</h2>
+        <h2>{{ d.l.verificationEmailSentTitle }}</h2>
         <p [innerHTML]="d.l.verificationEmailSentInfo"></p>
         <div class="center">
-          <button mat-raised-button (click)="sendEmail()" color='primary'>{{ d.l.sendEmailAgainLabel }}</button>
+          <button mat-raised-button (click)="sendEmail()" color='primary'>{{ d.l.sendEmailAgainButtonLabel }}</button>
         </div>
       </div>
     </mat-card>

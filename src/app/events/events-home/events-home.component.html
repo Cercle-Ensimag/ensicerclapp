@@ -1,5 +1,5 @@
 <div class="item">
-	<app-paged-grid [list]="events.getActiveEvents() | async" emptyMessage="Aucun événement à venir" #pages>
+	<app-paged-grid [list]="events.getActiveEvents() | async" emptyMessage="{{ d.l.noEvent }}" #pages>
 		<app-event-card *ngFor="let event of pages.truncatedList()"
 		                [event]="event">
 		</app-event-card>

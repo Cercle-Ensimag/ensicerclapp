@@ -10,23 +10,30 @@ export class French {
 	public static readonly cancelLabel = "Annuler";
 	public static readonly search = "Recherche";
   public static readonly backLabel = "Retour";
-  public static readonly confirmLabel = "Confimer";
-  public static readonly agreeLabel = "Accepter";
-  public static readonly modifyLabel = "Modifier";
-	public static readonly applyChangesLabel = "Appliquer";
+	public static readonly modifyLabel = "Modifier";
+	public static readonly sendLabel = "Envoyer";
   public static readonly changesApplied = "Changements appliqués avec succès";
+	// -> time
   public static readonly locale = "fr";
   public static readonly timeFormat = "H:mm";
   public static readonly shortDateFormat = "E d LLL";
   public static readonly longDateFormat = "EEEE d LLLL";
   public static readonly shortDateTimeFormat = "E d LLL H:mm";
   public static readonly longDateTimeFormat = "EEEE d LLLL H:mm";
+	// -> form labels
+	public static readonly firstNameLabel = "Prénom";
+	public static readonly lastNameLabel = "Nom de famille";
+	public static readonly nicknameLabel = "Surnom";
+	public static readonly loginLabel = "Nom d'utilisateur";
+	public static readonly passwordlLabel = "Mot de passe";
+	public static readonly emailLabel = "E-mail";
 	// -> form errors
 	public static readonly passwordError = "Mot de passe invalide";
 	public static readonly firstNameError = "Prénom invalide";
 	public static readonly lastNameError = "Nom de famille invalide";
-	// -> auth errors
+	// -> other errors
 	public static readonly refreshTokenInfo = "Cette opréation nécéssite de s'être identifié recemment";
+	public static readonly emptyMessage = "Aucun élément à afficher !";
 
 	// Account
 	// -> update password dialog
@@ -34,6 +41,7 @@ export class French {
 	public static readonly changePasswordInfo = "Saisissez votre nouveau mot de passe :";
 	public static readonly passwordConfirmationError = "Confirmation invalide";
 	public static readonly pwdChangeValidationButtonLabel = "Mettre à jour le mot de passe";
+	public static readonly passwordChangedInfo = "Ton mot de passe a été modifié avec succès";
 	// -> component
 	public static readonly accountPageTitle = "Informations personnelles";
 	public static readonly outdatedAccountInfo = "Ton compte n'est plus actif... si tu es encore à l'Ensimag, contacte-nous pour le réactiver"
@@ -67,36 +75,38 @@ export class French {
 	public static readonly actuAuthorError = "Auteur invalide";
 
 	// Admin
+	// -> home
 	public static readonly adminLabel = "Admin";
 	public static readonly nbMembersLabel = "{0} membres";
-
+	public static readonly notOnTheList = "{0} n'est pas dans la liste";
+	// -> vote
 	public static readonly voteAdminLabel = "Admin vote";
 	public static readonly voteAdminPlLabel = "Admins vote";
 	public static readonly assessorLabel = "Assesseur";
 	public static readonly assessorPlLabel = "Assesseurs";
 	public static readonly addAssessorInfo = "Entrer l'e-mail d'un assesseur";
 	public static readonly addAssessorButtonLabel = "Ajouter";
-
+	// -> cafet
 	public static readonly cafetAdminLabel = "Master cafet";
 	public static readonly cafetAdminPlLabel = "Masters cafet";
 	public static readonly cafetRespLabel = "Respo cafet";
 	public static readonly cafetRespPlLabel = "Respos cafet";
 	public static readonly addCafetRespInfo = "Entrer l'e-mail d'un respo cafet";
 	public static readonly addCafetRespButtonLabel = "Ajouter";
-
+	// -> events
 	public static readonly eventsAdminLabel = "Admin events";
 	public static readonly eventsAdminPlLabel = "Admins events";
 	public static readonly comRespLabel = "Respo com'";
 	public static readonly comRespPlLabel = "Respos com'";
 	public static readonly addComRespInfo = "Entrer l'e-mail d'un respo com";
 	public static readonly addComRespButtonLabel = "Ajouter";
-
+	// -> nsigma
 	public static readonly nsigmaAdminLabel = 'Admin Nsigma';
 	public static readonly nsigmaAdminPlLabel = 'Admins Nsigma';
-
-	public static readonly announcesAdminLabel = 'Admin announces';
-	public static readonly announcesAdminPlLabel = 'Admins announces';
-
+	// -> announcements
+	public static readonly announceAdminLabel = 'Admin annonces';
+	public static readonly announceAdminPlLabel = 'Admins annonces';
+	// -> actus
 	public static readonly actusAdminLabel = "Admin actus";
 	public static readonly actusAdminPlLabel = "Admins actus";
 	public static readonly journalistLabel = "Journaliste";
@@ -138,183 +148,235 @@ export class French {
 	public static readonly deletedAnnounceInfo = "Annonce supprimée";
 
   // Auth
-  public static readonly logOutLabel = "Déconnexion";
-  public static readonly signInPageTitle = "Identifie-toi<br><small>ou crée un compte si tu n'en as pas encore !</small>";
-  public static readonly signInButtonLabel = "Connexion";
-  public static readonly signUpPageTitle = "Inscription";
-  public static readonly signUpButtonLabel = "Créer le compte";
-  public static readonly firstNameLabel = "Prénom";
-  public static readonly lastNameLabel = "Nom de famille";
-  public static readonly nicknameLabel = "Surnom";
-  public static readonly passwordlLabel = "Mot de passe";
-  public static readonly askForExistingPwdLabel = "Entre ton mot de passe";
-  public static readonly emailLabel = "E-mail";
-  public static readonly askForExistingEmailLabel = "Entre ton e-mail";
-  public static readonly emailDomainError = "L'e-mail doit appartenir au domaine '@ensimag.fr'";
-  public static readonly noEmailError = "L'e-mail est exigé";
-  public static readonly emailFormatError = "L'e-mail est incorrect";
-  public static readonly beforePwdRstEmailInfo = "Un e-mail de réinitialisation de mot de passe va être envoyé à l'adresse donnée.";
-  public static readonly sendPwdResetEmailLabel = "Envoyer l'e-mail";
-  public static readonly afterPwdRstEmailInfo = "Si l'adresse <b>{0}</b> est correcte, un lien de réinitialisation lui a été envoyé.";
-  public static readonly verificationEmailSentInfo = "Un e-mail de confirmation a été envoyé à l'adresse utilisée lors de ton votre inscription.<br><br>Vérifie ta boîte e-mail et ton dossier spam puis clique sur le lien de confirmation.";
-  public static readonly sendEmailAgainLabel = "Renvoyer l'email";
-  public static readonly passwordTooShortError = "Mot de passe trop court";
-  public static readonly toSignInLabel = "Crée-toi un compte !";
-  public static readonly passwordForgottenLabel = "Mot de passe oublié ?";
-  public static readonly deleteAccountInfo = "Tu es sur le point de supprimer ton compte !";
-  public static readonly confimDeleteAccountButtonLabel = "Supprimer le compte";
-  public static readonly passwordChangedInfo = "Ton mot de passe a été modifié avec succès";
+	public static readonly logOutLabel = "Déconnexion";
+	// -> login
+	public static readonly signInPageTitle = "Identifie-toi<br><small>ou crée un compte si tu n'en as pas encore !</small>";
+	public static readonly askForExistingEmailLabel = "Entre ton e-mail";
+	public static readonly askForExistingPwdLabel = "Entre ton mot de passe";
+	public static readonly signInButtonLabel = "Connexion";
+	public static readonly toSignInLabel = "Crée-toi un compte !";
+	public static readonly passwordForgottenLabel = "Mot de passe oublié ?";
+	// -> auth-service
+	public static readonly noEmailError = "L'e-mail est exigé";
+	public static readonly emailFormatError = "L'e-mail est incorrect";
+	public static readonly emailDomainError = "L'e-mail doit appartenir au domaine '@ensimag.fr'";
+	// -> signup
+	public static readonly signUpPageTitle = "Inscription";
+	// -> email-verif
+	public static readonly verificationEmailSentTitle = "Compte non confirmé";
+	public static readonly verificationEmailSentInfo = "Un e-mail de confirmation a été envoyé à l'adresse utilisée lors de ton votre inscription.<br><br>Vérifie ta boîte e-mail et ton dossier spam puis clique sur le lien de confirmation.";
+	public static readonly sendEmailAgainButtonLabel = "Renvoyer l'email";
+	// -> password-reset
+	public static readonly beforePwdRstEmailInfo = "Un e-mail de réinitialisation de mot de passe va être envoyé à l'adresse donnée.";
+	public static readonly afterPwdRstEmailInfo = "Si l'adresse <b>{0}</b> est correcte, un lien de réinitialisation lui a été envoyé.";
 
-  // Vote
-  public static readonly polls = "Scrutins";
-  public static readonly noPoll = "Il n'y a pour l'instant aucun scrutin !";
-  public static readonly pollChoiceLabel = "Choix des scrutins";
-  public static readonly addPollLabel = "Créer un nouveau scrutin";
-  public static readonly confirmPollDeleteLabel = "Supprimer";
-  public static readonly confirmPollDeleteInfo = "Tu es sur le point de supprimer<br>\"{0}\"<br> et ses résultats.<br>En es-tu sûr ?";
-  public static readonly choiceSelectionInfo = "Tu es sur le point de voter pour";
-  public static readonly voteForLabel = "Voter";
-  public static readonly pollIdLabel = "ID";
-  public static readonly pollTitleLabel = "Titre";
-  public static readonly pollDescriptionLabel = "Description (Markdown pour la mise en forme)";
-  public static readonly choiceIdLabel = "ID";
-  public static readonly choiceLabelLabel = "Nom complet";
-  public static readonly choiceImageLabel = "Image URL (public)";
-  public static readonly choiceShortLabelLabel = "Diminutif";
-  public static readonly addChoiceLabel = "Ajouter un choix";
-  public static readonly invalidIdError = "ID trop court ou déjà existant";
-  public static readonly pollTitleTooShortError = "Titre trop court";
-  public static readonly pollDescriptionError = "Erreur dans la description";
-  public static readonly markAsVotedEmailInfo = "Email d'un votant en face-à-face";
-  public static readonly markAsVotedDomainInfo = "Domaine";
+	// Cafet
+	public static readonly creditLabel = "Solde";
+	public static readonly addButtonLabel = "Crediter";
+	public static readonly substractButtonLabel = "Débiter";
+	public static readonly informAboutTransaction = "Le solde du compte de {0} a bien été modifié de {1}€";
+	// -> admin-accounts
+	public static readonly printAccountsToPdf = "Imprimer les comptes";
+	public static readonly leaveAccountsToPdfPreview = "Quitter l'aperçu";
+	public static readonly saveAccountsToPdf = "Enregistrer les comptes";
+	public static readonly displayDayAccountsPreview = "Verifier les transactions du jour";
+	public static readonly leaveDayAccountsPreview = "Quitter l'aperçu";
+	public static readonly validateDayTransactionsButtonLabel = "Valider les transactions du jour";
+	public static readonly noDayTransactions = "Aucune transaction en attente de validation";
+	// -> admin-archives
+	public static readonly noArchivedUsers = "Aucun utilisateur archivé ne correspond";
+	// -> admin-users
+	public static readonly cafetAccountsMatch = "{0} compte existe déjà";
+	public static readonly orderByCreditLabel = "par solde";
+	public static readonly orderByLastTransactionDateLabel = "par date";
+	public static readonly createAccountLabel = "Créer le compte";
+	public static readonly confirmCafetAccountCreationDialogTitle = "Utilisateur introuvable";
+	public static readonly confirmCafetAccountCreationDialogContent = "Voulez-vous ajouter \"{0}\" en tant qu'externe ?";
+	public static readonly informAboutCafetCreation = "Le compte de {0} a bien été créé et crédité de {1}€";
+	// -> edit-cafet-user
+	public static readonly achiveCafetUserButtonLabel = "Archiver";
+	public static readonly restoreCafetUserButtonLabel = "Restaurer";
+	public static readonly deleteCafetUserButtonLabel = "Supprimer";
+	// -> trezo
+	public static readonly nbOfRegisteredCafetAccountsLabel = "Comptes enregistrés : {0}";
+	public static readonly totalOnRegisteredCafetAccountsLAbel = "Total sur les comptes : {0}";
+	public static readonly nbOfPositiveCafetAccountsLabel = "Comptes enregistrés dans le posiitif : {0}";
+	public static readonly totalOnPositiveCafetAccountsLabel = "Total sur les comptes dans le positif : {0}";
+	public static readonly nbOfNegativeCafetAccountsLabel = "Comptes enregistrés dans le négatif : {0}";
+	public static readonly totalOnNegativeCafetAccountsLabel = "Total sur les comptes dans le négatif : {0}";
+	// ->cafet-admin
+	public static readonly clientListLabel = "Clients";
+	public static readonly cafetAccountsLabel = "Comptes";
+	public static readonly cafetArchivesLabel = "Archives";
+	public static readonly cafetTrezoLabel = "Trezo";
+	// -> cafet-history
+	public static readonly transactionDateLabel = "Date";
+	public static readonly transactionValueLabel = "Montant";
+	public static readonly cafetAccountCreationDateLabel = "Création du compte";
+	// -> cafet-home
+	public static readonly negativeCreditError = "<b>Ton</b> compte est dans le <b>négatif</b>!<small>Tu devrais mettre de l'argent sur ton compte.</small>";
+	// -> cafet-info
+	public static readonly noCafetAccountInfo = "<b>Tu n'as pas encore de compte à la cafet</b><br><br>Contacte les respo' cafet afin que ces derniers te créent un compte !<br><br>";
+	// -> cafet-service
+	public static readonly cafetUserNoLonguerExists = "Erreur : le compte de {0} n'existe plus";
 
-  public static readonly markedAsVoted = "{0} a bien été ajouté";
-  public static readonly votedButtonLabel = "A voté !";
-  public static readonly notOnTheList = "{0} n'est pas dans la liste";
-  public static readonly nbVoteUsersLabel = "{0} votants";
+	// TODO : public static readonly achiveUserPermissionDenied = "Action refusée, le client a des transactions non validées";
+	// public static readonly weekIngredientLabel = "Ingrédient de la semaine";
 
-  // Events
-  public static readonly events = "Evénements";
-  public static readonly noEvent = "Aucun événement, pour le moment ;)";
-  public static readonly periodFormat = "Du {0} au {1}";
-  public static readonly addEventLabel = "Créer un nouvel événement";
-  public static readonly confirmEventDeleteLabel = "Supprimer";
-  public static readonly confirmEventDeleteInfo = "Tu es sur le point de supprimer l'événement<br>\"{0}\".<br>En es-tu sûr ?";
+	// Calendar
+	// -> edit-all
+	public static readonly nbOfSubscriptionsToDeletedEvents = "{0} abonnements à des événements supprimés";
+	public static readonly deleteEventSubsciptionsButtonLabel = "Effacer";
+	public static readonly deletePersoEventDialogTitle = "Confirmation de la suppression";
+	public static readonly deletePersoEventDialogContent = "Êtes-vous certain de vouloir supprimer \"{0}\" ?";
+	public static readonly deletedPersoEventInfo = "Evénement supprimé";
+	// -> settings
+	public static readonly calSettingsTitle = "Paramètres du calendrier";
+	public static readonly calSettingsResourcesLabel = "Ressources ADE";
+	public static readonly calSettingsResourcesError = "ex: '1234,5678,1479'";
+	public static readonly gatherFromAdeInfo = "<b>Kézako ?</b><br><br>Il s'agist de la liste des modules que vous suivez au format \"ADE\" (n1, n2, n3, ...). Vous pouvez récupérer cette information depuis l'URL que vous utilisez pour consulter votre calendrier.<br><br>Laissez-nous récupérer automatiquement cette information depuis votre espace ADE.<br><br> Vos identifiants ne sont <b>pas</b> enregistrés.";
+	public static readonly gatherFromAdeButtonLabel = "Récupérer via ADE";
+	public static readonly updatedResourcesInfo = "Ressources mises à jour";
+	public static readonly ADECredentialsDialogTitle = "Connexion à ADE";
+	public static readonly ADECredentialsDialogContent = "Identifiants de connexion à ADE";
+	public static readonly waitADEConnectionInfo = "Connexion à ADE...";
+	public static readonly invalidADECredentialsError = "Identifiants incorrects";
+	public static readonly dangerousADECredentialsError = "Caractère dangereux, désolé";
+	public static readonly ADEConnectionError = "Echec de la connexion";
+	// -> day-column
+	public static readonly noCalEvent = "Rien de prévu";
+	// -> edit-cal
+	public static readonly eventOccurencesLabel = "Occurences";
+	public static readonly eventOccurencesError = "Occurences invalides";
 
-  public static readonly eventIdLabel = "ID";
-  public static readonly eventTitleLabel = "Titre";
-  public static readonly eventDescriptionLabel = "Description (Markdown pour la mise en forme)";
-  public static readonly eventImageLabel = "URL de l'image";
-  public static readonly eventStartLabel = "Date de début (mm/dd/yyyy)";
-  public static readonly eventEndLabel = "Date de fin (mm/dd/yyyy)";
-  public static readonly eventStartTimeLabel = "Heure de début (HH:mm)";
-  public static readonly eventEndTimeLabel = "Heure de fin (HH:mm)";
-  public static readonly eventLocationLabel = "Lieu";
-  public static readonly eventAssoLabel = "Association";
-  public static readonly eventPriceLabel = "PAF";
-  public static readonly eventTitleTooShortError = "Titre trop court";
-  public static readonly eventDescriptionError = '';
-  public static readonly eventImageError = '';
-  public static readonly eventStartError = "Date de début requise";
-  public static readonly eventEndError = "Date de fin requise";
-  public static readonly eventStartTimeError = "Heure de début requise";
-  public static readonly eventEndTimeError = "Heure de fin requise";
-  public static readonly eventLocationError = "Lieu requis";
-  public static readonly eventAssoError = "Association requise";
-  public static readonly eventPriceError = "Prix requis";
-  public static readonly eventStart = "Début : {0}";
-  public static readonly eventEnd = "Fin : {0}";
-  public static readonly eventLocation = "Lieu : {0}";
-  public static readonly eventOrganizer = "Organisateur : {0}";
-  public static readonly eventPrice = "PAF : {0}";
-  public static readonly free = "Gratuit";
-
-
-  // Cafet
-  public static readonly troll = "<b>Ton</b> compte est dans le <b>négatif</b>!<br><small>(*non contractuel, tu n'as pas encore de compte.)</small>";
-  public static readonly creditLabel = "Solde";
-  public static readonly informAboutTransaction = "Le solde du compte de {0} a bien été modifié de {1}€";
-  public static readonly informAboutCafetCreation = "Le compte de {0} a bien été créé et crédité de {1}€";
-  public static readonly clientListLabel = "Clients";
-  public static readonly createAccountLabel = "Créer le compte";
-  public static readonly cafetEmailInfo = "Entrer l'e-mail d'un client";
-  public static readonly cafetSearchInfo = "Chercher un client";
-  public static readonly addButtonLabel = "Crediter";
-  public static readonly substractButtonLabel = "Débiter";
-  public static readonly weekIngredientLabel = "Ingrédient de la semaine";
-  public static readonly negativeCreditError = "<b>Ton</b> compte est dans le <b>négatif</b>!<small>Tu devrais mettre de l'argent sur ton compte.</small>";
-  public static readonly orderByCreditLabel = "par solde";
-  public static readonly orderByLastTransactionDateLabel = "par date";
-
-  public static readonly cafetAccountsLabel = "Comptes";
-  public static readonly printAccountsToPdf = "Imprimer les comptes";
-  public static readonly leaveAccountsToPdfPreview = "Quitter l'aperçu";
-  public static readonly saveAccountsToPdf = "Enregistrer les comptes";
-
-  public static readonly displayDayAccountsPreview = "Verifier les transactions du jour";
-  public static readonly leaveDayAccountsPreview = "Quitter l'aperçu";
-  public static readonly validateDayTransactionsButtonLabel = "Valider les transactions du jour";
-  public static readonly noDayTransactions = "Aucune transaction en attente de validation";
-  public static readonly achiveUserPermissionDenied = "Action refusée, le client a des transactions non validées";
-
-  public static readonly cafetAccountsMatch = "{0} compte existe déjà";
-  public static readonly confirmExteCafetAccount = "Créer le compte quand même";
-  public static readonly cafetAccountCreationDateLabel = "Création du compte";
-
-  public static readonly transactionDateLabel = "Date";
-  public static readonly transactionValueLabel = "Montant";
-
-  public static readonly cafetArchivesLabel = "Archives";
-  public static readonly achiveCafetUserButtonLabel = "Archiver";
-  public static readonly restoreCafetUserButtonLabel = "Restaurer";
-  public static readonly deleteCafetUserButtonLabel = "Supprimer";
-  public static readonly deleteCafetUserWarning = "Le compte de {0} va être définitivement supprimé.";
-
-
-  // Calendar
-  public static readonly calSettingsRessourcesLabel = "Ressources ADE";
-  public static readonly calSettingsRessourcesError = "ex: '1234,5678,1479'";
-  public static readonly calSettingsTitle = "Paramètres du calendrier";
-  public static readonly noCalEvent = "Rien de prévu";
-  public static readonly eventOccurencesLabel = "Occurences";
-  public static readonly eventOccurencesError = '';
-
-  public static readonly cafetTrezoLabel = "Trezo";
-  public static readonly numberOfAllAccountsLabel = "Nombre de comptes total : {0}";
-  public static readonly totalOfAllAccountsLabel = "Total sur les comptes : {0}€";
-  public static readonly numberOfNegAccountsLabel = "Nombre de comptes en négatif : {0}";
-  public static readonly totalOfNegativeAccountsLabel = "Total sur les comptes en négatif : {0}€";
-  public static readonly numberOfPosAccountsLabel = "Nombre de comptes en positif : {0}";
-  public static readonly totalOfPositiveAccountsLabel = "Total sur les comptes en positif : {0}€";
-
-  // Nsigma
-  public static readonly noNsigmaAnnonce = `Aucune announce Nsigma n'est disponible pour le moment, reviens plus tard.`;
-  public static readonly confirmNsigmaAnnonceDeleteInfo = "Voulez-vous vraiment supprimer cette announce ?";
-  public static readonly confirmNsigmaAnnonceDeleteLabel = "Confirmer la suppression";
-  public static readonly nsigmaTitleLabel = 'Titre';
-  public static readonly nsigmaTitleTooShortError = 'Titre trop court';
-  public static readonly nsigmaDescriptionLabel = "Description (Markdown pour la mise en forme)";
-  public static readonly nsigmaDescriptionError = 'Description trop courte';
-  public static readonly nsigmaTypeLabel = 'Type de l\'étude';
-  public static readonly nsigmaTypeError = 'Type invalide';
-  public static readonly nsigmaStartLabel = 'Début';
-  public static readonly nsigmaStartError = 'Début invalide';
-  public static readonly nsigmaEndLabel = 'Fin';
-  public static readonly nsigmaEndError = 'Fin invalide';
-  public static readonly nsigmaTechnologiesLabel = 'Technologies';
-  public static readonly nsigmaTechnologiesError = 'Technologies invalides';
-  public static readonly nsigmaRemunerationLabel = 'Rémunération';
-  public static readonly nsigmaRemunerationError = 'Rémunération invalide';
-  public static readonly nsigmaDifficultyLabel = 'Difficulté';
-  public static readonly nsigmaDifficultyError = 'Difficulté invalide';
-  public static readonly nsigmaFormLabel = 'Formulaire Google de contact';
-  public static readonly nsigmaFormError = 'Formulaire invalide';
-  public static readonly nsigmaEnCours = 'En cours';
-  public static readonly nsigmaFinie = 'Finie';
-
+	// Events
+	// -> event/cal-event form
+	public static readonly eventTitleLabel = "Titre";
+	public static readonly eventTitleError = "Titre invalide";
+	public static readonly eventStartLabel = "Date de début (mm/dd/yyyy)";
+	public static readonly eventStartError = "Date de début invalide";
+	public static readonly eventStartTimeLabel = "Heure de début (HH:mm)";
+	public static readonly eventStartTimeError = "Heure de début invalide";
+	public static readonly eventEndLabel = "Date de fin (mm/dd/yyyy)";
+	public static readonly eventEndError = "Date de fin invalide";
+	public static readonly eventEndTimeLabel = "Heure de fin (HH:mm)";
+	public static readonly eventEndTimeError = "Heure de fin invalide";
+	public static readonly eventLocationLabel = "Lieu";
+	public static readonly eventLocationError = "Lieu invalide";
+	// -> event-card
+	public static readonly isNowLabel = "En direct";
+	public static readonly isPasssedLabel = "Passé";
+	public static readonly deleteEventDialogTitle = "Confirmation de la suppression";
+	public static readonly deleteEventDialogContent = "Êtes-vous certain de vouloir supprimer \"{0}\" ?";
+	public static readonly deletedEventInfo = "Evénement supprimé";
+	// -> edit-event
+	public static readonly eventDescriptionLabel = "Description (Markdown pour la mise en forme)";
+	public static readonly eventDescriptionError = "Description invalide";
+	public static readonly eventImageLabel = "URL de l'image";
+	public static readonly eventImageError = "URL invalide";
+	public static readonly eventAssoLabel = "Association";
+	public static readonly eventAssoError = "Association invalide";
+	public static readonly eventPriceLabel = "PAF";
+	public static readonly eventPriceError = "Prix invalide";
+	public static readonly free = "Gratuit";
+	// -> event
+	public static readonly eventStart = "Début : {0}";
+	public static readonly eventEnd = "Fin : {0}";
+	public static readonly eventOrganizer = "Organisateur : {0}";
+	public static readonly eventLocation = "Lieu : {0}";
+	public static readonly eventPrice = "PAF : {0}";
+	public static readonly participate = "Ajouté à mon planning";
+	public static readonly doNotParticipate = "Pas dans mon planning";
+	// -> event-admin
+	public static readonly events = "Evénements";
+	// -> event-home
+	public static readonly noEvent = "Aucun événement à venir";
 
   // Info
+	// -> legal-notice
   public static readonly legalNoticeLabel = "Mentions légales";
+	// -> user-guide
   public static readonly userGuideLabel = "Détail des fonctionnalités";
+
+	// Nsigma
+	public static readonly nsigmaAnnounceDone = "Recrutement terminé";
+	public static readonly nsigmaAnnounceOngoing = 'En cours';
+	// -> nsigma-card
+	public static readonly deleteNsigmaAnnounceDialogTitle = "Confirmation de la suppression";
+	public static readonly deleteNsigmaAnnounceDialogContent = "Êtes-vous certain de vouloir supprimer \"{0}\" ?";
+	public static readonly deletedNsigmaAnnounceInfo = "Annonce supprimée";
+	// -> announce
+	public static readonly remuneration = "Rémunération : {0}";
+	public static readonly technologies = "<b>Technologies : </b>{0}";
+	public static readonly difficulty = "<b>Difficulté : </b>{0}";
+	public static readonly applyToNsigmaAnnounce = "Candidater";
+	// -> edit
+	public static readonly nsigmaTitleLabel = "Titre";
+	public static readonly nsigmaTitleError = "Titre invalide";
+	public static readonly nsigmaDescriptionLabel = "Description (Markdown pour la mise en forme)";
+	public static readonly nsigmaDescriptionError = "Description invalide";
+	public static readonly nsigmaTypeLabel = "Type de l'étude";
+	public static readonly nsigmaTypeError = "Type invalide";
+	public static readonly nsigmaType0 = "Web";
+	public static readonly nsigmaType1 = "Mobile";
+	public static readonly nsigmaType2 = "Maths";
+	public static readonly nsigmaType3 = "Telecom";
+	public static readonly nsigmaType4 = "Bureautique";
+	public static readonly nsigmaType5 = "Sécurité";
+	public static readonly nsigmaType6 = "Général";
+	public static readonly nsigmaStartLabel = "Début";
+	public static readonly nsigmaStartError = "Début invalide";
+	public static readonly nsigmaEndLabel = "Fin";
+	public static readonly nsigmaEndError = "Fin invalide";
+	public static readonly nsigmaTechnologiesLabel = "Technologies";
+	public static readonly nsigmaTechnologiesError = "Technologies invalides";
+	public static readonly nsigmaDifficultyLabel = "Difficulté";
+	public static readonly nsigmaDifficultyError = "Difficulté invalide";
+	public static readonly nsigmaRemunerationLabel = "Rémunération";
+	public static readonly nsigmaRemunerationError = "Rémunération invalide";
+	public static readonly nsigmaFormLabel = "Formulaire Google de contact";
+	public static readonly nsigmaFormError = "Formulaire invalide";
+	// -> home
+	public static readonly noNsigmaAnnonce = "Nsigma ne recrute pas en ce moment";
+
+  // Vote
+	public static readonly startLabel = "Start";
+	// -> assessor
+	public static readonly markAsVotedEmailInfo = "Email d'un votant en face-à-face";
+	public static readonly markAsVotedDomainInfo = "Domaine";
+	public static readonly votedButtonLabel = "A voté !";
+	public static readonly pollChoiceLabel = "Choix des scrutins";
+	public static readonly noPoll = "Pas de scrutin en cours.";
+	public static readonly unknownUserInfo = "Utilisateur inconnu : {0}";
+	public static readonly markedAsVoted = "{0} a bien été ajouté";
+	// -> vote-card
+	public static readonly votedLabel = "A voté";
+	public static readonly deletePollDialogTitle = "Confirmation de la suppression";
+	public static readonly deletePollDialogContent = "Êtes-vous certain de vouloir supprimer le scrutin \"{0}\" ?";
+	public static readonly deletedPollInfo = "Scrutin supprimé";
+	// -> edit
+	public static readonly pollTitleLabel = "Titre";
+	public static readonly pollTitleError = "Titre invalide";
+	public static readonly pollDescriptionLabel = "Description (Markdown pour la mise en forme)";
+	public static readonly pollDescriptionError = "Description invalide";
+	public static readonly choiceTitleLabel = "Nom complet";
+	public static readonly choiceImageLabel = "Image URL (public)";
+	public static readonly choiceShortNameLabel = "Diminutif";
+	public static readonly addChoiceLabel = "Ajouter un choix";
+	// -> poll
+	public static readonly notStartedInfo = "Le vote n'a pas encore débuté...";
+	public static readonly voteForTemplate = "Voter {0}";
+	public static readonly confirmVoteDialogTitle = "Confirmation du vote";
+	public static readonly confirmVoteDialogContent = "Êtes-vous certain de vouloir voter pour \"{0}\" ?";
+	public static readonly voteComfirmationMessage = "Vote pour \"{0}\" enregistré";
+	// -> results
+	public static readonly pollResultsLabel = "Résultats";
+	public static readonly pollResultsTemplate = "{0} : {1} votes ({2}%)";
+	// -> admin
+	public static readonly polls = "Scrutins";
+	// -> users
+	public static readonly nbVoteUsersLabel = "{0} votants";
+	public static readonly noUserMatchInfo = "Aucun votant ne correspond aux filtres";
+
 
 }

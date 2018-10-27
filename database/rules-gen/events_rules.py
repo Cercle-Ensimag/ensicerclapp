@@ -86,7 +86,7 @@ class EventRules (EventsListRules):
         self.add(StringRules("image", 500))
         self.add(NumberRules("start"))
         self.add(NumberRules("end"))
-        self.add(StringRules("location", 100))
+        self.add(StringRules("location", 300))
         self.add(StringRules("asso", 30))
         self.add(StringRules("price", 50))
         self.add(EventGroupIdRules())

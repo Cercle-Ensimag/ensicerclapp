@@ -8,7 +8,7 @@
 
 	    <mat-form-field>
 	      <input matInput placeholder="{{ d.l.nsigmaTitleLabel }}" formControlName="title" autocomplete="off">
-	      <mat-error *ngIf="formGroup.get('title').invalid">{{ d.l.nsigmaTitleTooShortError }}</mat-error>
+	      <mat-error *ngIf="formGroup.get('title').invalid">{{ d.l.nsigmaTitleError }}</mat-error>
 	    </mat-form-field>
 
 	    <mat-form-field>
@@ -20,13 +20,7 @@
 
 	    <mat-form-field>
 	      <mat-select placeholder="{{ d.l.nsigmaTypeLabel }}" formControlName="type">
-	        <mat-option [value]="6">Général</mat-option>
-	        <mat-option [value]="0">Web</mat-option>
-	        <mat-option [value]="1">Mobile</mat-option>
-	        <mat-option [value]="2">Maths</mat-option>
-	        <mat-option [value]="3">Telecom</mat-option>
-	        <mat-option [value]="4">Bureautique</mat-option>
-	        <mat-option [value]="5">Sécurité</mat-option>
+	        <mat-option *ngFor="let i of [0, 1, 2, 3, 4, 5, 6]" [value]="i">{{ d.l['nsigmaType' + i] }}</mat-option>
 	      </mat-select>
 	      <mat-error *ngIf="formGroup.get('type').invalid">{{ d.l.nsigmaTypeError }}</mat-error>
 	    </mat-form-field>
@@ -68,8 +62,8 @@
 	    </mat-form-field>
 
 	    <mat-slide-toggle formControlName="done" color="primary">
-	      <span *ngIf="!formGroup.get('done').value">{{ d.l.nsigmaEnCours }}</span>
-	      <span *ngIf="formGroup.get('done').value">{{ d.l.nsigmaFinie }}</span>
+	      <span *ngIf="!formGroup.get('done').value">{{ d.l.nsigmaAnnounceOngoing }}</span>
+	      <span *ngIf="formGroup.get('done').value">{{ d.l.nsigmaAnnounceDone }}</span>
 	    </mat-slide-toggle>
 	  </form>
 	</mat-card>

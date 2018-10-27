@@ -17,15 +17,15 @@ class UpdateRules (ListRules):
 class UsersRules (ListRules):
 	def build(self):
 		self.label = "users"
-		self.read = doOr([
-			isAdmin(),
-			isOneAdmin("vote"), isOneAdmin("cafet"),
-			isOneAdmin("events"), isOneAdmin("actus"),
-			isAssessor()
-		])
 		self.add(UserIdRules())
 
 class UserIdRules (UsersRules):
 	def build(self):
 		self.label = "$userId"
-		self.read = "auth.token.email === data.val()"
+		self.read = doOr([
+			isAdmin(),
+			isOneAdmin("vote"), isOneAdmin("cafet"),
+			isOneAdmin("events"), isOneAdmin("actus"),
+			isAssessor(),
+			"auth.token.email === data.val()"
+		])

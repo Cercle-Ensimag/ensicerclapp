@@ -23,6 +23,10 @@ export class ToolsService {
     return email.toLowerCase().split("@")[0].replace('.', '|');
   }
 
+	getNameFromEmailId(emailId: string): string {
+		return this.titleCase(emailId.replace('|', ' ').replace('  ', ' '));
+	}
+
   titleCase(str) {
     str = str.toLowerCase().split(' ');
     for (let i = 0; i < str.length; i++) {

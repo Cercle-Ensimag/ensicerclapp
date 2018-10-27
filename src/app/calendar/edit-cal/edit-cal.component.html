@@ -8,7 +8,7 @@
 
 	    <mat-form-field>
 	      <input matInput placeholder="{{ d.l.eventTitleLabel }}" formControlName="title" autocomplete="off">
-	      <mat-error *ngIf="formGroup.get('title').invalid">{{ d.l.eventTitleTooShortError }}</mat-error>
+	      <mat-error *ngIf="formGroup.get('title').invalid">{{ d.l.eventTitleError }}</mat-error>
 	    </mat-form-field>
 
 	    <div class="grid-container">

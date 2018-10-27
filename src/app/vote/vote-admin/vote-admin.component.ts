@@ -55,8 +55,8 @@ export class VoteAdminComponent implements OnInit {
       first())
       .subscribe(inList => {
         if (!inList) {
-          let name = this.tools.titleCase(emailId.replace('|', ' ').replace('  ', ' '));
-          this.snackBar.open(this.d.format(this.d.l.notOnTheList, name), 'ok', {duration: 2000});
+          let name = this.tools.getNameFromEmailId(emailId);
+          this.snackBar.open(this.d.format(this.d.l.notOnTheList, name), this.d.l.okLabel, {duration: 2000});
         } else {
           this.vote.addAssessor(this.emailCtrl.value);
           this.emailCtrl.setValue('');

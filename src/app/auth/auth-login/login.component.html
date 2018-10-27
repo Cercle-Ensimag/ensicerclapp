@@ -19,7 +19,7 @@
         <mat-form-field>
           <input matInput placeholder="{{ d.l.askForExistingPwdLabel }}" formControlName="password" [type]="hide ? 'password' : 'text'" autocomplete="off">
           <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
-          <mat-error *ngIf="formGroup.get('password').invalid">{{ d.l.passwordTooShortError }}</mat-error>
+          <mat-error *ngIf="formGroup.get('password').invalid">{{ d.l.passwordError }}</mat-error>
         </mat-form-field>
 
         <button mat-raised-button type="submit" [disabled]="formGroup.invalid" color="primary">{{ d.l.signInButtonLabel }}</button>

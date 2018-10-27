@@ -91,8 +91,8 @@ export class CafetAdminUsersComponent implements OnInit {
         if (!notExte) {
           this.dialog.open(DeleteDialogComponent, {
             data: {
-              title: 'Utilisateur introuvable',
-              content: `Voulez-vous ajouter "${email}" en tant qu'externe ?`
+              title: this.d.l.confirmCafetAccountCreationDialogTitle,
+              content: this.d.format(this.d.l.confirmCafetAccountCreationDialogContent, email)
             }
           }).afterClosed()
             .pipe(first())
@@ -134,9 +134,9 @@ export class CafetAdminUsersComponent implements OnInit {
           credit: 0
         });
         this.snackBar.open(this.d.format(this.d.l.informAboutCafetCreation, this.cafet.getUserName(user), credit.toFixed(2)),
-          'ok', {duration: 2000});
+          this.d.l.okLabel, {duration: 2000});
       })
-      .catch(err => this.snackBar.open(err, 'ok', {duration: 2000}));
+      .catch(err => this.snackBar.open(err, this.d.l.okLabel, {duration: 2000}));
   }
 
   filteredUsers(): Observable<CafetUser[]> {
@@ -177,9 +177,9 @@ export class CafetAdminUsersComponent implements OnInit {
     this.controls[user.emailId].sub.setValue('');
     this.cafet.newTransaction(user, value)
       .then(() => {
-        this.snackBar.open(this.d.format(this.d.l.informAboutTransaction, this.cafet.getUserName(user), value.toFixed(2)), 'ok', {duration: 2000});
+        this.snackBar.open(this.d.format(this.d.l.informAboutTransaction, this.cafet.getUserName(user), value.toFixed(2)), this.d.l.okLabel, {duration: 2000});
       })
-      .catch(err => this.snackBar.open(err, 'ok', {duration: 2000}));
+      .catch(err => this.snackBar.open(err, this.d.l.okLabel, {duration: 2000}));
   }
 
   openHistory(user: CafetUser): void {

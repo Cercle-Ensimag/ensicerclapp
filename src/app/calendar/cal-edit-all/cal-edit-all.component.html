@@ -30,8 +30,8 @@
 				<div *ngIf="cal.getEventIdsWithNoEvents() | async as ids;">
 					<mat-card *ngIf="ids.length > 0" class="item center">
 						<div class="error">
-							{{ ids.length }} abonnements à des événements supprimés<br><br>
-							<button mat-raised-button (click)="cal.removeEventsFromCalendar(ids)">Effacer</button>
+							{{ d.format(d.l.nbOfSubscriptionsToDeletedEvents, ids.length) }}<br><br>
+							<button mat-raised-button (click)="cal.removeEventsFromCalendar(ids)">{{ d.l.deleteEventSubsciptionsButtonLabel }}</button>
 						</div>
 					</mat-card>
 				</div>

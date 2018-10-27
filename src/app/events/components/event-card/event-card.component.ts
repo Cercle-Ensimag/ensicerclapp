@@ -29,13 +29,13 @@ export class EventCardComponent implements OnInit {
   delete() {
     this.dialog.open(DeleteDialogComponent, {
       data: {
-        title: "Confirmation de la suppression",
-        content: `Êtes-vous certain de vouloir supprimer "${this.event.title}" ?`
+        title: this.d.l.deleteEventDialogTitle,
+        content: this.d.format(this.d.l.deleteEventDialogContent, this.event.title)
       }
     }).afterClosed().subscribe(result => {
       if (result) {
         this.events.deleteEvent(this.event.id).then(() =>
-          this.snackBar.open("Evénement supprimé", 'ok', {duration: 2000})
+          this.snackBar.open(this.d.l.deletedEventInfo, this.d.l.okLabel, {duration: 2000})
         );
       }
     });

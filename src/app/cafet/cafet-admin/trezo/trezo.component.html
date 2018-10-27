@@ -3,18 +3,18 @@
 
 <div *ngIf="nbOfAllAccounts | async">
   <mat-card>
-    <div>Comptes enregistrés : {{ nbOfAllAccounts | async}}</div>
-    <div>Total sur les comptes : {{ totalOnAccounts | async }}€</div>
+    <div>{{ this.d.format(this.d.l.nbOfRegisteredCafetAccountsLabel, nbOfAllAccounts | async) }}</div>
+    <div>{{ this.d.format(this.d.l.totalOnRegisteredCafetAccountsLAbel, totalOnAccounts | async) }}€</div>
   </mat-card>
 
   <mat-card>
-    <div>Comptes enregistrés dans le posiitif : {{ nbOfPosAccounts | async}}</div>
-    <div>Total sur les comptes dans le positif : {{ totalOfPositive | async }}€</div>
+    <div>{{ this.d.format(this.d.l.nbOfPositiveCafetAccountsLabel, nbOfPosAccounts | async) }}</div>
+    <div>{{ this.d.format(this.d.l.totalOnPositiveCafetAccountsLabel, totalOfPositive | async) }}€</div>
   </mat-card>
 
   <mat-card>
-    <div>Comptes enregistrés dans le négatif : {{ nbOfNegAccounts | async}}</div>
-    <div>Total sur les comptes dans le négatif : {{ totalOfNegative | async }}€</div>
+    <div>{{ this.d.format(this.d.l.nbOfNegativeCafetAccountsLabel, nbOfNegAccounts | async) }}</div>
+    <div>{{ this.d.format(this.d.l.totalOnNegativeCafetAccountsLabel, totalOfNegative | async) }}€</div>
   </mat-card>
 </div>
 

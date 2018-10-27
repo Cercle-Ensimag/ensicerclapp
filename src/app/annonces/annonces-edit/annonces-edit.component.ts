@@ -83,7 +83,7 @@ export class AnnoncesEditComponent implements OnInit, OnDestroy {
       done: this.formGroup.get('done').value
     };
     this.annonces.setAnnonce(annonce).then(() => {
-      this.snackBar.open(this.d.l.changesApplied, 'ok', {duration: 2000});
+      this.snackBar.open(this.d.l.changesApplied, this.d.l.okLabel, {duration: 2000});
       this.initFormGroup();
     });
   }

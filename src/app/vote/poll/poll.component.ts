@@ -52,8 +52,8 @@ export class PollComponent implements OnInit {
   choose(choice: Choice){
     this.dialog.open(DeleteDialogComponent, {
       data: {
-        title: "Confirmation du vote",
-        content: `Êtes-vous certain de vouloir voter pour "${choice.label}" ?`
+        title: this.d.l.confirmVoteDialogTitle,
+        content: this.d.format(this.d.l.confirmVoteDialogContent, choice.label)
       }
     }).afterClosed().pipe(
       first())
@@ -61,7 +61,7 @@ export class PollComponent implements OnInit {
         if (result) {
           this.vote.sendVote(this.id, choice.id)
           .then(() => {
-            this.snackBar.open(`Vote pour "${choice.label}" enregistré`, 'ok', {duration: 2000});
+            this.snackBar.open(this.d.format(this.d.l.voteComfirmationMessage, choice.label), this.d.l.okLabel, {duration: 2000});
             this.location.back();
           })
         }

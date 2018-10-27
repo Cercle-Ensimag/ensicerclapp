@@ -271,7 +271,7 @@ export class CafetService {
 				if (users != null && dayTr != null) {
 					Object.getOwnPropertyNames(dayTr).forEach(emailId => {
 						if (!users[emailId]) {
-							throw 'user "' + emailId + '" does not exist';
+							throw this.d.format(this.d.l.cafetUserNoLonguerExists, emailId);
 						}
 						updates['users/'+emailId+'/credit'] = users[emailId].credit;
 						Object.getOwnPropertyNames(dayTr[emailId]).forEach(transId => {
@@ -372,8 +372,7 @@ export class CafetService {
 
     const pdf = new jsPDF('p', 'pt');
     const totalPagesExp = "%";
-
-    const date = this.datepipe.transform((new Date()).getTime(), 'fullDate', '', this.d.l.locale);
+    const date = this.getFullDate();
 
     pdf.setProperties({
       title: `comptes_cafet_${ date.replace(/ /g, '_') }`
@@ -385,7 +384,7 @@ export class CafetService {
       pdf.setTextColor(40);
       pdf.setFontType('normal');
 
-      const header = `Comptes cafet du ${ date }`;
+      const header = `Comptes cafet du ${ date }`;
       const header_w = pdf.getStringUnitWidth(header)*pdf.internal.getFontSize()/pdf.internal.scaleFactor;
       const header_x = (pdf.internal.pageSize.getWidth() - header_w) / 2;
 
@@ -449,11 +448,15 @@ export class CafetService {
     };
   }
 
+	getFullDate() {
+		return this.datepipe.transform((new Date()).getTime(), 'fullDate', '', this.d.l.locale);
+	}
+
   getAccountsPdfName() {
-    return `comptes_cafet_${ this.datepipe.transform((new Date()).getTime(), 'fullDate', '', this.d.l.locale).replace(/ /g, '_') }.pdf`
+    return `comptes_cafet_${ this.getFullDate().replace(/ /g, '_') }.pdf`;
   }
 
-  // Sandwichs
+  // TODO: Sandwichs
 
   /*
   getIngredients(): Observable<Ingredient[]> {

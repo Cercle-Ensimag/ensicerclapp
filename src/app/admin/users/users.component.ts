@@ -19,7 +19,7 @@ import {Location} from '@angular/common';
 export class AdminUsersComponent implements OnInit {
   public formGroup: FormGroup;
   public expandedUserUid: string = '';
-  public adminsStrings: string[] = ['vote', 'events', 'actus', 'cafet', 'nsigma', 'annonces'];
+  public adminsStrings: string[] = ['vote', 'events', 'actus', 'cafet', 'nsigma', 'announce'];
 
   constructor(
     private fb: FormBuilder,

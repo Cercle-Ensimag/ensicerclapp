@@ -2,14 +2,14 @@
   <mat-card>
     <mat-card-header>
       <img mat-card-avatar src="assets/img/icons/votes.png">
-      <mat-card-title><span *ngIf="vote.alreadyVotedTo(poll.id) | async">[A voté] </span>{{ poll.title }}</mat-card-title>
+      <mat-card-title><span *ngIf="vote.alreadyVotedTo(poll.id) | async">[{{ d.l.votedLabel }}] </span>{{ poll.title }}</mat-card-title>
       <mat-card-subtitle>{{ choicesString() }}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
       <p>{{ tools.truncate(poll.description) }}</p>
     </mat-card-content>
     <mat-card-actions *ngIf="admin">
-      <mat-slide-toggle [checked]="poll.started" (change)="setStarted($event.checked)" color="primary">Start</mat-slide-toggle>
+      <mat-slide-toggle [checked]="poll.started" (change)="setStarted($event.checked)" color="primary">{{ d.l.startLabel }}</mat-slide-toggle>
       <button mat-icon-button routerLink="/votes/poll/{{ poll.id }}"><mat-icon>search</mat-icon></button>
       <button mat-icon-button [disabled]="poll.started" routerLink="/votes/poll/{{ poll.id }}/edit"><mat-icon>edit</mat-icon></button>
       <button mat-icon-button [disabled]="poll.started" routerLink="/votes/poll/{{ poll.id }}/results"><mat-icon>poll</mat-icon></button>

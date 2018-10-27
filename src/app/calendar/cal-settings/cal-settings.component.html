@@ -7,15 +7,16 @@
 	  <form [formGroup]="formGroup" class="container">
 
 	    <mat-form-field>
-	      <textarea matInput placeholder="{{ d.l.calSettingsRessourcesLabel }}" formControlName="resources"></textarea>
-	      <mat-error *ngIf="formGroup.get('resources').invalid">{{ d.l.calSettingsRessourcesError }}</mat-error>
+	      <textarea matInput placeholder="{{ d.l.calSettingsResourcesLabel }}" formControlName="resources"></textarea>
+	      <mat-error *ngIf="formGroup.get('resources').invalid">{{ d.l.calSettingsResourcesError }}</mat-error>
 	    </mat-form-field>
 	    <br>
 	    <mat-divider></mat-divider>
 	    <div style="text-align: center">
-	      <br><b>Kézako ?</b><br><br>Il s'agist de la liste des modules que vous suivez au format "ADE" (n1, n2, n3, ...). Vous pouvez récupérer cette information depuis l'URL que vous utilisez pour consulter votre calendrier.<br><br>Laissez-nous récupérer automatiquement cette information depuis votre espace ADE.<br><br> Vos identifiants ne sont <b>pas</b> enregistrés.
 	      <br>
-	      <button mat-raised-button color="primary" (click)="gatherFromAde()">Récupérer via ADE</button>
+				<div [innerHTML]="d.l.gatherFromAdeInfo"></div>
+	      <br>
+	      <button mat-raised-button color="primary" (click)="gatherFromAde()">{{ d.l.gatherFromAdeButtonLabel }}</button>
 	    </div>
 	  </form>
 	</mat-card>

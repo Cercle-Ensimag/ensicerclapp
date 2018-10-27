@@ -9,24 +9,26 @@
     <mat-card class="item">
       <form [formGroup]="formGroup">
 
-      <span>
-        <mat-form-field [class.large]="!media.mobileSize">
-          <input matInput placeholder="{{ d.l.markAsVotedEmailInfo }}" formControlName="email" autocomplete="off">
-        </mat-form-field>
+			   <span *ngIf="error" class="error">{{ error }}</span>
 
-        <mat-form-field class="domain">
-          <mat-select placeholder="{{ d.l.markAsVotedDomainInfo }}" formControlName="domain">
-            <mat-option *ngFor="let dom of domains" [value]="dom">{{ dom }}</mat-option>
-          </mat-select>
-        </mat-form-field>
+	      <span>
+	        <mat-form-field [class.large]="!media.mobileSize">
+	          <input matInput placeholder="{{ d.l.markAsVotedEmailInfo }}" formControlName="email" autocomplete="off">
+	        </mat-form-field>
 
-        <button mat-raised-button
-                type="submit"
-                (click)="markAsVoted()"
-                [disabled]="buttonDisabled() | async"
-                color="primary"
-        >{{ d.l.votedButtonLabel }}</button>
-      </span>
+	        <mat-form-field class="domain">
+	          <mat-select placeholder="{{ d.l.markAsVotedDomainInfo }}" formControlName="domain">
+	            <mat-option *ngFor="let dom of domains" [value]="dom">{{ dom }}</mat-option>
+	          </mat-select>
+	        </mat-form-field>
+
+	        <button mat-raised-button
+	                type="submit"
+	                (click)="markAsVoted()"
+	                [disabled]="buttonDisabled() | async"
+	                color="primary"
+	        >{{ d.l.votedButtonLabel }}</button>
+	      </span>
       </form>
     </mat-card>
 
@@ -59,8 +61,8 @@
     </mat-card>
   </ng-container>
 
-  <mat-card *ngIf="!polls.length" class="center">
-    Pas de scrutin en cours. <img src="assets/img/icons/empty.png">
+  <mat-card *ngIf="!polls.length" class="item center">
+    {{ d.l.noPoll }} <img src="assets/img/icons/empty.png">
   </mat-card>
 </div>
 

@@ -64,7 +64,7 @@ export class AccountComponent implements OnInit, OnDestroy {
       ''
     ))
     .then(() => {
-      this.snackBar.open(this.d.l.changesApplied, 'ok', {duration: 2000});
+      this.snackBar.open(this.d.l.changesApplied, this.d.l.okLabel, {duration: 2000});
     });
   }
 
@@ -96,7 +96,7 @@ export class AccountComponent implements OnInit, OnDestroy {
       if (result){
         this.auth.updatePassword(result.password)
         .then(() => {
-          this.snackBar.open(this.d.l.changesApplied, 'ok', {duration: 2000});
+          this.snackBar.open(this.d.l.changesApplied, this.d.l.okLabel, {duration: 2000});
           this.auth.setError(this.d.l.passwordChangedInfo, true);
           this.auth.logout();
         })

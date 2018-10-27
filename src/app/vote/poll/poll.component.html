@@ -4,7 +4,7 @@
 	<mat-card class="item">
 	  <div>
 	    <h1>{{ poll.title }}</h1>
-	    <mat-error *ngIf="!poll.started">Le vote n'a pas encore débuté...</mat-error>
+	    <mat-error *ngIf="!poll.started">{{ d.l.notStartedInfo }}</mat-error>
 	    <markdown [data]="poll.description"></markdown>
 	  </div>
 	</mat-card>
@@ -16,7 +16,7 @@
 					<mat-card-title>{{ choice.label }}</mat-card-title>
 					<img mat-card-image src="{{ choice.image }}" alt="{{ choice.label }} - image" class="image">
 					<mat-card-actions>
-						<button mat-raised-button [disabled]="!poll.started" (click)="choose(choice);" color="primary">{{ d.l.voteForLabel }} {{ choice.short || choice.label }}</button>
+						<button mat-raised-button [disabled]="!poll.started" (click)="choose(choice);" color="primary">{{ this.d.format(this.d.l.voteForTemplate, choice.short || choice.label) }}</button>
 					</mat-card-actions>
 				</mat-card>
 			</div>

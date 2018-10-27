@@ -50,8 +50,8 @@ export class CafetAdminRespsComponent implements OnInit {
       .pipe(first())
       .subscribe(inList => {
         if (!inList) {
-          const name = this.tools.titleCase(emailId.replace('|', ' ').replace('  ', ' '));
-          this.snackBar.open(this.d.format(this.d.l.notOnTheList, name), 'ok', {duration: 2000});
+          const name = this.tools.getNameFromEmailId(emailId);
+          this.snackBar.open(this.d.format(this.d.l.notOnTheList, name), this.d.l.okLabel, {duration: 2000});
         } else {
           this.cafet.addCafetResp({
             emailId: emailId

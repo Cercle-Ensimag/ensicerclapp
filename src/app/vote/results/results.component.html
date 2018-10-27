@@ -3,11 +3,10 @@
 
 <!-- Results display -->
 <mat-card *ngIf="vote.getChoices(id) | async as choices">
-  <h2>Résultats</h2>
+  <h2>{{ d.l.pollResultsLabel }}</h2>
   <div *ngFor="let choice of choices">
     <h3>
-      {{ choice.label }} : {{ vote.getResults(id, choice.id) | async }} vote<span *ngIf="vote.getResults(id, choice.id) > 1 | async">s</span>
-      ({{ percent(choice.id) | async }}%)
+			{{ d.format(d.l.pollResultsTemplate, choice.label, vote.getResults(id, choice.id) | async, percent(choice.id) | async) }}
     </h3>
   </div>
 </mat-card>

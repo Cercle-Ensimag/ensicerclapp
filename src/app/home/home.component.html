@@ -54,7 +54,7 @@
             <a mat-list-item (click)="snav.close()"
                *ngIf="auth.isAdminOf('annonces') | async"
                routerLink="/annonces/admin"
-            > <img mat-list-avatar src="assets/img/icons/admin.png">{{ d.l.annoncesAdminLabel }}</a>
+            > <img mat-list-avatar src="assets/img/icons/admin.png">{{ d.l.announceAdminLabel }}</a>
             <a mat-list-item (click)="snav.close()"
                *ngIf="auth.isAdminOf('cafet') | async"
                routerLink="/cafet/admin"

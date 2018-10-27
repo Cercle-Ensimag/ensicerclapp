@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {DicoService} from '../../language/dico.service';
 
 @Component({
   selector: 'app-paged-grid',
@@ -10,9 +11,11 @@ export class PagedGridComponent implements OnInit {
   @Input() public pageIndex: number = 0;
   @Input() public pageSize: number = 10;
   @Input() public list: any[] = null;
-  @Input() public emptyMessage: string = 'Aucun élément à afficher !';
+  @Input() public emptyMessage: string = this.d.l.emptyMessage;
 
-  constructor() { }
+  constructor(
+		public d: DicoService
+	) { }
 
   ngOnInit() { }
 

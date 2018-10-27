@@ -13,9 +13,9 @@
 
   <mat-card class="item">
     <mat-nav-list>
-      <app-paged-list [list]="users" emptyMessage="Aucun votant ne correspond aux filtres." #page>
+      <app-paged-list [list]="users" emptyMessage="{{ d.l.noUserMatchInfo }}" #page>
         <a mat-list-item *ngFor="let user of page.truncatedList()">
-          {{ tools.titleCase(user.emailId.split('|').join(' ')) }}
+          {{ tools.getNameFromEmailId(user.emailId) }}
         </a>
       </app-paged-list>
     </mat-nav-list>

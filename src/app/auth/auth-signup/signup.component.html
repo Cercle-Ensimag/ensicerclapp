@@ -22,7 +22,7 @@
         <mat-form-field>
           <input matInput placeholder="{{ d.l.passwordlLabel }}" formControlName="password" [type]="hidePassword ? 'password' : 'text'" autocomplete="off">
           <mat-icon matSuffix (click)="hidePassword = !hidePassword">{{hidePassword ? 'visibility' : 'visibility_off'}}</mat-icon>
-          <mat-error *ngIf="formGroup.get('password').invalid">{{ d.l.passwordTooShortError }}</mat-error>
+          <mat-error *ngIf="formGroup.get('password').invalid">{{ d.l.passwordError }}</mat-error>
         </mat-form-field>
 
       </form>

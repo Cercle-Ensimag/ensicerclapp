@@ -64,7 +64,7 @@ export class EditEventsComponent implements OnInit, OnDestroy {
           startTime: [this.tools.getTimeFromDate(event.start), [Validators.required, this.tools.timeValidator]],
           end: [new Date(event.end) || '', [Validators.required, this.tools.dateValidator]],
           endTime: [this.tools.getTimeFromDate(event.end), [Validators.required, this.tools.timeValidator]],
-          location: [event.location || '', [Validators.required, Validators.maxLength(100)]],
+          location: [event.location || '', [Validators.required, Validators.maxLength(300)]],
           asso: [event.asso || '', [Validators.required, Validators.maxLength(30)]],
           price: [event.price || this.d.l.free, [Validators.required, Validators.maxLength(50)]]
         });
@@ -102,10 +102,10 @@ export class EditEventsComponent implements OnInit, OnDestroy {
           groupId: respComId
         };
         this.events.setEvent(event).then(() => {
-          this.snackBar.open(this.d.l.changesApplied, 'ok', {duration: 2000});
+          this.snackBar.open(this.d.l.changesApplied, this.d.l.okLabel, {duration: 2000});
           this.initFormGroup();
         }).catch(reason => {
-          this.snackBar.open(reason, 'ok', {duration: 2000});
+          this.snackBar.open(reason, this.d.l.okLabel, {duration: 2000});
         });
       });
   }

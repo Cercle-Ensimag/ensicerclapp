@@ -45,26 +45,26 @@ export class EditCafetUserComponent {
           email: this.formGroup.get('email').value.toLowerCase(),
           exte: !notExte}, this.user.activated)
           .then(() => this.dialogRef.close())
-          .catch((err) => this.snackBar.open(err, 'ok', {duration: 2000}));
+          .catch((err) => this.snackBar.open(err, this.d.l.okLabel, {duration: 2000}));
       });
   }
 
   archive() {
     this.cafet.archiveUser(this.user)
       .then(() => this.dialogRef.close())
-      .catch((err) => this.snackBar.open(err, 'ok', {duration: 2000}));
+      .catch((err) => this.snackBar.open(err, this.d.l.okLabel, {duration: 2000}));
   }
 
   restore() {
     this.cafet.restoreUser(this.user)
       .then(() => this.dialogRef.close())
-      .catch((err) => this.snackBar.open(err, 'ok', {duration: 2000}));
+      .catch((err) => this.snackBar.open(err, this.d.l.okLabel, {duration: 2000}));
   }
 
   delete() {
     this.cafet.deleteUser(this.user)
       .then(() => this.dialogRef.close())
-      .catch((err) => this.snackBar.open(err, 'ok', {duration: 2000}));
+      .catch((err) => this.snackBar.open(err, this.d.l.okLabel, {duration: 2000}));
   }
 
 }

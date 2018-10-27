@@ -75,11 +75,11 @@ class PersoEventRules (PersoEventsRules):
     def build(self):
         self.label = self.eventId
         self.write = validateUid(self.uid)
-        self.add(StringRules("id", 30)) # FIXME ?
-        self.add(StringRules("title", 50))
+        self.add(StringRules("id", 30))
+        self.add(StringRules("title", 80))
         self.add(NumberRules("start"))
         self.add(NumberRules("end"))
         self.add(BornedNumberRules("occurences", 1, 42))
-        self.add(StringRules("location", 30))
+        self.add(StringRules("location", 300))
         self.add(StringRules("type", 30))
         self.add(OtherRules())

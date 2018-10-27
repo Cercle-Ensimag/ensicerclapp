@@ -44,7 +44,7 @@ export class EditCalComponent implements OnInit, OnDestroy {
     this.unsubscribe.next();
     this.unsubscribe.complete();
   }
-  
+
   initFormGroup() {
     this.cal.getEvent(this.id)
       .pipe(
@@ -59,13 +59,13 @@ export class EditCalComponent implements OnInit, OnDestroy {
         }))
       .subscribe((event) => {
         this.formGroup = this.fb.group({
-          title: [event.title || '', [Validators.required, Validators.maxLength(50)]],
+          title: [event.title || '', [Validators.required, Validators.maxLength(80)]],
           start: [new Date(event.start) || '', [Validators.required, this.tools.dateValidator]],
           startTime: [this.tools.getTimeFromDate(event.start), [Validators.required, this.tools.timeValidator]],
           end: [new Date(event.end) || '', [Validators.required, this.tools.dateValidator]],
           occurences: [event.occurences || 1, [Validators.required, Validators.min(1), Validators.max(42)]],
           endTime: [this.tools.getTimeFromDate(event.end), [Validators.required, this.tools.timeValidator]],
-          location: [event.location || '', [Validators.maxLength(30)]]
+          location: [event.location || '', [Validators.maxLength(300)]]
         });
         this.formGroup.get('start').valueChanges
           .pipe(takeUntil(this.unsubscribe))
@@ -79,7 +79,7 @@ export class EditCalComponent implements OnInit, OnDestroy {
           });
       });
   }
-  
+
   getStart(): number {
     let time = this.formGroup.get('startTime').value;
     return this.tools.setDayTime(this.formGroup.get('start').value.getTime(), time + ':00');
@@ -101,7 +101,7 @@ export class EditCalComponent implements OnInit, OnDestroy {
         PERSOS
       )
     ).then(() => {
-      this.snackBar.open(this.d.l.changesApplied, 'ok', {duration: 2000});
+      this.snackBar.open(this.d.l.changesApplied, this.d.l.okLabel, {duration: 2000});
       this.initFormGroup();
     });
   }

@@ -5,19 +5,19 @@
 	<mat-card *ngIf="nsigma.getAnnonce(id) | async as annonce">
 	  <mat-card-header>
 	    <img mat-card-avatar src="assets/img/nsigma-types/{{ annonce.type }}.png">
-	    <mat-card-title>{{ annonce.done ? '[Recrutement terminé] ' : ''}}{{ annonce.title }}</mat-card-title>
-	    <mat-card-subtitle> Rémunération : {{ annonce.remuneration }} €</mat-card-subtitle>
+	    <mat-card-title>{{ annonce.done ? '[' + d.l.nsigmaAnnounceDone + '] ' : ''}}{{ annonce.title }}</mat-card-title>
+	    <mat-card-subtitle>{{ d.format(d.l.remuneration, annonce.remuneration) }} €</mat-card-subtitle>
 	  </mat-card-header>
 	  <mat-card-content>
-	    <p><b>Technologies : </b>{{ annonce.technologies}}</p>
-	    <p><b>Difficulté : </b>{{ annonce.difficulty }}</p>
+	    <p [innerHTML]="d.format(d.l.technologies, annonce.technologies)"></p>
+	    <p [innerHTML]="d.format(d.l.difficulty, annonce.difficulty)"></p>
 	    <p><b>{{ d.format(annonce.start | date:d.l.longDateFormat:'':d.l.locale) }} -
 	      {{ d.format(annonce.end | date:d.l.longDateFormat:'':d.l.locale) }}</b></p>
 	    <markdown [data]="annonce.description"></markdown>
 	  </mat-card-content>
 	  <mat-card-actions>
 	    <a mat-raised-button color="primary"	target="_blank" href="{{annonce.form}}" [disabled]="annonce.done">
-	      Candidater
+	      {{ d.l.applyToNsigmaAnnounce }}
 	    </a>
 	  </mat-card-actions>
 	</mat-card>

@@ -75,7 +75,7 @@ export class CafetAdminAccountsComponent implements OnInit {
     this.cafet.validateDayTransactions().then(
 			() => {},
 			(error) => {
-				this.snackBar.open(error, 'ok', {duration: 2000});
+				this.snackBar.open(error, this.d.l.okLabel, {duration: 2000});
 			}
 		);
   }
