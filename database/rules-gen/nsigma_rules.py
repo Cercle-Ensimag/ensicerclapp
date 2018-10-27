@@ -4,30 +4,30 @@ from common import OtherRules, BooleanRules, StringRules, BornedNumberRules, Num
 class NsigmaRules (RulesPattern):
     def build(self):
         self.label = "nsigma"
-        self.add(NsigmaAnnoncesListRules())
+        self.add(NsigmaJobAdsListRules())
         self.add(OtherRules())
 
-# nsigma annonces list node
-class NsigmaAnnoncesListRules (NsigmaRules):
+# nsigma jobads list node
+class NsigmaJobAdsListRules (NsigmaRules):
     def build(self):
-        self.label = "annonces"
+        self.label = "jobads"
         self.read = isMember()
         self.write = isOneAdmin("nsigma")
-        self.add(NsigmaAnnonceRules())
+        self.add(NsigmaJobAdRules())
 
-# nsigma annonce node
+# nsigma jobad node
 
-class NsigmaAnnonceRules (NsigmaAnnoncesListRules):
+class NsigmaJobAdRules (NsigmaJobAdsListRules):
     def __init__(self):
-        self.nsigmaAnnonceId = "$nsigmaAnnonceId"
+        self.nsigmaJobAdId = "$nsigmaJobAdId"
         super().__init__()
 
     def build(self):
-        self.label = self.nsigmaAnnonceId
+        self.label = self.nsigmaJobAdId
         self.write = isOneAdmin("nsigma")
         self.indexOn = ["start"]
 
-        self.add(IdRules("id", self.nsigmaAnnonceId))
+        self.add(IdRules("id", self.nsigmaJobAdId))
         self.add(StringRules("title", 50))
         self.add(StringRules("description", 5000))
         self.add(BornedNumberRules("type", 0, 6))

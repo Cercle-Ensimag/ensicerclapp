@@ -72,7 +72,7 @@ import {CafetService} from './cafet/cafet-service/cafet.service';
 import {EventsService} from './events/events-service/events.service';
 import {ActusService} from './actus/actus-service/actus.service';
 import {NsigmaService} from './nsigma/nsigma.service';
-import {AnnoncesService} from './annonces/annonces.service';
+import {JobAdsService} from './jobads/jobads.service';
 import {CalService} from './calendar/cal-service/cal.service';
 
 import {AppModulesService} from './providers/app-modules.service';
@@ -118,26 +118,26 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatTableModule} from '@angular/material/table';
 
 import {environment} from '../environments/environment';
-import {AnnoncesHomeComponent} from './annonces/annonces-home/annonces-home.component';
-import {AnnoncesAdminComponent} from './annonces/annonces-admin/annonces-admin.component';
-import {AnnoncesAnnonceComponent} from './annonces/annonces-annonce/annonces-annonce.component';
+import {JobAdsHomeComponent} from './jobads/jobads-home/jobads-home.component';
+import {JobAdsAdminComponent} from './jobads/jobads-admin/jobads-admin.component';
+import {JobAdsJobAdComponent} from './jobads/jobads-jobad/jobads-jobad.component';
 import {NsigmaHomeComponent} from './nsigma/nsigma-home/nsigma-home.component';
-import {NsigmaAnnonceComponent} from './nsigma/nsigma-annonce/nsigma-annonce.component';
+import {NsigmaJobAdComponent} from './nsigma/nsigma-jobad/nsigma-jobad.component';
 import {NsigmaAdminComponent} from './nsigma/nsigma-admin/nsigma-admin.component';
 import {NsigmaEditComponent} from './nsigma/nsigma-edit/nsigma-edit.component';
 import {NsigmaGuard} from './nsigma/nsigma.guard';
-import {AnnoncesGuard} from './annonces/annonces.guard';
+import {JobAdsGuard} from './jobads/jobads.guard';
 import {DeleteDialogComponent} from './shared-components/delete-dialog/delete-dialog.component';
 import {LoginDialogComponent} from './shared-components/login-dialog/login-dialog.component';
 import {PagedGridComponent} from './shared-components/paged-grid/paged-grid.component';
-import {AnnoncesEditComponent} from './annonces/annonces-edit/annonces-edit.component';
+import {JobAdsEditComponent} from './jobads/jobads-edit/jobads-edit.component';
 import {LoadingComponent} from './shared-components/loading/loading.component';
 import {ConditionalRouterLinkComponent} from './shared-components/conditional-router-link/conditional-router-link.component';
-import {AnnonceCardComponent} from './annonces/components/annonce-card/annonce-card.component';
+import {JobAdCardComponent} from './jobads/components/jobad-card/jobad-card.component';
 import {VoteCardComponent} from './vote/components/vote-card/vote-card.component';
 import {EventCardComponent} from './events/components/event-card/event-card.component';
 import {ActuCardComponent} from './actus/components/actu-card/actu-card.component';
-import {NsigmaAnnonceCardComponent} from './nsigma/components/nsigma-annonce-card/nsigma-annonce-card.component';
+import {NsigmaJobAdCardComponent} from './nsigma/components/nsigma-jobad-card/nsigma-jobad-card.component';
 import {PagedListComponent} from './shared-components/paged-list/paged-list.component';
 import {UpdatePasswordDialogComponent} from './account/components/update-password-dialog/update-password-dialog.component';
 import {DayColumnComponent} from './calendar/components/day-column/day-column.component';
@@ -160,20 +160,20 @@ import {HammerFix} from '../HammerFix';
     ActusHomeComponent, ActuComponent, ActuAdminComponent, JournalistComponent, EditActusComponent,
     InfoComponent, ReadmeComponent, LegalNoticeComponent,
     AccountComponent,
-    AnnoncesHomeComponent,
-    AnnoncesAdminComponent,
+    JobAdsHomeComponent,
+    JobAdsAdminComponent,
     NsigmaAdminComponent,
     NsigmaHomeComponent,
-    NsigmaAnnonceComponent,
+    NsigmaJobAdComponent,
     NsigmaEditComponent,
     DeleteDialogComponent,
     LoginDialogComponent,
-    AnnoncesAnnonceComponent,
-    AnnoncesEditComponent,
+    JobAdsJobAdComponent,
+    JobAdsEditComponent,
     LoadingComponent,
     ConditionalRouterLinkComponent,
-    AnnonceCardComponent,
-    NsigmaAnnonceCardComponent,
+    JobAdCardComponent,
+    NsigmaJobAdCardComponent,
     VoteCardComponent,
     EventCardComponent,
     ActuCardComponent,
@@ -204,7 +204,7 @@ import {HammerFix} from '../HammerFix';
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
-    AuthService, VoteService, AdminService, CafetService, EventsService, ActusService, NsigmaService, NsigmaGuard, AnnoncesService, AnnoncesGuard, CalService,
+    AuthService, VoteService, AdminService, CafetService, EventsService, ActusService, NsigmaService, NsigmaGuard, JobAdsService, JobAdsGuard, CalService,
     AppModulesService, DeviceSizeService, ListService, ToolsService,
     CanActivateHome, CanActivateVoteAdmin, CanActivateAssessor, CanActivateEventsAdmin, CanActivateComResp, CanActivateEventsEdit, CanActivateActusAdmin, CanActivateJournalist, CanActivateCafetResp, CanActivateActusEdit, CanActivateAdmin, CanActivateCafetAdmin, EmailVerifGuard,
     DicoService, DatePipe,

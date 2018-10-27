@@ -61,7 +61,7 @@ export class CalSettingsComponent implements OnInit, OnDestroy {
       )
     ).then(() => {
       this.snackBar.open(this.d.l.updatedResourcesInfo, this.d.l.okLabel, {duration: 2000});
-      this.ngZone.run(() => this.router.navigateByUrl('/calendrier'));
+      this.ngZone.run(() => this.router.navigateByUrl('/calendar'));
     });
   }
 

@@ -58,13 +58,13 @@ import {EmailVerifGuard} from './auth/email-verif/email-verif-guard/email-verif.
 import {NsigmaHomeComponent} from './nsigma/nsigma-home/nsigma-home.component';
 import {NsigmaAdminComponent} from './nsigma/nsigma-admin/nsigma-admin.component';
 import {NsigmaGuard} from './nsigma/nsigma.guard';
-import {AnnoncesHomeComponent} from './annonces/annonces-home/annonces-home.component';
-import {AnnoncesAdminComponent} from './annonces/annonces-admin/annonces-admin.component';
-import {AnnoncesGuard} from './annonces/annonces.guard';
-import {NsigmaAnnonceComponent} from './nsigma/nsigma-annonce/nsigma-annonce.component';
+import {JobAdsHomeComponent} from './jobads/jobads-home/jobads-home.component';
+import {JobAdsAdminComponent} from './jobads/jobads-admin/jobads-admin.component';
+import {JobAdsGuard} from './jobads/jobads.guard';
+import {NsigmaJobAdComponent} from './nsigma/nsigma-jobad/nsigma-jobad.component';
 import {NsigmaEditComponent} from './nsigma/nsigma-edit/nsigma-edit.component';
-import {AnnoncesEditComponent} from './annonces/annonces-edit/annonces-edit.component';
-import {AnnoncesAnnonceComponent} from './annonces/annonces-annonce/annonces-annonce.component';
+import {JobAdsEditComponent} from './jobads/jobads-edit/jobads-edit.component';
+import {JobAdsJobAdComponent} from './jobads/jobads-jobad/jobads-jobad.component';
 import {CafetRespComponent} from './cafet/cafet-resp/cafet-resp.component';
 
 const routes: Routes = [
@@ -103,20 +103,20 @@ const routes: Routes = [
   { path: 'actus/journalist', component: JournalistComponent/*, canActivate: [CanActivateHome, CanActivateJournalist] */},
   { path: 'actus/actu/:id/edit', component: EditActusComponent/*, canActivate: [CanActivateHome, CanActivateActusEdit] */},
 
-  { path: 'calendrier', component: CalendarComponent/*, canActivate: [CanActivateHome] */},
-  { path: 'calendrier/settings', component: CalSettingsComponent/*, canActivate: [CanActivateHome] */},
-  { path: 'calendrier/edit', component: CalEditAllComponent/*, canActivate: [CanActivateHome] */},
-  { path: 'calendrier/event/:id/edit', component: EditCalComponent/*, canActivate: [CanActivateHome] */},
+  { path: 'calendar', component: CalendarComponent/*, canActivate: [CanActivateHome] */},
+  { path: 'calendar/settings', component: CalSettingsComponent/*, canActivate: [CanActivateHome] */},
+  { path: 'calendar/edit', component: CalEditAllComponent/*, canActivate: [CanActivateHome] */},
+  { path: 'calendar/event/:id/edit', component: EditCalComponent/*, canActivate: [CanActivateHome] */},
 
   { path: 'nsigma', component: NsigmaHomeComponent/*, canActivate: [CanActivateHome] */},
-  { path: 'nsigma/annonce/:id', component: NsigmaAnnonceComponent/*, canActivate: [CanActivateHome] */},
+  { path: 'nsigma/jobad/:id', component: NsigmaJobAdComponent/*, canActivate: [CanActivateHome] */},
   { path: 'nsigma/admin', component: NsigmaAdminComponent/*, canActivate: [NsigmaGuard] */},
-  { path: 'nsigma/annonce/:id/edit', component: NsigmaEditComponent/*, canActivate: [NsigmaGuard] */},
+  { path: 'nsigma/jobad/:id/edit', component: NsigmaEditComponent/*, canActivate: [NsigmaGuard] */},
 
-  { path: 'annonces', component: AnnoncesHomeComponent/*, canActivate: [CanActivateHome] */},
-  { path: 'annonces/annonce/:id', component: AnnoncesAnnonceComponent/*, canActivate: [CanActivateHome] */},
-  { path: 'annonces/admin', component: AnnoncesAdminComponent/*, canActivate: [AnnoncesGuard] */},
-  { path: 'annonces/annonce/:id/edit', component: AnnoncesEditComponent/*, canActivate: [AnnoncesGuard] */},
+  { path: 'jobads', component: JobAdsHomeComponent/*, canActivate: [CanActivateHome] */},
+  { path: 'jobads/jobad/:id', component: JobAdsJobAdComponent/*, canActivate: [CanActivateHome] */},
+  { path: 'jobads/admin', component: JobAdsAdminComponent/*, canActivate: [JobAdsGuard] */},
+  { path: 'jobads/jobad/:id/edit', component: JobAdsEditComponent/*, canActivate: [JobAdsGuard] */},
 
   { path: 'admin', component: AdminUsersComponent/*, canActivate: [CanActivateHome, CanActivateAdmin] */}
 ];

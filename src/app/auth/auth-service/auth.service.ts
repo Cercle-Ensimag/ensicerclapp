@@ -1,12 +1,15 @@
-import {combineLatest, from, Observable, Observer, of} from 'rxjs';
-import {catchError, debounceTime, filter, first, flatMap, map, mergeMap, shareReplay, tap} from 'rxjs/operators';
 import {Injectable, NgZone} from '@angular/core';
 import {Location} from '@angular/common';
 import {Router} from '@angular/router';
 import {AbstractControl, FormControl} from '@angular/forms';
+import {MatSnackBar} from '@angular/material';
 
 import {AngularFireAuth} from '@angular/fire/auth';
 import {AngularFireDatabase} from '@angular/fire/database';
+import {combineLatest, from, Observable, Observer, of} from 'rxjs';
+import {catchError, debounceTime, filter, first, flatMap, map, mergeMap, shareReplay, tap} from 'rxjs/operators';
+import * as firebase from 'firebase';
+import {User} from 'firebase/app';
 
 import {AppModulesService} from '../../providers/app-modules.service';
 import {ToolsService} from '../../providers/tools.service';
@@ -16,12 +19,9 @@ import {ComResp} from '../../events/events-service/events.service';
 import {Journalist} from '../../actus/actu-admin/actu-admin.component';
 import {Assessor} from '../../vote/vote-admin/vote-admin.component';
 import {CafetResp} from '../../cafet/cafet-service/cafet.service';
-import {User} from 'firebase/app';
-import {MatSnackBar} from '@angular/material';
 
-import * as firebase from 'firebase';
-
-export const DOMAINS = ['ensimag.fr', 'phelma.grenoble-inp.fr']
+export const DOMAINS = ['ensimag.fr', 'phelma.grenoble-inp.fr'];
+export const ADMINS = ['vote', 'events', 'actus', 'cafet', 'nsigma', 'jobads'];
 
 export class Profile {
   name: {
@@ -327,6 +327,9 @@ export class AuthService {
   }
 
   isAdminOf(of: string): Observable<boolean> {
+		if (!ADMINS.includes(of)) {
+			return null;
+		}
     if (!this._isAdminOf[of]) {
       this._isAdminOf[of] = this.getOtherAdminsRes()
         .pipe(

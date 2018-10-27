@@ -2,7 +2,7 @@
 <app-loading [loading]="formGroup"></app-loading>
 
 <div class="thin-container">
-	<!-- Nsigma annonce display -->
+	<!-- Nsigma jobad display -->
 	<mat-card *ngIf="formGroup">
 	  <form [formGroup]="formGroup" class="container">
 
@@ -62,8 +62,8 @@
 	    </mat-form-field>
 
 	    <mat-slide-toggle formControlName="done" color="primary">
-	      <span *ngIf="!formGroup.get('done').value">{{ d.l.nsigmaAnnounceOngoing }}</span>
-	      <span *ngIf="formGroup.get('done').value">{{ d.l.nsigmaAnnounceDone }}</span>
+	      <span *ngIf="!formGroup.get('done').value">{{ d.l.nsigmaJobAdsOngoing }}</span>
+	      <span *ngIf="formGroup.get('done').value">{{ d.l.nsigmaJobAdsDone }}</span>
 	    </mat-slide-toggle>
 	  </form>
 	</mat-card>

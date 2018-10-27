@@ -14,7 +14,7 @@
 						"actus-admin": { ".validate" : "newData.isBoolean()" },
 						"vote-admin": { ".validate" : "newData.isBoolean()" },
 						"nsigma-admin": { ".validate" : "newData.isBoolean()" },
-						"annonces-admin": { ".validate" : "newData.isBoolean()" },
+						"jobads-admin": { ".validate" : "newData.isBoolean()" },
 						"$other": { ".validate" : "false" },
 					},
 					"account": {
@@ -224,13 +224,13 @@
 			"$other": { ".validate" : "false" },
 		},
 		"nsigma": {
-			"annonces": {
+			"jobads": {
 				".read" : "auth !== null && auth.token.email_verified == true",
 				".write" : "root.child('users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/'+auth.uid+'/admin/nsigma-admin').val() == true && auth !== null && auth.token.email_verified == true",
-				"$nsigmaAnnonceId": {
+				"$nsigmaJobAdId": {
 					".write" : "root.child('users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/'+auth.uid+'/admin/nsigma-admin').val() == true && auth !== null && auth.token.email_verified == true",
 					".indexOn" : ["start"],
-					"id": { ".validate" : "newData.val() === $nsigmaAnnonceId" },
+					"id": { ".validate" : "newData.val() === $nsigmaJobAdId" },
 					"title": { ".validate" : "newData.isString() && newData.val().length <= 50" },
 					"description": { ".validate" : "newData.isString() && newData.val().length <= 5000" },
 					"type": { ".validate" : "newData.isNumber() && newData.val() >= 0 && newData.val() <= 6" },
@@ -246,14 +246,14 @@
 			},
 			"$other": { ".validate" : "false" },
 		},
-		"annonces": {
-			"annonces": {
+		"jobads": {
+			"jobads": {
 				".read" : "auth !== null && auth.token.email_verified == true",
-				".write" : "root.child('users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/'+auth.uid+'/admin/annonces-admin').val() == true && auth !== null && auth.token.email_verified == true",
-				"$annonceId": {
-					".write" : "root.child('users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/'+auth.uid+'/admin/annonces-admin').val() == true && auth !== null && auth.token.email_verified == true",
+				".write" : "root.child('users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/'+auth.uid+'/admin/jobads-admin').val() == true && auth !== null && auth.token.email_verified == true",
+				"$jobadId": {
+					".write" : "root.child('users/'+auth.token.email.replace('@ensimag.fr', '').replace('.', '|')+'/'+auth.uid+'/admin/jobads-admin').val() == true && auth !== null && auth.token.email_verified == true",
 					".indexOn" : ["start"],
-					"id": { ".validate" : "newData.val() === $annonceId" },
+					"id": { ".validate" : "newData.val() === $jobadId" },
 					"title": { ".validate" : "newData.isString() && newData.val().length <= 50" },
 					"description": { ".validate" : "newData.isString() && newData.val().length <= 5000" },
 					"type": { ".validate" : "newData.isNumber() && newData.val() >= 0 && newData.val() <= 2" },

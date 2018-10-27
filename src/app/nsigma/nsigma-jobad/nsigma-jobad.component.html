@@ -1,0 +1,30 @@
+<app-loading [loading]="nsigma.getJobAd(id) | async"></app-loading>
+
+<div class="thin-container">
+	<!-- Nsigma jobads display -->
+	<mat-card *ngIf="nsigma.getJobAd(id) | async as jobad">
+	  <mat-card-header>
+	    <img mat-card-avatar src="assets/img/nsigma-types/{{ jobad.type }}.png">
+	    <mat-card-title>{{ jobad.done ? '[' + d.l.nsigmaJobAdsDone + '] ' : ''}}{{ jobad.title }}</mat-card-title>
+	    <mat-card-subtitle>{{ d.format(d.l.remuneration, jobad.remuneration) }} €</mat-card-subtitle>
+	  </mat-card-header>
+	  <mat-card-content>
+	    <p [innerHTML]="d.format(d.l.technologies, jobad.technologies)"></p>
+	    <p [innerHTML]="d.format(d.l.difficulty, jobad.difficulty)"></p>
+	    <p><b>{{ d.format(jobad.start | date:d.l.longDateFormat:'':d.l.locale) }} -
+	      {{ d.format(jobad.end | date:d.l.longDateFormat:'':d.l.locale) }}</b></p>
+	    <markdown [data]="jobad.description"></markdown>
+	  </mat-card-content>
+	  <mat-card-actions>
+	    <a mat-raised-button color="primary"	target="_blank" href="{{jobad.form}}" [disabled]="jobad.done">
+	      {{ d.l.applyToNsigmaJobAds }}
+	    </a>
+	  </mat-card-actions>
+	</mat-card>
+</div>
+
+<div class="mat-fab-bottom-right">
+  <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
+</div>
+
+<br><br><br><br><br><br>

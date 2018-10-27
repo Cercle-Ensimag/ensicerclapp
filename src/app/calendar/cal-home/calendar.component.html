@@ -4,12 +4,12 @@
     <button mat-icon-button (click)="previousDay()"><mat-icon>navigate_before</mat-icon></button>
     <label>{{ selectedDay | date:d.l.shortDateFormat:'':d.l.locale | uppercase }}</label>
     <button mat-icon-button (click)="nextDay()"><mat-icon>navigate_next</mat-icon></button><br>
-    <button mat-icon-button routerLink="/calendrier/event/-/edit"><mat-icon>add_circle</mat-icon></button>
-    <button mat-icon-button routerLink="/calendrier/edit"><mat-icon>edit</mat-icon></button>
+    <button mat-icon-button routerLink="/calendar/event/-/edit"><mat-icon>add_circle</mat-icon></button>
+    <button mat-icon-button routerLink="/calendar/edit"><mat-icon>edit</mat-icon></button>
     <input [(ngModel)]="selectedDay" [matDatepicker]="picker" style="width: 0; height: 0; padding: 0; margin: 0; border: none; visibility: hidden;">
     <mat-datepicker [touchUi]="true" #picker></mat-datepicker>
     <mat-datepicker-toggle [for]="picker"></mat-datepicker-toggle>
-    <button mat-icon-button routerLink="/calendrier/settings"><mat-icon>settings</mat-icon></button>
+    <button mat-icon-button routerLink="/calendar/settings"><mat-icon>settings</mat-icon></button>
   </mat-card>
 
   <app-day-column [date]="selectedDay"></app-day-column>
@@ -18,15 +18,15 @@
 <!-- Desktop -->
 <ng-template #desktop>
   <mat-card class="item header center">
-    <button mat-icon-button routerLink="/calendrier/event/-/edit"><mat-icon>add_circle</mat-icon></button>
-    <button mat-icon-button routerLink="/calendrier/edit"><mat-icon>edit</mat-icon></button>
+    <button mat-icon-button routerLink="/calendar/event/-/edit"><mat-icon>add_circle</mat-icon></button>
+    <button mat-icon-button routerLink="/calendar/edit"><mat-icon>edit</mat-icon></button>
     <button mat-icon-button (click)="previousWeek()"><mat-icon>navigate_before</mat-icon></button>
     <label>{{ daysOfTheWeek[0] | date:d.l.shortDateFormat:'':d.l.locale | uppercase }} - {{ daysOfTheWeek[6] | date:d.l.shortDateFormat:'':d.l.locale | uppercase }}</label>
     <button mat-icon-button (click)="nextWeek()"><mat-icon>navigate_next</mat-icon></button>
     <input [(ngModel)]="selectedDay" [matDatepicker]="picker2" style="width: 0; height: 0; padding: 0; margin: 0; border: none; visibility: hidden;">
     <mat-datepicker #picker2></mat-datepicker>
     <mat-datepicker-toggle [for]="picker2"></mat-datepicker-toggle>
-    <button mat-icon-button routerLink="/calendrier/settings"><mat-icon>settings</mat-icon></button>
+    <button mat-icon-button routerLink="/calendar/settings"><mat-icon>settings</mat-icon></button>
   </mat-card>
 
 	<div class="columns">

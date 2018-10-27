@@ -2,38 +2,38 @@
 import {takeUntil} from 'rxjs/operators';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {JobAd, JobAdsService} from '../../jobads/jobads.service';
 import {AuthService} from '../../auth/auth-service/auth.service';
 import {ToolsService} from '../../providers/tools.service';
 import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
 import {DicoService} from '../../language/dico.service';
-import {NsigmaJobAd, NsigmaService} from '../nsigma.service';
 import {MatSnackBar} from '@angular/material';
 import {Subject} from 'rxjs';
 
 
 
 @Component({
-  selector: 'app-nsigma-edit',
-  templateUrl: './nsigma-edit.component.html',
-  styleUrls: ['./nsigma-edit.component.css']
+  selector: 'app-jobads-edit',
+  templateUrl: './jobads-edit.component.html',
+  styleUrls: ['./jobads-edit.component.css']
 })
-export class NsigmaEditComponent implements OnInit, OnDestroy {
+export class JobAdsEditComponent implements OnInit, OnDestroy {
   private unsubscribe: Subject<void> = new Subject();
-  private id: string;
 
+  public id: string;
   public formGroup: FormGroup;
 
   constructor(
     private auth: AuthService,
-    private nsigma: NsigmaService,
+    private jobads: JobAdsService,
     private route: ActivatedRoute,
     private fb: FormBuilder,
-    private d: DicoService,
     private snackBar: MatSnackBar,
 
     public tools: ToolsService,
     public location: Location,
+    public d: DicoService
   ) {}
 
   ngOnInit() {
@@ -47,32 +47,26 @@ export class NsigmaEditComponent implements OnInit, OnDestroy {
   }
 
   initFormGroup() {
-    return this.nsigma
-      .getJobAd(this.id).pipe(
+    this.jobads.getJobAd(this.id).pipe(
       takeUntil(this.unsubscribe))
       .subscribe((jobad) => {
         if (!jobad) {
-          jobad = new NsigmaJobAd();
-          jobad.type = 6;
-          this.id = this.nsigma.getJobAdId();
+          jobad = new JobAd();
+          jobad.type = 2;
+          this.id = this.jobads.getJobAdId();
         }
         this.formGroup = this.fb.group({
           title: [jobad.title || '', [Validators.required, Validators.maxLength(50)]],
           description: [jobad.description || '', [Validators.required, Validators.maxLength(5000)]],
-          type: [jobad.type, [Validators.required, Validators.min(0), Validators.max(6)]],
+          type: [jobad.type || 0, [Validators.required, Validators.min(0), Validators.max(2)]],
           start: [new Date(jobad.start) || '', [Validators.required, this.tools.dateValidator]],
-          end: [new Date(jobad.end) || '', [Validators.required, this.tools.dateValidator]],
+          length: [jobad.length || '', [Validators.required, Validators.maxLength(20)]],
           technologies: [jobad.technologies || '', [Validators.required, Validators.maxLength(100)]],
-          difficulty: [jobad.difficulty || '', [Validators.required, Validators.maxLength(100)]],
-          remuneration: [jobad.remuneration || 0, [Validators.required, Validators.min(0), Validators.max(500000)]],
-          form: [jobad.form || '', [Validators.required, this.tools.urlValidator, Validators.maxLength(100)]],
+          contact: [jobad.contact || '', [Validators.required, Validators.maxLength(200)]],
+          author: [jobad.author || '', [Validators.required, Validators.maxLength(30)]],
           done: [jobad.done || false, [Validators.required]]
         });
-        this.formGroup.get('start')
-          .valueChanges.pipe(
-          takeUntil(this.unsubscribe))
-          .subscribe(value => this.formGroup.get('end').setValue(value));
-    });
+      });
   }
 
   submit() {
@@ -82,14 +76,13 @@ export class NsigmaEditComponent implements OnInit, OnDestroy {
       description: this.formGroup.get('description').value,
       type: this.formGroup.get('type').value,
       start: this.formGroup.get('start').value.getTime(),
-      end: this.formGroup.get('end').value.getTime(),
+      length: this.formGroup.get('length').value,
       technologies: this.formGroup.get('technologies').value,
-      difficulty: this.formGroup.get('difficulty').value,
-      remuneration: this.formGroup.get('remuneration').value,
-      form: this.formGroup.get('form').value,
+      contact: this.formGroup.get('contact').value,
+      author: this.formGroup.get('author').value,
       done: this.formGroup.get('done').value
     };
-    this.nsigma.setJobAd(jobad).then(() => {
+    this.jobads.setJobAd(jobad).then(() => {
       this.snackBar.open(this.d.l.changesApplied, this.d.l.okLabel, {duration: 2000});
       this.initFormGroup();
     });

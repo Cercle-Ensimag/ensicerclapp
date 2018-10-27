@@ -5,7 +5,7 @@ import {Observable} from 'rxjs';
 import {map, shareReplay} from 'rxjs/operators';
 import {ToolsService} from '../providers/tools.service';
 
-export class NsigmaAnnonce {
+export class NsigmaJobAd {
   id: string;
   title: string;
   description: string;
@@ -21,46 +21,46 @@ export class NsigmaAnnonce {
 
 @Injectable()
 export class NsigmaService {
-  private _annonces: Observable<NsigmaAnnonce[]>;
-  private _annonce: { [ $annonceId: string ]: Observable<NsigmaAnnonce> } = {};
+  private _jobads: Observable<NsigmaJobAd[]>;
+  private _jobad: { [ $jobadId: string ]: Observable<NsigmaJobAd> } = {};
 
   constructor(
     private db: AngularFireDatabase,
     private tools: ToolsService) { }
 
-  getAnnonces(): Observable<NsigmaAnnonce[]> {
-    if (!this._annonces){
-      this._annonces = this.tools.enableCache(
+  getJobAds(): Observable<NsigmaJobAd[]> {
+    if (!this._jobads){
+      this._jobads = this.tools.enableCache(
         this.db
-          .list<NsigmaAnnonce>('nsigma/annonces')
-          .valueChanges(), '_annoncesNsigma')
+          .list<NsigmaJobAd>('nsigma/jobads')
+          .valueChanges(), '_jobadsNsigma')
         .pipe(
-          map(annonces => annonces.reverse()),
+          map(jobads => jobads.reverse()),
           shareReplay(1));
     }
-    return this._annonces;
+    return this._jobads;
   }
 
-  getAnnonce(nsigmaAnnonceId: string) {
-    if (!this._annonce[nsigmaAnnonceId]){
-      this._annonce[nsigmaAnnonceId] = this.tools.enableCache(
+  getJobAd(nsigmaJobAdId: string) {
+    if (!this._jobad[nsigmaJobAdId]){
+      this._jobad[nsigmaJobAdId] = this.tools.enableCache(
         this.db
-          .object<NsigmaAnnonce>('nsigma/annonces/' + nsigmaAnnonceId)
-          .valueChanges(), `_annonceNsigma_${nsigmaAnnonceId}`)
+          .object<NsigmaJobAd>('nsigma/jobads/' + nsigmaJobAdId)
+          .valueChanges(), `_jobadNsigma_${nsigmaJobAdId}`)
         .pipe(shareReplay(1))
     }
-    return this._annonce[nsigmaAnnonceId];
+    return this._jobad[nsigmaJobAdId];
   }
 
-  getAnnonceId() {
-    return this.db.list<NsigmaAnnonce>('nsigma/annonces/').push(null).key;
+  getJobAdId() {
+    return this.db.list<NsigmaJobAd>('nsigma/jobads/').push(null).key;
   }
 
-  setAnnonce(nsigmaAnnonce: NsigmaAnnonce) {
-    return this.db.object<NsigmaAnnonce>('nsigma/annonces/' + nsigmaAnnonce.id).set(nsigmaAnnonce);
+  setJobAd(nsigmaJobAd: NsigmaJobAd) {
+    return this.db.object<NsigmaJobAd>('nsigma/jobads/' + nsigmaJobAd.id).set(nsigmaJobAd);
   }
 
-  deleteAnnonce(nsigmaAnnonceId: string) {
-    return this.db.object<NsigmaAnnonce>('nsigma/annonces/' + nsigmaAnnonceId).set(null);
+  deleteJobAd(nsigmaJobAdId: string) {
+    return this.db.object<NsigmaJobAd>('nsigma/jobads/' + nsigmaJobAdId).set(null);
   }
 }

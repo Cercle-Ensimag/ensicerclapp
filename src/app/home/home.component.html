@@ -52,9 +52,9 @@
                routerLink="/actus/journalist"
             > <img mat-list-avatar src="assets/img/icons/admin.png">{{ d.l.journalistLabel }}</a>
             <a mat-list-item (click)="snav.close()"
-               *ngIf="auth.isAdminOf('annonces') | async"
-               routerLink="/annonces/admin"
-            > <img mat-list-avatar src="assets/img/icons/admin.png">{{ d.l.announceAdminLabel }}</a>
+               *ngIf="auth.isAdminOf('jobads') | async"
+               routerLink="/jobads/admin"
+            > <img mat-list-avatar src="assets/img/icons/admin.png">{{ d.l.jobadsAdminLabel }}</a>
             <a mat-list-item (click)="snav.close()"
                *ngIf="auth.isAdminOf('cafet') | async"
                routerLink="/cafet/admin"
@@ -93,7 +93,7 @@
 
     <!-- Content -->
     <mat-sidenav-content (swiperight)="openSnav()" (swipeleft)="snav.close()">
-      <div class="container" [class.withCalendar]="location.path() === '/calendrier'">
+      <div class="container" [class.withCalendar]="location.path() === '/calendar'">
         <div>
           <!--<app-loading [loading]="this.auth.isConnectionEstablished() | async"></app-loading>-->
           <!-- Navigate from the different modules of the app (cafet, vote, calendar, ...) -->

@@ -1,0 +1,13 @@
+<div class="item">
+	<app-paged-grid [list]="jobads.getJobAds() | async" emptyMessage="{{ d.l.noJobAds }}" #pages>
+	  <app-jobad-card *ngFor="let jobad of pages.truncatedList()"
+	                    [jobad]="jobad">
+	  </app-jobad-card>
+	</app-paged-grid>
+</div>
+
+<div class="mat-fab-bottom-right">
+  <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
+</div>
+
+<br><br><br><br><br><br>

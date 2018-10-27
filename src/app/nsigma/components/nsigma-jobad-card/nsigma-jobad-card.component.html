@@ -1,0 +1,17 @@
+<app-conditional-router-link link="/nsigma/jobad/{{ jobad.id }}" [enabled]="!admin">
+  <mat-card>
+    <mat-card-header>
+      <img mat-card-avatar src="assets/img/nsigma-types/{{ jobad.type }}.png">
+      <mat-card-title>{{ jobad.done ? '[' + d.l.nsigmaJobAdsDone + '] ' : ''}}{{ jobad.title }}</mat-card-title>
+      <mat-card-subtitle> {{ jobad.remuneration }} € - {{ jobad.technologies }} - {{ jobad.difficulty }} </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p>{{ tools.truncate(jobad.description) }}</p>
+    </mat-card-content>
+    <mat-card-actions *ngIf="admin">
+      <button mat-icon-button routerLink="/nsigma/jobad/{{ jobad.id }}"><mat-icon>search</mat-icon></button>
+      <button mat-icon-button routerLink="/nsigma/jobad/{{ jobad.id }}/edit"><mat-icon>edit</mat-icon></button>
+      <button mat-icon-button (click)="delete()"><mat-icon>delete</mat-icon></button>
+    </mat-card-actions>
+  </mat-card>
+</app-conditional-router-link>

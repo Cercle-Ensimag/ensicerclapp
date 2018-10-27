@@ -103,9 +103,9 @@ export class French {
 	// -> nsigma
 	public static readonly nsigmaAdminLabel = 'Admin Nsigma';
 	public static readonly nsigmaAdminPlLabel = 'Admins Nsigma';
-	// -> announcements
-	public static readonly announceAdminLabel = 'Admin annonces';
-	public static readonly announceAdminPlLabel = 'Admins annonces';
+	// -> jobadments
+	public static readonly jobadsAdminLabel = 'Admin annonces';
+	public static readonly jobadsAdminPlLabel = 'Admins annonces';
 	// -> actus
 	public static readonly actusAdminLabel = "Admin actus";
 	public static readonly actusAdminPlLabel = "Admins actus";
@@ -113,39 +113,6 @@ export class French {
 	public static readonly journalistPlLabel = "Journalistes";
 	public static readonly addJournalistInfo = "Entrer l'e-mail d'un journaliste";
 	public static readonly addJournalistButtonLabel = "Ajouter";
-
-	// Annonce
-	public static readonly announceDone = "Finie";
-	// -> annonce-annonce
-	public static readonly announceTechnologiesIntro = "Technologies : ";
-	public static readonly announceDurationIntro = "Durée : ";
-	// -> annonce-edit
-	public static readonly announceOngoing = 'En cours';
-	public static readonly announceTitleLabel = "Titre";
-	public static readonly announceTitleError = "Titre invalide";
-	public static readonly announceDescriptionLabel = "Description (Markdown pour la mise en forme)";
-	public static readonly announceDescriptionError = "Description invalide";
-	public static readonly announceTypeLabel = "Nature de l'offre";
-	public static readonly announceTypeError = "Type invalide";
-	public static readonly announceType0 = "Durée déterminée";
-	public static readonly announceType1 = "Durée indéterminée";
-	public static readonly announceType2 = "Générale";
-	public static readonly announceStartLabel = 'Date de début';
-	public static readonly announceStartError = 'Date invalide';
-	public static readonly announceLengthLabel = 'Durée';
-	public static readonly announceLengthError = 'Durée invalide';
-	public static readonly announceContactLabel = 'Contact';
-	public static readonly announceContactError = 'Contact invalide';
-	public static readonly announceAuthorLabel = 'Auteur';
-	public static readonly announceAuthorError = 'Auteur invalide';
-	public static readonly announceTechnologiesLabel = 'Technologies';
-	public static readonly announceTechnologiesError = 'Technologies invalides';
-	// -> annonce-home
-	public static readonly noAnnounce = 'Aucune annonce';
-	// -> annonce-card
-	public static readonly deleteAnnounceDialogTitle = "Confirmation de la suppression";
-	public static readonly deleteAnnounceDialogContent = "Êtes-vous certain de vouloir supprimer \"{0}\" ?";
-	public static readonly deletedAnnounceInfo = "Annonce supprimée";
 
   // Auth
 	public static readonly logOutLabel = "Déconnexion";
@@ -298,18 +265,51 @@ export class French {
 	// -> user-guide
   public static readonly userGuideLabel = "Détail des fonctionnalités";
 
+	// JobAd
+	public static readonly jobadDone = "Finie";
+	// -> jobad-jobad
+	public static readonly jobadTechnologiesIntro = "Technologies : ";
+	public static readonly jobadDurationIntro = "Durée : ";
+	// -> jobad-edit
+	public static readonly jobadOngoing = 'En cours';
+	public static readonly jobadTitleLabel = "Titre";
+	public static readonly jobadTitleError = "Titre invalide";
+	public static readonly jobadDescriptionLabel = "Description (Markdown pour la mise en forme)";
+	public static readonly jobadDescriptionError = "Description invalide";
+	public static readonly jobadTypeLabel = "Nature de l'offre";
+	public static readonly jobadTypeError = "Type invalide";
+	public static readonly jobadType0 = "Durée déterminée";
+	public static readonly jobadType1 = "Durée indéterminée";
+	public static readonly jobadType2 = "Générale";
+	public static readonly jobadStartLabel = 'Date de début';
+	public static readonly jobadStartError = 'Date invalide';
+	public static readonly jobadLengthLabel = 'Durée';
+	public static readonly jobadLengthError = 'Durée invalide';
+	public static readonly jobadContactLabel = 'Contact';
+	public static readonly jobadContactError = 'Contact invalide';
+	public static readonly jobadAuthorLabel = 'Auteur';
+	public static readonly jobadAuthorError = 'Auteur invalide';
+	public static readonly jobadTechnologiesLabel = 'Technologies';
+	public static readonly jobadTechnologiesError = 'Technologies invalides';
+	// -> jobad-home
+	public static readonly noJobAds = 'Aucune annonce';
+	// -> jobad-card
+	public static readonly deleteJobAdsDialogTitle = "Confirmation de la suppression";
+	public static readonly deleteJobAdsDialogContent = "Êtes-vous certain de vouloir supprimer \"{0}\" ?";
+	public static readonly deletedJobAdsInfo = "Annonce supprimée";
+
 	// Nsigma
-	public static readonly nsigmaAnnounceDone = "Recrutement terminé";
-	public static readonly nsigmaAnnounceOngoing = 'En cours';
+	public static readonly nsigmaJobAdsDone = "Recrutement terminé";
+	public static readonly nsigmaJobAdsOngoing = 'En cours';
 	// -> nsigma-card
-	public static readonly deleteNsigmaAnnounceDialogTitle = "Confirmation de la suppression";
-	public static readonly deleteNsigmaAnnounceDialogContent = "Êtes-vous certain de vouloir supprimer \"{0}\" ?";
-	public static readonly deletedNsigmaAnnounceInfo = "Annonce supprimée";
-	// -> announce
+	public static readonly deleteNsigmaJobAdsDialogTitle = "Confirmation de la suppression";
+	public static readonly deleteNsigmaJobAdsDialogContent = "Êtes-vous certain de vouloir supprimer \"{0}\" ?";
+	public static readonly deletedNsigmaJobAdsInfo = "Annonce supprimée";
+	// -> jobad
 	public static readonly remuneration = "Rémunération : {0}";
 	public static readonly technologies = "<b>Technologies : </b>{0}";
 	public static readonly difficulty = "<b>Difficulté : </b>{0}";
-	public static readonly applyToNsigmaAnnounce = "Candidater";
+	public static readonly applyToNsigmaJobAds = "Candidater";
 	// -> edit
 	public static readonly nsigmaTitleLabel = "Titre";
 	public static readonly nsigmaTitleError = "Titre invalide";
@@ -337,7 +337,41 @@ export class French {
 	public static readonly nsigmaFormLabel = "Formulaire Google de contact";
 	public static readonly nsigmaFormError = "Formulaire invalide";
 	// -> home
-	public static readonly noNsigmaAnnonce = "Nsigma ne recrute pas en ce moment";
+	public static readonly noNsigmaJobAd = "Nsigma ne recrute pas en ce moment";
+
+	// AppModules
+	// -> cafet
+	public static readonly cafetModuleDisplayName = "Cafet";
+	public static readonly cafetModuleDescription = "Gère tes comptes en consultant ton solde ainsi que l'historique de tes dépenses !";
+	public static readonly cafetModuleFullName = "Gestion de mon compte cafétéria";
+	// -> calendar
+	public static readonly calendarModuleDisplayName = "Planning";
+	public static readonly calendarModuleDescription = "Plus question d'arriver en retard, consulte en direct tes horaires de cours mais aussi des événements auxquels tu participes !";
+	public static readonly calendarModuleFullName = "Dates et informations sur mes cours et événements";
+	// -> event
+	public static readonly eventsModuleDisplayName = "Evénements";
+	public static readonly eventsModuleDescription = "Renseigne-toi sur l'ensemble des événements liés à la vie au sein de Grenoble INP et ajoute-les à ton calendrier !";
+	public static readonly eventsModuleFullName = "Liste des événements à venir";
+	// -> actus
+	public static readonly actusModuleDisplayName = "Actus";
+	public static readonly actusModuleDescription = "Consulte l'essentiel de l'information grâce à l'engagement des journalistes imag du Pole Com' !";
+	public static readonly actusModuleFullName = "Actualités de la vie de l'école et de ses environs";
+	// -> jobad
+	public static readonly jobadsModuleDisplayName = "Annonces";
+	public static readonly jobadsModuleDescription = "Retrouve l'ensemble des offres de stages et d'embauches réservées au réseau Ensimag !";
+	public static readonly jobadsModuleFullName = "Offres de stages et recrutements";
+	// -> nsigma
+	public static readonly nsigmaModuleDisplayName = "Nsigma";
+	public static readonly nsigmaModuleDescription = "Les projets d'informatique et de mathématiques appliquées d'Nsigma n'attendent que toi pour commencer !";
+	public static readonly nsigmaModuleFullName = "Annonces de recrutement d'Nsigma, Junior Entreprise";
+	// -> vote
+	public static readonly votesModuleDisplayName = "Votes";
+	public static readonly votesModuleDescription = "Vote pour ta liste préférée et aide la à rentrer dans l'Histoire en remportant l'accès au bureau !";
+	public static readonly votesModuleFullName = "Vote pour les élections BDE, BDS et BDA";
+	// -> infos
+	public static readonly infosModuleDisplayName = "Lisez-moi";
+	public static readonly infosModuleDescription = "Retrouve ici mentions légales et tutoriels pour l'utilisation de cette application.";
+	public static readonly infosModuleFullName = "A propos d'ensicerclapp ;)";
 
   // Vote
 	public static readonly startLabel = "Start";

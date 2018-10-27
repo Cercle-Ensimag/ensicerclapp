@@ -35,7 +35,7 @@ export class ActusService {
         this.db
           .list<Actu>('actus/actus')
           .valueChanges().pipe(
-          map(annonces => annonces.reverse())), '_actus')
+          map(jobads => jobads.reverse())), '_actus')
         .pipe(shareReplay(1));
     }
     return this._actus;
@@ -69,7 +69,7 @@ export class ActusService {
       this._journalists = this.db
         .list<Journalist>('actus/journalists/users')
         .valueChanges().pipe(
-        map(annonces => annonces.reverse()))
+        map(jobads => jobads.reverse()))
         .pipe(shareReplay(1));
     }
     return this._journalists;

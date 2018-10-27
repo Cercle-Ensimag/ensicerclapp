@@ -1,15 +1,15 @@
-
-import {map, shareReplay} from 'rxjs/operators';
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
+import {Location} from '@angular/common';
+import {User} from 'firebase/app';
+import {Observable} from 'rxjs';
+import {map, shareReplay} from 'rxjs/operators';
 
 import {ToolsService} from '../../providers/tools.service';
 import {DeviceSizeService} from '../../providers/device-size.service';
 import {AdminService} from '../admin-service/admin.service';
 import {DicoService} from '../../language/dico.service';
-import {Observable} from 'rxjs';
-import {User} from 'firebase/app';
-import {Location} from '@angular/common';
+import {ADMINS} from '../../auth/auth-service/auth.service';
 
 @Component({
   selector: 'app-users',
@@ -19,7 +19,7 @@ import {Location} from '@angular/common';
 export class AdminUsersComponent implements OnInit {
   public formGroup: FormGroup;
   public expandedUserUid: string = '';
-  public adminsStrings: string[] = ['vote', 'events', 'actus', 'cafet', 'nsigma', 'announce'];
+  public adminsStrings: string[] = ADMINS;
 
   constructor(
     private fb: FormBuilder,
