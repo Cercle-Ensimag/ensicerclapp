@@ -1,5 +1,5 @@
 from RulesPattern import RulesPattern
-from common import OtherRules, StringRules, NumberRules, IdRules, doAnd, doOr, isAdmin, isMember, isComResp, comRespGroupExists, comRespGroupTheSame, eventGroupIdExists, isOneAdmin
+from common import OtherRules, StringRules, NumberRules, IdRules, doAnd, doOr, isAdmin, isMember, isComResp, comRespGroupTheSame, eventGroupIdExists, isOneAdmin
 
 class EventsRules (RulesPattern):
     def build(self):

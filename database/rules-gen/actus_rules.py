@@ -1,5 +1,5 @@
 from RulesPattern import RulesPattern
-from common import OtherRules, NumberRules, StringRules, IdRules, doAnd, doOr, isAdmin, isMember, isJournalist, journalistsGroupExists, journalistsGroupTheSame, isOneAdmin
+from common import OtherRules, NumberRules, StringRules, IdRules, doAnd, doOr, isAdmin, isMember, isJournalist, journalistsGroupTheSame, actusGroupIdExists, isOneAdmin
 
 class ActusRules (RulesPattern):
     def build(self):
@@ -41,15 +41,22 @@ class UserRules (UsersRules):
     def build(self):
         self.label = "$emailId"
         self.add(IdRules("emailId", self.label))
-        self.add(GroupIdRules())
+        self.add(GroupIdRules(1))
+        self.add(GroupIdRules(2))
         self.add(OtherRules())
 
-class GroupIdRules (UserRules):
-    def build(self):
-        self.label = "groupId"
-        self.validate = "root.child('actus/journalists/groups/'+newData.val()).exists()"
-        self.inLine = True
+class GroupIdRules (StringRules):
+	def __init__(self, number):
+		self.number = str(number)
+		super().__init__("groupId", 30)
 
+	def build(self):
+		super().build()
+		self.label += self.number
+		self.validate = doAnd([
+			self.validate,
+			actusGroupIdExists("newData.val()")
+		])
 
 # actus node
 class ArticlesRules (ActusRules):
@@ -74,11 +81,19 @@ class ArticleRules (ArticlesRules):
         self.add(StringRules("pdfLink", 500))
         self.add(NumberRules("date"))
         self.add(StringRules("author", 50))
-        self.add(ArticleGroupIdRules())
+        self.add(ArticleGroupIdRules(1))
         self.add(OtherRules())
 
-class ArticleGroupIdRules (ArticleRules):
-    def build(self):
-        self.label = "groupId"
-        self.validate = journalistsGroupExists()
-        self.inLine = True
+class ArticleGroupIdRules (StringRules):
+	def __init__(self, number):
+		self.number = str(number)
+		super().__init__("groupId", 30)
+
+	def build(self):
+		super().build()
+		self.label += self.number
+		self.validate = doAnd([
+			self.validate,
+			actusGroupIdExists("newData.val()")
+		])
+		self.inLine = True

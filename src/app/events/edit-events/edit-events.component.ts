@@ -1,5 +1,3 @@
-
-import {first, takeUntil} from 'rxjs/operators';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
@@ -12,8 +10,8 @@ import {ToolsService} from '../../providers/tools.service';
 import {DicoService} from '../../language/dico.service';
 import {MatSnackBar} from '@angular/material';
 
-import {map} from 'rxjs/operators';
-import {combineLatest, Subject, Observable} from 'rxjs';
+import {Subject, Observable} from 'rxjs';
+import {first, takeUntil} from 'rxjs/operators';
 
 
 

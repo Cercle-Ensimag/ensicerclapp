@@ -1,8 +1,6 @@
-
-import {first, map} from 'rxjs/operators';
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, FormControl, Validators} from '@angular/forms';
 import {Location} from '@angular/common';
+import {FormBuilder, FormGroup, FormControl, Validators} from '@angular/forms';
 import {MatSnackBar} from '@angular/material';
 
 import {DeviceSizeService} from '../../providers/device-size.service';
@@ -12,6 +10,7 @@ import {ListService} from '../../providers/list.service';
 import {ToolsService} from '../../providers/tools.service';
 import {DicoService} from '../../language/dico.service';
 import {Observable} from 'rxjs';
+import {first, map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-event-admin',

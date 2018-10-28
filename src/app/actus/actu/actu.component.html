@@ -7,13 +7,14 @@
 	  <mat-card-header>
 	    <img mat-card-avatar src="assets/img/icons/actus.png">
 	    <mat-card-title>{{ actu.title }}</mat-card-title>
-	    <mat-card-subtitle> {{ actu.date | date:'fullDate':'':d.l.locale }} - <i>{{ actu.author }}</i> </mat-card-subtitle>
+	    <mat-card-subtitle> {{ actu.date | date:'fullDate':'':d.l.locale }}<label *ngFor="let groupId of getActuGroupIds(actu)"> - <i>{{ getGroupName(groupId) | async }}</i></label></mat-card-subtitle>
 	  </mat-card-header>
 	  <mat-card-content>
 	    <markdown [data]="actu.description"></markdown>
 	    <iframe *ngIf="actu.pdfLink !== ''"  [src]="safeUrl(actu)"></iframe><br>
 	    <img *ngIf="actu.image !== ''" mat-card-image src="{{ actu.image }}"><br>
 	  </mat-card-content>
+		<mat-card-subtitle>{{ actu.author }}</mat-card-subtitle>
 	</mat-card>
 <!-- </div> -->
 

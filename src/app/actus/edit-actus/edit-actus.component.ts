@@ -1,17 +1,16 @@
-
-import {first, takeUntil} from 'rxjs/operators';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
-import {Actu, ActusService} from '../actus-service/actus.service';
+import {Actu, ActusService, Group} from '../actus-service/actus.service';
 
 import {AuthService} from '../../auth/auth-service/auth.service';
 import {DicoService} from '../../language/dico.service';
 import {MatSnackBar} from '@angular/material';
-import {Subject} from 'rxjs';
 
+import {first, takeUntil} from 'rxjs/operators';
+import {Subject, Observable} from 'rxjs';
 
 
 @Component({
@@ -60,33 +59,36 @@ export class EditActusComponent implements OnInit, OnDestroy {
           image: [actu.image || '', [Validators.maxLength(500)]],
           pdfLink: [actu.pdfLink || '', [Validators.maxLength(500)]],
           date: [new Date(actu.date) || '', [Validators.required]],
-          author: [actu.author || '', [Validators.required, Validators.maxLength(50)]]
+          author: [actu.author || '', [Validators.required, Validators.maxLength(50)]],
+          asso1: [actu.groupId1 || null, [Validators.maxLength(30)]]
         });
       });
   }
 
+	getJournalistGroups(): Observable<Group[]> {
+		return this.actus.getJournalistGroups();
+	}
+
+	getGroups(): Observable<Group[]> {
+		return this.actus.getGroups();
+	}
+
   submit() {
-    this.auth.getJournalistId()
-      .pipe(first())
-      .subscribe(journalistId => {
-        if (!this.formGroup.invalid) {
-          const actu = {
-            id: this.id,
-            title: this.formGroup.get('title').value,
-            description: this.formGroup.get('description').value,
-            image: this.formGroup.get('image').value,
-            pdfLink: this.formGroup.get('pdfLink').value,
-            date: this.formGroup.get('date').value.getTime(),
-            author: this.formGroup.get('author').value,
-            groupId: journalistId
-          };
-          this.actus.setActu(actu).then(() => {
-            this.snackBar.open(this.d.l.changesApplied, this.d.l.okLabel, {duration: 2000});
-            this.initFormGroup();
-          }).catch(reason => {
-            this.snackBar.open(reason, this.d.l.okLabel, {duration: 2000});
-          });
-        }
-      });
+		const actu = {
+      id: this.id,
+      title: this.formGroup.get('title').value,
+      description: this.formGroup.get('description').value,
+      image: this.formGroup.get('image').value,
+      pdfLink: this.formGroup.get('pdfLink').value,
+      date: this.formGroup.get('date').value.getTime(),
+      author: this.formGroup.get('author').value,
+			groupId1: this.formGroup.get('asso1').value || null
+    };
+    this.actus.setActu(actu).then(() => {
+      this.snackBar.open(this.d.l.changesApplied, this.d.l.okLabel, {duration: 2000});
+      this.initFormGroup();
+    }).catch(reason => {
+      this.snackBar.open(reason, this.d.l.okLabel, {duration: 2000});
+    });
   }
 }

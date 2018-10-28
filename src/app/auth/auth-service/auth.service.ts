@@ -16,7 +16,7 @@ import {ToolsService} from '../../providers/tools.service';
 import {DicoService} from '../../language/dico.service';
 
 import {ComResp} from '../../events/events-service/events.service';
-import {Journalist} from '../../actus/actu-admin/actu-admin.component';
+import {Journalist} from '../../actus/actus-service/actus.service';
 import {Assessor} from '../../vote/vote-admin/vote-admin.component';
 import {CafetResp} from '../../cafet/cafet-service/cafet.service';
 
@@ -63,7 +63,7 @@ export class AuthService {
   private _isAssessor: Observable<boolean>;
   private _isCafetResp: Observable<boolean>;
 	private _respComIds: Observable<string[]>;
-  private _journalistId: Observable<string>;
+  private _journalistIds: Observable<string[]>;
   private _isLogged: Observable<boolean>;
   private _isLoggedAndHasEmailVerified: Observable<boolean>;
   private _connectionEstablished: Observable<boolean>;
@@ -375,10 +375,12 @@ export class AuthService {
     if (!this._respComIds) {
       this._respComIds = this.getComRespRes()
         .pipe(map(user => {
-					let ids = []
-					for (let i of [1, 2]) {
-						if (user['groupId' + i]) {
-							ids.push(user['groupId' + i]);
+					let ids = [];
+					if (user) {
+						for (let i of [1, 2]) {
+							if (user['groupId' + i]) {
+								ids.push(user['groupId' + i]);
+							}
 						}
 					}
 					return ids;
@@ -394,20 +396,28 @@ export class AuthService {
         catchError(() => of(false)));
   }
 
-  getJournalistId(): Observable<string> {
-    if (!this._journalistId) {
-      this._journalistId = this.getJournalistRes()
-        .pipe(
-          map(user => user ? user.groupId : null),
-          shareReplay(1));
+  getJournalistIds(): Observable<string[]> {
+    if (!this._journalistIds) {
+      this._journalistIds = this.getJournalistRes()
+        .pipe(map(user => {
+					let ids = [];
+					if (user) {
+						for (let i of [1, 2]) {
+							if (user['groupId' + i]) {
+								ids.push(user['groupId' + i]);
+							}
+						}
+					}
+					return ids;
+				}), shareReplay(1));
     }
-    return this._journalistId;
+    return this._journalistIds;
   }
 
   isJournalist(): Observable<boolean> {
-    return this.getJournalistId()
+    return this.getJournalistIds()
       .pipe(
-        map(jid => jid !== null),
+        map(ids => ids.length > 0),
         catchError(() => of(false)));
   }
 

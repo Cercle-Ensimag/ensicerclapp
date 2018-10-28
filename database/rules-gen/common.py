@@ -122,24 +122,49 @@ def isAdmin():
     return rule
 
 def isOneAdmin(domain):
-    path = "'users/'+" + computeEmailId() + "+'/'+auth.uid+'/admin/" + domain + "-admin'"
-    isOneAdmin_v = "root.child(" + path + ").val() == true"
-    return isOneAdmin_v + " && " + isMember()
+	"""
+	Returns a condition that is true if the authentified user is admin of the given domain
+	"""
+	path = "'users/'+" + computeEmailId() + "+'/'+auth.uid+'/admin/" + domain + "-admin'"
+	isOneAdmin_v = "root.child(" + path + ").val() == true"
+	return isOneAdmin_v + " && " + isMember()
 
 def getJournalistPath():
-    return "'actus/journalists/users/'+" + computeEmailId()
+	"""
+	Returns the path in the database for journalist data
+	"""
+	return "'actus/journalists/users/'+" + computeEmailId()
 
 def isJournalist():
-    isJournalist_v = "root.child(" + getJournalistPath() + ").exists()"
-    return isJournalist_v + " && " + isMember()
+	"""
+	Returns a condition that is true if the authentified user is journalist
+	"""
+	isJournalist_v = "root.child(" + getJournalistPath() + ").exists()"
+	return isJournalist_v + " && " + isMember()
 
-def journalistsGroupExists():
-    groupPath = getJournalistPath() + "+'/groupId'"
-    return "root.child(" + groupPath + ").val() === newData.val()"
+def journalistsGroupExists(groupId):
+	"""
+	Returns a condition that is true if the given groupId (newData.val())
+	matches a groupId of the authentified user
+	"""
+	return doOr([
+		"root.child(" + getJournalistPath() + "+'/groupId" + str(i) + "').val() === " + groupId for i in range(1, 3)
+	])
 
 def journalistsGroupTheSame():
-    groupPath = getJournalistPath() + "+'/groupId'"
-    return "root.child(" + groupPath + ").val() === newData.child('groupId').val()"
+	"""
+	Returns a condition that is true if on of the comResp groupId matches
+	one of the actu groupId
+	"""
+	return doOr([
+		journalistsGroupExists("newData.child('groupId" + str(i) + "').val()") for i in range (1, 2)
+	])
+
+def actusGroupIdExists(groupId):
+	"""
+	Returns a condition that is true if the given groupId is defined
+	"""
+	return "root.child('actus/journalists/groups/'+" + groupId + ").exists()"
 
 def getComRespPath():
 	"""
@@ -154,21 +179,23 @@ def isComResp():
 	isComResp_v = "root.child(" + getComRespPath() + ").exists()"
 	return isComResp_v + " && " + isMember()
 
-def comRespGroupExists():
+def comRespGroupExists(groupId):
 	"""
 	Returns a condition that is true if the given groupId (newData.val())
 	matches a groupId of the authentified user
 	"""
-	groupPath = getComRespPath() + "+'/groupIds/'"
-	return "root.child(" + groupPath + " + newData.val()).exists()"
+	return doOr([
+		"root.child(" + getComRespPath() + "+'/groupId" + str(i) + "').val() === " + groupId for i in range(1, 3)
+	])
 
 def comRespGroupTheSame():
 	"""
 	Returns a condition that is true if on of the comResp groupId matches
 	one of the event groupId
 	"""
-	groupPath = getComRespPath() + "+'/groupIds/'"
-	return "root.child(" + groupPath + ").val() === newData.child('groupIds').val()"
+	return doOr([
+		comRespGroupExists("newData.child('groupId" + str(i) + "').val()") for i in range (1, 4)
+	])
 
 def eventGroupIdExists(groupId):
 	"""

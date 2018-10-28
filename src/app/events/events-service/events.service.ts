@@ -5,8 +5,8 @@ import {ToolsService} from '../../providers/tools.service';
 import {AuthService} from '../../auth/auth-service/auth.service';
 import {CalEvent} from '../../calendar/cal-service/cal.service';
 
-import {first, map, mergeMap, shareReplay} from 'rxjs/operators';
 import {combineLatest, from, Observable} from 'rxjs';
+import {first, map, mergeMap, shareReplay} from 'rxjs/operators';
 
 export class Event {
   id: string;
@@ -79,9 +79,8 @@ export class EventsService {
     ).pipe(
       map(([events, comRespIds]: [Event[], string[]]) => {
 				return events.filter(event => this.imRespoOf(event, comRespIds))
-			}),
-			shareReplay(1)
-		);
+			})
+		).pipe(shareReplay(1));
   }
 
 	imRespoOf(event: Event, comRespIds: string[]): boolean {

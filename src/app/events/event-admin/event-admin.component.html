@@ -33,6 +33,7 @@
 							</mat-form-field>
 							<mat-form-field *ngIf="formGroup.get('asso1').value">
 								<mat-select placeholder="{{ d.l.eventAssoLabel }} 2" formControlName="asso2">
+									<mat-option [value]="">{{ d.l.emptyLabel }}</mat-option>
 									<mat-option *ngFor="let group of getComRespGroups() | async" [value]="group.groupId">{{ group.displayName }}</mat-option>
 								</mat-select>
 								<mat-error *ngIf="formGroup.get('asso2').invalid">{{ d.l.eventAssoError }}</mat-error>
@@ -42,7 +43,6 @@
 			                [disabled]="formGroup.invalid || users.length !== 0"
 			                color="primary"
 			        >{{ d.l.addComRespButtonLabel }}</button>
-
 					  </form>
 		      </mat-card>
 

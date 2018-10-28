@@ -34,6 +34,13 @@
 	      <mat-error *ngIf="formGroup.get('date').invalid">{{ d.l.actuDateError }}</mat-error>
 	    </mat-form-field>
 
+			<mat-form-field>
+				<mat-select placeholder="{{ d.l.actuAssoLabel }}" formControlName="asso1">
+					<mat-option *ngFor="let group of getJournalistGroups() | async" [value]="group.groupId">{{ group.displayName }}</mat-option>
+				</mat-select>
+				<mat-error *ngIf="formGroup.get('asso1').invalid">{{ d.l.actuAssoError }}</mat-error>
+			</mat-form-field>
+
 	    <mat-form-field>
 	      <input matInput placeholder="{{ d.l.actuAuthorLabel }}" formControlName="author" autocomplete="off">
 	      <mat-error *ngIf="formGroup.get('author').invalid">{{ d.l.actuAuthorError }}</mat-error>

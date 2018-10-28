@@ -4,6 +4,7 @@ import {DeleteDialogComponent} from '../../../shared-components/delete-dialog/de
 import {Actu, ActusService} from '../../actus-service/actus.service';
 import {DicoService} from '../../../language/dico.service';
 import {ToolsService} from '../../../providers/tools.service';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-actu-card',
@@ -40,4 +41,12 @@ export class ActuCardComponent implements OnInit {
       }
     });
   }
+
+	getGroupName(groupId: string): Observable<string> {
+		return this.actus.getGroupName(groupId);
+	}
+
+	getActuGroupIds(actu: Actu): string[] {
+		return this.actus.getActuGroupIds(actu);
+	}
 }

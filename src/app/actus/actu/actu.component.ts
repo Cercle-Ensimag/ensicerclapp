@@ -5,6 +5,7 @@ import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 
 import {DicoService} from '../../language/dico.service';
 import {Actu, ActusService} from '../actus-service/actus.service';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-actu',
@@ -30,4 +31,12 @@ export class ActuComponent implements OnInit {
   safeUrl(actu: Actu): SafeResourceUrl {
     return this.sanitizer.bypassSecurityTrustResourceUrl(actu.pdfLink);
   }
+
+	getGroupName(groupId: string): Observable<string> {
+		return this.actus.getGroupName(groupId);
+	}
+
+	getActuGroupIds(actu: Actu): string[] {
+		return this.actus.getActuGroupIds(actu);
+	}
 }

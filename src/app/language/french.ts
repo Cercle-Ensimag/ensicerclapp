@@ -54,6 +54,8 @@ export class French {
 	// Actus
 	// -> admin
 	public static readonly actus = "Actualités";
+	public static readonly actuAssoLabel = "Association";
+	public static readonly actuAssoError = "Association invalide";
 	// -> actus-home
 	public static readonly noActu = "Aucune actualité";
 	// -> component/actu-card

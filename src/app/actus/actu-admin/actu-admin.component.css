@@ -21,3 +21,11 @@ mat-form-field {
 .large {
   width: 400px;
 }
+
+.asso {
+	background: #cccccc;
+	margin-left: 25px;
+	margin-right: 5px;
+	padding: 5px;
+	border-radius: 5px;
+}

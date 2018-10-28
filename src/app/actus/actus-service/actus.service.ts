@@ -2,9 +2,9 @@ import {Injectable} from '@angular/core';
 import {AngularFireDatabase} from '@angular/fire/database';
 
 import {ToolsService} from '../../providers/tools.service';
-import {Group, Journalist} from '../actu-admin/actu-admin.component';
+import {AuthService} from '../../auth/auth-service/auth.service';
 
-import {Observable} from 'rxjs';
+import {combineLatest, Observable} from 'rxjs';
 import {map, shareReplay} from 'rxjs/operators';
 
 export class Actu {
@@ -15,7 +15,18 @@ export class Actu {
   pdfLink: string;
   date: string;
   author: string;
+	groupId1: string;
+}
+
+export class Journalist {
+  emailId: string;
+	groupId1: string;
+	groupId2: string;
+}
+
+export class Group {
   groupId: string;
+  displayName: string;
 }
 
 @Injectable()
@@ -23,10 +34,12 @@ export class ActusService {
   private _actus: Observable<Actu[]>;
   private _journalists: Observable<Journalist[]>;
   private _actu: { [$actuId: string]: Observable<Actu> } = {};
+	private _groups: Observable<Group[]>;
 
   constructor(
     private db: AngularFireDatabase,
-    private tools: ToolsService
+		private tools: ToolsService,
+		private auth: AuthService
   ) { }
 
   getActus() {
@@ -35,11 +48,31 @@ export class ActusService {
         this.db
           .list<Actu>('actus/actus')
           .valueChanges().pipe(
-          map(jobads => jobads.reverse())), '_actus')
+          map(actus => actus.reverse())), '_actus')
         .pipe(shareReplay(1));
     }
     return this._actus;
   }
+
+  getActusImRespoOf(): Observable<Actu[]> {
+    return combineLatest(
+      this.getActus(),
+      this.auth.getJournalistIds()
+    ).pipe(
+      map(([actus, journalistIds]: [Actu[], string[]]) => {
+				return actus.filter(actu => this.imRespoOf(actu, journalistIds))
+			})
+		).pipe(shareReplay(1));
+  }
+
+	imRespoOf(actu: Actu, journalistIds: string[]): boolean {
+		for (let actuGroupId of this.getActuGroupIds(actu)) {
+			if (journalistIds.includes(actuGroupId)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
   getActu(actuId: string) {
     if (!this._actu[actuId]){
@@ -51,6 +84,16 @@ export class ActusService {
     }
     return this._actu[actuId];
   }
+
+	getActuGroupIds(actu: Actu): string[] {
+		let ids = [];
+		for (let i of [1]) {
+			if (actu['groupId' + i]) {
+				ids.push(actu['groupId' + i]);
+			}
+		}
+		return ids;
+	}
 
   getActuId() {
     return this.db.list<Actu>('actus/actus/').push(null).key;
@@ -68,9 +111,8 @@ export class ActusService {
     if (!this._journalists){
       this._journalists = this.db
         .list<Journalist>('actus/journalists/users')
-        .valueChanges().pipe(
-        map(jobads => jobads.reverse()))
-        .pipe(shareReplay(1));
+        .valueChanges()
+				.pipe(shareReplay(1));
     }
     return this._journalists;
   }
@@ -79,24 +121,59 @@ export class ActusService {
     return this.db.object<Journalist>('actus/journalists/users/'+emailId).remove();
   }
 
-  addJournalist(email: string, group: Group) {
-    let emailId = this.tools.getEmailIdFromEmail(email);
-    return this.db.object<Group>('actus/journalists/groups/'+group.groupId).set(group)
-    .then(() => {
-      return this.db.object<Journalist>('actus/journalists/users/'+emailId).set({
-        emailId: emailId,
-        groupId: group.groupId
-      });
-    });
+	setGroup(group: Group) {
+    return this.db.object<Group>('actus/journalists/groups/' + group.groupId).set(group);
+	}
+
+	removeGroup(groupId: string) {
+		return this.db.object<Group>('actus/journalists/groups/' + groupId).remove();
+	}
+
+  getGroupId(): string {
+    return this.db.list<Actu>('actus/journalists/groups').push(null).key;
   }
 
-  addJournalistEmailId(emailId: string, group: Group) {
-    return this.db.object<Group>('actus/journalists/groups/'+group.groupId).set(group)
-      .then(() => {
-        return this.db.object<Journalist>('actus/journalists/users/'+emailId).set({
-          emailId: emailId,
-          groupId: group.groupId
-        });
-      });
-  }
+	getGroups(): Observable<Group[]> {
+		if (!this._groups) {
+			this._groups = this.db.list<Group>('actus/journalists/groups')
+			.valueChanges().pipe(shareReplay(1));
+		}
+		return this._groups;
+	}
+
+	getGroupName(groupId: string): Observable<string> {
+		return this.getGroups().pipe(map(groups => groups.find(group => group.groupId === groupId).displayName));
+	}
+
+	getJournalistGroups(): Observable<Group[]> {
+		return combineLatest(
+			this.auth.getJournalistIds(),
+			this.getGroups()
+		).pipe(
+			map(([journalistIds, groups]: [string[], Group[]]) => {
+				return groups.filter(
+					group => journalistIds.includes(group.groupId) || this.auth.isAdminOf('actus')
+				);
+			})
+		);
+	}
+
+	getUserGroupIds(user: Journalist): string[] {
+		let ids = [];
+		for (let i of [1, 2]) {
+			if (user['groupId' + i]) {
+				ids.push(user['groupId' + i]);
+			}
+		}
+		return ids;
+	}
+
+  addJournalist(email: string, groupId1: string, groupId2: string) {
+		let emailId = this.tools.getEmailIdFromEmail(email);
+		return this.db.object<Journalist>('actus/journalists/users/' + emailId).set({
+			emailId: emailId,
+			groupId1: groupId1,
+			groupId2: groupId2
+		});
+	}
 }

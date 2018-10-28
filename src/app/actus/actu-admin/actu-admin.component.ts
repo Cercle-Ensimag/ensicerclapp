@@ -1,62 +1,49 @@
-
-import {first, map} from 'rxjs/operators';
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormControl, Validators} from '@angular/forms';
+import {Location} from '@angular/common';
+import {FormBuilder, FormGroup, FormControl, Validators} from '@angular/forms';
+import {MatSnackBar} from '@angular/material';
 
 import {DeviceSizeService} from '../../providers/device-size.service';
-import {ActusService} from '../actus-service/actus.service';
+import {ActusService, Group, Journalist} from '../actus-service/actus.service';
 import {AuthService} from '../../auth/auth-service/auth.service';
 import {ListService} from '../../providers/list.service';
 import {ToolsService} from '../../providers/tools.service';
 import {DicoService} from '../../language/dico.service';
-import {MatDialog, MatSnackBar} from '@angular/material';
-import {Subject, Observable} from 'rxjs';
-import {Location} from '@angular/common';
-
-export class Journalist {
-  emailId: string;
-  groupId: string;
-}
-
-export class Group {
-  groupId: string;
-  displayName: string;
-}
+import {Observable} from 'rxjs';
+import {first, map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-actu-admin',
   templateUrl: './actu-admin.component.html',
   styleUrls: ['./actu-admin.component.css']
 })
-export class ActuAdminComponent implements OnInit, OnDestroy {
-  private unsubscribe: Subject<void> = new Subject();
-
-  public emailCtrl: FormControl;
+export class ActuAdminComponent implements OnInit {
+	public formGroup: FormGroup;
+  public groupCtrl = new FormControl('', [Validators.minLength(2), Validators.maxLength(30)]);
 
   constructor(
     private auth: AuthService,
-    private dialog: MatDialog,
-    private snackBar: MatSnackBar,
+		private snackBar: MatSnackBar,
+		private list: ListService,
+    private fb: FormBuilder,
 
-    public tools: ToolsService,
+		public location: Location,
     public actus: ActusService,
     public media: DeviceSizeService,
-    public list: ListService,
-    public d: DicoService,
-    public location: Location
+		public tools: ToolsService,
+    public d: DicoService
   ) {}
 
   ngOnInit () {
-    this.emailCtrl = new FormControl('', [this.auth.emailDomainValidator, Validators.email]);
-  }
-
-  ngOnDestroy () {
-    this.unsubscribe.next();
-    this.unsubscribe.complete();
+		this.formGroup = this.fb.group({
+			email: ['', [this.auth.emailDomainValidator, Validators.email]],
+			asso1: [null, [Validators.required, Validators.maxLength(30)]],
+			asso2: [null, [Validators.maxLength(30)]]
+		});
   }
 
   filteredUsers(): Observable<Journalist[]> {
-    let emailId = this.tools.getEmailIdFromEmail(this.emailCtrl.value.split('@')[0]);
+    let emailId = this.tools.getEmailIdFromEmail(this.formGroup.get('email').value);
     return this.actus.getJournalists().pipe(
       map(journalists => journalists.filter(
         user => user.emailId.includes(emailId)
@@ -64,28 +51,56 @@ export class ActuAdminComponent implements OnInit, OnDestroy {
   }
 
   addJournalist() {
-    const emailId = this.tools.getEmailIdFromEmail(this.emailCtrl.value);
-    this.list.isInList(this.emailCtrl.value).pipe(
-      first())
+		let email = this.formGroup.get('email').value;
+    let emailId = this.tools.getEmailIdFromEmail(email);
+    this.list.isInList(email)
+      .pipe(first())
       .subscribe(inList => {
         if (!inList) {
           let name = this.tools.getNameFromEmailId(emailId);
           this.snackBar.open(this.d.format(this.d.l.notOnTheList, name), this.d.l.okLabel, {duration: 2000});
         } else {
-          this.actus.addJournalist(this.emailCtrl.value, {
-            groupId: emailId,
-            displayName: emailId
-          });
-          this.emailCtrl.setValue('');
+          this.actus.addJournalist(
+						email,
+						this.formGroup.get('asso1').value,
+						this.formGroup.get('asso2').value
+					);
+          this.formGroup.get('email').setValue('');
+          this.formGroup.get('asso1').reset();
+          this.formGroup.get('asso2').reset();
         }
       });
   }
 
-  /*add(emailId: string){
-    this.actus.addJournalist(emailId.split('|').join('.') + 'ensimag.fr', {
-      groupId: emailId,
-      displayName: emailId
-    });
-  }*/
+	getJournalistGroups(): Observable<Group[]> {
+		return this.actus.getJournalistGroups();
+	}
+
+	filteredGroups(): Observable<Group[]> {
+		return this.actus.getGroups().pipe(
+			map(groups => groups.filter(
+				group => group.displayName.includes(this.groupCtrl.value)
+			))
+		);
+	}
+
+	addGroup() {
+		this.actus.setGroup({
+			groupId: this.actus.getGroupId(),
+			displayName: this.groupCtrl.value
+		}).then(() => this.groupCtrl.setValue(''));
+	}
+
+	removeGroup(groupId: string) {
+		this.actus.removeGroup(groupId);
+	}
+
+	getUserGroupIds(user: Journalist): string[] {
+		return this.actus.getUserGroupIds(user);
+	}
+
+	getGroupName(groupId: string): Observable<string> {
+		return this.actus.getGroupName(groupId);
+	}
 
 }
