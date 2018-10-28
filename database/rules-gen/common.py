@@ -154,16 +154,21 @@ def journalistsGroupExists(groupId):
 	matches a groupId of the authentified user
 	"""
 	return doOr([
-		"root.child(" + getJournalistPath() + "+'/groupId" + str(i) + "').val() === " + groupId for i in range(1, 3)
+		doAnd([
+			"root.child(" + getJournalistPath() + "+'/groupId" + str(i) + "').exists()",
+			"root.child(" + getJournalistPath() + "+'/groupId" + str(i) + "').val() !== null",
+			"root.child(" + getJournalistPath() + "+'/groupId" + str(i) + "').val() !== ''",
+			"root.child(" + getJournalistPath() + "+'/groupId" + str(i) + "').val() === " + groupId
+		]) for i in range(1, 3)
 	])
 
-def journalistsGroupTheSame():
+def journalistsGroupTheSame(snap):
 	"""
 	Returns a condition that is true if on of the comResp groupId matches
 	one of the actu groupId
 	"""
 	return doOr([
-		journalistsGroupExists("newData.child('groupId" + str(i) + "').val()") for i in range (1, 2)
+		journalistsGroupExists(snap + ".child('groupId" + str(i) + "').val()") for i in range (1, 2)
 	])
 
 def actusGroupIdExists(groupId):
@@ -191,16 +196,21 @@ def comRespGroupExists(groupId):
 	matches a groupId of the authentified user
 	"""
 	return doOr([
-		"root.child(" + getComRespPath() + "+'/groupId" + str(i) + "').val() === " + groupId for i in range(1, 3)
+		doAnd([
+			"root.child(" + getComRespPath() + "+'/groupId" + str(i) + "').exists()",
+			"root.child(" + getComRespPath() + "+'/groupId" + str(i) + "').val() !== null",
+			"root.child(" + getComRespPath() + "+'/groupId" + str(i) + "').val() !== ''",
+			"root.child(" + getComRespPath() + "+'/groupId" + str(i) + "').val() === " + groupId
+		]) for i in range(1, 3)
 	])
 
-def comRespGroupTheSame():
+def comRespGroupTheSame(snap):
 	"""
 	Returns a condition that is true if on of the comResp groupId matches
 	one of the event groupId
 	"""
 	return doOr([
-		comRespGroupExists("newData.child('groupId" + str(i) + "').val()") for i in range (1, 4)
+		comRespGroupExists(snap + ".child('groupId" + str(i) + "').val()") for i in range (1, 4)
 	])
 
 def eventGroupIdExists(groupId):

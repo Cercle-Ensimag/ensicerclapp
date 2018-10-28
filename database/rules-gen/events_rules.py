@@ -72,7 +72,19 @@ class EventRules (EventsListRules):
 
     def build(self):
         self.label = self.eventId
-        self.write = doOr([ isOneAdmin("events"), doAnd([ isComResp(), comRespGroupTheSame() ])])
+        self.write = doOr([
+			isOneAdmin("events"),
+			doAnd([
+				isComResp(),
+				doOr([
+					comRespGroupTheSame("newData"),
+					doAnd([
+						"!newData.exists()",
+						comRespGroupTheSame("data")
+					])
+				])
+			])
+		])
         self.indexOn = ["start"]
 
         self.add(IdRules("id", self.eventId))

@@ -66,7 +66,7 @@ export class EditEventsComponent implements OnInit, OnDestroy {
           endTime: [this.tools.getTimeFromDate(event.end), [Validators.required, this.tools.timeValidator]],
           location: [event.location || '', [Validators.required, Validators.maxLength(300)]],
 					price: [event.price || this.d.l.free, [Validators.required, Validators.maxLength(50)]],
-          asso1: [event.groupId1 || null, [Validators.maxLength(30)]],
+          asso1: [event.groupId1 || null, [Validators.required, Validators.maxLength(30)]],
           asso2: [event.groupId2 || null, [Validators.maxLength(30)]],
           asso3: [event.groupId3 || null, [Validators.maxLength(30)]]
         });

@@ -60,7 +60,7 @@ export class EditActusComponent implements OnInit, OnDestroy {
           pdfLink: [actu.pdfLink || '', [Validators.maxLength(500)]],
           date: [new Date(actu.date) || '', [Validators.required]],
           author: [actu.author || '', [Validators.required, Validators.maxLength(50)]],
-          asso1: [actu.groupId1 || null, [Validators.maxLength(30)]]
+          asso1: [actu.groupId1 || null, [Validators.required, Validators.maxLength(30)]]
         });
       });
   }

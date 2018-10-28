@@ -72,7 +72,20 @@ class ArticleRules (ArticlesRules):
 
     def build(self):
         self.label = self.articleId
-        self.write = doOr([ isOneAdmin("actus"), doAnd([ isJournalist(), journalistsGroupTheSame() ]) ])
+        self.write = doOr([
+			isOneAdmin("actus"),
+			doAnd([
+				isJournalist(),
+				doOr([
+					journalistsGroupTheSame("newData"),
+					doAnd([
+						"!newData.exists()",
+						journalistsGroupTheSame("data")
+					])
+				])
+			])
+		])
+        self.indexOn = ["date"]
 
         self.add(IdRules("id", self.articleId))
         self.add(StringRules("title", 30))
