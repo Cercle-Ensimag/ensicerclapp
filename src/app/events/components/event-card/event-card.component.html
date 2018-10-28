@@ -10,7 +10,7 @@
         <div *ngIf="!singleDay()">
           {{ event.start | date:d.l.shortDateTimeFormat:'':d.l.locale }} - {{ event.end | date:d.l.shortDateTimeFormat:'':d.l.locale }}
         </div>
-        {{ event.asso }}
+				<label *ngFor="let groupId of getEventGroupIds(event)" class="asso">{{ getGroupName(groupId) | async }}</label>
       </mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>

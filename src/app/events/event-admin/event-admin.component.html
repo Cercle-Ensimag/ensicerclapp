@@ -17,18 +17,33 @@
 	    <app-loading [loading]="filteredUsers() | async"></app-loading>
 
 			<div class="tab-content-container">
-		    <!-- Header display -->
 		    <ng-container *ngIf="filteredUsers() | async as users">
-		      <mat-card *ngIf="emailCtrl">
-		        <mat-form-field [class.large]="!media.mobileSize">
-		          <input matInput placeholder="{{ d.l.addComRespInfo }}" [formControl]="emailCtrl" autocomplete="off">
-		          <button mat-icon-button matSuffix><mat-icon>search</mat-icon></button>
-		        </mat-form-field>
-		        <button mat-raised-button
-		                (click)="addComResp()"
-		                [disabled]="emailCtrl.invalid || users.length !== 0"
-		                color="primary"
-		        >{{ d.l.addComRespButtonLabel }}</button>
+					<!-- Header display -->
+		      <mat-card *ngIf="formGroup">
+						<form [formGroup]="formGroup">
+			        <mat-form-field [class.large]="!media.mobileSize">
+			          <input matInput placeholder="{{ d.l.addComRespInfo }}" formControlName="email" autocomplete="off">
+			          <button mat-icon-button matSuffix><mat-icon>search</mat-icon></button>
+			        </mat-form-field>
+							<mat-form-field>
+								<mat-select placeholder="{{ d.l.eventAssoLabel }} 1" formControlName="asso1">
+									<mat-option *ngFor="let group of getComRespGroups() | async" [value]="group.groupId">{{ group.displayName }}</mat-option>
+								</mat-select>
+								<mat-error *ngIf="formGroup.get('asso1').invalid">{{ d.l.eventAssoError }}</mat-error>
+							</mat-form-field>
+							<mat-form-field *ngIf="formGroup.get('asso1').value">
+								<mat-select placeholder="{{ d.l.eventAssoLabel }} 2" formControlName="asso2">
+									<mat-option *ngFor="let group of getComRespGroups() | async" [value]="group.groupId">{{ group.displayName }}</mat-option>
+								</mat-select>
+								<mat-error *ngIf="formGroup.get('asso2').invalid">{{ d.l.eventAssoError }}</mat-error>
+							</mat-form-field>
+			        <button mat-raised-button
+			                (click)="addComResp()"
+			                [disabled]="formGroup.invalid || users.length !== 0"
+			                color="primary"
+			        >{{ d.l.addComRespButtonLabel }}</button>
+
+					  </form>
 		      </mat-card>
 
 		      <!-- Users display -->
@@ -36,7 +51,37 @@
 		        <mat-nav-list>
 		          <a mat-list-item *ngFor="let user of users">
 		            {{ tools.titleCase(user.emailId.split('|').join(' ')) }}
+								<label *ngFor="let groupId of getUserGroupIds(user)" class="asso">{{ getGroupName(groupId) | async }}</label>
 		            <button mat-icon-button matSuffix (click)="events.removeComResp(user.emailId)"><mat-icon>delete</mat-icon></button>
+		          </a>
+		        </mat-nav-list>
+		      </mat-card>
+		    </ng-container>
+			</div>
+	  </mat-tab>
+
+	  <mat-tab label="{{ d.l.groupsLabel }}">
+			<div class="tab-content-container">
+		    <ng-container *ngIf="filteredGroups() | async as groups">
+					<!-- Header display -->
+		      <mat-card *ngIf="groupCtrl">
+		        <mat-form-field [class.large]="!media.mobileSize">
+		          <input matInput placeholder="{{ d.l.addGroupInfo }}" [formControl]="groupCtrl" autocomplete="off">
+		          <button mat-icon-button matSuffix><mat-icon>search</mat-icon></button>
+		        </mat-form-field>
+		        <button mat-raised-button
+		                (click)="addGroup()"
+		                [disabled]="groupCtrl.invalid || groups.length !== 0"
+		                color="primary"
+		        >{{ d.l.addGroupButtonLabel }}</button>
+		      </mat-card>
+
+		      <!-- Users display -->
+		      <mat-card *ngIf="groups.length">
+		        <mat-nav-list>
+		          <a mat-list-item *ngFor="let group of groups">
+		            {{ group.displayName }}
+		            <button mat-icon-button matSuffix (click)="removeGroup(group.groupId)"><mat-icon>delete</mat-icon></button>
 		          </a>
 		        </mat-nav-list>
 		      </mat-card>

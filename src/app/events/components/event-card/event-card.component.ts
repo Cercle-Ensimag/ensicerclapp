@@ -4,6 +4,7 @@ import {DeleteDialogComponent} from '../../../shared-components/delete-dialog/de
 import {Event, EventsService} from '../../events-service/events.service';
 import {ToolsService} from '../../../providers/tools.service';
 import {DicoService} from '../../../language/dico.service';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-event-card',
@@ -60,4 +61,12 @@ export class EventCardComponent implements OnInit {
   singleDay() {
     return this.tools.setDayTime(this.event.start, "00:00:00") == this.tools.setDayTime(this.event.end, "00:00:00")
   }
+
+	getGroupName(groupId: string): Observable<string> {
+		return this.events.getGroupName(groupId);
+	}
+
+	getEventGroupIds(event: Event): string[] {
+		return this.events.getEventGroupIds(event);
+	}
 }

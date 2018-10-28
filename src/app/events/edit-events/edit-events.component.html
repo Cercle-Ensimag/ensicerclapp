@@ -54,10 +54,24 @@
 	      <mat-error *ngIf="formGroup.get('location').invalid">{{ d.l.eventLocationError }}</mat-error>
 	    </mat-form-field>
 
-	    <mat-form-field>
-	      <input matInput placeholder="{{ d.l.eventAssoLabel }}" formControlName="asso" autocomplete="off">
-	      <mat-error *ngIf="formGroup.get('asso').invalid">{{ d.l.eventAssoError }}</mat-error>
-	    </mat-form-field>
+			<mat-form-field>
+				<mat-select placeholder="{{ d.l.eventAssoLabel }} 1" formControlName="asso1">
+					<mat-option *ngFor="let group of getComRespGroups() | async" [value]="group.groupId">{{ group.displayName }}</mat-option>
+				</mat-select>
+				<mat-error *ngIf="formGroup.get('asso1').invalid">{{ d.l.eventAssoError }}</mat-error>
+			</mat-form-field>
+			<mat-form-field *ngIf="formGroup.get('asso1').value">
+				<mat-select placeholder="{{ d.l.eventAssoLabel }} 2" formControlName="asso2">
+					<mat-option *ngFor="let group of getComRespGroups() | async" [value]="group.groupId">{{ group.displayName }}</mat-option>
+				</mat-select>
+				<mat-error *ngIf="formGroup.get('asso2').invalid">{{ d.l.eventAssoError }}</mat-error>
+			</mat-form-field>
+			<mat-form-field *ngIf="formGroup.get('asso2').value">
+				<mat-select placeholder="{{ d.l.eventAssoLabel }} 3" formControlName="asso3">
+					<mat-option *ngFor="let group of getComRespGroups() | async" [value]="group.groupId">{{ group.displayName }}</mat-option>
+				</mat-select>
+				<mat-error *ngIf="formGroup.get('asso3').invalid">{{ d.l.eventAssoError }}</mat-error>
+			</mat-form-field>
 
 	    <mat-form-field>
 	      <input matInput placeholder="{{ d.l.eventPriceLabel }}" formControlName="price" autocomplete="off">

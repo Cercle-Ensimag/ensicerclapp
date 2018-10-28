@@ -142,19 +142,39 @@ def journalistsGroupTheSame():
     return "root.child(" + groupPath + ").val() === newData.child('groupId').val()"
 
 def getComRespPath():
-    return "'events/com-resps/resps/'+" + computeEmailId()
+	"""
+	Returns the path in the database for comResp data
+	"""
+	return "'events/com-resps/resps/'+" + computeEmailId()
 
 def isComResp():
-    isComResp_v = "root.child(" + getComRespPath() + ").exists()"
-    return isComResp_v + " && " + isMember()
+	"""
+	Returns a condition that is true if the authentified user is comResp
+	"""
+	isComResp_v = "root.child(" + getComRespPath() + ").exists()"
+	return isComResp_v + " && " + isMember()
 
 def comRespGroupExists():
-    groupPath = getComRespPath() + "+'/groupId'"
-    return "root.child(" + groupPath + ").val() === newData.val()"
+	"""
+	Returns a condition that is true if the given groupId (newData.val())
+	matches a groupId of the authentified user
+	"""
+	groupPath = getComRespPath() + "+'/groupIds/'"
+	return "root.child(" + groupPath + " + newData.val()).exists()"
 
 def comRespGroupTheSame():
-    groupPath = getComRespPath() + "+'/groupId'"
-    return "root.child(" + groupPath + ").val() === newData.child('groupId').val()"
+	"""
+	Returns a condition that is true if on of the comResp groupId matches
+	one of the event groupId
+	"""
+	groupPath = getComRespPath() + "+'/groupIds/'"
+	return "root.child(" + groupPath + ").val() === newData.child('groupIds').val()"
+
+def eventGroupIdExists(groupId):
+	"""
+	Returns a condition that is true if the given groupId is defined
+	"""
+	return "root.child('events/com-resps/groups/'+" + groupId + ").exists()"
 
 def getAssessorPath():
     return "'vote/assessors/'+" + computeEmailId()

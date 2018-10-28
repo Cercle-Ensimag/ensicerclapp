@@ -79,6 +79,10 @@ export class French {
 	public static readonly adminLabel = "Admin";
 	public static readonly nbMembersLabel = "{0} membres";
 	public static readonly notOnTheList = "{0} n'est pas dans la liste";
+	public static readonly addGroupInfo = "Nom de groupe ou association";
+	public static readonly addGroupButtonLabel = "Ajouter";
+	public static readonly groupsLabel = "Groupes";
+
 	// -> vote
 	public static readonly voteAdminLabel = "Admin vote";
 	public static readonly voteAdminPlLabel = "Admins vote";

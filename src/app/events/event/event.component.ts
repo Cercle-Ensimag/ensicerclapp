@@ -5,7 +5,7 @@ import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
 
 import {DicoService} from '../../language/dico.service';
-import {EventsService} from '../events-service/events.service';
+import {EventsService, Event} from '../events-service/events.service';
 import {Observable} from 'rxjs';
 
 @Component({
@@ -32,4 +32,12 @@ export class EventComponent implements OnInit {
     return this.events.getEventInCalendar(this.id).pipe(
       map(event => event != null));
   }
+
+	getGroupName(groupId: string): Observable<string> {
+		return this.events.getGroupName(groupId);
+	}
+
+	getEventGroupIds(event: Event): string[] {
+		return this.events.getEventGroupIds(event);
+	}
 }

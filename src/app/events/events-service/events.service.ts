@@ -17,13 +17,15 @@ export class Event {
   end: number;
   location: string;
   price: string;
-  asso: string;
-  groupId: string;
+	groupId1: string;
+	groupId2: string;
+	groupId3: string;
 }
 
 export class ComResp {
   emailId: string;
-  groupId: string;
+	groupId1: string;
+	groupId2: string;
 }
 
 export class Group {
@@ -38,6 +40,7 @@ export class EventsService {
   private _event: { [$eventId: string]: Observable<Event> } = {};
   private _comResps: Observable<ComResp[]>;
   private _eventInCalendar: { [$eventId: string]: Observable<CalEvent> } = {};
+	private _groups: Observable<Group[]>;
 
   constructor(
     private db: AngularFireDatabase,
@@ -72,10 +75,23 @@ export class EventsService {
   getEventsImRespoOf(): Observable<Event[]> {
     return combineLatest(
       this.getEvents(),
-      this.auth.getRespComId()
+      this.auth.getComRespIds()
     ).pipe(
-      map(([events, comId]: [Event[], string]) => events.filter(event => event.groupId === comId)));
+      map(([events, comRespIds]: [Event[], string[]]) => {
+				return events.filter(event => this.imRespoOf(event, comRespIds))
+			}),
+			shareReplay(1)
+		);
   }
+
+	imRespoOf(event: Event, comRespIds: string[]): boolean {
+		for (let eventGroupId of this.getEventGroupIds(event)) {
+			if (comRespIds.includes(eventGroupId)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
   getEvent(eventId: string): Observable<Event> {
     if (!this._event[eventId]) {
@@ -88,7 +104,17 @@ export class EventsService {
     return this._event[eventId];
   }
 
-  getEventId() {
+	getEventGroupIds(event: Event): string[] {
+		let ids = [];
+		for (let i of [1, 2, 3]) {
+			if (event['groupId' + i]) {
+				ids.push(event['groupId' + i]);
+			}
+		}
+		return ids;
+	}
+
+  getEventId(): string {
     return this.db.list<Event>('events/events/').push(null).key;
   }
 
@@ -114,16 +140,61 @@ export class EventsService {
     return this.db.object<ComResp>('events/com-resps/resps/' + emailId).remove();
   }
 
-  addComResp(email: string, group: Group) {
-    let emailId = this.tools.getEmailIdFromEmail(email);
-    return this.db.object<Group>('events/com-resps/groups/' + group.groupId).set(group)
-      .then(() => {
-        return this.db.object<ComResp>('events/com-resps/resps/' + emailId).set({
-          emailId: emailId,
-          groupId: group.groupId
-        });
-      });
+	setGroup(group: Group) {
+    return this.db.object<Group>('events/com-resps/groups/' + group.groupId).set(group);
+	}
+
+	removeGroup(groupId: string) {
+		return this.db.object<Group>('events/com-resps/groups/' + groupId).remove();
+	}
+
+  getGroupId(): string {
+    return this.db.list<Event>('events/com-resps/groups').push(null).key;
   }
+
+	getGroups(): Observable<Group[]> {
+		if (!this._groups) {
+			this._groups = this.db.list<Group>('events/com-resps/groups')
+			.valueChanges().pipe(shareReplay(1));
+		}
+		return this._groups;
+	}
+
+	getGroupName(groupId: string): Observable<string> {
+		return this.getGroups().pipe(map(groups => groups.find(group => group.groupId === groupId).displayName));
+	}
+
+	getComRespGroups(): Observable<Group[]> {
+		return combineLatest(
+			this.auth.getComRespIds(),
+			this.getGroups()
+		).pipe(
+			map(([comRespIds, groups]: [string[], Group[]]) => {
+				return groups.filter(
+					group => comRespIds.includes(group.groupId) || this.auth.isAdminOf('events')
+				);
+			})
+		);
+	}
+
+	getUserGroupIds(user: ComResp): string[] {
+		let ids = [];
+		for (let i of [1, 2]) {
+			if (user['groupId' + i]) {
+				ids.push(user['groupId' + i]);
+			}
+		}
+		return ids;
+	}
+
+	addComResp(email: string, groupId1: string, groupId2: string) {
+		let emailId = this.tools.getEmailIdFromEmail(email);
+		return this.db.object<ComResp>('events/com-resps/resps/' + emailId).set({
+			emailId: emailId,
+			groupId1: groupId1,
+			groupId2: groupId2
+		});
+	}
 
   addEventToCalendar(eventId: string) {
     return this.auth.getUser().pipe(

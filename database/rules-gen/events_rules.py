@@ -1,5 +1,5 @@
 from RulesPattern import RulesPattern
-from common import OtherRules, StringRules, NumberRules, IdRules, doAnd, doOr, isAdmin, isMember, isComResp, comRespGroupExists, comRespGroupTheSame, isOneAdmin
+from common import OtherRules, StringRules, NumberRules, IdRules, doAnd, doOr, isAdmin, isMember, isComResp, comRespGroupExists, comRespGroupTheSame, eventGroupIdExists, isOneAdmin
 
 class EventsRules (RulesPattern):
     def build(self):
@@ -41,27 +41,22 @@ class UserRules (UsersRules):
     def build(self):
         self.label = "$emailId"
         self.add(IdRules("emailId", self.label))
-        self.add(GroupIdRules())
-        self.add(GroupIdsRules())
+        self.add(GroupIdRules(1))
+        self.add(GroupIdRules(2))
         self.add(OtherRules())
 
-class GroupIdRules (UserRules):
-    def build(self):
-        self.label = "groupId"
-        self.validate = "root.child('events/com-resps/groups/'+newData.val()).exists()"
-        self.inLine = True
+class GroupIdRules (StringRules):
+	def __init__(self, number):
+		self.number = str(number)
+		super().__init__("groupId", 30)
 
-class GroupIdsRules (UserRules):
 	def build(self):
-		self.label = "groupIds"
-		self.add(GroupIdListRules())
-
-class GroupIdListRules (GroupIdsRules):
-	def build(self):
-		self.label = "$groupId"
-		self.validate = "root.child('events/com-resps/groups/'+newData.val()).exists()"
-		self.inLine = True
-
+		super().build()
+		self.label += self.number
+		self.validate = doAnd([
+			self.validate,
+			eventGroupIdExists("newData.val()")
+		])
 
 # events node
 class EventsListRules (EventsRules):
@@ -87,25 +82,22 @@ class EventRules (EventsListRules):
         self.add(NumberRules("start"))
         self.add(NumberRules("end"))
         self.add(StringRules("location", 300))
-        self.add(StringRules("asso", 30))
         self.add(StringRules("price", 50))
-        self.add(EventGroupIdRules())
-        self.add(EventGroupIdsRules())
+        self.add(EventGroupIdRules(1))
+        self.add(EventGroupIdRules(2))
+        self.add(EventGroupIdRules(3))
         self.add(OtherRules())
 
-class EventGroupIdRules (EventRules):
-    def build(self):
-        self.label = "groupId"
-        self.validate = comRespGroupExists()
-        self.inLine = True
+class EventGroupIdRules (StringRules):
+	def __init__(self, number):
+		self.number = str(number)
+		super().__init__("groupId", 30)
 
-class EventGroupIdsRules (EventRules):
 	def build(self):
-		self.label = "groupIds"
-		self.add(EventGroupIdList())
-
-class EventGroupIdList (EventGroupIdsRules):
-	def build(self):
-		self.label = "$groupId"
-		self.validate = comRespGroupExists()
+		super().build()
+		self.label += self.number
+		self.validate = doAnd([
+			self.validate,
+			eventGroupIdExists("newData.val()")
+		])
 		self.inLine = True

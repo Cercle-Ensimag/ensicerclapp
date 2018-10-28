@@ -62,7 +62,7 @@ export class AuthService {
   private _hasCafetActivated: Observable<boolean>;
   private _isAssessor: Observable<boolean>;
   private _isCafetResp: Observable<boolean>;
-  private _respComId: Observable<string>;
+	private _respComIds: Observable<string[]>;
   private _journalistId: Observable<string>;
   private _isLogged: Observable<boolean>;
   private _isLoggedAndHasEmailVerified: Observable<boolean>;
@@ -371,20 +371,26 @@ export class AuthService {
     return this._isCafetResp;
   }
 
-  getRespComId(): Observable<string> {
-    if (!this._respComId) {
-      this._respComId = this.getComRespRes()
-        .pipe(
-          map(resp => resp ? resp.groupId : null),
-          shareReplay(1));
+  getComRespIds(): Observable<string[]> {
+    if (!this._respComIds) {
+      this._respComIds = this.getComRespRes()
+        .pipe(map(user => {
+					let ids = []
+					for (let i of [1, 2]) {
+						if (user['groupId' + i]) {
+							ids.push(user['groupId' + i]);
+						}
+					}
+					return ids;
+				}), shareReplay(1));
     }
-    return this._respComId;
+    return this._respComIds;
   }
 
   isRespCom(): Observable<boolean> {
-    return this.getRespComId()
+    return this.getComRespIds()
       .pipe(
-        map(rcid => rcid !== null),
+        map(ids => ids.length > 0),
         catchError(() => of(false)));
   }
 
