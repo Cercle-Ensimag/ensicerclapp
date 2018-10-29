@@ -10,8 +10,17 @@ export class PagedGridComponent implements OnInit {
 
   @Input() public pageIndex: number = 0;
   @Input() public pageSize: number = 10;
-  @Input() public list: any[] = null;
-  @Input() public emptyMessage: string = this.d.l.emptyMessage;
+	@Input() public emptyMessage: string = this.d.l.emptyMessage;
+
+  @Input()
+	public set list(list: any[]) {
+		this.pageIndex = 0;
+		this._list = list;
+	};
+	public get list() {
+		return this._list;
+	};
+	private _list: any[] = null;
 
   constructor(
 		public d: DicoService
