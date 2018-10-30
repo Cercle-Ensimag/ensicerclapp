@@ -9,6 +9,6 @@
 
 .columns {
 	display: grid;
-	grid-template-columns: 14.3% 14.3% 14.3% 14.3% 14.3% 14.3% 14.3%;
+	grid-template-columns: 14.2857% 14.2857% 14.2857% 14.2857% 14.2857% 14.2857% 14.2857%;
 	margin:auto;
 }
