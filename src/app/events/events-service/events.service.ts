@@ -153,8 +153,10 @@ export class EventsService {
 
 	getGroups(): Observable<Group[]> {
 		if (!this._groups) {
-			this._groups = this.db.list<Group>('events/com-resps/groups')
-			.valueChanges().pipe(shareReplay(1));
+			this._groups = this.tools.enableCache(
+				this.db.list<Group>('events/com-resps/groups').valueChanges(),
+				'_events-groups'
+			).pipe(shareReplay(1));
 		}
 		return this._groups;
 	}

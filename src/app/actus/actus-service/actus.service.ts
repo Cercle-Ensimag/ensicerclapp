@@ -135,8 +135,10 @@ export class ActusService {
 
 	getGroups(): Observable<Group[]> {
 		if (!this._groups) {
-			this._groups = this.db.list<Group>('actus/journalists/groups')
-			.valueChanges().pipe(shareReplay(1));
+			this._groups = this.tools.enableCache(
+				this.db.list<Group>('actus/journalists/groups').valueChanges(),
+				'_actus-groups'
+			).pipe(shareReplay(1));
 		}
 		return this._groups;
 	}
