@@ -2,7 +2,25 @@
 	<mat-tab-group>
 	  <mat-tab label="{{ d.l.events }}">
 			<div class="tab-content-container">
-		    <app-paged-grid [list]="events.getEvents() | async" #pages>
+
+				<div *ngIf="eventsFormGroup" class="item">
+					<mat-expansion-panel>
+						<mat-expansion-panel-header>
+							<mat-panel-title>{{ d.l.selectAssoLabel }}</mat-panel-title>
+						</mat-expansion-panel-header>
+						<form [formGroup]="eventsFormGroup">
+							<mat-nav-list>
+								<div class="grid-container">
+									<a mat-list-item *ngFor="let group of groups">
+										<mat-checkbox color="primary" formControlName="{{ group.groupId }}">{{ group.displayName }}</mat-checkbox>
+									</a>
+								</div>
+							</mat-nav-list>
+						</form>
+					</mat-expansion-panel>
+				</div>
+
+		    <app-paged-grid [list]="getEvents() | async" #pages>
 		      <app-event-card *ngFor="let event of pages.truncatedList()"
 		                               [event]="event"
 		                               [admin]="true">
@@ -19,8 +37,8 @@
 			<div class="tab-content-container">
 		    <ng-container *ngIf="filteredUsers() | async as users">
 					<!-- Header display -->
-		      <mat-card *ngIf="formGroup">
-						<form [formGroup]="formGroup">
+		      <mat-card *ngIf="respsFormGroup">
+						<form [formGroup]="respsFormGroup">
 			        <mat-form-field [class.large]="!media.mobileSize">
 			          <input matInput placeholder="{{ d.l.addComRespInfo }}" formControlName="email" autocomplete="off">
 			          <button mat-icon-button matSuffix><mat-icon>search</mat-icon></button>
@@ -29,18 +47,18 @@
 								<mat-select placeholder="{{ d.l.eventAssoLabel }} 1" formControlName="asso1">
 									<mat-option *ngFor="let group of getComRespGroups() | async" [value]="group.groupId">{{ group.displayName }}</mat-option>
 								</mat-select>
-								<mat-error *ngIf="formGroup.get('asso1').invalid">{{ d.l.eventAssoError }}</mat-error>
+								<mat-error *ngIf="respsFormGroup.get('asso1').invalid">{{ d.l.eventAssoError }}</mat-error>
 							</mat-form-field>
-							<mat-form-field *ngIf="formGroup.get('asso1').value">
+							<mat-form-field *ngIf="respsFormGroup.get('asso1').value">
 								<mat-select placeholder="{{ d.l.eventAssoLabel }} 2" formControlName="asso2">
 									<mat-option [value]="">{{ d.l.emptyLabel }}</mat-option>
 									<mat-option *ngFor="let group of getComRespGroups() | async" [value]="group.groupId">{{ group.displayName }}</mat-option>
 								</mat-select>
-								<mat-error *ngIf="formGroup.get('asso2').invalid">{{ d.l.eventAssoError }}</mat-error>
+								<mat-error *ngIf="respsFormGroup.get('asso2').invalid">{{ d.l.eventAssoError }}</mat-error>
 							</mat-form-field>
 			        <button mat-raised-button
 			                (click)="addComResp()"
-			                [disabled]="formGroup.invalid || users.length !== 0"
+			                [disabled]="respsFormGroup.invalid || users.length !== 0"
 			                color="primary"
 			        >{{ d.l.addComRespButtonLabel }}</button>
 					  </form>

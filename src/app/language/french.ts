@@ -34,6 +34,9 @@ export class French {
 	// -> other errors
 	public static readonly refreshTokenInfo = "Cette opréation nécéssite de s'être identifié recemment";
 	public static readonly emptyMessage = "Aucun élément à afficher !";
+	// public static readonly allLabel = "Tous";
+	public static readonly emptyLabel = "";
+	public static readonly selectAssoLabel = "Filtrer les associations";
 
 	// Account
 	// -> update password dialog

@@ -1,24 +1,29 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {Location} from '@angular/common';
 import {FormBuilder, FormGroup, FormControl, Validators} from '@angular/forms';
 import {MatSnackBar} from '@angular/material';
 
 import {DeviceSizeService} from '../../providers/device-size.service';
-import {EventsService, Group, ComResp} from '../events-service/events.service';
+import {EventsService, Event, Group, ComResp} from '../events-service/events.service';
 import {AuthService} from '../../auth/auth-service/auth.service';
 import {ListService} from '../../providers/list.service';
 import {ToolsService} from '../../providers/tools.service';
 import {DicoService} from '../../language/dico.service';
-import {Observable} from 'rxjs';
-import {first, map} from 'rxjs/operators';
+import {Subject, Observable} from 'rxjs';
+import {first, map, takeUntil} from 'rxjs/operators';
 
 @Component({
   selector: 'app-event-admin',
   templateUrl: './event-admin.component.html',
   styleUrls: ['./event-admin.component.css']
 })
-export class EventAdminComponent implements OnInit {
-	public formGroup: FormGroup;
+export class EventAdminComponent implements OnInit, OnDestroy {
+	private unsubscribe: Subject<void> = new Subject();
+	private hasChanged: boolean = false;
+	private eventsObs: Observable<Event[]>;
+	public groups: Group[];
+	public eventsFormGroup: FormGroup;
+	public respsFormGroup: FormGroup;
   public groupCtrl = new FormControl('', [Validators.minLength(2), Validators.maxLength(30)]);
 
   constructor(
@@ -35,15 +40,54 @@ export class EventAdminComponent implements OnInit {
   ) {  }
 
   ngOnInit () {
-		this.formGroup = this.fb.group({
+		this.respsFormGroup = this.fb.group({
 			email: ['', [this.auth.emailDomainValidator, Validators.email]],
 			asso1: [null, [Validators.required, Validators.maxLength(30)]],
 			asso2: [null, [Validators.maxLength(30)]]
 		});
+		this.events.getGroups().pipe(takeUntil(this.unsubscribe))
+    .subscribe(groups => {
+			this.groups = groups;
+			let filters = {};
+			groups.forEach(group => {
+				filters[group.groupId] = [true,  []]
+			});
+      this.eventsFormGroup = this.fb.group(filters);
+			this.eventsFormGroup.valueChanges.subscribe(() => this.hasChanged = true);
+    });
+	}
+
+	ngOnDestroy() {
+		this.unsubscribe.next();
+		this.unsubscribe.complete();
+	}
+
+	getEvents(): Observable<Event[]> {
+		if (!this.eventsObs || this.hasChanged) {
+			this.eventsObs = this.events.getEvents().pipe(map(events => this.filteredEvents(events)));
+			this.hasChanged = false;
+		}
+		return this.eventsObs;
+	}
+
+	filteredEvents(events: Event[]): Event[] {
+		return events.filter(
+			event => {
+				if (!this.eventsFormGroup) {
+					return true;
+				}
+				for (let groupId of this.events.getEventGroupIds(event)) {
+					if (this.eventsFormGroup.get(groupId).value) {
+						return true;
+					}
+				}
+				return false;
+			}
+		);
 	}
 
   filteredUsers(): Observable<ComResp[]> {
-    let emailId = this.tools.getEmailIdFromEmail(this.formGroup.get('email').value);
+    let emailId = this.tools.getEmailIdFromEmail(this.respsFormGroup.get('email').value);
     return this.events.getComResps().pipe(
       map(users => users.filter(
         user => user.emailId.includes(emailId)
@@ -51,7 +95,7 @@ export class EventAdminComponent implements OnInit {
   }
 
   addComResp() {
-		let email = this.formGroup.get('email').value;
+		let email = this.respsFormGroup.get('email').value;
     let emailId = this.tools.getEmailIdFromEmail(email);
     this.list.isInList(email)
       .pipe(first())
@@ -62,12 +106,12 @@ export class EventAdminComponent implements OnInit {
         } else {
           this.events.addComResp(
 						email,
-						this.formGroup.get('asso1').value,
-						this.formGroup.get('asso2').value
+						this.respsFormGroup.get('asso1').value,
+						this.respsFormGroup.get('asso2').value
 					);
-          this.formGroup.get('email').setValue('');
-          this.formGroup.get('asso1').reset();
-          this.formGroup.get('asso2').reset();
+          this.respsFormGroup.get('email').setValue('');
+          this.respsFormGroup.get('asso1').reset();
+          this.respsFormGroup.get('asso2').reset();
         }
       });
   }
