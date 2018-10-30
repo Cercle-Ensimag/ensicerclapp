@@ -17,7 +17,7 @@
 
   <!-- Users display -->
 	<div class="item">
-	  <app-paged-list [list]="filteredUsers() | async" emptyMessage="Aucun utilisateur ne correspond aux filtres." #pagedList>
+	  <app-paged-list [list]="getUsers() | async" emptyMessage="Aucun utilisateur ne correspond aux filtres." #pagedList>
 	    <mat-accordion>
 	      <div *ngFor="let user of pagedList.truncatedList()">
 	        <mat-expansion-panel *ngIf="user[user.uid]" [expanded]="user.uid == expandedUserUid" (opened)="setExpanded(user.uid)">

@@ -19,6 +19,8 @@ import {map} from 'rxjs/operators';
 })
 export class CafetAdminArchivesComponent implements OnInit {
   public emailCtrl: FormControl;
+	private usersObs: Observable<CafetUser[]>;
+	private hasChanged: boolean = false;
 
   constructor(
     public cafet: CafetService,
@@ -30,14 +32,20 @@ export class CafetAdminArchivesComponent implements OnInit {
 
   ngOnInit() {
     this.emailCtrl = new FormControl('', [Validators.email]);
+		this.emailCtrl.valueChanges.subscribe(() => this.hasChanged = true);
   }
 
-  filteredUsers(): Observable<CafetUser[]> {
-    let emailId = this.tools.getEmailIdFromEmail(this.emailCtrl.value);
-    return this.cafet.getArchivesUsers().pipe(
-      map(users => users.filter(
-        user => user.emailId.includes(emailId)
-      )));
+  getUsers(): Observable<CafetUser[]> {
+		if (!this.usersObs || this.hasChanged) {
+			this.usersObs = this.cafet.getArchivesUsers().pipe(map(
+				users => {
+					const emailId = this.tools.getEmailIdFromEmail(this.emailCtrl.value);
+					return users.filter(user => user.emailId.includes(emailId))
+				}
+			));
+			this.hasChanged = false;
+		}
+		return this.usersObs;
   }
 
   openHistory(user: CafetUser): void {

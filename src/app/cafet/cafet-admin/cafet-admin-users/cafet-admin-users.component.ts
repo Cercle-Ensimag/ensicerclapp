@@ -30,6 +30,8 @@ export class CafetAdminUsersComponent implements OnInit {
   };
   public editing: boolean;
   private unsubscribe: Subject<void> = new Subject();
+	private usersObs: Observable<CafetUser[]>;
+	private hasChanged: boolean = false;
 
   constructor(
     private list: ListService,
@@ -61,6 +63,7 @@ export class CafetAdminUsersComponent implements OnInit {
       byCredit: [],
       byDate: []
     });
+		this.formGroup.valueChanges.subscribe(() => this.hasChanged = true);
 
     this.cafet.getUsers()
       .pipe(takeUntil(this.unsubscribe))
@@ -139,30 +142,37 @@ export class CafetAdminUsersComponent implements OnInit {
       .catch(err => this.snackBar.open(err, this.d.l.okLabel, {duration: 2000}));
   }
 
-  filteredUsers(): Observable<CafetUser[]> {
-    const email = this.getEmail();
-    const emailId = this.tools.getEmailIdFromEmail(email.split('@')[0]);
-    return this.cafet.getUsers().pipe(
-      map(users => {
-        users = users.filter(
-          user => user.emailId.includes(emailId)
-            || this.cafet.getUserName(user).includes(this.tools.titleCase(email))
-        );
-        users.sort((u1, u2) => {
-          if (u1.profile.firstName < u2.profile.firstName) return -1;
-          if (u1.profile.firstName > u2.profile.firstName) return 1;
-          if (u1.profile.lastName < u2.profile.lastName) return -1;
-          return 1;
-        });
-        if (this.formGroup.get('byDate').value) {
-          users.sort((u1, u2) => u1.lastTransactionDate - u2.lastTransactionDate);
-        }
-        if (this.formGroup.get('byCredit').value) {
-          users.sort((u1, u2) => u1.credit - u2.credit);
-        }
-        return users;
-      }));
+  getUsers(): Observable<CafetUser[]> {
+		if (!this.usersObs || this.hasChanged) {
+			this.usersObs = this.cafet.getUsers().pipe(map(
+				users => this.filteredUsers(users)
+			));
+			this.hasChanged = false;
+		}
+		return this.usersObs;
   }
+
+	filteredUsers(users: CafetUser[]): CafetUser[] {
+		const email = this.getEmail();
+		const emailId = this.tools.getEmailIdFromEmail(email);
+		let fUsers = users.filter(
+			user => user.emailId.includes(emailId)
+			|| this.cafet.getUserName(user).includes(this.tools.titleCase(email))
+		)
+		fUsers.sort((u1, u2) => {
+			if (u1.profile.firstName < u2.profile.firstName) return -1;
+			if (u1.profile.firstName > u2.profile.firstName) return 1;
+			if (u1.profile.lastName < u2.profile.lastName) return -1;
+			return 1;
+		});
+		if (this.formGroup.get('byDate').value) {
+			fUsers.sort((u1, u2) => u1.lastTransactionDate - u2.lastTransactionDate);
+		}
+		if (this.formGroup.get('byCredit').value) {
+			fUsers.sort((u1, u2) => u1.credit - u2.credit);
+		}
+		return fUsers;
+	}
 
   // transactions
 

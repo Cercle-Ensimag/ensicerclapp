@@ -20,6 +20,8 @@ export class AdminUsersComponent implements OnInit {
   public formGroup: FormGroup;
   public expandedUserUid: string = '';
   public adminsStrings: string[] = ADMINS;
+	private usersObs: Observable<User[]>;
+	private hasChanged: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -42,24 +44,31 @@ export class AdminUsersComponent implements OnInit {
     this.adminsStrings.forEach((adminString: string) => { controlsConfig[adminString + 'Admins'] = [false, []] });
 
     this.formGroup = this.fb.group(controlsConfig);
+		this.formGroup.valueChanges.subscribe(() => this.hasChanged = true);
   }
 
-  filteredUsers(): Observable<User[]> {
-    return this.admin.getUsers().pipe(
-        map(users => {
-          const emailId = this.formGroup.get('search').value.replace(' ', '|').toLowerCase();
-          return users.filter(
-            user => (this.checkAgainstFilters(emailId, user))
-          );
-        }))
-        .pipe(shareReplay(1));
+	getUsers(): Observable<User[]> {
+		if (!this.usersObs || this.hasChanged) {
+			this.usersObs = this.admin.getUsers().pipe(map(
+				users => this.filteredUsers(users)
+			));
+			this.hasChanged = false;
+		}
+		return this.usersObs;
+	}
+
+  filteredUsers(users: User []): User[] {
+		const emailId = this.formGroup.get('search').value.replace(' ', '|').toLowerCase();
+    return users.filter(
+      user => this.checkAgainstFilters(emailId, user)
+    );
   }
 
   checkAgainstFilters(emailId, user) {
     const userData = user[user.uid];
     if (!userData) return false;
 
-    const emailId2 = userData.admin.email.split('@')[0].replace('.', '|');
+    const emailId2 = this.tools.getEmailIdFromEmail(userData.admin.email);
     if (!emailId2.includes(emailId)) return false;
 
     for (const admin of this.adminsStrings){

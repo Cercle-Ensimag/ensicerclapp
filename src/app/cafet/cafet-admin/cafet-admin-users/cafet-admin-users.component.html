@@ -1,7 +1,7 @@
 <!-- Loading -->
-<app-loading [loading]="filteredUsers() | async"></app-loading>
+<app-loading [loading]="getUsers() | async"></app-loading>
 
-<div *ngIf="filteredUsers() | async as users">
+<div *ngIf="getUsers() | async as users">
   <!-- Header -->
   <mat-card class="accounts-search">
 

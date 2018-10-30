@@ -7,7 +7,7 @@
 </mat-card>
 
 <mat-card>
-  <app-paged-list [list]="filteredUsers() | async" emptyMessage="{{ d.l.noArchivedUsers }}" #page>
+  <app-paged-list [list]="getUsers() | async" emptyMessage="{{ d.l.noArchivedUsers }}" #page>
     <!-- Users display, large screens -->
     <mat-list>
       <mat-list-item *ngFor="let user of page.truncatedList()">
