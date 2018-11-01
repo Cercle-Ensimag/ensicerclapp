@@ -11,11 +11,15 @@ export class ToolsService {
   // Turn an observable into a cached observable (use only if results can be stored as JSON)
   enableCache(toCache: Observable<any>, identifier: string, json: boolean = true, mapTo: Function = null) {
     return merge(
-      toCache.pipe(tap(result => localStorage.setItem(identifier, json ? JSON.stringify(result) : result))),
+      toCache.pipe(
+				tap(result => localStorage.setItem(identifier, json ? JSON.stringify(result) : result))
+			),
       localStorage.getItem(identifier) ? of(
-        json ? ( mapTo ? JSON.parse(localStorage.getItem(identifier)).map(mapTo) : JSON.parse(localStorage.getItem(identifier)) ) :
-          localStorage.getItem(identifier)) :
-        EMPTY);
+        json ? (
+					mapTo ? JSON.parse(localStorage.getItem(identifier)).map(mapTo) : JSON.parse(localStorage.getItem(identifier))
+				) : localStorage.getItem(identifier)
+			) : EMPTY
+		);
   }
 
 

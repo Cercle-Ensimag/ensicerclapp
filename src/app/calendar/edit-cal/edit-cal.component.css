@@ -1,8 +1,13 @@
-button {
+/* button {
     margin-top: 2em;
     max-width: 200px;
-}
+} */
 
-mat-card {
+/* mat-card {
 	margin: 5px;
+} */
+
+mat-form-field {
+	box-sizing: border-box !important;
+	width: 100%;
 }

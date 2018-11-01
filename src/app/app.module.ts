@@ -216,6 +216,7 @@ import {HammerFix} from '../HammerFix';
   ],
   entryComponents: [
     CafetHistoryComponent,
+		EditCalComponent,
     EditCafetUserComponent,
     DeleteDialogComponent,
     LoginDialogComponent,

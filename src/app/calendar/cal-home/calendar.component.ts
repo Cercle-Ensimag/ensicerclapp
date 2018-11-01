@@ -1,8 +1,11 @@
 import {Component, OnInit} from '@angular/core';
+import {MatDialog, MatSnackBar} from '@angular/material';
 
 import {DicoService} from '../../language/dico.service';
 import {DeviceSizeService} from '../../providers/device-size.service';
 import {Location} from '@angular/common';
+import {EditCalComponent} from '../edit-cal/edit-cal.component';
+import {CalService} from '../cal-service/cal.service';
 
 const DAY_LENGTH = 24 * 60 * 60* 1000;
 
@@ -16,12 +19,19 @@ export class CalendarComponent implements OnInit {
   public selectedDay: Date = new Date();
 
   constructor(
+		private cal: CalService,
+    private dialog: MatDialog,
+		private snackBar: MatSnackBar,
     public media: DeviceSizeService,
     public location: Location,
     public d: DicoService
-  ) {}
+  ) {
+	}
 
   ngOnInit() {
+		this.cal.getErrors().subscribe(
+			message => this.snackBar.open(message, this.d.l.okLabel, {duration: 2000})
+		);
     this.selectedDay = new Date();
     this.updateDaysOfTheWeek();
   }
@@ -59,4 +69,11 @@ export class CalendarComponent implements OnInit {
     this.selectedDay = new Date(this.selectedDay.getTime() + DAY_LENGTH * 7);
     this.updateDaysOfTheWeek();
   }
+
+	openCreateEvent(): void {
+    this.dialog.open(EditCalComponent, {
+      data: {day: this.selectedDay, id: "-"},
+      width: '450px'
+    });
+	}
 }

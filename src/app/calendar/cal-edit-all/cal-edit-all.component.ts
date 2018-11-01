@@ -4,6 +4,7 @@ import {MatDialog, MatSnackBar} from '@angular/material';
 import {DicoService} from '../../language/dico.service';
 import {CalService} from '../cal-service/cal.service';
 import {DeleteDialogComponent} from '../../shared-components/delete-dialog/delete-dialog.component';
+import {EditCalComponent} from '../edit-cal/edit-cal.component';
 
 @Component({
   selector: 'app-cal-edit-all',
@@ -40,5 +41,12 @@ export class CalEditAllComponent implements OnInit {
     });
 
   }
+
+	openCreateEvent(eventId: string): void {
+    this.dialog.open(EditCalComponent, {
+      data: {day: null, id: eventId},
+      width: '450px'
+    });
+	}
 
 }

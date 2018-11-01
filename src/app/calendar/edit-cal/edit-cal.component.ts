@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, Inject} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
@@ -6,7 +6,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ToolsService} from '../../providers/tools.service';
 import {CalEvent, CalService, PERSOS} from '../cal-service/cal.service';
 import {DicoService} from '../../language/dico.service';
-import {MatSnackBar} from '@angular/material';
+import {MAT_DIALOG_DATA, MatSnackBar} from '@angular/material';
 
 import {of, Subject} from 'rxjs';
 import {first, flatMap, map, takeUntil, tap} from 'rxjs/operators';
@@ -25,6 +25,7 @@ export class EditCalComponent implements OnInit, OnDestroy {
   public id: string;
 
   constructor(
+    @Inject(MAT_DIALOG_DATA) private data: {day: Date, id: string},
     private cal: CalService,
     private route: ActivatedRoute,
     private fb: FormBuilder,
@@ -36,7 +37,7 @@ export class EditCalComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.id = this.route.snapshot.paramMap.get('id');
+    this.id = this.data.id;
     this.initFormGroup();
   }
 
@@ -46,37 +47,36 @@ export class EditCalComponent implements OnInit, OnDestroy {
   }
 
   initFormGroup() {
-    this.cal.getEvent(this.id)
-      .pipe(
-        takeUntil(this.unsubscribe),
-        flatMap((event: CalEvent) => {
-          if (event) return of(event);
-          return this.cal.getEventId().pipe(
-            first(),
-            tap(id => this.id = id),
-            map(id => new CalEvent(id, '', '', '', 1, '', PERSOS)));
-
-        }))
+    this.cal.getEvent(this.id).pipe(
+      takeUntil(this.unsubscribe),
+      flatMap((event: CalEvent) => {
+        if (event) return of(event);
+        return this.cal.getEventId().pipe(
+          first(),
+          tap(id => this.id = id),
+          map(id => new CalEvent(id, '', '', '', 1, '', PERSOS))
+				);
+      }))
       .subscribe((event) => {
         this.formGroup = this.fb.group({
           title: [event.title || '', [Validators.required, Validators.maxLength(80)]],
-          start: [new Date(event.start) || '', [Validators.required, this.tools.dateValidator]],
+          start: [this.data.day || new Date(event.start) || '', [Validators.required, this.tools.dateValidator]],
           startTime: [this.tools.getTimeFromDate(event.start), [Validators.required, this.tools.timeValidator]],
-          end: [new Date(event.end) || '', [Validators.required, this.tools.dateValidator]],
+          end: [this.data.day || new Date(event.end) || '', [Validators.required, this.tools.dateValidator]],
           occurences: [event.occurences || 1, [Validators.required, Validators.min(1), Validators.max(42)]],
           endTime: [this.tools.getTimeFromDate(event.end), [Validators.required, this.tools.timeValidator]],
           location: [event.location || '', [Validators.maxLength(300)]]
         });
         this.formGroup.get('start').valueChanges
-          .pipe(takeUntil(this.unsubscribe))
-          .subscribe(value => {
-            this.formGroup.get('end').setValue(value);
-          });
+        .pipe(takeUntil(this.unsubscribe))
+        .subscribe(value => {
+          this.formGroup.get('end').setValue(value);
+        });
         this.formGroup.get('startTime').valueChanges
-          .pipe(takeUntil(this.unsubscribe))
-          .subscribe(value => {
-            this.formGroup.get('endTime').setValue(value);
-          });
+        .pipe(takeUntil(this.unsubscribe))
+        .subscribe(value => {
+          this.formGroup.get('endTime').setValue(value);
+        });
       });
   }
 

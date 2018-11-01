@@ -1,7 +1,7 @@
-
-import {map, shareReplay} from 'rxjs/operators';
 import {Component, Inject, ViewChild} from '@angular/core';
 import {MAT_DIALOG_DATA, MatPaginator, MatTableDataSource} from '@angular/material';
+
+import {map, shareReplay} from 'rxjs/operators';
 
 import {CafetService, CafetUser} from '../cafet-service/cafet.service';
 import {DicoService} from '../../language/dico.service';

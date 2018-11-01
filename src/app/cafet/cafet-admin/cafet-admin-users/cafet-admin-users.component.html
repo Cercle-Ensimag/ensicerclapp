@@ -33,20 +33,20 @@
             </mat-form-field>
           </span>
 
-            <span class="item2">
+          <span class="item2">
             <mat-form-field>
               <input matInput placeholder="{{ d.l.lastNameLabel }}" formControlName="lastName" autocomplete="off">
               <mat-error *ngIf="formGroup.get('lastName').invalid">{{ d.l.lastNameError }}</mat-error>
             </mat-form-field>
           </span>
 
-            <span class="item3">
+          <span class="item3">
             <mat-form-field>
               <input matInput type="number" placeholder="{{ d.l.creditLabel }}" formControlName="credit" autocomplete="off">
             </mat-form-field>
           </span>
 
-            <span class="item4">
+          <span class="item4">
             <button mat-raised-button
                     (click)="tryCreateCafetAccount(); editing=false"
                     [disabled]="formGroup.invalid || users.length !== 0"
