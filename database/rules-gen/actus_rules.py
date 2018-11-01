@@ -21,9 +21,10 @@ class JournalistsRules (ActusRules):
         self.add(OtherRules())
 
 class GroupsRules (JournalistsRules):
-    def build(self):
-        self.label = "groups"
-        self.add(GroupRules())
+	def build(self):
+		self.label = "groups"
+		self.read = isMember()
+		self.add(GroupRules())
 
 class GroupRules (GroupsRules):
     def build(self):
