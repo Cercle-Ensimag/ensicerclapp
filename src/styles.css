@@ -7,13 +7,13 @@ body {
 }
 
 .tab-group-container {
-	margin: 5px;
-	margin-left: 0px;
-	margin-right: 0px;
+	margin: 0px;
+	margin-top: 5px;
 }
 
 .tab-content-container {
 	padding: 5px;
+	padding-bottom: 0px;
 }
 
 .grid-container {
@@ -38,16 +38,15 @@ body {
 	height: 100%;
 }
 
-.click:hover {
-	cursor: pointer;
+@media only screen and (max-width: 768px) {
+	/* For mobile phones: */
+	.grid-container {
+		grid-template-columns: 100%;
+	}
 }
 
-
-@media only screen and (max-width: 768px) {
-  /* For mobile phones: */
-  .grid-container {
-    grid-template-columns: 100%;
-  }
+.click:hover {
+	cursor: pointer;
 }
 
 .container {
@@ -60,13 +59,13 @@ body {
   max-width: unset !important;
 }
 
+.container > * {
+	width: 100%;
+}
+
 .thin-container {
 	max-width: 590px;
 	margin: auto;
-}
-
-.container > * {
-  width: 100%;
 }
 
 .error {
@@ -80,6 +79,12 @@ body {
 
 .center, mat-card-actions {
   text-align: center !important;
+}
+
+div.fab-btn-placeholder {
+	box-sizing: border-box !important;
+	height: 102px !important;
+	padding: 23px;
 }
 
 div.mat-fab-bottom-right {

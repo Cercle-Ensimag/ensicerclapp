@@ -1,11 +1,6 @@
-/* button {
-    margin-top: 2em;
-    max-width: 200px;
-} */
-
-/* mat-card {
-	margin: 5px;
-} */
+.height {
+	max-height: 50vh;
+}
 
 mat-form-field {
 	box-sizing: border-box !important;
