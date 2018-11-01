@@ -1,10 +1,15 @@
 .day-column {
-  margin-left: 5px;
-  margin-right: 5px;
+	margin-left: 5px;
+	margin-right: 5px;
 }
 
-.event, .header {
-  margin-top: 5px;
+.header {
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+.item {
+	padding-bottom: 5px;
 }
 
 .event.perso {
@@ -28,9 +33,4 @@
 
 .no-events{
   font: 500 20px/32px Roboto, "Helvetica Neue", sans-serif;
-}
-
-.no-events img {
-  vertical-align: middle;
-  margin: 20px;
 }
