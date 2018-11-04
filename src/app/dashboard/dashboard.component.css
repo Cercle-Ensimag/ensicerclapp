@@ -6,3 +6,17 @@ img {
 	margin-left: 5px;
 	margin-right: 5px;
 }
+
+.events-card .wrapper {
+	padding: 2.5px !important;
+}
+
+.border {
+	box-sizing: border-box;
+	background: #eeeeee;
+	border-radius: 5px;
+	width: 100%;
+	height: 100%;
+	padding-top: 2.5px;
+	padding-bottom: 2.5px;
+}

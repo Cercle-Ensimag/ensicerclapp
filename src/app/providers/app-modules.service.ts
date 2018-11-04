@@ -13,17 +13,19 @@ export class AppModule {
 	description: string;
   disabled: boolean;
 	restricted: boolean;
+	content: boolean;
 
 	constructor(
 		name: string, displayName: string, fullName: string, description: string,
-		disabled: boolean, restricted: boolean
+		disabled: boolean, restricted: boolean, content: boolean
 	) {
 		this.name = name;
 		this.displayName = displayName;
 		this.fullName = fullName;
 		this.description = description;
 		this.disabled = disabled;
-		this.restricted = restricted
+		this.restricted = restricted;
+		this.content = content;
 	}
 }
 
@@ -37,7 +39,7 @@ export class AppModulesService {
     private tools: ToolsService,
 		private d: DicoService
   ) {
-		for (let mod of ["cafet", "calendar", "events", "actus", "jobads", "nsigma", "votes", "infos"]) {
+		for (let mod of ["votes", "events", "calendar", "cafet", "actus", "jobads", "nsigma", "infos"]) {
 			this.modules.push(
 				new AppModule(
 					mod,
@@ -45,7 +47,8 @@ export class AppModulesService {
 					this.d.l[mod + 'ModuleFullName'],
 					this.d.l[mod + 'ModuleDescription'],
 					false,
-					["votes"].includes(mod) ? true : false
+					["votes"].includes(mod) ? true : false,
+					["events"].includes(mod) ? true : false
 				)
 			);
 		}

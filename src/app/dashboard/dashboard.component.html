@@ -11,7 +11,14 @@
 	        <mat-card-subtitle> {{ module.fullName }} </mat-card-subtitle>
 	      </mat-card-header>
 	      <mat-card-content>
-	        <p>{{ module.description }}</p>
+	        <p *ngIf="!module.content">{{ module.description }}</p>
+	        <div *ngIf="module.content" class="grid-container events-card">
+						<div *ngFor="let line of getContent(module.name) | async | slice:0:(media.mobileSize ? 2 : 4)" class="wrapper">
+							<div class="border">
+								{{ line }}
+							</div>
+						</div>
+					</div>
 	      </mat-card-content>
 	    </mat-card>
 	  </div>

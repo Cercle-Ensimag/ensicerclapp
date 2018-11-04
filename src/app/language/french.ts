@@ -356,11 +356,11 @@ export class French {
 	// -> calendar
 	public static readonly calendarModuleDisplayName = "Planning";
 	public static readonly calendarModuleDescription = "Plus question d'arriver en retard, consulte en direct tes horaires de cours mais aussi des événements auxquels tu participes !";
-	public static readonly calendarModuleFullName = "Dates et informations sur mes cours et événements";
+	public static readonly calendarModuleFullName = "Tout sur mes cours et événements";
 	// -> event
 	public static readonly eventsModuleDisplayName = "Evénements";
 	public static readonly eventsModuleDescription = "Renseigne-toi sur l'ensemble des événements liés à la vie au sein de Grenoble INP et ajoute-les à ton calendrier !";
-	public static readonly eventsModuleFullName = "Liste des événements à venir";
+	public static readonly eventsModuleFullName = "Les événements à ne pas manquer !";
 	// -> actus
 	public static readonly actusModuleDisplayName = "Actus";
 	public static readonly actusModuleDescription = "Consulte l'essentiel de l'information grâce à l'engagement des journalistes imag du Pole Com' !";
