@@ -6,7 +6,7 @@ import {AuthService} from '../../auth/auth-service/auth.service';
 import {CalEvent} from '../../calendar/cal-service/cal.service';
 
 import {combineLatest, from, Observable} from 'rxjs';
-import {first, map, mergeMap, shareReplay} from 'rxjs/operators';
+import {first, map, tap, mergeMap, shareReplay} from 'rxjs/operators';
 
 export class Event {
   id: string;
@@ -52,22 +52,33 @@ export class EventsService {
   getEvents(): Observable<Event[]> {
     if (!this._events) {
       this._events = this.tools.enableCache(
-        this.db
-          .list<Event>('events/events', ref => ref.orderByChild('start'))
-          .valueChanges(), '_events')
-        .pipe(
-          map((events: Event[]) => events.reverse()), // Pour l'admin, on veut voir les passés en dernier.
-          shareReplay(1));
+        this.db.list<Event>(
+					'events/events',
+					ref => ref.orderByChild('start')
+				).valueChanges().pipe(
+					map((events: Event[]) => events.reverse())
+				),
+				'_events'
+			)
+      .pipe(
+        shareReplay(1),
+				tap(() => console.log("here"))
+			);
     }
     return this._events;
   }
 
   getActiveEvents(): Observable<Event[]> {
     if (!this._activeEvents) {
-      this._activeEvents = this.getEvents().pipe(
-        // Il faut les plus proches en haut
-        map((events: Event[]) => events.filter(event => event.end > Date.now()).reverse()),
-        shareReplay(1));
+      this._activeEvents =  this.tools.enableCache(
+				this.db.list<Event>(
+					'events/events',
+					ref => ref.orderByChild('start').startAt(Date.now(), "end")
+				).valueChanges(),
+				'_activeEvents'
+			).pipe(
+        shareReplay(1)
+			);
     }
     return this._activeEvents;
   }

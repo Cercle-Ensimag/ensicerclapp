@@ -61,10 +61,11 @@ class GroupIdRules (StringRules):
 
 # actus node
 class ArticlesRules (ActusRules):
-    def build(self):
-        self.label = "actus"
-        self.read = isMember()
-        self.add(ArticleRules())
+	def build(self):
+		self.label = "actus"
+		self.read = isMember()
+		self.indexOn = ["date"]
+		self.add(ArticleRules())
 
 class ArticleRules (ArticlesRules):
     def __init__(self):
@@ -86,7 +87,6 @@ class ArticleRules (ArticlesRules):
 				])
 			])
 		])
-        self.indexOn = ["date"]
 
         self.add(IdRules("id", self.articleId))
         self.add(StringRules("title", 30))

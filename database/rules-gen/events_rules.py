@@ -61,10 +61,11 @@ class GroupIdRules (StringRules):
 
 # events node
 class EventsListRules (EventsRules):
-    def build(self):
-        self.label = "events"
-        self.read = isMember()
-        self.add(EventRules())
+	def build(self):
+		self.label = "events"
+		self.read = isMember()
+		self.indexOn = ["start"]
+		self.add(EventRules())
 
 class EventRules (EventsListRules):
     def __init__(self):
@@ -86,7 +87,6 @@ class EventRules (EventsListRules):
 				])
 			])
 		])
-        self.indexOn = ["start"]
 
         self.add(IdRules("id", self.eventId))
         self.add(StringRules("title", 50))

@@ -140,7 +140,7 @@ export class CalService {
 
   getAssosEvents(): Observable<CalEvent[]> {
     if (!this._assosEvents) {
-      this._assosEvents = this.events.getEvents().pipe(
+      this._assosEvents = this.events.getActiveEvents().pipe(
 				map(events => events.map(event => new CalEvent(
           event.id, event.title, event.start, event.end, 1, event.location, ASSOS
         ))),

@@ -201,7 +201,7 @@ export class French {
 
 	// Calendar
 	// -> edit-all
-	public static readonly nbOfSubscriptionsToDeletedEvents = "{0} abonnements à des événements supprimés";
+	public static readonly nbOfSubscriptionsToDeletedEvents = "{0} abonnements à des événements passés";
 	public static readonly deleteEventSubsciptionsButtonLabel = "Effacer";
 	public static readonly deletePersoEventDialogTitle = "Confirmation de la suppression";
 	public static readonly deletePersoEventDialogContent = "Êtes-vous certain de vouloir supprimer \"{0}\" ?";

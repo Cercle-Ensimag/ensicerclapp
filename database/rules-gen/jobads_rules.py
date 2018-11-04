@@ -9,11 +9,12 @@ class JobAdsRules (RulesPattern):
 
 # jobads list node
 class JobAdsListRules (JobAdsRules):
-    def build(self):
-        self.label = "jobads"
-        self.read = isMember()
-        self.write = isOneAdmin("jobads")
-        self.add(JobAdRules())
+	def build(self):
+		self.label = "jobads"
+		self.read = isMember()
+		self.write = isOneAdmin("jobads")
+		self.indexOn = ["start"]
+		self.add(JobAdRules())
 
 # jobad node
 
@@ -25,7 +26,6 @@ class JobAdRules (JobAdsListRules):
     def build(self):
         self.label = self.jobadId
         self.write = isOneAdmin("jobads")
-        self.indexOn = ["start"]
 
         self.add(IdRules("id", self.jobadId))
         self.add(StringRules("title", 50))

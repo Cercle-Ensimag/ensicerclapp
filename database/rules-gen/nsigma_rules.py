@@ -9,11 +9,12 @@ class NsigmaRules (RulesPattern):
 
 # nsigma jobads list node
 class NsigmaJobAdsListRules (NsigmaRules):
-    def build(self):
-        self.label = "jobads"
-        self.read = isMember()
-        self.write = isOneAdmin("nsigma")
-        self.add(NsigmaJobAdRules())
+	def build(self):
+		self.label = "jobads"
+		self.read = isMember()
+		self.write = isOneAdmin("nsigma")
+		self.indexOn = ["start"]
+		self.add(NsigmaJobAdRules())
 
 # nsigma jobad node
 
@@ -25,7 +26,6 @@ class NsigmaJobAdRules (NsigmaJobAdsListRules):
     def build(self):
         self.label = self.nsigmaJobAdId
         self.write = isOneAdmin("nsigma")
-        self.indexOn = ["start"]
 
         self.add(IdRules("id", self.nsigmaJobAdId))
         self.add(StringRules("title", 50))
