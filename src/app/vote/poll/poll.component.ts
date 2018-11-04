@@ -1,10 +1,9 @@
-
-import {first} from 'rxjs/operators';
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
 
 import {MatDialog, MatSnackBar} from '@angular/material';
+import {first} from 'rxjs/operators';
 
 import {VoteService} from '../vote-service/vote.service';
 import {DicoService} from '../../language/dico.service';
@@ -56,15 +55,17 @@ export class PollComponent implements OnInit {
         content: this.d.format(this.d.l.confirmVoteDialogContent, choice.label)
       }
     }).afterClosed().pipe(
-      first())
-      .subscribe(result => {
-        if (result) {
-          this.vote.sendVote(this.id, choice.id)
-          .then(() => {
-            this.snackBar.open(this.d.format(this.d.l.voteComfirmationMessage, choice.label), this.d.l.okLabel, {duration: 2000});
-            this.location.back();
-          })
-        }
-      });
+      first()
+		).subscribe(result => {
+      if (result) {
+        this.vote.sendVote(this.id, choice.id).then(
+					() => {
+	          this.snackBar.open(this.d.format(this.d.l.voteComfirmationMessage, choice.label), this.d.l.okLabel, {duration: 2000});
+						this.location.back();
+	        },
+					(reason) => this.snackBar.open(reason, this.d.l.okLabel, {duration: 2000})
+				);
+      }
+    });
   }
 }

@@ -58,8 +58,8 @@ export class EditPollComponent implements OnInit, OnDestroy {
           this.id = this.vote.getPollId();
         }
         this.formGroup = this.fb.group({
-          title: [poll.title || '', [Validators.required, Validators.minLength(3), Validators.maxLength(500)]],
-          description: [poll.description || '', [Validators.maxLength(30)]],
+          title: [poll.title || '', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
+          description: [poll.description || '', [Validators.maxLength(500)]],
           started: [poll.started || false, []]
         });
       });

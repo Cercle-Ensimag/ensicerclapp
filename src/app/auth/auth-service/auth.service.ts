@@ -11,7 +11,6 @@ import {catchError, debounceTime, filter, first, flatMap, map, mergeMap, shareRe
 import * as firebase from 'firebase';
 import {User} from 'firebase/app';
 
-import {AppModulesService} from '../../providers/app-modules.service';
 import {ToolsService} from '../../providers/tools.service';
 import {DicoService} from '../../language/dico.service';
 
@@ -74,7 +73,6 @@ export class AuthService {
     private db: AngularFireDatabase,
     private router: Router,
     private location: Location,
-    private modules: AppModulesService,
     private tools: ToolsService,
     private d: DicoService,
     private snackBar: MatSnackBar,

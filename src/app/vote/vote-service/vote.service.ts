@@ -1,5 +1,5 @@
 import {from, Observable, of, combineLatest} from 'rxjs';
-import {map, mergeMap, shareReplay, tap} from 'rxjs/operators';
+import {map, mergeMap, first, shareReplay, tap} from 'rxjs/operators';
 
 import {Injectable} from '@angular/core';
 import {AngularFireDatabase} from '@angular/fire/database';
@@ -32,27 +32,30 @@ export class VoteService {
   getPolls(): Observable<Poll[]> {
     if (!this._polls) {
       this._polls = this.tools.enableCache(
-        this.db
-          .list<Poll>('vote/polls')
-          .valueChanges(), '_polls')
-        .pipe(shareReplay(1));
+      	this.db.list<Poll>('vote/polls').valueChanges(),
+				'_polls'
+			).pipe(
+				shareReplay(1)
+			);
     }
     return this._polls;
   }
 
   getStartedPolls(): Observable<Poll[]> {
-    return this.getPolls().pipe(map((polls: Poll[]) =>
-      polls.filter((poll: Poll) => poll.started)
-    ));
+    return this.getPolls().pipe(
+			map((polls: Poll[]) =>polls.filter((poll: Poll) => poll.started)),
+			shareReplay(1)
+		);
   }
 
   getPoll(id: string): Observable<Poll> {
     if (!this._poll[id]) {
       this._poll[id] = this.tools.enableCache(
-        this.db
-          .object<Poll>('vote/polls/' + id)
-          .valueChanges(), `_poll_${id}`)
-        .pipe(shareReplay(1));
+        this.db.object<Poll>('vote/polls/' + id).valueChanges(),
+				`_poll_${id}`
+			).pipe(
+				shareReplay(1)
+			);
     }
     return this._poll[id];
   }
@@ -65,25 +68,29 @@ export class VoteService {
     if (!this._votes) {
       this._votes = this.auth.getEmailId().pipe(
         mergeMap((emailId: string) =>
-          this.db
-            .object<{ [$pollId: string]: boolean }>('vote/users/' + emailId + '/votes')
-            .valueChanges()),
-        shareReplay(1));
+          this.db.object<{ [$pollId: string]: boolean }>(
+						'vote/users/' + emailId + '/votes'
+					).valueChanges()
+				),
+        shareReplay(1)
+			);
     }
     return this._votes;
   }
 
   alreadyVotedTo(pollId: string): Observable<boolean> {
     return this.getVotes().pipe(
-      map((votes: { [$pollId: string]: boolean }) => votes ? votes[pollId] : false));
+      map((votes: { [$pollId: string]: boolean }) => votes ? votes[pollId] : false)
+		);
   }
 
   getChoices(pollId: string): Observable<Choice[]> {
     if (!this._choices[pollId]) {
-      this._choices[pollId] = this.db
-        .list<Choice>('vote/polls/' + pollId + '/choices')
-        .valueChanges()
-        .pipe(shareReplay(1));
+      this._choices[pollId] = this.db.list<Choice>(
+				'vote/polls/' + pollId + '/choices'
+			).valueChanges().pipe(
+				shareReplay(1)
+			);
     }
     return this._choices[pollId];
   }
@@ -97,11 +104,12 @@ export class VoteService {
       this._results[pollId] = {};
     }
     if (!this._results[pollId][choiceId]) {
-      this._results[pollId][choiceId] = this.db
-        .list<boolean>('vote/results/' + pollId + '/ballot_box/' + choiceId)
-        .valueChanges().pipe(
-          map((booleans: boolean[]) => booleans.reduce((sum, bool) => sum + (bool ? 1 : 0), 0)),
-          shareReplay(1));
+      this._results[pollId][choiceId] = this.db.list<boolean>(
+				'vote/results/' + pollId + '/ballot_box/' + choiceId
+			).valueChanges().pipe(
+				map((booleans: boolean[]) => booleans.reduce((sum, bool) => sum + (bool ? 1 : 0), 0)),
+        shareReplay(1)
+			);
     }
     return this._results[pollId][choiceId];
   }
@@ -121,15 +129,17 @@ export class VoteService {
           choicesToReturn[choice.id] = results[index];
         });
         return choicesToReturn;
-      }));
+      })
+		);
   }
 
   getUsers(pollId: string): Observable<VoteUser[]> {
     if (!this._users[pollId]) {
-      this._users[pollId] = this.db
-        .list<VoteUser>('vote/votes/' + pollId)
-        .valueChanges()
-        .pipe(shareReplay(1));
+      this._users[pollId] = this.db.list<VoteUser>(
+				'vote/votes/' + pollId
+			).valueChanges().pipe(
+				shareReplay(1)
+			);
     }
     return this._users[pollId];
   }
@@ -140,11 +150,14 @@ export class VoteService {
         mergeMap((polls: Poll[]) => combineLatest(
           combineLatest(polls.map((poll: Poll) => this.getUsers(poll.id))),
           of(polls))),
-        map(([users, polls]: [VoteUser[][], Poll[]]) => users.map((users: VoteUser[], index: number) => ({
-          poll: polls[index],
-          users: users
-        }))),
-        shareReplay(1));
+        map(([users, polls]: [VoteUser[][], Poll[]]) => users.map(
+					(users: VoteUser[], index: number) => ({
+	          poll: polls[index],
+	          users: users
+	        })
+				)),
+        shareReplay(1)
+			);
     }
     return this._allStartedPollsUsers;
   }
@@ -169,13 +182,13 @@ export class VoteService {
   // TODO
   sendVote(pollId: string, choiceId: string) {
     return this.auth.getEmailId().pipe(
-      mergeMap((emailId: string) => from(
-        this.db.object('vote/results/' + pollId + '/buffer/' + emailId)
-          .set(choiceId)
-          .then(() => this.markAsVoted(pollId, emailId))
-        )
-      ))
-      .toPromise();
+      mergeMap((emailId: string) => this.db.object(
+				'vote/results/' + pollId + '/buffer/' + emailId
+			).set(choiceId).then(
+				() => this.markAsVoted(pollId, emailId)
+			)),
+			first()
+		).toPromise();
   }
 
   // TODO
@@ -185,18 +198,20 @@ export class VoteService {
       emailId: emailId,
       voted: true
     };
-    return this.db.object('vote/votes/' + pollId + '/' + emailId).update(refs)
-      .then(() => {
-        return this.db.object('vote/users/' + emailId + '/votes/' + pollId).set(true);
-      });
+    return this.db.object(
+			'vote/votes/' + pollId + '/' + emailId
+		).update(refs).then(() => {
+      return this.db.object('vote/users/' + emailId + '/votes/' + pollId).set(true);
+    });
   }
 
   getAssessors() {
     if (!this._assessors) {
-      this._assessors = this.db
-        .list<Assessor>('vote/assessors')
-        .valueChanges()
-        .pipe(shareReplay(1));
+      this._assessors = this.db.list<Assessor>(
+				'vote/assessors'
+			).valueChanges().pipe(
+				shareReplay(1)
+			);
     }
     return this._assessors;
   }

@@ -355,7 +355,7 @@ export class French {
 	public static readonly cafetModuleFullName = "Gestion de mon compte cafétéria";
 	// -> calendar
 	public static readonly calendarModuleDisplayName = "Planning";
-	public static readonly calendarModuleDescription = "Plus question d'arriver en retard, consulte en direct tes horaires de cours mais aussi des événements auxquels tu participes !";
+	public static readonly calendarModuleDescription = "Plus question d'arriver en retard, consulte en direct tes cours et tes événements !";
 	public static readonly calendarModuleFullName = "Tout sur mes cours et événements";
 	// -> event
 	public static readonly eventsModuleDisplayName = "Evénements";
@@ -376,7 +376,7 @@ export class French {
 	// -> vote
 	public static readonly votesModuleDisplayName = "Votes";
 	public static readonly votesModuleDescription = "Vote pour ta liste préférée et aide la à rentrer dans l'Histoire en remportant l'accès au bureau !";
-	public static readonly votesModuleFullName = "Vote pour les élections BDE, BDS et BDA";
+	public static readonly votesModuleFullName = "Elections et sondages";
 	// -> infos
 	public static readonly infosModuleDisplayName = "Lisez-moi";
 	public static readonly infosModuleDescription = "Retrouve ici mentions légales et tutoriels pour l'utilisation de cette application.";
