@@ -64,7 +64,7 @@ class EventsListRules (EventsRules):
 	def build(self):
 		self.label = "events"
 		self.read = isMember()
-		self.indexOn = ["start"]
+		self.indexOn = ["start", "end"]
 		self.add(EventRules())
 
 class EventRules (EventsListRules):
