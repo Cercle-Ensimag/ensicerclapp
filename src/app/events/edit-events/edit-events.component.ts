@@ -25,6 +25,8 @@ export class EditEventsComponent implements OnInit, OnDestroy {
 
   public id: string;
   public formGroup: FormGroup;
+	public mkdPreview: boolean = true;
+	public imgPreview: boolean = true;
 
   constructor(
     private auth: AuthService,

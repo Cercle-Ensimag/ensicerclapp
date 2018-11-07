@@ -1,6 +1,6 @@
-button {
-    margin-top: 2em;
-    max-width: 200px;
+mat-form-field {
+	box-sizing: border-box !important;
+	width: 100%;
 }
 
 mat-card {
