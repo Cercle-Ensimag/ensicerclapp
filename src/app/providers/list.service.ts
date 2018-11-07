@@ -44,13 +44,16 @@ export class ListService {
 
 	isLoggedUserInList(): Observable<boolean> {
 		if (!this._isActive) {
-			this._isActive = this.auth.getLoggedUser()
-			.pipe(
-				mergeMap(
-					(user: User) => this.getEmail(this.tools.getEmailIdFromEmail(user.email))
-					.pipe(map(email => email === user.email))
+			this._isActive = this.tools.enableCache(
+				this.auth.getLoggedUser().pipe(
+					mergeMap(
+						(user: User) => this.getEmail(
+							this.tools.getEmailIdFromEmail(user.email)
+						).pipe(map(email => email === user.email))
+					),
+					shareReplay(1)
 				),
-				shareReplay(1)
+				`_iAmInList`
 			);
 		}
 		return this._isActive;

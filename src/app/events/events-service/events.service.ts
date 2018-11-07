@@ -61,8 +61,7 @@ export class EventsService {
 				'_events'
 			)
       .pipe(
-        shareReplay(1),
-				tap(() => console.log("here"))
+        shareReplay(1)
 			);
     }
     return this._events;
@@ -73,7 +72,7 @@ export class EventsService {
       this._activeEvents =  this.tools.enableCache(
 				this.db.list<Event>(
 					'events/events',
-					ref => ref.orderByChild('start').startAt(Date.now(), "end")
+					ref => ref.orderByChild('end').startAt(Date.now(), "end")
 				).valueChanges(),
 				'_activeEvents'
 			).pipe(

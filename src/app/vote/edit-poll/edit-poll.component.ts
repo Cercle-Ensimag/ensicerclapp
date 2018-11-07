@@ -5,9 +5,7 @@ import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
-import {Poll} from '../poll/poll.component';
-
-import {VoteService} from '../vote-service/vote.service';
+import {VoteService, Poll} from '../vote-service/vote.service';
 import {DicoService} from '../../language/dico.service';
 import {MatSnackBar} from '@angular/material';
 

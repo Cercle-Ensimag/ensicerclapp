@@ -8,6 +8,17 @@ import {VoteService} from '../vote/vote-service/vote.service';
 import {Observable, pipe, of} from 'rxjs';
 import {map,shareReplay} from 'rxjs/operators';
 
+const index = {
+	"events": -3,
+	"calendar": -2,
+	"actus": 2,
+	"jobads": 2,
+	"nsigma": 2,
+	"cafet": 3,
+	"votes": 4,
+	"infos": 5
+};
+
 export class AppModule {
   name: string;
   displayName: string;
@@ -16,6 +27,7 @@ export class AppModule {
   disabled: boolean;
 	restricted: boolean;
 	content: boolean;
+	order: number;
 
 	constructor(
 		name: string, displayName: string, fullName: string, description: string,
@@ -48,7 +60,7 @@ export class AppModulesService {
 		private events: EventsService,
 		private votes: VoteService
   ) {
-		for (let mod of ["votes", "events", "calendar", "cafet", "actus", "jobads", "nsigma", "infos"]) {
+		for (let mod of Object.getOwnPropertyNames(index)) {
 			this.modules.push(
 				new AppModule(
 					mod,
@@ -57,7 +69,7 @@ export class AppModulesService {
 					this.d.l[mod + 'ModuleDescription'],
 					false,
 					["votes"].includes(mod) ? true : false,
-					["events"].includes(mod) ? true : false
+					["events"].includes(mod) ? true : false,
 				)
 			);
 		}
@@ -66,9 +78,9 @@ export class AppModulesService {
 			this._active = active;
 			this._hasChanged = this._active != oldActive;
 		});
-		this.votes.getStartedPolls().subscribe(votes => {
+		this.votes.getPollsIDidntAnswer().subscribe(polls => {
 			let isPolls = this._isPolls;
-			this._isPolls = votes.length > 0;
+			this._isPolls = polls.length > 0;
 			this._hasChanged = this._isPolls != isPolls;
 		});
   }
@@ -79,13 +91,20 @@ export class AppModulesService {
 			this._modulesObs = of(this.modules).pipe(
 				map(modules => modules.filter(
 					mod => {
-						if (mod.name === "votes" && !this._isPolls) {
-							return false;
-						}
-						return !mod.disabled && !(mod.restricted && !this._active)
+						return !mod.disabled && !(mod.restricted && !this._active);
 					}
 				)),
-				map(modules => modules), // TODO: sort actus, jobads, nsigma by last publication ?
+				map(modules => modules.map(mod => {
+					mod.order = index[mod.name];
+
+					if (mod.name === "votes" && this._isPolls) {
+						mod.order = -mod.order;
+					}
+					return mod;
+				})),
+				map(modules => modules.sort(
+					(mod1, mod2) => mod1.order - mod2.order
+				)),
 				shareReplay(1)
 			);
 		}

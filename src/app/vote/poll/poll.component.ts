@@ -5,25 +5,10 @@ import {Location} from '@angular/common';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {first} from 'rxjs/operators';
 
-import {VoteService} from '../vote-service/vote.service';
+import {VoteService, Poll, Choice} from '../vote-service/vote.service';
 import {DicoService} from '../../language/dico.service';
 
 import {DeleteDialogComponent} from '../../shared-components/delete-dialog/delete-dialog.component';
-
-export class Choice {
-  id: string;
-  label: string;
-  short: string;
-  image: string;
-}
-
-export class Poll {
-  id: string;
-  title: string;
-  description: string;
-  started: boolean;
-  choices: any;
-}
 
 @Component({
   selector: 'app-poll',

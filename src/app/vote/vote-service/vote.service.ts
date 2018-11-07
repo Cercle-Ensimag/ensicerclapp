@@ -4,12 +4,25 @@ import {map, mergeMap, first, shareReplay, tap} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
 import {AngularFireDatabase} from '@angular/fire/database';
 
-
 import {ToolsService} from '../../providers/tools.service';
 import {AuthService} from '../../auth/auth-service/auth.service';
-import {Choice, Poll} from '../poll/poll.component';
 import {Assessor} from '../vote-admin/vote-admin.component';
 import {VoteUser} from '../vote-users/vote-users.component';
+
+export class Choice {
+  id: string;
+  label: string;
+  short: string;
+  image: string;
+}
+
+export class Poll {
+  id: string;
+  title: string;
+  description: string;
+  started: boolean;
+  choices: any;
+}
 
 @Injectable()
 export class VoteService {
@@ -48,6 +61,24 @@ export class VoteService {
 		);
   }
 
+	getPollsIDidntAnswer(): Observable<Poll[]> {
+		return combineLatest(
+			this.getStartedPolls(),
+			this.getVotes()
+		).pipe(
+			map(([polls, votes]: [Poll[], { [pollId: string]: boolean }]) => {
+				let toReturn = [];
+				polls.forEach(poll => {
+					if (!votes[poll.id]) {
+						toReturn.push(poll);
+					}
+				});
+				return toReturn;
+			}),
+			shareReplay(1)
+		)
+	}
+
   getPoll(id: string): Observable<Poll> {
     if (!this._poll[id]) {
       this._poll[id] = this.tools.enableCache(
@@ -64,15 +95,19 @@ export class VoteService {
     return this.db.list<Poll>('vote/polls/').push(null).key;
   }
 
-  getVotes(): Observable<{ [p: string]: boolean }> {
+  getVotes(): Observable<{ [pollId: string]: boolean }> {
     if (!this._votes) {
-      this._votes = this.auth.getEmailId().pipe(
-        mergeMap((emailId: string) =>
-          this.db.object<{ [$pollId: string]: boolean }>(
-						'vote/users/' + emailId + '/votes'
-					).valueChanges()
+      this._votes = this.tools.enableCache(
+				this.auth.getEmailId().pipe(
+	        mergeMap((emailId: string) =>
+	          this.db.object<{ [pollId: string]: boolean }>(
+							'vote/users/' + emailId + '/votes'
+						).valueChanges()
+					)
 				),
-        shareReplay(1)
+				"_votes"
+			).pipe(
+				shareReplay(1)
 			);
     }
     return this._votes;
@@ -149,7 +184,8 @@ export class VoteService {
       this._allStartedPollsUsers = this.getStartedPolls().pipe(
         mergeMap((polls: Poll[]) => combineLatest(
           combineLatest(polls.map((poll: Poll) => this.getUsers(poll.id))),
-          of(polls))),
+          of(polls)
+				)),
         map(([users, polls]: [VoteUser[][], Poll[]]) => users.map(
 					(users: VoteUser[], index: number) => ({
 	          poll: polls[index],

@@ -7,13 +7,12 @@ import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 
 import {DOMAINS} from '../../auth/auth-service/auth.service';
 import {DeviceSizeService} from '../../providers/device-size.service';
-import {VoteService} from '../vote-service/vote.service';
+import {VoteService, Poll} from '../vote-service/vote.service';
 import {ListService} from '../../providers/list.service';
 import {ToolsService} from '../../providers/tools.service';
 import {DicoService} from '../../language/dico.service';
 
 import {VoteUser} from '../vote-users/vote-users.component';
-import {Poll} from '../poll/poll.component';
 import {Observable, Subject} from 'rxjs';
 
 
