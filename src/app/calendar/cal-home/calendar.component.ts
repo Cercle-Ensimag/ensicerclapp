@@ -29,7 +29,7 @@ export class CalendarComponent implements OnInit {
 	}
 
   ngOnInit() {
-		this.cal.getErrors().subscribe(
+		this.cal.getErrorNotifier().subscribe(
 			message => this.snackBar.open(message, this.d.l.okLabel, {duration: 2000})
 		);
     this.selectedDay = new Date();
@@ -75,5 +75,12 @@ export class CalendarComponent implements OnInit {
       data: {day: this.selectedDay, id: "-"},
       width: '450px'
     });
+	}
+
+	refreshADE() {
+		this.cal.refreshADE();
+	}
+	needRefreshADE(): boolean {
+		return this.cal.needRefreshADE();
 	}
 }

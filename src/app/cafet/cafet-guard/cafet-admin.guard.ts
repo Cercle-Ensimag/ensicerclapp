@@ -12,11 +12,12 @@ export class CanActivateCafetAdmin implements CanActivate {
   canActivate(
     ) {
     return this.auth.isAdminOf('cafet').pipe(
-      first(),
+			first(),
       tap(is => {
         if (!is) {
           this.auth.goToHome();
         }
-      }));
+      })
+		);
   }
 }

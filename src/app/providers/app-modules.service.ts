@@ -14,9 +14,9 @@ const index = {
 	"actus": 2,
 	"jobads": 2,
 	"nsigma": 2,
-	"cafet": 3,
 	"votes": 4,
-	"infos": 5
+	"cafet": 5,
+	"infos": 6
 };
 
 export class AppModule {

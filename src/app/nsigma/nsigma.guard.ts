@@ -18,7 +18,7 @@ export class NsigmaGuard implements CanActivate {
         if (!is) {
           this.auth.goToHome();
         }
-      }));
-
+      })
+		);
   }
 }

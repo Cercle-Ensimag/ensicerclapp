@@ -15,11 +15,12 @@ export class EmailVerifGuard implements CanActivate {
 
   canActivate(): Observable<boolean> {
     return this.auth.getUser().pipe(
-      map((user: User) => !(user && user.emailVerified)),
-      tap(isNotVerified => {
-        if (!isNotVerified) {
-          this.auth.goToLogin();
-        }
-      }));
+			tap(user => {
+				if (!user) {
+					this.auth.goToLogin();
+				}
+			}),
+      map((user: User) => user && !user.emailVerified)
+		);
   }
 }

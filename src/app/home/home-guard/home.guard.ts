@@ -21,12 +21,15 @@ export class CanActivateHome implements CanActivate {
     return this.auth.getUser().pipe(
       tap((user: User) => {
         if (!user) {
-          return this.auth.goToLogin();
+          this.auth.goToLogin();
+					return;
         }
-        if (!user.emailVerified) {
+				if (!user.emailVerified) {
           this.auth.goToEmailVerif();
+					return;
         }
       }),
-      map(user => !!user),);
+      map(user => !!user)
+		);
   }
 }

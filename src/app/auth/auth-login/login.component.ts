@@ -52,11 +52,11 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     this.auth.login(this.formGroup.get('email').value, this.formGroup.get('password').value)
       .then(() => {
-        this.auth.goToHome();
-        this.loading = false;
+        // this.auth.goToHome();
+        // this.loading = false;
       })
       .catch(err => {
-        this.auth.onLoginError(err);
+        this.auth.onAuthError(err);
         this.loading = false;
       });
   }

@@ -11,14 +11,19 @@
 	        <mat-card-subtitle> {{ module.fullName }} </mat-card-subtitle>
 	      </mat-card-header>
 	      <mat-card-content>
-	        <div *ngIf="getContent(module.name) | async | slice:0:(media.mobileSize ? 2 : 4) as lines">
+	        <div *ngIf="getContent(module.name) | async | slice:0:2 as lines">
 						<p *ngIf="!lines || lines.length == 0">{{ module.description }}</p>
-						<div *ngIf="lines && lines.length > 0" class="grid-container events-card">
-							<div *ngFor="let line of lines" class="wrapper">
+						<div *ngIf="lines && lines.length > 0" class="events-card">
+							<div *ngFor="let line of lines" class="wrapper center">
 								<div class="border">
 									{{ line }}
 								</div>
 							</div>
+							<!-- <div *ngIf="lines.length == 1" class="wrapper center">
+								<div class="border hide">
+									empty
+								</div>
+							</div> -->
 						</div>
 					</div>
 	      </mat-card-content>

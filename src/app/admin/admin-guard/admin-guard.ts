@@ -15,11 +15,12 @@ export class CanActivateAdmin implements CanActivate {
   canActivate(
     ) {
     return this.auth.isAdmin().pipe(
-      first(),
+			first(),
       tap(is => {
         if (!is) {
           this.auth.goToHome();
         }
-      }));
+      })
+		);
   }
 }

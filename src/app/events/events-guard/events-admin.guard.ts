@@ -21,6 +21,7 @@ export class CanActivateEventsAdmin implements CanActivate {
         if (!is) {
           this.auth.goToHome();
         }
-      }));
+      })
+		);
   }
 }

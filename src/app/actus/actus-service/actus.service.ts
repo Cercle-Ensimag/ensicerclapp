@@ -5,7 +5,7 @@ import {ToolsService} from '../../providers/tools.service';
 import {AuthService} from '../../auth/auth-service/auth.service';
 
 import {combineLatest, Observable} from 'rxjs';
-import {map, shareReplay} from 'rxjs/operators';
+import {map, mergeMap, shareReplay} from 'rxjs/operators';
 
 export class Actu {
   id: string;
@@ -45,11 +45,15 @@ export class ActusService {
   getActus() {
     if (!this._actus){
       this._actus = this.tools.enableCache(
-        this.db
-          .list<Actu>('actus/actus')
-          .valueChanges().pipe(
-          map(actus => actus.reverse())), '_actus')
-        .pipe(shareReplay(1));
+        this.auth.getLoggedUser().pipe(
+					mergeMap(() => this.db.list<Actu>('actus/actus').valueChanges().pipe(
+	          map(actus => actus.reverse())
+					))
+				),
+				'_actus'
+			).pipe(
+				shareReplay(1)
+			);
     }
     return this._actus;
   }
@@ -76,11 +80,10 @@ export class ActusService {
 
   getActu(actuId: string) {
     if (!this._actu[actuId]){
-      this._actu[actuId] = this.tools.enableCache(
-        this.db
-          .object<Actu>('actus/actus/'+actuId)
-          .valueChanges(), `_actu_${actuId}`)
-        .pipe(shareReplay(1));
+      this._actu[actuId] = this.getActus().pipe(
+				map(actus => actus.find(actu => actu.id == actuId)),
+				shareReplay(1)
+			);
     }
     return this._actu[actuId];
   }
@@ -109,10 +112,11 @@ export class ActusService {
 
   getJournalists() {
     if (!this._journalists){
-      this._journalists = this.db
-        .list<Journalist>('actus/journalists/users')
-        .valueChanges()
-				.pipe(shareReplay(1));
+      this._journalists = this.db.list<Journalist>(
+				'actus/journalists/users'
+			).valueChanges().pipe(
+				shareReplay(1)
+			);
     }
     return this._journalists;
   }
@@ -138,13 +142,17 @@ export class ActusService {
 			this._groups = this.tools.enableCache(
 				this.db.list<Group>('actus/journalists/groups').valueChanges(),
 				'_actus-groups'
-			).pipe(shareReplay(1));
+			).pipe(
+				shareReplay(1)
+			);
 		}
 		return this._groups;
 	}
 
 	getGroupName(groupId: string): Observable<string> {
-		return this.getGroups().pipe(map(groups => groups.find(group => group.groupId === groupId).displayName));
+		return this.getGroups().pipe(
+			map(groups => groups.find(group => group.groupId === groupId).displayName)
+		);
 	}
 
 	getJournalistGroups(): Observable<Group[]> {

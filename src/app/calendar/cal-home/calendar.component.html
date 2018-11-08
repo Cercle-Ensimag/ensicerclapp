@@ -36,6 +36,7 @@
 
 <div class="mat-fab-bottom-right">
   <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
+  <button *ngIf="needRefreshADE()" mat-fab color="primary" (click)="refreshADE()"><mat-icon>replay</mat-icon></button>
 </div>
 
 <div class="fab-btn-placeholder"></div>

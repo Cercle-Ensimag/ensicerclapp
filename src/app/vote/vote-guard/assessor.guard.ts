@@ -17,6 +17,7 @@ export class CanActivateAssessor implements CanActivate {
         if (!is) {
           this.auth.goToHome();
         }
-      }));
+      })
+		);
   }
 }

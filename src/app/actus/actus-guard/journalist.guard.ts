@@ -17,6 +17,7 @@ export class CanActivateJournalist implements CanActivate {
         if (!is) {
           this.auth.goToHome();
         }
-      }));
+      })
+		);
   }
 }

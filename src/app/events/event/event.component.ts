@@ -28,8 +28,7 @@ export class EventComponent implements OnInit {
   }
 
   isInCalendar(): Observable<boolean> {
-    return this.events.getEventInCalendar(this.id).pipe(
-      map(event => event != null));
+    return this.events.getEventInCalendar(this.id);
   }
 
 	getGroupName(groupId: string): Observable<string> {

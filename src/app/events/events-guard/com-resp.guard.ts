@@ -17,6 +17,7 @@ export class CanActivateComResp implements CanActivate {
         if (!is) {
           this.auth.goToHome();
         }
-      }));
+      })
+		);
   }
 }

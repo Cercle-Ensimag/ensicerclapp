@@ -20,6 +20,7 @@ export class JobAdsGuard implements CanActivate {
         if (!is) {
           this.auth.goToHome();
         }
-      }));
+      })
+		);
   }
 }

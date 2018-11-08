@@ -364,7 +364,7 @@ export class French {
 	// -> actus
 	public static readonly actusModuleDisplayName = "Actus";
 	public static readonly actusModuleDescription = "Consulte l'essentiel de l'information grâce à l'engagement des journalistes imag du Pole Com' !";
-	public static readonly actusModuleFullName = "Actualités de la vie de l'école et de ses environs";
+	public static readonly actusModuleFullName = "Les actualités de l'école";
 	// -> jobad
 	public static readonly jobadsModuleDisplayName = "Annonces";
 	public static readonly jobadsModuleDescription = "Retrouve l'ensemble des offres de stages et d'embauches réservées au réseau Ensimag !";
@@ -372,7 +372,7 @@ export class French {
 	// -> nsigma
 	public static readonly nsigmaModuleDisplayName = "Nsigma";
 	public static readonly nsigmaModuleDescription = "Les projets d'informatique et de mathématiques appliquées d'Nsigma n'attendent que toi pour commencer !";
-	public static readonly nsigmaModuleFullName = "Annonces de recrutement d'Nsigma, Junior Entreprise";
+	public static readonly nsigmaModuleFullName = "Recrutement de la Junior Entreprise";
 	// -> vote
 	public static readonly votesModuleDisplayName = "Votes";
 	public static readonly votesModuleDescription = "Vote pour ta liste préférée et aide la à rentrer dans l'Histoire en remportant l'accès au bureau !";

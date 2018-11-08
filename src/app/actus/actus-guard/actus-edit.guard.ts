@@ -18,11 +18,12 @@ export class CanActivateActusEdit implements CanActivate {
       this.auth.isJournalist()
     ).pipe(
       first(),
-      map(([isAdminOfActus, b2]) => isAdminOfActus || b2),
+      map(([admin, journalist]) => admin || journalist),
       tap(is => {
         if (!is) {
           this.auth.goToHome();
         }
-      }));
+      })
+		);
   }
 }

@@ -12,11 +12,11 @@ export class CanActivateActusAdmin implements CanActivate {
   canActivate(
     ) {
     return this.auth.isAdminOf('actus').pipe(
-      first(),
       tap(is => {
         if (!is) {
           this.auth.goToHome();
         }
-      }));
+      })
+		);
   }
 }

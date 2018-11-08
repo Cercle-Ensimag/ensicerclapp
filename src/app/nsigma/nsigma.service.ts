@@ -31,25 +31,24 @@ export class NsigmaService {
   getJobAds(): Observable<NsigmaJobAd[]> {
     if (!this._jobads){
       this._jobads = this.tools.enableCache(
-        this.db
-          .list<NsigmaJobAd>('nsigma/jobads')
-          .valueChanges(), '_jobadsNsigma')
-        .pipe(
-          map(jobads => jobads.reverse()),
-          shareReplay(1));
+        this.db.list<NsigmaJobAd>('nsigma/jobads').valueChanges(),
+				'_jobadsNsigma'
+			).pipe(
+        map(jobads => jobads.reverse()),
+        shareReplay(1)
+			);
     }
     return this._jobads;
   }
 
-  getJobAd(nsigmaJobAdId: string) {
-    if (!this._jobad[nsigmaJobAdId]){
-      this._jobad[nsigmaJobAdId] = this.tools.enableCache(
-        this.db
-          .object<NsigmaJobAd>('nsigma/jobads/' + nsigmaJobAdId)
-          .valueChanges(), `_jobadNsigma_${nsigmaJobAdId}`)
-        .pipe(shareReplay(1))
+  getJobAd(jobadId: string) {
+    if (!this._jobad[jobadId]) {
+      this._jobad[jobadId] = this.getJobAds().pipe(
+				map(jobads => jobads.find(jobad => jobad.id == jobadId)),
+				shareReplay(1)
+			);
     }
-    return this._jobad[nsigmaJobAdId];
+    return this._jobad[jobadId];
   }
 
   getJobAdId() {

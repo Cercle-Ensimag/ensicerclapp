@@ -17,6 +17,7 @@ export class CanActivateVoteAdmin implements CanActivate {
         if (!is) {
           this.auth.goToHome();
         }
-      }));
+      })
+		);
   }
 }

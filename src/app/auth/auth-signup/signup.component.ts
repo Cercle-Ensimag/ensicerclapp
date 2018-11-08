@@ -61,7 +61,23 @@ export class SignUpComponent implements OnInit {
         this.formGroup.get('password').value,
         this.formGroup.get('firstName').value,
         this.formGroup.get('lastName').value
-      );
+      ).then(
+				([user, emailp, authProfile, dbProfile]) => {
+					emailp.catch(err => {
+						console.log(err);
+					});
+					authProfile.catch(err => {
+						console.log(err);
+					});
+					dbProfile.catch(err => {
+						console.log(err);
+					})
+				}
+			).catch(
+				(err) => {
+		      this.auth.onAuthError(err);
+		    }
+			);
     }
   }
 }

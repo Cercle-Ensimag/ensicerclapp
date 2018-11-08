@@ -15,11 +15,12 @@ export class CanActivateCafetResp implements CanActivate {
   canActivate(
     ) {
     return this.auth.isCafetResp().pipe(
-      first(),
+			first(),
       tap(is => {
         if (!is) {
           this.auth.goToHome();
         }
-      }));
+      })
+		);
   }
 }

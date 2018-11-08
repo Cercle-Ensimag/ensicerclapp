@@ -14,6 +14,7 @@ import {Observable} from 'rxjs';
 })
 export class ActuComponent implements OnInit {
   public id: string;
+	private _safeURL: SafeResourceUrl;
 
   constructor(
     private route: ActivatedRoute,
@@ -29,7 +30,10 @@ export class ActuComponent implements OnInit {
   }
 
   safeUrl(actu: Actu): SafeResourceUrl {
-    return this.sanitizer.bypassSecurityTrustResourceUrl(actu.pdfLink);
+		if (!this._safeURL) {
+			this._safeURL = this.sanitizer.bypassSecurityTrustResourceUrl(actu.pdfLink);
+		}
+    return this._safeURL;
   }
 
 	getGroupName(groupId: string): Observable<string> {

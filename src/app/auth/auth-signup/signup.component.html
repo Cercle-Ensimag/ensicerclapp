@@ -3,6 +3,8 @@
     <mat-card>
       <form [formGroup]="formGroup" (ngSubmit)="submit()" class="container">
         <h2 [innerHTML]="d.l.signUpPageTitle"></h2>
+				
+        <span *ngIf="auth.error" class="error">{{ auth.error }}</span>
 
         <mat-form-field>
           <input matInput placeholder="{{ d.l.firstNameLabel }}" formControlName="firstName" autocomplete="off">

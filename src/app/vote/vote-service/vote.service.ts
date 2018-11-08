@@ -45,7 +45,11 @@ export class VoteService {
   getPolls(): Observable<Poll[]> {
     if (!this._polls) {
       this._polls = this.tools.enableCache(
-      	this.db.list<Poll>('vote/polls').valueChanges(),
+				this.auth.getLoggedUser().pipe(
+					mergeMap(
+						() => this.db.list<Poll>('vote/polls').valueChanges()
+					)
+				),
 				'_polls'
 			).pipe(
 				shareReplay(1)
@@ -79,16 +83,14 @@ export class VoteService {
 		)
 	}
 
-  getPoll(id: string): Observable<Poll> {
-    if (!this._poll[id]) {
-      this._poll[id] = this.tools.enableCache(
-        this.db.object<Poll>('vote/polls/' + id).valueChanges(),
-				`_poll_${id}`
-			).pipe(
+  getPoll(pollId: string): Observable<Poll> {
+    if (!this._poll[pollId]) {
+      this._poll[pollId] = this.getPolls().pipe(
+				map(polls => polls.find(poll => poll.id == pollId)),
 				shareReplay(1)
 			);
     }
-    return this._poll[id];
+    return this._poll[pollId];
   }
 
   getPollId() {
@@ -121,9 +123,16 @@ export class VoteService {
 
   getChoices(pollId: string): Observable<Choice[]> {
     if (!this._choices[pollId]) {
-      this._choices[pollId] = this.db.list<Choice>(
-				'vote/polls/' + pollId + '/choices'
-			).valueChanges().pipe(
+      this._choices[pollId] = this.getPoll(pollId).pipe(
+				map(poll => {
+					let toReturn = [];
+					Object.getOwnPropertyNames(poll.choices).forEach(
+						choiceId => {
+							toReturn.push(poll.choices[choiceId]);
+						}
+					)
+					return toReturn;
+				}),
 				shareReplay(1)
 			);
     }

@@ -17,11 +17,12 @@ export class CanActivateEventsEdit implements CanActivate {
       this.auth.isRespCom()
     ).pipe(
       first(),
-      map(([isAdminOfEvents, b2]) => isAdminOfEvents || b2),
+      map(([admin, resp]) => admin || resp),
       tap(is => {
         if (!is) {
           this.auth.goToHome();
         }
-      }));
+      })
+		);
   }
 }

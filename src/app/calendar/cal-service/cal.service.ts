@@ -11,7 +11,7 @@ import * as parseICS from 'ics-parser';
 import {environment} from '../../../environments/environment';
 
 import {combineLatest, merge, of, from, EMPTY, Observable, Subject} from 'rxjs';
-import {first, map, catchError, mergeMap, shareReplay, tap} from 'rxjs/operators';
+import {first, map, catchError, mergeMap, shareReplay, tap, skip} from 'rxjs/operators';
 import {ToolsService} from '../../providers/tools.service';
 
 export const COURSE = "course";
@@ -94,6 +94,9 @@ export class CalService {
   private _event: { [$eventId: string]: Observable<CalEvent> } = {};
 	private _eventIdsWithNoEvents: Observable<string[]>;
 	private _errorNotifier: Subject<string> = new Subject<string>();
+	private _ADErefresh: Subject<Settings> = new Subject<Settings>();
+	private _ADEError: boolean = false;
+	private _lastADEUpdate: number;
 
   constructor(
     private auth: AuthService,
@@ -103,36 +106,76 @@ export class CalService {
     private http: HttpClient
   ) { }
 
-	getErrors(): Subject<string> {
+	getErrorNotifier(): Subject<string> {
 		return this._errorNotifier;
+	}
+
+	needRefreshADE(): boolean {
+		if (this._lastADEUpdate) {
+			if (Date.now() > this._lastADEUpdate + 6 * 60 * 60 * 1000) {
+				return true;
+			}
+		}
+		return this._ADEError;
+	}
+
+	setADEError(error) {
+		if (error) {
+			this._errorNotifier.next("ADE update failed");
+			this._ADEError = true;
+			this._lastADEUpdate = Date.now();
+		} else {
+			this._ADEError = false;
+		}
+	}
+
+	refreshADE() {
+		this.getSettings().pipe(
+			first()
+		).toPromise().then(
+			settings => this._ADErefresh.next(settings)
+		)
 	}
 
   getCoursesEvents(): Observable<CalEvent[]> {
     if (!this._coursesEvents) {
-      this._coursesEvents = this.getSettings().pipe(
-        mergeMap((settings: Settings) => {
-          if (!settings || !settings.resources){
-            return of([]);
-          }
-          return this.getCalFromAde(settings.resources).pipe(
-						catchError(
-							() => {
-								this._errorNotifier.next("ADE update failed");
-								return EMPTY;
-							}
-						),
-            map(cal => parseICS(cal).map((event: ICSEvent) => new CalEvent(
-							'',
-							event.name.replace(/\\,/g, ', '),
-							event.startDate,
-							event.endDate,
-							1,
-							event.location.replace(/\\,/g, ', '),
-							COURSE
-						)))
-					)
-        }),
-        shareReplay(1)
+      this._coursesEvents = this.tools.enableCache(
+				merge(
+					this.getSettings(),
+					this._ADErefresh
+				).pipe(
+	        mergeMap((settings: Settings) => {
+	          if (!settings || !settings.resources) {
+	            return of([]);
+	          }
+	          return this.getCalFromAde(settings.resources).pipe(
+							catchError(
+								err => {
+									this.setADEError(err);
+									return EMPTY;
+								}
+							),
+	            map(
+								cal => {
+									this.setADEError(null);
+									return parseICS(cal)
+								}
+							)
+						)
+	        })
+				),
+				"_ADEevents"
+			).pipe(
+				map(ICSevents => ICSevents.map((event: ICSEvent) => new CalEvent(
+					'',
+					event.name.replace(/\\,/g, ', '),
+					event.startDate,
+					event.endDate,
+					1,
+					event.location.replace(/\\,/g, ', '),
+					COURSE
+				))),
+				shareReplay(1)
 			);
     }
     return this._coursesEvents;
@@ -153,9 +196,7 @@ export class CalService {
   getAssosEventsITakePart(): Observable<CalEvent[]> {
     if (!this._assosEventsITakePart) {
       this._assosEventsITakePart = combineLatest(
-        this.auth.getUser().pipe(
-          mergeMap(user => this.db.list<string>('calendar/users/'+user.uid+'/assos').valueChanges())
-				),
+        this.events.getAssosEventsIdsITakePart(),
         this.getAssosEvents()
 			).pipe(
         map(
@@ -170,31 +211,35 @@ export class CalService {
 
   getPersosEvents(): Observable<CalEvent[]> {
     if (!this._persosEvents) {
-      this._persosEvents = this.auth.getUser().pipe(
-        mergeMap(
-					user =>
-					this.db.list<CalEvent>('calendar/users/'+user.uid+'/perso')
-					.valueChanges()
+      this._persosEvents = this.tools.enableCache(
+				this.auth.getUser().pipe(
+	        mergeMap(
+						user =>
+						this.db.list<CalEvent>('calendar/users/'+user.uid+'/perso')
+						.valueChanges()
+					),
 				),
-        // Duplicate events with multiple occurrences
-        map(events => {
-          const toReturn = [];
-          events.forEach(event => {
-            for (let i = 0; i < event.occurences; i++){
-              toReturn.push(new CalEvent(
-                event.id,
+				"_persoEvents"
+			).pipe(
+				// Duplicate events with multiple occurrences
+				map(events => {
+					const toReturn = [];
+					events.forEach(event => {
+						for (let i = 0; i < event.occurences; i++){
+							toReturn.push(new CalEvent(
+								event.id,
 								event.title,
 								event.start + WEEK_LENGTH * i,
 								event.end + WEEK_LENGTH * i,
 								1,
 								event.location,
 								PERSOS
-              ));
-            }
-          });
-          return toReturn.sort((event1, event2) => event1.start - event2.start);
-        }),
-        shareReplay(1)
+							));
+						}
+					});
+					return toReturn.sort((event1, event2) => event1.start - event2.start);
+				}),
+				shareReplay(1)
 			);
     }
     return this._persosEvents;
@@ -202,28 +247,15 @@ export class CalService {
 
   getMyEvents(): Observable<CalEvent[]> {
     if (!this._myEvents){
-      this._myEvents = this.tools.enableCache(
-        combineLatest(
-          this.getAssosEventsITakePart(),
-          this.getCoursesEvents(),
-          this.getPersosEvents()
-				).pipe(
-					map(
-						([asso, courses, perso]: [CalEvent[], CalEvent[], CalEvent[]]) =>
-	          asso.concat(courses).concat(perso).sort((event1, event2) => event1.start - event2.start)
-					)
-				),
-        '_myEvents',
-        true,
-        event => new CalEvent(
-          event.id,
-          event.title,
-          event.start,
-          event.end,
-          event.occurences,
-          event.location,
-          event.type
-        )
+      this._myEvents = combineLatest(
+        this.getAssosEventsITakePart(),
+        this.getCoursesEvents(),
+        this.getPersosEvents()
+			).pipe(
+				map(
+					([asso, courses, perso]: [CalEvent[], CalEvent[], CalEvent[]]) =>
+          asso.concat(courses).concat(perso).sort((event1, event2) => event1.start - event2.start)
+				)
 			).pipe(shareReplay(1));
     }
     return this._myEvents;
@@ -236,7 +268,9 @@ export class CalService {
 
     if (!this._myEventsForDay[dayString]){
       this._myEventsForDay[dayString] = this.getMyEvents().pipe(
-        map((events: CalEvent[]) => events.filter((event: CalEvent) => event.start < endOfDay && event.end > startOfDay)),
+        map((events: CalEvent[]) => events.filter(
+					(event: CalEvent) => event.start <= endOfDay && event.end >= startOfDay)
+				),
         shareReplay(1)
 			);
     }
@@ -258,11 +292,12 @@ export class CalService {
     if (!this._settings){
       this._settings = this.auth.getLoggedUser().pipe(
         mergeMap(
-					user => this.db
-					.object<Settings>('calendar/users/'+user.uid+'/settings')
-					.valueChanges()
-				),
-        shareReplay(1)
+					user => this.db.object<Settings>(
+						'calendar/users/'+user.uid+'/settings'
+					).valueChanges()
+				)
+			).pipe(
+				shareReplay(1)
 			);
     }
     return this._settings;
@@ -281,9 +316,9 @@ export class CalService {
     if (!this._event[eventId]){
       this._event[eventId] = this.auth.getLoggedUser().pipe(
         mergeMap(
-					user =>
-          this.db.object<CalEvent>('calendar/users/'+user.uid+'/perso/'+eventId)
-          .valueChanges()
+					user => this.db.object<CalEvent>(
+						'calendar/users/'+user.uid+'/perso/'+eventId
+					).valueChanges()
 				),
         shareReplay(1)
 			);
@@ -295,8 +330,9 @@ export class CalService {
     return this.auth.getLoggedUser().pipe(
       first(),
       map(
-				user =>
-      	this.db.list<CalEvent>('calendar/users/'+user.uid+'/perso/').push(null).key
+				user => this.db.list<CalEvent>(
+					'calendar/users/'+user.uid+'/perso/'
+				).push(null).key
 			)
 		);
   }
@@ -304,18 +340,26 @@ export class CalService {
   setEvent(event: CalEvent) {
     return this.auth.getLoggedUser().pipe(
       first(),
-      mergeMap(user => from(
-        this.db.object<CalEvent>('calendar/users/'+user.uid+'/perso/'+event.id).set(event)
-      ))
+      mergeMap(
+				user => from(
+        	this.db.object<CalEvent>(
+						'calendar/users/'+user.uid+'/perso/'+event.id
+					).set(event)
+      	)
+			)
 		).toPromise();
   }
 
   removeEvent(eventId: string) {
     return this.auth.getLoggedUser().pipe(
       first(),
-      mergeMap(user => from(
-        this.db.object<CalEvent>('calendar/users/'+user.uid+'/perso/'+eventId).remove()
-      ))
+      mergeMap(
+				user => from(
+	        this.db.object<CalEvent>(
+						'calendar/users/'+user.uid+'/perso/'+eventId
+					).remove()
+	      )
+			)
 		).toPromise();
   }
 
@@ -336,9 +380,7 @@ export class CalService {
 	getEventIdsWithNoEvents(): Observable<string[]> {
     if (!this._eventIdsWithNoEvents) {
       this._eventIdsWithNoEvents = combineLatest(
-        this.auth.getUser().pipe(
-          mergeMap(user => this.db.list<string>('calendar/users/'+user.uid+'/assos').valueChanges())
-				),
+        this.events.getAssosEventsIdsITakePart(),
         this.getAssosEvents().pipe(
 					map(events => events.map(event => event.id))
 				)
