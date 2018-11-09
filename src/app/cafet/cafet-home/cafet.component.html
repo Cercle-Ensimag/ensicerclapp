@@ -6,7 +6,7 @@
     <!-- Credit -->
     <mat-card>
       <h2>{{ d.l.creditLabel }} : {{ me.credit.toFixed(2) }}€</h2>
-      <div><mat-error *ngIf="me.credit < 0 | async" [innerHTML]="d.l.negativeCreditError"></mat-error></div>
+      <div><mat-error *ngIf="me.credit < 0" [innerHTML]="d.l.negativeCreditError"></mat-error></div>
       <button mat-icon-button (click)="openHistory(me)"><mat-icon>history</mat-icon></button>
     </mat-card>
     <!-- Week ingredient -->

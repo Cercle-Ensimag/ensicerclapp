@@ -190,7 +190,7 @@ export class French {
 	public static readonly transactionValueLabel = "Montant";
 	public static readonly cafetAccountCreationDateLabel = "Création du compte";
 	// -> cafet-home
-	public static readonly negativeCreditError = "<b>Ton</b> compte est dans le <b>négatif</b>!<small>Tu devrais mettre de l'argent sur ton compte.</small>";
+	public static readonly negativeCreditError = "T'es en <b>négatif</b> !<br><small>Tu devrais mettre de l'argent sur ton compte.</small>";
 	// -> cafet-info
 	public static readonly noCafetAccountInfo = "<b>Tu n'as pas encore de compte à la cafet</b><br><br>Contacte les respo' cafet afin que ces derniers te créent un compte !<br><br>";
 	// -> cafet-service
