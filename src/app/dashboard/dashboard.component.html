@@ -1,4 +1,4 @@
-<app-loading [loading]="modules.getAppModules() | async"></app-loading>
+<app-loading [loading]="getModules() | async"></app-loading>
 
 <!-- Modules display -->
 <div class="grid-container-wrapper">
@@ -19,11 +19,6 @@
 									{{ line }}
 								</div>
 							</div>
-							<!-- <div *ngIf="lines.length == 1" class="wrapper center">
-								<div class="border hide">
-									empty
-								</div>
-							</div> -->
 						</div>
 					</div>
 	      </mat-card-content>

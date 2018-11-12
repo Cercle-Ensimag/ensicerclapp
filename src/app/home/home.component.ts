@@ -19,6 +19,8 @@ import {first} from 'rxjs/operators';
 
 export class HomeComponent implements OnInit, OnDestroy {
   @ViewChild(MatSidenav) snav: MatSidenav;
+	
+	public activatedOutlet: boolean = false;
 
   constructor(
     public auth: AuthService,

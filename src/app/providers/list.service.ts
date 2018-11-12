@@ -50,11 +50,12 @@ export class ListService {
 						(user: User) => this.getEmail(
 							this.tools.getEmailIdFromEmail(user.email)
 						).pipe(map(email => email === user.email))
-					),
-					shareReplay(1)
+					)
 				),
 				`_iAmInList`
-			);
+			).pipe(
+				shareReplay(1)
+			)
 		}
 		return this._isActive;
 	}

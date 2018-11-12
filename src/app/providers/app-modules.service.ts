@@ -15,8 +15,8 @@ const index = {
 	"jobads": 2,
 	"nsigma": 2,
 	"votes": 4,
-	"cafet": 5,
-	"infos": 6
+	"cafet": 3,
+	"infos": 5
 };
 
 export class AppModule {
@@ -91,7 +91,7 @@ export class AppModulesService {
 			this._modulesObs = of(this.modules).pipe(
 				map(modules => modules.filter(
 					mod => {
-						return !mod.disabled && !(mod.restricted && !this._active);
+						return !mod.disabled && (!mod.restricted || this._active);
 					}
 				)),
 				map(modules => modules.map(mod => {
