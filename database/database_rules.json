@@ -278,6 +278,7 @@
 						".read" : "$userId === auth.uid",
 						".write" : "$userId === auth.uid",
 						"resources": { ".validate" : "newData.val().matches(/^[0-9]*(,[0-9]+)*$/)" },
+						"icsDownload": { ".validate" : "newData.isBoolean()" },
 						"$other": { ".validate" : "false" },
 					},
 					"assos": {

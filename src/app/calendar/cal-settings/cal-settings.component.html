@@ -18,6 +18,16 @@
 	      <br>
 	      <button mat-raised-button color="primary" (click)="gatherFromAde()">{{ d.l.gatherFromAdeButtonLabel }}</button>
 	    </div>
+			<br>
+	    <mat-divider></mat-divider>
+	    <div style="text-align: center">
+	      <br>
+				<div [innerHTML]="d.l.displayICSDownloadInfo"></div>
+	      <br>
+				<mat-slide-toggle formControlName="icsDownload" color="primary"></mat-slide-toggle>
+	    </div>
+	      <!-- <span *ngIf="!formGroup.get('done').value">{{ d.l.jobadOngoing }}</span>
+	      <span *ngIf="formGroup.get('done').value">{{ d.l.jobadDone }}</span> -->
 	  </form>
 	</mat-card>
 </div>

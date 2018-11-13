@@ -15,8 +15,8 @@ const index = {
 	"jobads": 2,
 	"nsigma": 2,
 	"votes": 4,
-	"cafet": 3,
-	"infos": 5
+	"cafet": 5,
+	"infos": 6
 };
 
 export class AppModule {

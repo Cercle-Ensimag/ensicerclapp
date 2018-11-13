@@ -212,13 +212,14 @@ export class French {
 	public static readonly calSettingsResourcesError = "ex: '1234,5678,1479'";
 	public static readonly gatherFromAdeInfo = "<b>Kézako ?</b><br><br>Il s'agist de la liste des modules que vous suivez au format \"ADE\" (n1, n2, n3, ...). Vous pouvez récupérer cette information depuis l'URL que vous utilisez pour consulter votre calendrier.<br><br>Laissez-nous récupérer automatiquement cette information depuis votre espace ADE.<br><br> Vos identifiants ne sont <b>pas</b> enregistrés.";
 	public static readonly gatherFromAdeButtonLabel = "Récupérer via ADE";
-	public static readonly updatedResourcesInfo = "Ressources mises à jour";
+	public static readonly updatedResourcesInfo = "Paramètres mis à jour";
 	public static readonly ADECredentialsDialogTitle = "Connexion à ADE";
 	public static readonly ADECredentialsDialogContent = "Identifiants de connexion à ADE";
 	public static readonly waitADEConnectionInfo = "Connexion à ADE...";
 	public static readonly invalidADECredentialsError = "Identifiants incorrects";
 	public static readonly dangerousADECredentialsError = "Caractère dangereux, désolé";
 	public static readonly ADEConnectionError = "Echec de la connexion";
+	public static readonly displayICSDownloadInfo = "Afficher le bouton de téléchargement au format ICS";
 	// -> day-column
 	public static readonly noCalEvent = "Rien de prévu";
 	// -> edit-cal

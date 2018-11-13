@@ -29,6 +29,7 @@
     "@angular/service-worker": "^6.1.10",
     "ajv": "^6.5.5",
     "core-js": "^2.4.1",
+    "file-saver": "^2.0.0-rc.4",
     "firebase": "^5.5.8",
     "firebase-admin": "^5.13.1",
     "firebase-functions": "^0.8.1",

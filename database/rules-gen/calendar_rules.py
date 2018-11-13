@@ -1,5 +1,5 @@
 from RulesPattern import RulesPattern
-from common import StringRules, NumberRules, BornedNumberRules, OtherRules, IdRules, validateUid
+from common import StringRules, NumberRules, BornedNumberRules, BooleanRules, OtherRules, IdRules, validateUid
 
 class CalendarRules (RulesPattern):
     def build(self):
@@ -27,12 +27,13 @@ class UserRules (UsersRules):
 
 # settings node
 class SettingsRules (UserRules):
-    def build(self):
-        self.label = "settings"
-        self.read = validateUid(self.uid)
-        self.write = validateUid(self.uid)
-        self.add(ResourcesRules())
-        self.add(OtherRules())
+	def build(self):
+		self.label = "settings"
+		self.read = validateUid(self.uid)
+		self.write = validateUid(self.uid)
+		self.add(ResourcesRules())
+		self.add(BooleanRules("icsDownload"))
+		self.add(OtherRules())
 
 class ResourcesRules (SettingsRules):
     def build(self):

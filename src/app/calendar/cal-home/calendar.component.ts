@@ -7,6 +7,9 @@ import {Location} from '@angular/common';
 import {EditCalComponent} from '../edit-cal/edit-cal.component';
 import {CalService} from '../cal-service/cal.service';
 
+import {Observable, pipe} from 'rxjs';
+import {map} from 'rxjs/operators';
+
 const DAY_LENGTH = 24 * 60 * 60* 1000;
 
 @Component({
@@ -82,5 +85,13 @@ export class CalendarComponent implements OnInit {
 	}
 	needRefreshADE(): boolean {
 		return this.cal.needRefreshADE();
+	}
+
+	displayICSDownload(): Observable<boolean> {
+		return this.cal.getSettings().pipe(map(settings => settings.icsDownload));
+	}
+
+	saveICS() {
+		this.cal.saveICS();
 	}
 }

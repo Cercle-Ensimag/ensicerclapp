@@ -1,12 +1,15 @@
 import {Injectable} from '@angular/core';
+import {DatePipe} from '@angular/common';
 import {HttpClient} from '@angular/common/http';
 import {AngularFireDatabase} from '@angular/fire/database';
 import {FormControl} from '@angular/forms';
 
+import {DicoService} from '../../language/dico.service';
 import {AuthService} from '../../auth/auth-service/auth.service';
 import {EventsService} from '../../events/events-service/events.service';
 
 import * as parseICS from 'ics-parser';
+import * as fileSaver from 'file-saver';
 
 import {environment} from '../../../environments/environment';
 
@@ -68,9 +71,11 @@ export class CalEvent {
 
 export class Settings {
   resources: string;
+	icsDownload: boolean
 
-  constructor(resources: string) {
+  constructor(resources: string, icsDownload: boolean) {
     this.resources = resources;
+    this.icsDownload = icsDownload;
   }
 }
 
@@ -101,6 +106,8 @@ export class CalService {
   constructor(
     private auth: AuthService,
     private db: AngularFireDatabase,
+		public d: DicoService,
+    public datepipe: DatePipe,
     private events: EventsService,
     private tools: ToolsService,
     private http: HttpClient
@@ -407,5 +414,33 @@ export class CalService {
 				this.db.object('calendar/users/' + user.uid + '/assos').update(refs)
 			))
 		).toPromise();
+	}
+
+	saveICS() {
+		return this.getMyEvents().pipe(
+			first(),
+			map(events => events.filter(
+				event => true
+			)),
+		).toPromise().then(events => {
+			let text = "BEGIN:VCALENDAR\n"
+			text += "VERSION:2.0\n"
+			events.forEach(event => {
+				text += "BEGIN:VEVENT\n"
+				text += "DTSTART:" + this.computeICSDate(event.start) + "\n"
+				text += "DTEND:" + this.computeICSDate(event.end) + "\n"
+				text += "SUMMARY:" + event.title + "\n"
+				text += "LOCATION:" + event.location + "\n"
+				text += "END:VEVENT\n"
+			});
+			text += "END:VCALENDAR";
+			let blob = new Blob([text], {type: "text/plain;charset=utf-8"});
+			let date = this.datepipe.transform((new Date()).getTime(), 'yyyy-MM-dd', '', this.d.l.locale)
+			fileSaver.saveAs(blob, "Events_" + date + ".ics");
+		});
+	}
+
+	computeICSDate(date: number): string {
+		return new Date(date).toISOString().replace(/-/g,'').replace(/:/g, '').replace(/\./, '');
 	}
 }
