@@ -41,15 +41,15 @@ function getTime() {
  * in "ballot_box"
  */
 exports.onVote = functions.database.ref('/vote/votes/{pollId}/{emailId}/voted')
-.onWrite(event => {
-  if (!event.data.exists()) {
+.onWrite((data, context) => {
+  if (!data.after.exists()) {
     return null;
   }
-  const voted = event.data.val();
-  const pollId = event.params.pollId;
-  const emailId = event.params.emailId;
+  const voted = data.after.val();
+  const pollId = context.params.pollId;
+  const emailId = context.params.emailId;
 
-  if (voted == true && event.data.changed()) {
+  if (voted == true && data.before.val() != data.after.val()) {
     return db.ref("/vote/results/"+pollId+"/buffer/"+emailId)
     .once("value").then(function(snapshot) {
       if (snapshot.exists()) {

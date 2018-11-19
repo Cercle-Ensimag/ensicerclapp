@@ -11,9 +11,9 @@
 /functions/node_modules
 
 # admin
-ensicerclapp-firebase-adminsdk-87izp-f7073412f3.json
-users_emails_exte.json
+ensicerclapp-admin-sdk-credential.json
 users_emails.json
+users_emails_exte.json
 users_ensimag/
 calendar_dl/
 
