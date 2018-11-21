@@ -40,8 +40,9 @@ function getTime() {
  * On vote asserted, move a named enveloppe from "buffer" to an anonimous ballot
  * in "ballot_box"
  */
-exports.onVote = functions.database.ref('/vote/votes/{pollId}/{emailId}/voted')
-.onWrite((data, context) => {
+exports.onVote = functions.database.ref(
+	'/vote/votes/{pollId}/{emailId}/voted'
+).onWrite((data, context) => {
   if (!data.after.exists()) {
     return null;
   }
@@ -70,13 +71,8 @@ exports.onVote = functions.database.ref('/vote/votes/{pollId}/{emailId}/voted')
  * Verifies that the user is authorised to create a new account,
  * if not, removes it
  */
-exports.onCreateAccount = functions.auth.user().onCreate(event => {
-  const user = event.data;
+exports.onCreateAccount = functions.auth.user().onCreate((user, context) => {
   const emailId = getEmailId(user.email);
-
-  const refs = {uid: user.uid};
-  refs[user.uid+"/admin/email"] = user.email;
-
   const updates = {};
 
   if (!verifyEmail(user.email)) {
@@ -129,8 +125,7 @@ exports.onCreateAccount = functions.auth.user().onCreate(event => {
 /**
  * Remove user in the database on deleted account
  */
-exports.onDeleteAccount = functions.auth.user().onDelete(event => {
-  const user = event.data;
+exports.onDeleteAccount = functions.auth.user().onDelete((user, context) => {
   const emailId = getEmailId(user.email);
   const updates = {};
 
@@ -154,7 +149,6 @@ exports.onDeleteAccount = functions.auth.user().onDelete(event => {
 /**
  * Load or update the list of authorised users
  */
-exports.updateList = functions.database.ref('/list/update')
-.onWrite(() => {
+exports.updateList = functions.database.ref('/list/update').onWrite(() => {
   return db.ref("/list/users").set(Object.assign({}, usersEmailIds, usersEmailExteIds));
 });
