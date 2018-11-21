@@ -9,20 +9,20 @@
   <div *ngIf="cal.getMyEventsForDay(date) | async as events">
     <div *ngIf="events.length; else noEvents">
 			<div *ngFor="let event of events" class="item">
-	      <mat-card class="event center"
-	                [class.border]="event.isNow() && event.isCourse()"
-	                [class.perso]="event.isPerso()" [class.assos]="event.isAssos()">
-	        {{ event.title }}<br>
-	        <label *ngIf="event.isSingleDay()">
-	          {{ event.start | date:d.l.timeFormat:'':d.l.locale }} - {{ event.end | date:d.l.timeFormat:'':d.l.locale }}
-	        </label>
-	        <label *ngIf="!event.isSingleDay()">
-	          {{ event.start | date:d.l.shortDateTimeFormat:'':d.l.locale }} <br>à<br> {{ event.end | date:d.l.shortDateTimeFormat:'':d.l.locale }}
-	        </label>
-	        <br>
-	        {{ event.location }}<br>
-	        <button mat-icon-button *ngIf="event.isAssos() && !editing" routerLink="/events/event/{{ event.id }}"><mat-icon>search</mat-icon></button>
-	      </mat-card>
+				<app-conditional-router-link [enabled]="event.isAssos()" link="/events/event/{{ event.id }}">
+		      <mat-card class="event center"
+		                [class.border]="event.isNow() && event.isCourse()"
+		                [class.perso]="event.isPerso()" [class.assos]="event.isAssos()">
+		        {{ event.title }}<br>
+		        <div *ngIf="event.isSingleDay()">
+		          {{ event.start | date:d.l.timeFormat:'':d.l.locale }} - {{ event.end | date:d.l.timeFormat:'':d.l.locale }}
+		        </div>
+		        <div *ngIf="!event.isSingleDay()">
+		          {{ event.start | date:d.l.shortDateTimeFormat:'':d.l.locale }} - {{ event.end | date:d.l.shortDateTimeFormat:'':d.l.locale }}
+		        </div>
+		        {{ event.location }}<br>
+		      </mat-card>
+				</app-conditional-router-link>
 	    </div>
     </div>
     <ng-template #noEvents>

@@ -13,7 +13,7 @@
 								{{ event.start | date:d.l.shortDateTimeFormat:'':d.l.locale }} à {{ event.end | date:d.l.timeFormat:'':d.l.locale }}
 			        </label>
 			        <label *ngIf="!event.isSingleDay()">
-			          {{ event.start | date:d.l.shortDateTimeFormat:'':d.l.locale }} <br>à<br> {{ event.end | date:d.l.shortDateTimeFormat:'':d.l.locale }}
+								{{ event.start | date:d.l.shortDateTimeFormat:'':d.l.locale }} - {{ event.end | date:d.l.shortDateTimeFormat:'':d.l.locale }}
 			        </label>
 			        <br>
 			        {{ event.location }}<br>
@@ -36,19 +36,19 @@
 					</mat-card>
 				</div>
 				<app-paged-grid [list]="events" emptyMessage="Aucun événement associatif" #pagesAssos>
-					<div *ngFor="let event of pagesAssos.truncatedList()" class="wrapper">
-						<mat-card class="center">
-							{{ event.title }}<br>
-							<label *ngIf="event.isSingleDay()">
-								{{ event.start | date:d.l.shortDateTimeFormat:'':d.l.locale }} à {{ event.end | date:d.l.timeFormat:'':d.l.locale }}
-							</label>
-							<label *ngIf="!event.isSingleDay()">
-								{{ event.start | date:d.l.shortDateTimeFormat:'':d.l.locale }} <br>à<br> {{ event.end | date:d.l.shortDateTimeFormat:'':d.l.locale }}
-							</label>
-							<br>
-							{{ event.location }}<br>
-							<button mat-icon-button routerLink="/events/event/{{ event.id }}"><mat-icon>search</mat-icon></button>
-						</mat-card>
+					<div *ngFor="let event of pagesAssos.truncatedList()">
+						<app-conditional-router-link [enabled]="true" link="/events/event/{{ event.id }}">
+				      <mat-card class="center">
+				        {{ event.title }}<br>
+				        <div *ngIf="event.isSingleDay()">
+									{{ event.start | date:d.l.shortDateTimeFormat:'':d.l.locale }} à {{ event.end | date:d.l.timeFormat:'':d.l.locale }}
+				        </div>
+				        <div *ngIf="!event.isSingleDay()">
+				          {{ event.start | date:d.l.shortDateTimeFormat:'':d.l.locale }} - {{ event.end | date:d.l.shortDateTimeFormat:'':d.l.locale }}
+				        </div>
+				        {{ event.location }}<br>
+				      </mat-card>
+						</app-conditional-router-link>
 					</div>
 				</app-paged-grid>
 			</div>
