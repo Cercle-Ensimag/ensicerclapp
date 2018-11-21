@@ -31,7 +31,7 @@ export class JobAdsService {
     if (!this._jobads){
       this._jobads = this.tools.enableCache(
         this.db.list<JobAd>('jobads/jobads').valueChanges(),
-				'_jobads'
+				'jobads'
 			).pipe(
         map(jobads => jobads.reverse()),
         shareReplay(1)

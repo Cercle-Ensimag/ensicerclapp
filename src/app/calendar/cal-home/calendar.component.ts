@@ -88,7 +88,9 @@ export class CalendarComponent implements OnInit {
 	}
 
 	displayICSDownload(): Observable<boolean> {
-		return this.cal.getSettings().pipe(map(settings => settings.icsDownload));
+		return this.cal.getSettings().pipe(
+			map(settings => settings ? settings.icsDownload : false)
+		);
 	}
 
 	saveICS() {

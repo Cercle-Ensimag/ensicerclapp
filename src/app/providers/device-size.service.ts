@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 
-import {Subscription} from 'rxjs';
+import {Subject, pipe} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 import {MediaChange, ObservableMedia} from '@angular/flex-layout';
 
 @Injectable()
@@ -9,14 +10,16 @@ export class DeviceSizeService {
   mobileSize: boolean;
   largeSize: boolean;
   currentSize: string;
-  watcher: Subscription;
+	private unsubscribe: Subject<void> = new Subject();
 
   constructor(
     private media: ObservableMedia
   ) { }
 
   watchSizeChanges() {
-    this.watcher = this.media.subscribe((change: MediaChange) => {
+    this.media.asObservable().pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe((change: MediaChange) => {
       this.currentSize = change.mqAlias;
       this.setMobileSize(change.mqAlias);
       this.setLargeSize(change.mqAlias);
@@ -27,7 +30,8 @@ export class DeviceSizeService {
     this.watchSizeChanges();
   }
   stop() {
-    this.watcher.unsubscribe();
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 
   private setMobileSize(size: string) {

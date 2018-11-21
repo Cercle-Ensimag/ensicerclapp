@@ -1,13 +1,15 @@
-import {from, Observable, of, combineLatest} from 'rxjs';
-import {map, mergeMap, first, shareReplay, tap} from 'rxjs/operators';
-
 import {Injectable} from '@angular/core';
 import {AngularFireDatabase} from '@angular/fire/database';
+
+import {from, Observable, of, combineLatest, EMPTY} from 'rxjs';
+import {map, mergeMap, catchError, first, shareReplay, tap} from 'rxjs/operators';
 
 import {ToolsService} from '../../providers/tools.service';
 import {AuthService} from '../../auth/auth-service/auth.service';
 import {Assessor} from '../vote-admin/vote-admin.component';
 import {VoteUser} from '../vote-users/vote-users.component';
+
+import {User} from 'firebase/app';
 
 export class Choice {
   id: string;
@@ -48,9 +50,10 @@ export class VoteService {
 				this.auth.getLoggedUser().pipe(
 					mergeMap(
 						() => this.db.list<Poll>('vote/polls').valueChanges()
-					)
+					),
+					catchError(() => EMPTY)
 				),
-				'_polls'
+				'vote-polls'
 			).pipe(
 				shareReplay(1)
 			);
@@ -101,13 +104,14 @@ export class VoteService {
     if (!this._votes) {
       this._votes = this.tools.enableCache(
 				this.auth.getEmailId().pipe(
-	        mergeMap((emailId: string) =>
-	          this.db.object<{ [pollId: string]: boolean }>(
+	        mergeMap(
+						(emailId: string) => this.db.object<{ [pollId: string]: boolean }>(
 							'vote/users/' + emailId + '/votes'
 						).valueChanges()
-					)
+					),
+					catchError(() => EMPTY)
 				),
-				"_votes"
+				"vote-myVotes"
 			).pipe(
 				shareReplay(1)
 			);

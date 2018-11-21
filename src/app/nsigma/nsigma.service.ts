@@ -32,7 +32,7 @@ export class NsigmaService {
     if (!this._jobads){
       this._jobads = this.tools.enableCache(
         this.db.list<NsigmaJobAd>('nsigma/jobads').valueChanges(),
-				'_jobadsNsigma'
+				'nsigma'
 			).pipe(
         map(jobads => jobads.reverse()),
         shareReplay(1)

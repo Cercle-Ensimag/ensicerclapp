@@ -50,7 +50,7 @@ export class ActusService {
 	          map(actus => actus.reverse())
 					))
 				),
-				'_actus'
+				'actus'
 			).pipe(
 				shareReplay(1)
 			);
@@ -141,7 +141,7 @@ export class ActusService {
 		if (!this._groups) {
 			this._groups = this.tools.enableCache(
 				this.db.list<Group>('actus/journalists/groups').valueChanges(),
-				'_actus-groups'
+				'actus-groups'
 			).pipe(
 				shareReplay(1)
 			);

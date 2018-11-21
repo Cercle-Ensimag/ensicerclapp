@@ -95,9 +95,8 @@
     <mat-sidenav-content (swiperight)="openSnav()" (swipeleft)="snav.close()">
       <div class="container" [class.withCalendar]="location.path() === '/calendar'">
         <div>
-					<!-- While loading outlet content, display dashboard -->
-					<!-- <app-loading [loading]="activated"></app-loading> -->
-					<app-dashboard *ngIf="!activatedOutlet"></app-dashboard>
+					<!-- loading while waiting for id -->
+					<app-loading [loading]="activatedOutlet"></app-loading>
           <!-- Navigate from the different modules of the app (cafet, vote, calendar, ...) -->
           <router-outlet
 						(activate)='activatedOutlet=$event'

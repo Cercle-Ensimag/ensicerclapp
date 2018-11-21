@@ -5,7 +5,7 @@ import {AbstractControl, FormControl} from '@angular/forms';
 
 import {AngularFireAuth} from '@angular/fire/auth';
 import {AngularFireDatabase} from '@angular/fire/database';
-import {combineLatest, from, Observable, Observer, of} from 'rxjs';
+import {combineLatest, from, Observable, Observer, of, EMPTY} from 'rxjs';
 import {catchError, debounceTime, filter, first, flatMap, map, mergeMap, shareReplay, tap} from 'rxjs/operators';
 import * as firebase from 'firebase';
 import {User} from 'firebase/app';
@@ -41,6 +41,16 @@ export class Profile {
   }
 }
 
+export class SimpleUser {
+	// uid: string;
+	// displayName: string;
+	// photoURL: string;
+	// email: string;
+	emailVerified: boolean;
+	// lastLoginAt: string;
+	// createdAt: string;
+}
+
 @Injectable()
 export class AuthService {
   error: any;
@@ -55,6 +65,7 @@ export class AuthService {
 
   private _user: Observable<any> = null;
   private _loggedUser: Observable<any> = null;
+	private _simpleUser: Observable<SimpleUser> = null;
   private _profile: Observable<any> = null;
 
   private _isAdmin: Observable<any> = null;
@@ -172,11 +183,7 @@ export class AuthService {
   }
 
   sendEmailVerification(user: any) {
-    user.sendEmailVerification({ url: environment.host.domain + 'login'}).then(
-      () => {
-        this.goToEmailVerif();
-      }
-    );
+    return user.sendEmailVerification({ url: environment.host.domain + 'login'});
   }
 
   sendPasswordResetEmail(email: string) {
@@ -189,13 +196,16 @@ export class AuthService {
 
   // Getters
 
+	/**
+		*	Returns the logged in firebase user
+		**/
   getUser(): Observable<User> {
     if (!this._user) {
       this._user = new Observable<User>((observer: Observer<User>) => {
         this.afAuth.auth.onIdTokenChanged((user) => {
           observer.next(user ? user : null);
         });
-      }).pipe(
+			}).pipe(
         shareReplay(1)
 			);
     }
@@ -226,6 +236,9 @@ export class AuthService {
     return this._offline;
   }
 
+	/**
+	 	*	Returns the logged in firebase user only if its email is verified
+		**/
   getLoggedUser(): Observable<User> {
     if (!this._loggedUser) {
       this._loggedUser = this.getUser().pipe(
@@ -236,9 +249,27 @@ export class AuthService {
     return this._loggedUser;
   }
 
+	/**
+		*	Returns a user with no safety critical information
+		*	and saves it to speed up loggin and allow it offline
+		**/
+	getSimpleUser(): Observable<SimpleUser> {
+		if (!this._simpleUser) {
+			this._simpleUser = this.tools.enableCache(
+				this.getUser().pipe(
+					map(user => user ? { emailVerified: user.emailVerified } : null)
+				),
+				"auth-me"
+			).pipe(
+				shareReplay(1)
+			);
+		}
+		return this._simpleUser;
+	}
+
   isLogged(): Observable<boolean> {
     if (!this._isLogged) {
-      this._isLogged = this.getUser().pipe(
+      this._isLogged = this.getSimpleUser().pipe(
         map(user => !!user),
         shareReplay(1)
 			);
@@ -248,12 +279,8 @@ export class AuthService {
 
   isLoggedAndHasEmailVerified(): Observable<boolean> {
     if (!this._isLoggedAndHasEmailVerified) {
-      this._isLoggedAndHasEmailVerified = this.tools.enableCache(
-				this.getUser().pipe(
-	        map(user => !!user && user.emailVerified),
-				),
-				"_isVerified"
-			).pipe(
+      this._isLoggedAndHasEmailVerified = this.getSimpleUser().pipe(
+        map(user => !!user && user.emailVerified),
 				shareReplay(1)
 			);
     }
@@ -262,13 +289,21 @@ export class AuthService {
 
   getEmailId(): Observable<string> {
     return this.getLoggedUser().pipe(
-      map((user: User) => this.tools.getEmailIdFromEmail(user.email))
+      mergeMap(
+				(user: User) => user ? of(
+					this.tools.getEmailIdFromEmail(user.email)
+				) : EMPTY
+			)
 		);
   }
 
   getUserAccountPath(): Observable<string> {
     return this.getLoggedUser().pipe(
-      map((user: User) => this.getUserAccountPathFromUser(user))
+      mergeMap(
+				(user: User) => user ? of(
+					this.getUserAccountPathFromUser(user)
+				) : EMPTY
+			)
 		);
   }
 
@@ -278,7 +313,7 @@ export class AuthService {
 				mergeMap(
 					(accountPath: string) => this.tools.enableCache(
 						this.db.object<Profile>(accountPath + '/account/').valueChanges(),
-						"_profile"
+						"auth-profile"
 					)
 				),
         shareReplay(1)

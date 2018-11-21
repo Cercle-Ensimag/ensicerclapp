@@ -1,11 +1,11 @@
-import {map, mergeMap, shareReplay} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
 import {AngularFireDatabase} from '@angular/fire/database';
 import {User} from 'firebase/app';
 
 import {AuthService} from '../auth/auth-service/auth.service';
 import {ToolsService} from './tools.service';
-import {Observable} from 'rxjs';
+import {Observable, EMPTY} from 'rxjs';
+import {map, mergeMap, shareReplay, catchError} from 'rxjs/operators';
 
 @Injectable()
 export class ListService {
@@ -50,9 +50,10 @@ export class ListService {
 						(user: User) => this.getEmail(
 							this.tools.getEmailIdFromEmail(user.email)
 						).pipe(map(email => email === user.email))
-					)
+					),
+					catchError(() => EMPTY)
 				),
-				`_iAmInList`
+				'list-me'
 			).pipe(
 				shareReplay(1)
 			)

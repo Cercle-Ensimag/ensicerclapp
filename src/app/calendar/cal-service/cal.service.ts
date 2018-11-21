@@ -130,9 +130,9 @@ export class CalService {
 		if (error) {
 			this._errorNotifier.next("ADE update failed");
 			this._ADEError = true;
-			this._lastADEUpdate = Date.now();
 		} else {
 			this._ADEError = false;
+			this._lastADEUpdate = Date.now();
 		}
 	}
 
@@ -171,7 +171,7 @@ export class CalService {
 						)
 	        })
 				),
-				"_ADEevents"
+				"cal-ADEevents"
 			).pipe(
 				map(ICSevents => ICSevents.map((event: ICSEvent) => new CalEvent(
 					'',
@@ -226,7 +226,7 @@ export class CalService {
 						.valueChanges()
 					),
 				),
-				"_persoEvents"
+				"cal-persoEvents"
 			).pipe(
 				// Duplicate events with multiple occurrences
 				map(events => {
@@ -288,7 +288,7 @@ export class CalService {
     if (!this._calFromAde){
       this._calFromAde = this.tools.enableCache(
         this.http.get(this.getCoursesURL(resources), { responseType: 'text' }),
-        '_calFromADE',
+        'cal-ICSFromADE',
         false
 			).pipe(shareReplay(1));
     }

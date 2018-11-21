@@ -46,4 +46,8 @@ export class EmailVerifComponent {
   sendEmail() {
     this.auth.sendEmailVerification(this._user);
   }
+
+	goToLogin() {
+		this.auth.goToLogin();
+	}
 }

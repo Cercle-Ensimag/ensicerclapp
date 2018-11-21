@@ -52,17 +52,12 @@ export class EventsService {
 
   getEvents(): Observable<Event[]> {
     if (!this._events) {
-      this._events = this.tools.enableCache(
-        this.db.list<Event>(
-					'events/events',
-					ref => ref.orderByChild('start')
-				).valueChanges().pipe(
-					map((events: Event[]) => events.reverse())
-				),
-				'_events'
-			)
-      .pipe(
-        shareReplay(1)
+      this._events = this.db.list<Event>(
+				'events/events',
+				ref => ref.orderByChild('start')
+			).valueChanges().pipe(
+				map((events: Event[]) => events.reverse()),
+				shareReplay(1)
 			);
     }
     return this._events;
@@ -83,7 +78,7 @@ export class EventsService {
 						}
 					}))
 				),
-				'_activeEvents'
+				'events-active'
 			).pipe(
         shareReplay(1)
 			);
@@ -193,7 +188,7 @@ export class EventsService {
 		if (!this._groups) {
 			this._groups = this.tools.enableCache(
 				this.db.list<Group>('events/com-resps/groups').valueChanges(),
-				'_events-groups'
+				'events-groups'
 			).pipe(
 				shareReplay(1)
 			);
@@ -273,7 +268,7 @@ export class EventsService {
 						'calendar/users/'+user.uid+'/assos'
 					).valueChanges()
 				)),
-				"__assosEventsIdsITakePart"
+				"events-myEventsIds"
 			).pipe(
 				shareReplay(1)
 			);

@@ -6,6 +6,7 @@
         <p [innerHTML]="d.l.verificationEmailSentInfo"></p>
         <div class="center">
           <button mat-raised-button (click)="sendEmail()" color='primary'>{{ d.l.sendEmailAgainButtonLabel }}</button>
+          <button mat-raised-button (click)="goToLogin()" color='primary'>{{ d.l.signInButtonLabel }}</button>
         </div>
       </div>
     </mat-card>
