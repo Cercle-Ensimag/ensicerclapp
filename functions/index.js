@@ -111,7 +111,7 @@ exports.onCreateAccount = functions.auth.user().onCreate((user, context) => {
         snapshot.child('uid').val() != null &&
         snapshot.child('uid').val() != user.uid
       ){
-        updates["logs/errors/account/"+getTime()] = 'User '+emailId+' created a new account';
+        updates["logs/account/info/"+getTime()] = 'User '+emailId+' created a new account';
       } else {
         updates["logs/account/"+getTime()] = 'User '+emailId+' created a first account';
       }
