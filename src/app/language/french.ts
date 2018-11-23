@@ -142,6 +142,7 @@ export class French {
 	public static readonly verificationEmailSentTitle = "Compte non confirmé";
 	public static readonly verificationEmailSentInfo = "Un e-mail de confirmation a été envoyé à l'adresse utilisée lors de ton votre inscription.<br><br>Vérifie ta boîte e-mail et ton dossier spam puis clique sur le lien de confirmation.";
 	public static readonly sendEmailAgainButtonLabel = "Renvoyer l'email";
+	public static readonly emailSentToInfo = "Email envoyé à {0}";
 	// -> password-reset
 	public static readonly beforePwdRstEmailInfo = "Un e-mail de réinitialisation de mot de passe va être envoyé à l'adresse donnée.";
 	public static readonly afterPwdRstEmailInfo = "Si l'adresse <b>{0}</b> est correcte, un lien de réinitialisation lui a été envoyé.";

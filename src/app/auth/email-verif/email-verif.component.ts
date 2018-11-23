@@ -1,6 +1,7 @@
 import {Component, OnDestroy} from '@angular/core';
 import {Location} from '@angular/common';
 import {User} from 'firebase/app';
+import {MatSnackBar} from '@angular/material';
 
 import {AuthService} from '../auth-service/auth.service';
 import {DicoService} from '../../language/dico.service';
@@ -21,7 +22,8 @@ export class EmailVerifComponent {
   constructor(
     private auth: AuthService,
     public location: Location,
-    public d: DicoService
+    public d: DicoService,
+    private snackBar: MatSnackBar
   ) { }
 
   ngOnInit() {
@@ -44,7 +46,13 @@ export class EmailVerifComponent {
   }
 
   sendEmail() {
-    this.auth.sendEmailVerification(this._user);
+    this.auth.sendEmailVerification(this._user).then(
+			() => this.snackBar.open(
+				this.d.format(this.d.l.emailSentToInfo, this._user.email),
+				this.d.l.okLabel,
+				{duration: 2000}
+			)
+		);
   }
 
 	goToLogin() {
