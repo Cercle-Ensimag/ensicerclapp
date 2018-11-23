@@ -26,45 +26,61 @@ export class EditCafetUserComponent {
     public d: DicoService
   ) {
     this.formGroup = this.fb.group({
-      firstName: [this.user.profile.firstName, [Validators.required, Validators.maxLength(30)]],
-      lastName: [this.user.profile.lastName, [Validators.required, Validators.maxLength(30)]],
-      email: [this.user.profile.email, [
-        Validators.required,
-        Validators.email
-      ]]
+      firstName: [
+				this.user.profile.firstName,
+				[Validators.required, Validators.maxLength(30)]
+			],
+      lastName: [
+				this.user.profile.lastName,
+				[Validators.required, Validators.maxLength(30)]
+			],
+      email: [
+				this.user.profile.email,
+				[Validators.required, Validators.email]
+			]
     });
   }
 
   submit() {
-    this.list.isInList(this.formGroup.get('email').value)
+		const email = this.formGroup.get('email').value.toLowerCase();
+    this.list.isInList(email)
       .pipe(first())
       .subscribe(notExte => {
-        this.cafet.setUserProfile(this.user.emailId, {
-          firstName: this.formGroup.get('firstName').value,
-          lastName: this.formGroup.get('lastName').value,
-          email: this.formGroup.get('email').value.toLowerCase(),
-          exte: !notExte}, this.user.activated)
-          .then(() => this.dialogRef.close())
-          .catch((err) => this.snackBar.open(err, this.d.l.okLabel, {duration: 2000}));
+        this.cafet.setUserProfile(
+					this.user.emailId,
+					{
+	          firstName: this.formGroup.get('firstName').value,
+	          lastName: this.formGroup.get('lastName').value,
+	          email: email,
+	          exte: !notExte
+					},
+					this.user.activated
+				).then(
+					() => this.dialogRef.close(),
+					(err) => this.snackBar.open(err, this.d.l.okLabel, {duration: 2000})
+				);
       });
   }
 
   archive() {
-    this.cafet.archiveUser(this.user)
-      .then(() => this.dialogRef.close())
-      .catch((err) => this.snackBar.open(err, this.d.l.okLabel, {duration: 2000}));
+    this.cafet.archiveUser(this.user).then(
+			() => this.dialogRef.close(),
+			(err) => this.snackBar.open(err, this.d.l.okLabel, {duration: 2000})
+		);
   }
 
   restore() {
-    this.cafet.restoreUser(this.user)
-      .then(() => this.dialogRef.close())
-      .catch((err) => this.snackBar.open(err, this.d.l.okLabel, {duration: 2000}));
+    this.cafet.restoreUser(this.user).then(
+			() => this.dialogRef.close(),
+			(err) => this.snackBar.open(err, this.d.l.okLabel, {duration: 2000})
+		);
   }
 
   delete() {
-    this.cafet.deleteUser(this.user)
-      .then(() => this.dialogRef.close())
-      .catch((err) => this.snackBar.open(err, this.d.l.okLabel, {duration: 2000}));
+    this.cafet.deleteUser(this.user).then(
+			() => this.dialogRef.close(),
+			(err) => this.snackBar.open(err, this.d.l.okLabel, {duration: 2000})
+		);
   }
 
 }

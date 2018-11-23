@@ -6,6 +6,7 @@
     </div>
     <mat-paginator *ngIf="list.length > pageSize"
                    [length]="list.length"
+									 [pageIndex]="pageIndex"
                    [pageSize]="pageSize"
                    (page)="updateList($event)">
     </mat-paginator>
