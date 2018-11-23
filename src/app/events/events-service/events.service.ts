@@ -124,7 +124,9 @@ export class EventsService {
 									events => events.find(event => event.id == eventId)
 								))
 							} else {
-								return of(null);
+								return this.db.object<Event>(
+									'events/events/' + eventId
+								).valueChanges();
 							}
 						}))
 					}

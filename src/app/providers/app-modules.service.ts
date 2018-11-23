@@ -12,8 +12,8 @@ const index = {
 	"events": -3,
 	"calendar": -2,
 	"actus": 2,
-	"jobads": 2,
 	"nsigma": 2,
+	"jobads": 2,
 	"votes": 4,
 	"cafet": 5,
 	"infos": 6
