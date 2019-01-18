@@ -45,6 +45,13 @@ export class EmailVerifComponent {
 		);
   }
 
+	getInfoMessage() {
+		return this.d.format(
+			this.d.l.verificationEmailSentInfo,
+			this._user ? this._user.email : ""
+		);
+	}
+
   sendEmail() {
     this.auth.sendEmailVerification(this._user).then(
 			() => this.snackBar.open(

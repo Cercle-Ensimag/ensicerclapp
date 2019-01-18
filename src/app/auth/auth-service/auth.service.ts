@@ -183,7 +183,11 @@ export class AuthService {
   }
 
   sendEmailVerification(user: any) {
-    return user.sendEmailVerification({ url: environment.host.domain + 'login'});
+    return user.sendEmailVerification(
+			{ url: environment.host.domain + 'login'}
+		).catch(
+			() => user.sendEmailVerification()
+		);
   }
 
   sendPasswordResetEmail(email: string) {

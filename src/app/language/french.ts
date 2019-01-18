@@ -140,7 +140,7 @@ export class French {
 	public static readonly signUpPageTitle = "Inscription";
 	// -> email-verif
 	public static readonly verificationEmailSentTitle = "Compte non confirmé";
-	public static readonly verificationEmailSentInfo = "Un e-mail de confirmation a été envoyé à l'adresse utilisée lors de ton votre inscription.<br><br>Vérifie ta boîte e-mail et ton dossier spam puis clique sur le lien de confirmation.";
+	public static readonly verificationEmailSentInfo = "Un e-mail a été envoyé à l'adresse \"{0}\".<br>Valide ton compte en cliquant sur le lien de confirmation.<br><br><small>Si tu n'as reçu aucun e-mail : <br>(1) vérifie ton dossier spam<br>(2) vérifie ton adresse, en cas d'erreur tu devras recréer un compte<br>(3) renvoie l'e-mail (plusieurs fois)<br>(4) attends un peu, on ne sait jamais<br>(5) ...<br>(6) retourne à l'étape (1) si tu n'est pas sûr<br>(7) contacte ton Cercle préféré pour trouver une solution ;)<br><br>Si le lien a expiré immédiatement après avoir reçu l'e-mail :<br>(*) contacte ton Cercle préféré pour trouver une solution ;)</small>";
 	public static readonly sendEmailAgainButtonLabel = "Renvoyer l'email";
 	public static readonly emailSentToInfo = "Email envoyé à {0}";
 	// -> password-reset

@@ -12,7 +12,13 @@ export class ToolsService {
   enableCache(toCache: Observable<any>, identifier: string, json: boolean = true, mapTo: Function = null) {
     return merge(
       toCache.pipe(
-				tap(result => localStorage.setItem(identifier, json ? JSON.stringify(result) : result))
+				tap(result => {
+					try {
+						localStorage.setItem(identifier, json ? JSON.stringify(result) : result);
+					} catch(err) {
+						console.log(err);
+					}
+				})
 			),
       localStorage.getItem(identifier) ? of(
         json ? (
