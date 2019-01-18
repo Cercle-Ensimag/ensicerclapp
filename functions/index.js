@@ -71,15 +71,17 @@ exports.onVote = functions.database.ref(
  * Deletes a user with admin rights given its uid
  * Function onDeleteAccount will be trigger on calling this one
  */
-function deleteUser(uid, reason) {
-	return admin.auth().deleteUser(uid).then(() => {
+function deleteUser(user, reason) {
+	return admin.auth().deleteUser(user.uid).then(() => {
+		const emailId = getEmailId(user.email);
+		const updates = {};
 
 		// /!\ Any information deleted here must refer to user.uid /!\
 		// because this function is called when deleting unauthorised users
 		// that could have the same emailId as authorised user
 
 		// delete user profile because he was authorised to edit it
-		updates["users/" +emailId + "/" + uid] = null;
+		updates["users/" +emailId + "/" + user.uid] = null;
 
 		// log
 		updates["logs/errors/account/" + getTime()] = user.email + ' pushed back: ' + reason;
@@ -94,15 +96,14 @@ function deleteUser(uid, reason) {
  * if not, removes it
  */
 exports.onCreateAccount = functions.auth.user().onCreate((user, context) => {
-  const emailId = getEmailId(user.email);
-  const updates = {};
-
   if (!verifyEmail(user.email)) {
     // invalid email, delete account
-    return deleteUser(user.uid, "not on the list");
+    return deleteUser(user, "not on the list");
   } else {
     // valid email
     return db.ref("/users/"+emailId).once("value").then(function(snapshot) {
+			const emailId = getEmailId(user.email);
+			const updates = {};
 
       // /!\ Only one user per emailId is authorised to have an account /!\
       // This relies on the unicity of nodes in JSON when verifying the email
@@ -181,7 +182,7 @@ exports.deleteNotVerifiedEmails = functions.database.ref('/list/deleteNotVerifie
 	return admin.auth().listUsers().then(res => {
 		res.users.forEach((user) => {
 			if (!user.emailVerified) {
-				deleteUser(user.uid, "email not verified");
+				deleteUser(user, "email not verified");
 			}
 		})
 	})
