@@ -68,6 +68,28 @@ exports.onVote = functions.database.ref(
 });
 
 /**
+ * Deletes a user with admin rights given its uid
+ * Function onDeleteAccount will be trigger on calling this one
+ */
+function deleteUser(uid, reason) {
+	return admin.auth().deleteUser(uid).then(() => {
+
+		// /!\ Any information deleted here must refer to user.uid /!\
+		// because this function is called when deleting unauthorised users
+		// that could have the same emailId as authorised user
+
+		// delete user profile because he was authorised to edit it
+		updates["users/" +emailId + "/" + uid] = null;
+
+		// log
+		updates["logs/errors/account/" + getTime()] = user.email + ' pushed back: ' + reason;
+
+		// db request
+		return db.ref("/").update(updates);
+	});
+}
+
+/**
  * Verifies that the user is authorised to create a new account,
  * if not, removes it
  */
@@ -77,21 +99,7 @@ exports.onCreateAccount = functions.auth.user().onCreate((user, context) => {
 
   if (!verifyEmail(user.email)) {
     // invalid email, delete account
-    return admin.auth().deleteUser(user.uid).then(() => {
-
-      // /!\ Any information deleted here must refer to user.uid /!\
-      // because this function is called when deleting unauthorised users
-      // that could have the same emailId as authorised user
-
-      // delete user profile as he was authorised to edit it
-      updates["users/"+emailId+"/"+user.uid] = null;
-
-      // log
-      updates["logs/errors/account/"+getTime()] = user.email+' pushed back';
-
-      // db request
-      return db.ref("/").update(updates);
-    });
+    return deleteUser(user.uid, "not on the list");
   } else {
     // valid email
     return db.ref("/users/"+emailId).once("value").then(function(snapshot) {
@@ -140,7 +148,7 @@ exports.onDeleteAccount = functions.auth.user().onDelete((user, context) => {
   updates["calendar/users/"+user.uid] = null;
 
   // log
-  updates["logs/account/"+getTime()] = emailId+"'s account has been deleted";
+  updates["logs/account/delete/"+getTime()] = emailId+"'s account has been deleted";
 
   // db request
   return db.ref("/").update(updates);
@@ -151,4 +159,30 @@ exports.onDeleteAccount = functions.auth.user().onDelete((user, context) => {
  */
 exports.updateList = functions.database.ref('/list/update').onWrite(() => {
   return db.ref("/list/users").set(Object.assign({}, usersEmailIds, usersEmailExteIds));
+});
+
+/**
+ * Lists the users which did'nt verified their emails
+ */
+exports.getVerifiedEmails = functions.database.ref('/list/getVerifiedEmails').onWrite(() => {
+	return admin.auth().listUsers().then(res => {
+		res.users.forEach((user) => {
+			if (!user.emailVerified) {
+				console.log("not verified email: " + user.email);
+			}
+		})
+	})
+});
+
+/**
+ * Deletes the users which did'nt verified their emails
+ */
+exports.deleteNotVerifiedEmails = functions.database.ref('/list/deleteNotVerifiedEmails').onWrite(() => {
+	return admin.auth().listUsers().then(res => {
+		res.users.forEach((user) => {
+			if (!user.emailVerified) {
+				deleteUser(user.uid, "email not verified");
+			}
+		})
+	})
 });
