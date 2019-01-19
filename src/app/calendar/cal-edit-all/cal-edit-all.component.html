@@ -25,7 +25,7 @@
 			</div>
 	  </mat-tab>
 
-	  <mat-tab *ngIf="cal.getAssosEventsITakePart() | async as events; else loading"  label="Associatifs">
+	  <mat-tab *ngIf="cal.getAssosEventsIMarked() | async as events; else loading"  label="Associatifs">
 			<div class="tab-content-container">
 				<div *ngIf="cal.getEventIdsWithNoEvents() | async as ids;">
 					<mat-card *ngIf="ids.length > 0" class="item center">

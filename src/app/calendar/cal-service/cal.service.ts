@@ -71,11 +71,13 @@ export class CalEvent {
 
 export class Settings {
   resources: string;
-	icsDownload: boolean
+	icsDownload: boolean;
+	assosEventsByDefault: boolean;
 
-  constructor(resources: string, icsDownload: boolean) {
+  constructor(resources: string, icsDownload: boolean, assosEventsByDefault: boolean) {
     this.resources = resources;
     this.icsDownload = icsDownload;
+    this.assosEventsByDefault = assosEventsByDefault;
   }
 }
 
@@ -91,7 +93,8 @@ export class CalService {
   private _coursesEvents: Observable<CalEvent[]>;
   private _assosEvents: Observable<CalEvent[]>;
   private _persosEvents: Observable<CalEvent[]>;
-  private _assosEventsITakePart: Observable<CalEvent[]>;
+  private _assosEventsIMarked: Observable<CalEvent[]>;
+  private _assosEventsIIgnored: Observable<CalEvent[]>;
   private _myEvents: Observable<CalEvent[]>;
   private _calFromAde: Observable<string>;
   private _myEventsForDay: { [$dayString: string]: Observable<CalEvent[]> } = {};
@@ -200,10 +203,10 @@ export class CalService {
     return this._assosEvents;
   }
 
-  getAssosEventsITakePart(): Observable<CalEvent[]> {
-    if (!this._assosEventsITakePart) {
-      this._assosEventsITakePart = combineLatest(
-        this.events.getAssosEventsIdsITakePart(),
+  getAssosEventsIMarked(): Observable<CalEvent[]> {
+    if (!this._assosEventsIMarked) {
+      this._assosEventsIMarked = combineLatest(
+        this.events.getAssosEventsIdsIMarked(),
         this.getAssosEvents()
 			).pipe(
         map(
@@ -213,7 +216,23 @@ export class CalService {
         shareReplay(1)
 			);
     }
-    return this._assosEventsITakePart;
+    return this._assosEventsIMarked;
+  }
+
+  getAssosEventsIIgnored(): Observable<CalEvent[]> {
+    if (!this._assosEventsIIgnored) {
+      this._assosEventsIIgnored = combineLatest(
+        this.events.getAssosEventsIdsIMarked(),
+        this.getAssosEvents()
+			).pipe(
+        map(
+					([ids, events]: [string[], CalEvent[]]): CalEvent[] =>
+          events.filter((event: CalEvent): boolean => !ids.includes(event.id))
+				),
+        shareReplay(1)
+			);
+    }
+    return this._assosEventsIIgnored;
   }
 
   getPersosEvents(): Observable<CalEvent[]> {
@@ -255,7 +274,9 @@ export class CalService {
   getMyEvents(): Observable<CalEvent[]> {
     if (!this._myEvents){
       this._myEvents = combineLatest(
-        this.getAssosEventsITakePart(),
+        this.getSettings().pipe(mergeMap(
+					settings => !settings || settings.assosEventsByDefault ? this.getAssosEventsIIgnored() : this.getAssosEventsIMarked()
+				)),
         this.getCoursesEvents(),
         this.getPersosEvents()
 			).pipe(
@@ -387,7 +408,7 @@ export class CalService {
 	getEventIdsWithNoEvents(): Observable<string[]> {
     if (!this._eventIdsWithNoEvents) {
       this._eventIdsWithNoEvents = combineLatest(
-        this.events.getAssosEventsIdsITakePart(),
+        this.events.getAssosEventsIdsIMarked(),
         this.getAssosEvents().pipe(
 					map(events => events.map(event => event.id))
 				)

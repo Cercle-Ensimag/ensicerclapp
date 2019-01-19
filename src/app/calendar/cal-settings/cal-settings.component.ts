@@ -45,11 +45,13 @@ export class CalSettingsComponent implements OnInit, OnDestroy {
         if (!settings)
 					settings = {
 						resources: '',
-						icsDownload: false
+						icsDownload: false,
+						assosEventsByDefault: true
 					};
         this.formGroup = this.fb.group({
           resources: [settings.resources || '', [this.cal.resourcesValidator]],
-          icsDownload: [settings.icsDownload || false, []]
+          icsDownload: [settings.icsDownload || false, []],
+          assosEventsByDefault: [settings.assosEventsByDefault || false, []]
         });
       });
   }
@@ -63,7 +65,8 @@ export class CalSettingsComponent implements OnInit, OnDestroy {
     this.cal.setSettings(
       new Settings(
         this.formGroup.get('resources').value,
-        this.formGroup.get('icsDownload').value
+        this.formGroup.get('icsDownload').value,
+        this.formGroup.get('assosEventsByDefault').value
       )
     ).then(() => {
       this.snackBar.open(this.d.l.updatedResourcesInfo, this.d.l.okLabel, {duration: 2000});

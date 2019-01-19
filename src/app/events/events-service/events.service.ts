@@ -262,7 +262,7 @@ export class EventsService {
 		).toPromise();
   }
 
-	getAssosEventsIdsITakePart(): Observable<string[]> {
+	getAssosEventsIdsIMarked(): Observable<string[]> {
 		if (!this._assosEventsIdsITakePart) {
       this._assosEventsIdsITakePart = this.tools.enableCache(
 				this.auth.getUser().pipe(mergeMap(
@@ -278,9 +278,9 @@ export class EventsService {
 		return this._assosEventsIdsITakePart;
 	}
 
-  getEventInCalendar(eventId: string): Observable<boolean> {
+  getEventIsMarked(eventId: string): Observable<boolean> {
     if (!this._eventInCalendar[eventId]) {
-      this._eventInCalendar[eventId] = this.getAssosEventsIdsITakePart().pipe(
+      this._eventInCalendar[eventId] = this.getAssosEventsIdsIMarked().pipe(
 				map(ids => ids.includes(eventId)),
 				shareReplay(1)
 			);

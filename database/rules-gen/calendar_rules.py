@@ -33,6 +33,7 @@ class SettingsRules (UserRules):
 		self.write = validateUid(self.uid)
 		self.add(ResourcesRules())
 		self.add(BooleanRules("icsDownload"))
+		self.add(BooleanRules("assosEventsByDefault"))
 		self.add(OtherRules())
 
 class ResourcesRules (SettingsRules):

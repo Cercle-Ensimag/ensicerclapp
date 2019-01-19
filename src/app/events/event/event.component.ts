@@ -4,8 +4,9 @@ import {Location} from '@angular/common';
 
 import {DicoService} from '../../language/dico.service';
 import {EventsService, Event} from '../events-service/events.service';
-import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import {CalService, Settings} from '../../calendar/cal-service/cal.service';
+import {Observable, pipe, combineLatest} from 'rxjs';
+import {map, first} from 'rxjs/operators';
 
 @Component({
   selector: 'app-event',
@@ -17,6 +18,7 @@ export class EventComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+		private cal: CalService,
 
     public events: EventsService,
     public location: Location,
@@ -28,8 +30,45 @@ export class EventComponent implements OnInit {
   }
 
   isInCalendar(): Observable<boolean> {
-    return this.events.getEventInCalendar(this.id);
+    return combineLatest(
+			this.cal.getSettings(),
+			this.events.getEventIsMarked(this.id)
+		).pipe(
+			map(
+				([settings, marked]: [Settings, boolean]) => {
+					if (!settings || settings.assosEventsByDefault) {
+						return !marked;
+					} else {
+						return marked;
+					}
+				}
+			)
+		);
   }
+
+	removeEvent(eventId: string) {
+		this.cal.getSettings().pipe(first()).toPromise().then(
+			(settings: Settings) => {
+				if (!settings || settings.assosEventsByDefault) {
+					return this.events.addEventToCalendar(eventId);
+				} else {
+					return this.events.removeEventFromCalendar(eventId);
+				}
+			}
+		);
+	}
+
+	addEvent(eventId: string) {
+		this.cal.getSettings().pipe(first()).toPromise().then(
+			(settings: Settings) => {
+				if (!settings || settings.assosEventsByDefault) {
+					return this.events.removeEventFromCalendar(eventId);
+				} else {
+					return this.events.addEventToCalendar(eventId);
+				}
+			}
+		);
+	}
 
 	getGroupName(groupId: string): Observable<string> {
 		return this.events.getGroupName(groupId);
