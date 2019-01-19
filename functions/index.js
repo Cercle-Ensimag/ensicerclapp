@@ -100,9 +100,10 @@ exports.onCreateAccount = functions.auth.user().onCreate((user, context) => {
     // invalid email, delete account
     return deleteUser(user, "not on the list");
   } else {
-    // valid email
+		// valid email
+		const emailId = getEmailId(user.email);
+		
     return db.ref("/users/"+emailId).once("value").then(function(snapshot) {
-			const emailId = getEmailId(user.email);
 			const updates = {};
 
       // /!\ Only one user per emailId is authorised to have an account /!\
