@@ -279,9 +279,18 @@
 						".write" : "$userId === auth.uid",
 						"resources": { ".validate" : "newData.val().matches(/^[0-9]*(,[0-9]+)*$/)" },
 						"icsDownload": { ".validate" : "newData.isBoolean()" },
+						"assosEventsByDefault": { ".validate" : "newData.isBoolean()" },
 						"$other": { ".validate" : "false" },
 					},
 					"assos": {
+						".read" : "$userId === auth.uid",
+						".write" : "$userId === auth.uid",
+						"$eventId": {
+							"eventId": { ".validate" : "newData.val() === $eventId" },
+							"$other": { ".validate" : "false" },
+						},
+					},
+					"notAssos": {
 						".read" : "$userId === auth.uid",
 						".write" : "$userId === auth.uid",
 						"$eventId": {

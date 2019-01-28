@@ -5,8 +5,8 @@ import {Location} from '@angular/common';
 import {DicoService} from '../../language/dico.service';
 import {EventsService, Event} from '../events-service/events.service';
 import {CalService, Settings} from '../../calendar/cal-service/cal.service';
-import {Observable, pipe, combineLatest} from 'rxjs';
-import {map, first} from 'rxjs/operators';
+import {Observable, pipe} from 'rxjs';
+import {map, tap, mergeMap, first} from 'rxjs/operators';
 
 @Component({
   selector: 'app-event',
@@ -15,6 +15,7 @@ import {map, first} from 'rxjs/operators';
 })
 export class EventComponent implements OnInit {
   public id: string;
+	private _inCalendar: Observable<boolean>;
 
   constructor(
     private route: ActivatedRoute,
@@ -30,44 +31,44 @@ export class EventComponent implements OnInit {
   }
 
   isInCalendar(): Observable<boolean> {
-    return combineLatest(
-			this.cal.getSettings(),
-			this.events.getEventIsMarked(this.id)
-		).pipe(
-			map(
-				([settings, marked]: [Settings, boolean]) => {
+		if (!this._inCalendar) {
+			this._inCalendar = this.cal.getSettings().pipe(
+				mergeMap(settings => {
 					if (!settings || settings.assosEventsByDefault) {
-						return !marked;
+						return this.events.getEventIDontWant(this.id);
 					} else {
-						return marked;
+						return this.events.getEventIParticipate(this.id);
 					}
-				}
-			)
-		);
+				})
+			);
+		}
+		return this._inCalendar;
   }
 
-	removeEvent(eventId: string) {
-		this.cal.getSettings().pipe(first()).toPromise().then(
-			(settings: Settings) => {
+	removeEvent(eventId: string): Promise<any> {
+		return this.cal.getSettings().pipe(
+			first(),
+			mergeMap(settings => {
 				if (!settings || settings.assosEventsByDefault) {
-					return this.events.addEventToCalendar(eventId);
+					return this.events.addEventIDontWant(eventId);
 				} else {
-					return this.events.removeEventFromCalendar(eventId);
+					return this.events.removeEventIParticipate(eventId);
 				}
-			}
-		);
+			})
+		).toPromise();
 	}
 
-	addEvent(eventId: string) {
-		this.cal.getSettings().pipe(first()).toPromise().then(
-			(settings: Settings) => {
+	addEvent(eventId: string): Promise<any> {
+		return this.cal.getSettings().pipe(
+			first(),
+			mergeMap(settings => {
 				if (!settings || settings.assosEventsByDefault) {
-					return this.events.removeEventFromCalendar(eventId);
+					return this.events.removeEventIDontWant(eventId);
 				} else {
-					return this.events.addEventToCalendar(eventId);
+					return this.events.addEventIParticipate(eventId);
 				}
-			}
-		);
+			})
+		).toPromise();
 	}
 
 	getGroupName(groupId: string): Observable<string> {

@@ -221,6 +221,7 @@ export class French {
 	public static readonly dangerousADECredentialsError = "Caractère dangereux, désolé";
 	public static readonly ADEConnectionError = "Echec de la connexion";
 	public static readonly displayICSDownloadInfo = "Afficher le bouton de téléchargement au format ICS";
+	public static readonly eventsByDefaultInfo = "Ajouter par défaut les événements associatifs au calendier";
 	// -> day-column
 	public static readonly noCalEvent = "Rien de prévu";
 	// -> edit-cal

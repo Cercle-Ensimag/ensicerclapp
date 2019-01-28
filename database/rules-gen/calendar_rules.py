@@ -21,6 +21,7 @@ class UserRules (UsersRules):
         self.label = self.uid
         self.add(SettingsRules())
         self.add(AssosEventsRules())
+        self.add(NotAssosEventsRules())
         self.add(PersoEventsRules())
         self.add(OtherRules())
 
@@ -50,6 +51,13 @@ class AssosEventsRules (UserRules):
         self.read = validateUid(self.uid)
         self.write = validateUid(self.uid)
         self.add(AssosEventRules())
+
+class NotAssosEventsRules (UserRules):
+	def build(self):
+		self.label = "notAssos"
+		self.read = validateUid(self.uid)
+		self.write = validateUid(self.uid)
+		self.add(AssosEventRules())
 
 class AssosEventRules (AssosEventsRules):
     def __init__(self):

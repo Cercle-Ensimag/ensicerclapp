@@ -40,8 +40,10 @@ export class EventsService {
   private _event: { [$eventId: string]: Observable<Event> } = {};
   private _comResps: Observable<ComResp[]>;
 	private _groups: Observable<Group[]>;
-	private _assosEventsIdsITakePart: Observable<string[]>;
+	private _assosEventsIdsIParticipate: Observable<string[]>;
+	private _assosEventsIdsIDontWant: Observable<string[]>;
 	private _eventInCalendar: { [$eventId: string]: Observable<boolean> } = {};
+	private _eventNotInCalendar: { [$eventId: string]: Observable<boolean> } = {};
 
   constructor(
     private db: AngularFireDatabase,
@@ -236,7 +238,7 @@ export class EventsService {
 		});
 	}
 
-  addEventToCalendar(eventId: string) {
+  addEventIParticipate(eventId: string) {
     return this.auth.getUser().pipe(
       first(),
       mergeMap(
@@ -249,7 +251,7 @@ export class EventsService {
 		).toPromise();
   }
 
-  removeEventFromCalendar(eventId: string) {
+  removeEventIParticipate(eventId: string) {
     return this.auth.getUser().pipe(
       first(),
       mergeMap(
@@ -262,9 +264,35 @@ export class EventsService {
 		).toPromise();
   }
 
-	getAssosEventsIdsIMarked(): Observable<string[]> {
-		if (!this._assosEventsIdsITakePart) {
-      this._assosEventsIdsITakePart = this.tools.enableCache(
+  addEventIDontWant(eventId: string) {
+    return this.auth.getUser().pipe(
+      first(),
+      mergeMap(
+				user => from(
+	        this.db.object(
+						'calendar/users/' + user.uid + '/notAssos/' + eventId
+					).set(eventId)
+	      )
+			)
+		).toPromise();
+  }
+
+  removeEventIDontWant(eventId: string) {
+    return this.auth.getUser().pipe(
+      first(),
+      mergeMap(
+				user => from(
+        	this.db.object(
+						'calendar/users/' + user.uid + '/notAssos/' + eventId
+					).set(null)
+      	)
+			)
+		).toPromise();
+  }
+
+	getAssosEventsIdsIParticipate(): Observable<string[]> {
+		if (!this._assosEventsIdsIParticipate) {
+      this._assosEventsIdsIParticipate = this.tools.enableCache(
 				this.auth.getUser().pipe(mergeMap(
 					user => this.db.list<string>(
 						'calendar/users/'+user.uid+'/assos'
@@ -275,17 +303,43 @@ export class EventsService {
 				shareReplay(1)
 			);
 		}
-		return this._assosEventsIdsITakePart;
+		return this._assosEventsIdsIParticipate;
 	}
 
-  getEventIsMarked(eventId: string): Observable<boolean> {
+  getEventIParticipate(eventId: string): Observable<boolean> {
     if (!this._eventInCalendar[eventId]) {
-      this._eventInCalendar[eventId] = this.getAssosEventsIdsIMarked().pipe(
+      this._eventInCalendar[eventId] = this.getAssosEventsIdsIParticipate().pipe(
 				map(ids => ids.includes(eventId)),
 				shareReplay(1)
 			);
     }
     return this._eventInCalendar[eventId];
+  }
+
+	getAssosEventsIdsIDontWant(): Observable<string[]> {
+		if (!this._assosEventsIdsIDontWant) {
+      this._assosEventsIdsIDontWant = this.tools.enableCache(
+				this.auth.getUser().pipe(mergeMap(
+					user => this.db.list<string>(
+						'calendar/users/'+user.uid+'/notAssos'
+					).valueChanges()
+				)),
+				"events-notMyEventsIds"
+			).pipe(
+				shareReplay(1)
+			);
+		}
+		return this._assosEventsIdsIDontWant;
+	}
+
+  getEventIDontWant(eventId: string): Observable<boolean> {
+    if (!this._eventNotInCalendar[eventId]) {
+      this._eventNotInCalendar[eventId] = this.getAssosEventsIdsIDontWant().pipe(
+				map(ids => !ids.includes(eventId)),
+				shareReplay(1)
+			);
+    }
+    return this._eventNotInCalendar[eventId];
   }
 
 }

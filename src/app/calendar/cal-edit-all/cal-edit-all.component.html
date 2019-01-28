@@ -25,18 +25,47 @@
 			</div>
 	  </mat-tab>
 
-	  <mat-tab *ngIf="cal.getAssosEventsIMarked() | async as events; else loading"  label="Associatifs">
+	  <mat-tab *ngIf="cal.getAssosEventsIParticipate() | async as events; else loading"  label="Associatifs selectionnés">
 			<div class="tab-content-container">
-				<div *ngIf="cal.getEventIdsWithNoEvents() | async as ids;">
+				<div *ngIf="cal.getEventIdsIParticipateWithNoEvents() | async as ids;">
 					<mat-card *ngIf="ids.length > 0" class="item center">
 						<div class="error">
 							{{ d.format(d.l.nbOfSubscriptionsToDeletedEvents, ids.length) }}<br><br>
-							<button mat-raised-button (click)="cal.removeEventsFromCalendar(ids)">{{ d.l.deleteEventSubsciptionsButtonLabel }}</button>
+							<button mat-raised-button (click)="cal.removeEventsIParticipate(ids)">{{ d.l.deleteEventSubsciptionsButtonLabel }}</button>
 						</div>
 					</mat-card>
 				</div>
 				<app-paged-grid [list]="events" emptyMessage="Aucun événement associatif" #pagesAssos>
 					<div *ngFor="let event of pagesAssos.truncatedList()">
+						<app-conditional-router-link [enabled]="true" link="/events/event/{{ event.id }}">
+				      <mat-card class="center">
+				        {{ event.title }}<br>
+				        <div *ngIf="event.isSingleDay()">
+									{{ event.start | date:d.l.shortDateTimeFormat:'':d.l.locale }} à {{ event.end | date:d.l.timeFormat:'':d.l.locale }}
+				        </div>
+				        <div *ngIf="!event.isSingleDay()">
+				          {{ event.start | date:d.l.shortDateTimeFormat:'':d.l.locale }} - {{ event.end | date:d.l.shortDateTimeFormat:'':d.l.locale }}
+				        </div>
+				        {{ event.location }}<br>
+				      </mat-card>
+						</app-conditional-router-link>
+					</div>
+				</app-paged-grid>
+			</div>
+	  </mat-tab>
+
+	  <mat-tab *ngIf="cal.getAssosEventsIDontWant() | async as events2; else loading"  label="Associatifs masqués">
+			<div class="tab-content-container">
+				<div *ngIf="cal.getEventIdsIDontWantWithNoEvents() | async as ids2;">
+					<mat-card *ngIf="ids2.length > 0" class="item center">
+						<div class="error">
+							{{ d.format(d.l.nbOfSubscriptionsToDeletedEvents, ids2.length) }}<br><br>
+							<button mat-raised-button (click)="cal.removeEventsIDontWant(ids2)">{{ d.l.deleteEventSubsciptionsButtonLabel }}</button>
+						</div>
+					</mat-card>
+				</div>
+				<app-paged-grid [list]="events2" emptyMessage="Aucun événement associatif" #pagesAssos2>
+					<div *ngFor="let event of pagesAssos2.truncatedList()">
 						<app-conditional-router-link [enabled]="true" link="/events/event/{{ event.id }}">
 				      <mat-card class="center">
 				        {{ event.title }}<br>
