@@ -60,7 +60,7 @@ export class CalEditAllComponent implements OnInit {
 		this.dialog.open(DeleteDialogComponent, {
 			data: {
 				title: this.d.l.deletePersoEventDialogTitle,
-				content: this.d.format(this.d.l.deletePersoEventDialogContent, event.title)
+				content: this.d.format(this.d.l.deletePersoEventDialogContent, this.getTitle(event))
 			}
 		}).afterClosed().subscribe(result => {
 			if (result) {

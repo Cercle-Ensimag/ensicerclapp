@@ -114,6 +114,7 @@ export class CalService {
 	private _keyObs: Observable<string>;
 	private _errorNotifier: Subject<string> = new Subject<string>();
 	private _ADErefresh: Subject<Settings> = new Subject<Settings>();
+	private _keyRefresh: Subject<Settings> = new Subject<Settings>();
 	private _ADEError: boolean = false;
 	private _lastADEUpdate: number;
 
@@ -378,9 +379,22 @@ export class CalService {
 		return this._settings;
 	}
 
+	setKey(key: string) {
+		this.tools.storeKey(key);
+
+		this.getSettings().pipe(
+			first()
+		).toPromise().then(
+			settings => this._keyRefresh.next(settings)
+		);
+	}
+
 	getKey(): Observable<string> {
 		if (!this._keyObs) {
-			this._keyObs = this.getSettings().pipe(
+			this._keyObs = merge(
+				this.getSettings(),
+				this._keyRefresh
+			).pipe(
 				map(settings => {
 					const key = this.tools.loadKey();
 					if (key && settings) {

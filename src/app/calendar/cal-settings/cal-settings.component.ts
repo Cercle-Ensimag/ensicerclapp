@@ -76,11 +76,10 @@ export class CalSettingsComponent implements OnInit, OnDestroy {
 		const password = this.formGroup.get('password').value;
 
 		if (password) {
-			// generates and stores localy the password hash
+			// generates the password hash to use as key
 			const key = this.tools.generateKey(password);
-			this.tools.storeKey(key);
 
-			// verify key hash
+			// verify key hash from the database
 			if (this.keyHash) {
 				if (this.tools.generateKey(key) != this.keyHash) {
 					this.snackBar.open(this.d.l.cipherError, this.d.l.okLabel, {duration: 2000});
@@ -90,6 +89,9 @@ export class CalSettingsComponent implements OnInit, OnDestroy {
 			} else {
 				this.keyHash = this.tools.generateKey(key);
 			}
+
+			// store the key locally
+			this.cal.setKey(key);
 		}
 
 		this.cal.setSettings(
