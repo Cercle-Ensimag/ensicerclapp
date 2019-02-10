@@ -3,23 +3,25 @@ import localeFr from '@angular/common/locales/fr';
 registerLocaleData(localeFr);
 
 export class French {
-  // Common
-  public static readonly appName = "Cercle Ensimag";
+	// Common
+	public static readonly appName = "Cercle Ensimag";
 	public static readonly okLabel = "Ok";
+	public static readonly yes = "Oui";
+	public static readonly no = "Non";
 	public static readonly errorLabel = "Erreur";
 	public static readonly cancelLabel = "Annuler";
 	public static readonly search = "Recherche";
-  public static readonly backLabel = "Retour";
+	public static readonly backLabel = "Retour";
 	public static readonly modifyLabel = "Modifier";
 	public static readonly sendLabel = "Envoyer";
-  public static readonly changesApplied = "Changements appliqués avec succès";
+	public static readonly changesApplied = "Changements appliqués avec succès";
 	// -> time
-  public static readonly locale = "fr";
-  public static readonly timeFormat = "H:mm";
-  public static readonly shortDateFormat = "E d LLL";
-  public static readonly longDateFormat = "EEEE d LLLL";
-  public static readonly shortDateTimeFormat = "E d LLL H:mm";
-  public static readonly longDateTimeFormat = "EEEE d LLLL H:mm";
+	public static readonly locale = "fr";
+	public static readonly timeFormat = "H:mm";
+	public static readonly shortDateFormat = "E d LLL";
+	public static readonly longDateFormat = "EEEE d LLLL";
+	public static readonly shortDateTimeFormat = "E d LLL H:mm";
+	public static readonly longDateTimeFormat = "EEEE d LLLL H:mm";
 	// -> form labels
 	public static readonly firstNameLabel = "Prénom";
 	public static readonly lastNameLabel = "Nom de famille";
@@ -123,7 +125,7 @@ export class French {
 	public static readonly addJournalistInfo = "Entrer l'e-mail d'un journaliste";
 	public static readonly addJournalistButtonLabel = "Ajouter";
 
-  // Auth
+	// Auth
 	public static readonly logOutLabel = "Déconnexion";
 	// -> login
 	public static readonly signInPageTitle = "Identifie-toi<br><small>ou crée un compte si tu n'en as pas encore !</small>";
@@ -211,17 +213,22 @@ export class French {
 	public static readonly calSettingsTitle = "Paramètres du calendrier";
 	public static readonly calSettingsResourcesLabel = "Ressources ADE";
 	public static readonly calSettingsResourcesError = "ex: '1234,5678,1479'";
-	public static readonly gatherFromAdeInfo = "<b>Kézako ?</b><br><br>Il s'agist de la liste des modules que vous suivez au format \"ADE\" (n1, n2, n3, ...). Vous pouvez récupérer cette information depuis l'URL que vous utilisez pour consulter votre calendrier.<br><br>Laissez-nous récupérer automatiquement cette information depuis votre espace ADE.<br><br> Vos identifiants ne sont <b>pas</b> enregistrés.";
-	public static readonly gatherFromAdeButtonLabel = "Récupérer via ADE";
+	public static readonly gatherFromZenithInfo = "<b>Ressources ADE</b><br><br>Il s'agist de la liste des reférences de tes cours. Tu peux récupérer cette information depuis l'URL que tu utilises pour consulter ton calendrier.<br><br>Laisse-nous récupérer automatiquement cette information depuis ton espace Zenith.<br><br>Tes identifiants ne sont <b>pas</b> enregistrés.<br><br>Ces ressources sont à <b>mettre à jour tous les semestres</b> environ. Les cours pour un mois à partir de la date du jour sont téléchargés et affichés.";
+	public static readonly gatherFromZenithButtonLabel = "Récupérer via Zenith";
 	public static readonly updatedResourcesInfo = "Paramètres mis à jour";
-	public static readonly ADECredentialsDialogTitle = "Connexion à ADE";
-	public static readonly ADECredentialsDialogContent = "Identifiants de connexion à ADE";
-	public static readonly waitADEConnectionInfo = "Connexion à ADE...";
-	public static readonly invalidADECredentialsError = "Identifiants incorrects";
-	public static readonly dangerousADECredentialsError = "Caractère dangereux, désolé";
-	public static readonly ADEConnectionError = "Echec de la connexion";
+	public static readonly ZenithCredentialsDialogTitle = "Connexion à Zenith";
+	public static readonly ZenithCredentialsDialogContent = "Identifiants de connexion à Zenith";
+	public static readonly waitZenithConnectionInfo = "Connexion à Zenith...";
+	public static readonly invalidZenithCredentialsError = "Identifiants incorrects";
+	public static readonly dangerousZenithCredentialsError = "Caractère dangereux, désolé";
+	public static readonly ZenithConnectionError = "Echec de la connexion";
 	public static readonly displayICSDownloadInfo = "Afficher le bouton de téléchargement au format ICS";
 	public static readonly eventsByDefaultInfo = "Ajouter par défaut les événements associatifs au calendier";
+	public static readonly eventsCipherInfo = "<b>Chiffrement</b><br><br>Renseigne le mot de passe pour encoder et décoder les informations relatives à tes événements personnels (optionnel).<br>Ce mot de passe ne pourra (pour l'instant) pas être changé et devra être renseigné sur chaque appareil utilisant l'application.";
+	public static readonly passwordOkInfo = "Mot de passe déjà renseigné et correct : {0}";
+	public static readonly keyNotConfiguredError = "Aucun mot de passe n'est configuré pour chiffrer";
+	public static readonly cipherLabel = "Chiffrer";
+	public static readonly cipherError = "Mauvais mot de passe"; // FIXME: dialog insted
 	// -> day-column
 	public static readonly noCalEvent = "Rien de prévu";
 	// -> edit-cal
@@ -271,11 +278,11 @@ export class French {
 	// -> event-home
 	public static readonly noEvent = "Aucun événement à venir";
 
-  // Info
+	// Info
 	// -> legal-notice
-  public static readonly legalNoticeLabel = "Mentions légales";
+	public static readonly legalNoticeLabel = "Mentions légales";
 	// -> user-guide
-  public static readonly userGuideLabel = "Détail des fonctionnalités";
+	public static readonly userGuideLabel = "Détail des fonctionnalités";
 
 	// JobAd
 	public static readonly jobadDone = "Finie";
@@ -385,7 +392,7 @@ export class French {
 	public static readonly infosModuleDescription = "Retrouve ici mentions légales et tutoriels pour l'utilisation de cette application.";
 	public static readonly infosModuleFullName = "A propos d'ensicerclapp ;)";
 
-  // Vote
+	// Vote
 	public static readonly startLabel = "Start";
 	// -> assessor
 	public static readonly markAsVotedEmailInfo = "Email d'un votant en face-à-face";

@@ -2,36 +2,36 @@
 
 <div class="day-column">
 	<div *ngIf="media.largeSize" class="header">
-	  <mat-card class="center">
-	    <label>{{ date | date:d.l.shortDateFormat:'':d.l.locale | uppercase }}</label>
-	  </mat-card>
+		<mat-card class="center">
+			<label>{{ date | date:d.l.shortDateFormat:'':d.l.locale | uppercase }}</label>
+		</mat-card>
 	</div>
-  <div *ngIf="cal.getMyEventsForDay(date) | async as events">
-    <div *ngIf="events.length; else noEvents">
+	<div *ngIf="cal.getMyEventsForDay(date) | async as events">
+		<div *ngIf="events.length; else noEvents">
 			<div *ngFor="let event of events" class="item">
 				<app-conditional-router-link [enabled]="event.isAssos()" link="/events/event/{{ event.id }}">
-		      <mat-card class="event center"
-		                [class.border]="event.isNow() && event.isCourse()"
-		                [class.perso]="event.isPerso()" [class.assos]="event.isAssos()">
-		        {{ event.title }}<br>
-		        <div *ngIf="event.isSingleDay()">
-		          {{ event.start | date:d.l.timeFormat:'':d.l.locale }} - {{ event.end | date:d.l.timeFormat:'':d.l.locale }}
-		        </div>
-		        <div *ngIf="!event.isSingleDay()">
-		          {{ event.start | date:d.l.shortDateTimeFormat:'':d.l.locale }} - {{ event.end | date:d.l.shortDateTimeFormat:'':d.l.locale }}
-		        </div>
-		        {{ event.location }}<br>
-		      </mat-card>
+					<mat-card class="event center"
+								[class.border]="event.isNow() && event.isCourse()"
+								[class.perso]="event.isPerso()" [class.assos]="event.isAssos()">
+						{{ getTitle(event) }}<br>
+						<div *ngIf="event.isSingleDay()">
+							{{ event.start | date:d.l.timeFormat:'':d.l.locale }} - {{ event.end | date:d.l.timeFormat:'':d.l.locale }}
+						</div>
+						<div *ngIf="!event.isSingleDay()">
+							{{ event.start | date:d.l.shortDateTimeFormat:'':d.l.locale }} - {{ event.end | date:d.l.shortDateTimeFormat:'':d.l.locale }}
+						</div>
+						{{ getLocation(event) }}<br>
+					</mat-card>
 				</app-conditional-router-link>
-	    </div>
-    </div>
-    <ng-template #noEvents>
-			<div class="item">
-	      <mat-card class="no-events center">
-	        {{ d.l.noCalEvent }}
-	      </mat-card>
 			</div>
-    </ng-template>
-  </div>
+		</div>
+		<ng-template #noEvents>
+			<div class="item">
+				<mat-card class="no-events center">
+					{{ d.l.noCalEvent }}
+				</mat-card>
+			</div>
+		</ng-template>
+	</div>
 
 </div>

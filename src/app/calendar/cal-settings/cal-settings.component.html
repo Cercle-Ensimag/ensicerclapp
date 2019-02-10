@@ -2,50 +2,67 @@
 
 <div class="thin-container">
 	<mat-card *ngIf="formGroup">
-	  <h2>{{ d.l.calSettingsTitle }}</h2>
+		<h2>{{ d.l.calSettingsTitle }}</h2>
 
-	  <form [formGroup]="formGroup" class="container">
+		<form [formGroup]="formGroup" class="container">
 
-	    <mat-form-field>
-	      <textarea matInput placeholder="{{ d.l.calSettingsResourcesLabel }}" formControlName="resources"></textarea>
-	      <mat-error *ngIf="formGroup.get('resources').invalid">{{ d.l.calSettingsResourcesError }}</mat-error>
-	    </mat-form-field>
-	    <br>
-	    <mat-divider></mat-divider>
-	    <div style="text-align: center">
-	      <br>
-				<div [innerHTML]="d.l.gatherFromAdeInfo"></div>
-	      <br>
-	      <button mat-raised-button color="primary" (click)="gatherFromAde()">{{ d.l.gatherFromAdeButtonLabel }}</button>
-	    </div>
+			<div style="text-align: center">
+				<br>
+				<div [innerHTML]="d.l.gatherFromZenithInfo"></div>
+				<br>
+				<mat-form-field>
+					<textarea matInput placeholder="{{ d.l.calSettingsResourcesLabel }}" formControlName="resources"></textarea>
+					<mat-error *ngIf="formGroup.get('resources').invalid">{{ d.l.calSettingsResourcesError }}</mat-error>
+				</mat-form-field>
+				<button mat-raised-button color="primary" (click)="gatherFromZenith()">{{ d.l.gatherFromZenithButtonLabel }}</button>
+			</div>
+
 			<br>
-	    <mat-divider></mat-divider>
-	    <div style="text-align: center">
-	      <br>
+			<mat-divider></mat-divider>
+
+			<div style="text-align: center">
+				<br>
 				<div [innerHTML]="d.l.displayICSDownloadInfo"></div>
-	      <br>
+				<br>
 				<mat-slide-toggle formControlName="icsDownload" color="primary"></mat-slide-toggle>
-	    </div>
-	    <mat-divider></mat-divider>
-	    <div style="text-align: center">
-	      <br>
+			</div>
+
+			<br>
+			<mat-divider></mat-divider>
+
+			<div style="text-align: center">
+				<br>
 				<div [innerHTML]="d.l.eventsByDefaultInfo"></div>
-	      <br>
+				<br>
 				<mat-slide-toggle formControlName="assosEventsByDefault" color="primary"></mat-slide-toggle>
-	    </div>
-	      <!-- <span *ngIf="!formGroup.get('done').value">{{ d.l.jobadOngoing }}</span>
-	      <span *ngIf="formGroup.get('done').value">{{ d.l.jobadDone }}</span> -->
-	  </form>
+			</div>
+
+			<br>
+			<mat-divider></mat-divider>
+
+			<div style="text-align: center">
+				<br>
+				<div [innerHTML]="d.l.eventsCipherInfo"></div>
+				<br>
+				<div>{{ d.format(d.l.passwordOkInfo, passwordOk ? d.l.yes : d.l.no) }}</div>
+				<mat-form-field>
+					<input matInput placeholder="{{ d.l.changePasswordButtonLabel }}" formControlName="password" [type]="hide ? 'password' : 'text'" autocomplete="off">
+					<mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+					<mat-error *ngIf="formGroup.get('password').invalid">{{ d.l.passwordError }}</mat-error>
+				</mat-form-field>
+			</div>
+
+		</form>
 	</mat-card>
 </div>
 
 <div class="mat-fab-bottom-right">
-  <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
-  <button mat-fab color="primary" *ngIf="formGroup"
-          (click)="submit()"
-          [disabled]="formGroup.invalid || formGroup.pristine">
-    <mat-icon>save</mat-icon>
-  </button>
+	<button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
+	<button mat-fab color="primary" *ngIf="formGroup"
+					(click)="submit()"
+					[disabled]="formGroup.invalid || formGroup.pristine">
+		<mat-icon>save</mat-icon>
+	</button>
 </div>
 
 <div class="fab-btn-placeholder"></div>

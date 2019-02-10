@@ -1,15 +1,15 @@
 <div class="item">
-	<app-paged-grid [list]="actus.getActus() | async" #pages>
-	  <app-actu-card *ngFor="let actu of pages.truncatedList()"
-	                 [actu]="actu"
-	                 [admin]="true">
-	  </app-actu-card>
+	<app-paged-grid [list]="actus.getActusImRespoOf() | async" #pages>
+		<app-actu-card *ngFor="let actu of pages.truncatedList()"
+						[actu]="actu"
+						[admin]="true">
+		</app-actu-card>
 	</app-paged-grid>
 </div>
 
 <div class="mat-fab-bottom-right">
-  <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
-  <button mat-fab color="primary" routerLink="/actus/actu/-/edit"><mat-icon>add</mat-icon></button>
+	<button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
+	<button mat-fab color="primary" routerLink="/actus/actu/-/edit"><mat-icon>add</mat-icon></button>
 </div>
 
 <div class="fab-btn-placeholder"></div>

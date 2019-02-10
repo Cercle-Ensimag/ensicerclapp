@@ -25,60 +25,69 @@ const DAY_LENGTH = 24 * 60 * 60* 1000;
 const WEEK_LENGTH = 7 * DAY_LENGTH;
 
 export class CalEvent {
-  id: string;
-  title: string;
-  start: number;
-  end: number;
-  occurences: number;
-  location: string;
-  type: string;
+	id: string;
+	title: string;
+	start: number;
+	end: number;
+	cipher: boolean;
+	occurences: number;
+	location: string;
+	type: string;
 
-  constructor(
-    id: string, name: string, start: any, end: any, occurences: number,
-    loc: string, type: string
-  ) {
-    this.id = id;
-    this.title = name;
-    this.start = (new Date(start)).getTime();
-    this.end = (new Date(end)).getTime();
-    this.occurences = occurences;
-    this.location = loc;
-    this.type = type;
-  }
+	constructor(
+		id: string, name: string, start: any, end: any,
+		cipher: boolean, occurences: number,
+		loc: string, type: string
+	) {
+		this.id = id;
+		this.title = name;
+		this.start = (new Date(start)).getTime();
+		this.end = (new Date(end)).getTime();
+		this.cipher = cipher
+		this.occurences = occurences;
+		this.location = loc;
+		this.type = type;
+	}
 
-  isNow(): boolean{
-    return this.start < Date.now() && this.end > Date.now();
-  }
+	isNow(): boolean{
+		return this.start < Date.now() && this.end > Date.now();
+	}
 
-  isSingleDay(): boolean {
-    const eventStartDay = new Date(this.start).setHours(0,0,0,0);
-    const eventEndDay = new Date(this.end).setHours(0,0,0,0);
-    return eventStartDay == eventEndDay;
-  }
+	isSingleDay(): boolean {
+		const eventStartDay = new Date(this.start).setHours(0,0,0,0);
+		const eventEndDay = new Date(this.end).setHours(0,0,0,0);
+		return eventStartDay == eventEndDay;
+	}
 
-  isAssos() {
-    return this.type === ASSOS;
-  }
+	isAssos() {
+		return this.type === ASSOS;
+	}
 
-  isPerso() {
-    return this.type === PERSOS;
-  }
+	isPerso() {
+		return this.type === PERSOS;
+	}
 
-  isCourse() {
-    return this.type === COURSE;
-  }
+	isCourse() {
+		return this.type === COURSE;
+	}
 }
 
 export class Settings {
-  resources: string;
+	resources: string;
 	icsDownload: boolean;
 	assosEventsByDefault: boolean;
+	keyHash: string;
 
-  constructor(resources: string, icsDownload: boolean, assosEventsByDefault: boolean) {
-    this.resources = resources;
-    this.icsDownload = icsDownload;
-    this.assosEventsByDefault = assosEventsByDefault;
-  }
+	constructor(
+		resources: string, icsDownload: boolean,
+		assosEventsByDefault: boolean,
+		keyHash: string
+	) {
+		this.resources = resources;
+		this.icsDownload = icsDownload;
+		this.assosEventsByDefault = assosEventsByDefault;
+		this.keyHash = keyHash;
+	}
 }
 
 class ICSEvent {
@@ -90,32 +99,33 @@ class ICSEvent {
 
 @Injectable()
 export class CalService {
-  private _coursesEvents: Observable<CalEvent[]>;
-  private _assosEvents: Observable<CalEvent[]>;
-  private _persosEvents: Observable<CalEvent[]>;
-  private _assosEventsIParticipate: Observable<CalEvent[]>;
-  private _assosEventsIDontWant: Observable<CalEvent[]>;
-  private _assosEventsISeemToWant: Observable<CalEvent[]>;
-  private _myEvents: Observable<CalEvent[]>;
-  private _calFromAde: Observable<string>;
-  private _myEventsForDay: { [$dayString: string]: Observable<CalEvent[]> } = {};
-  private _settings: Observable<Settings>;
-  private _event: { [$eventId: string]: Observable<CalEvent> } = {};
+	private _coursesEvents: Observable<CalEvent[]>;
+	private _assosEvents: Observable<CalEvent[]>;
+	private _persosEvents: Observable<CalEvent[]>;
+	private _assosEventsIParticipate: Observable<CalEvent[]>;
+	private _assosEventsIDontWant: Observable<CalEvent[]>;
+	private _assosEventsISeemToWant: Observable<CalEvent[]>;
+	private _myEvents: Observable<CalEvent[]>;
+	private _calFromAde: Observable<string>;
+	private _myEventsForDay: { [$dayString: string]: Observable<CalEvent[]> } = {};
+	private _settings: Observable<Settings>;
+	private _event: { [$eventId: string]: Observable<CalEvent> } = {};
 	private _eventIdsWithNoEvents: Observable<string[]>;
+	private _keyObs: Observable<string>;
 	private _errorNotifier: Subject<string> = new Subject<string>();
 	private _ADErefresh: Subject<Settings> = new Subject<Settings>();
 	private _ADEError: boolean = false;
 	private _lastADEUpdate: number;
 
-  constructor(
-    private auth: AuthService,
-    private db: AngularFireDatabase,
+	constructor(
+		private auth: AuthService,
+		private db: AngularFireDatabase,
 		public d: DicoService,
-    public datepipe: DatePipe,
-    private events: EventsService,
-    private tools: ToolsService,
-    private http: HttpClient
-  ) { }
+		public datepipe: DatePipe,
+		private events: EventsService,
+		private tools: ToolsService,
+		private http: HttpClient
+	) { }
 
 	getErrorNotifier(): Subject<string> {
 		return this._errorNotifier;
@@ -148,32 +158,32 @@ export class CalService {
 		)
 	}
 
-  getCoursesEvents(): Observable<CalEvent[]> {
-    if (!this._coursesEvents) {
-      this._coursesEvents = this.tools.enableCache(
+	getCoursesEvents(): Observable<CalEvent[]> {
+		if (!this._coursesEvents) {
+			this._coursesEvents = this.tools.enableCache(
 				merge(
 					this.getSettings(),
 					this._ADErefresh
 				).pipe(
-	        mergeMap((settings: Settings) => {
-	          if (!settings || !settings.resources) {
-	            return of([]);
-	          }
-	          return this.getCalFromAde(settings.resources).pipe(
+					mergeMap((settings: Settings) => {
+						if (!settings || !settings.resources) {
+							return of([]);
+						}
+						return this.getCalFromAde(settings.resources).pipe(
 							catchError(
 								err => {
 									this.setADEError(err);
 									return EMPTY;
 								}
 							),
-	            map(
+							map(
 								cal => {
 									this.setADEError(null);
 									return parseICS(cal)
 								}
 							)
 						)
-	        })
+					})
 				),
 				"cal-ADEevents"
 			).pipe(
@@ -182,81 +192,82 @@ export class CalService {
 					event.name.replace(/\\,/g, ', '),
 					event.startDate,
 					event.endDate,
+					false,
 					1,
 					event.location.replace(/\\,/g, ', '),
 					COURSE
 				))),
 				shareReplay(1)
 			);
-    }
-    return this._coursesEvents;
-  }
+		}
+		return this._coursesEvents;
+	}
 
-  getAssosEvents(): Observable<CalEvent[]> {
-    if (!this._assosEvents) {
-      this._assosEvents = this.events.getActiveEvents().pipe(
+	getAssosEvents(): Observable<CalEvent[]> {
+		if (!this._assosEvents) {
+			this._assosEvents = this.events.getActiveEvents().pipe(
 				map(events => events.map(event => new CalEvent(
-          event.id, event.title, event.start, event.end, 1, event.location, ASSOS
-        ))),
-        shareReplay(1)
+					event.id, event.title, event.start, event.end, false, 1, event.location, ASSOS
+				))),
+				shareReplay(1)
 			);
-    }
-    return this._assosEvents;
-  }
+		}
+		return this._assosEvents;
+	}
 
-  getAssosEventsIParticipate(): Observable<CalEvent[]> {
-    if (!this._assosEventsIParticipate) {
-      this._assosEventsIParticipate = combineLatest(
-        this.events.getAssosEventsIdsIParticipate(),
-        this.getAssosEvents()
+	getAssosEventsIParticipate(): Observable<CalEvent[]> {
+		if (!this._assosEventsIParticipate) {
+			this._assosEventsIParticipate = combineLatest(
+				this.events.getAssosEventsIdsIParticipate(),
+				this.getAssosEvents()
 			).pipe(
-        map(
+				map(
 					([ids, events]: [string[], CalEvent[]]): CalEvent[] =>
-          events.filter((event: CalEvent): boolean => ids.includes(event.id))
+					events.filter((event: CalEvent): boolean => ids.includes(event.id))
 				),
-        shareReplay(1)
+				shareReplay(1)
 			);
-    }
-    return this._assosEventsIParticipate;
-  }
+		}
+		return this._assosEventsIParticipate;
+	}
 
-  getAssosEventsIDontWant(): Observable<CalEvent[]> {
-    if (!this._assosEventsIDontWant) {
-      this._assosEventsIDontWant = combineLatest(
-        this.events.getAssosEventsIdsIDontWant(),
-        this.getAssosEvents()
+	getAssosEventsIDontWant(): Observable<CalEvent[]> {
+		if (!this._assosEventsIDontWant) {
+			this._assosEventsIDontWant = combineLatest(
+				this.events.getAssosEventsIdsIDontWant(),
+				this.getAssosEvents()
 			).pipe(
-        map(
+				map(
 					([ids, events]: [string[], CalEvent[]]): CalEvent[] =>
-          events.filter((event: CalEvent): boolean => ids.includes(event.id))
+					events.filter((event: CalEvent): boolean => ids.includes(event.id))
 				),
-        shareReplay(1)
+				shareReplay(1)
 			);
-    }
-    return this._assosEventsIDontWant;
-  }
+		}
+		return this._assosEventsIDontWant;
+	}
 
-  getAssosEventsISeemToWant(): Observable<CalEvent[]> {
-    if (!this._assosEventsISeemToWant) {
-      this._assosEventsISeemToWant = combineLatest(
-        this.events.getAssosEventsIdsIDontWant(),
-        this.getAssosEvents()
+	getAssosEventsISeemToWant(): Observable<CalEvent[]> {
+		if (!this._assosEventsISeemToWant) {
+			this._assosEventsISeemToWant = combineLatest(
+				this.events.getAssosEventsIdsIDontWant(),
+				this.getAssosEvents()
 			).pipe(
-        map(
+				map(
 					([ids, events]: [string[], CalEvent[]]): CalEvent[] =>
-          events.filter((event: CalEvent): boolean => !ids.includes(event.id))
+					events.filter((event: CalEvent): boolean => !ids.includes(event.id))
 				),
-        shareReplay(1)
+				shareReplay(1)
 			);
-    }
-    return this._assosEventsISeemToWant;
-  }
+		}
+		return this._assosEventsISeemToWant;
+	}
 
-  getPersosEvents(): Observable<CalEvent[]> {
-    if (!this._persosEvents) {
-      this._persosEvents = this.tools.enableCache(
+	getPersosEvents(): Observable<CalEvent[]> {
+		if (!this._persosEvents) {
+			this._persosEvents = this.tools.enableCache(
 				this.auth.getUser().pipe(
-	        mergeMap(
+					mergeMap(
 						user =>
 						this.db.list<CalEvent>('calendar/users/'+user.uid+'/perso')
 						.valueChanges()
@@ -274,6 +285,7 @@ export class CalService {
 								event.title,
 								event.start + WEEK_LENGTH * i,
 								event.end + WEEK_LENGTH * i,
+								event.cipher || false,
 								1,
 								event.location,
 								PERSOS
@@ -284,50 +296,50 @@ export class CalService {
 				}),
 				shareReplay(1)
 			);
-    }
-    return this._persosEvents;
-  }
+		}
+		return this._persosEvents;
+	}
 
-  getMyEvents(): Observable<CalEvent[]> {
-    if (!this._myEvents){
-      this._myEvents = combineLatest(
-        this.getSettings().pipe(mergeMap(
+	getMyEvents(): Observable<CalEvent[]> {
+		if (!this._myEvents){
+			this._myEvents = combineLatest(
+				this.getSettings().pipe(mergeMap(
 					settings => !settings || settings.assosEventsByDefault ? this.getAssosEventsISeemToWant() : this.getAssosEventsIParticipate()
 				)),
-        this.getCoursesEvents(),
-        this.getPersosEvents()
+				this.getCoursesEvents(),
+				this.getPersosEvents()
 			).pipe(
 				map(
 					([asso, courses, perso]: [CalEvent[], CalEvent[], CalEvent[]]) =>
-          asso.concat(courses).concat(perso).sort((event1, event2) => event1.start - event2.start)
+					asso.concat(courses).concat(perso).sort((event1, event2) => event1.start - event2.start)
 				)
 			).pipe(
 				shareReplay(1)
 			);
-    }
-    return this._myEvents;
-  }
+		}
+		return this._myEvents;
+	}
 
-  getMyEventsForDay(date: Date): Observable<CalEvent[]>{
-    const startOfDay = new Date(date.getTime()).setHours(0,0,0,0);
-    const endOfDay = new Date(date.getTime()).setHours(23,59,59,999);
-    const dayString = startOfDay.toLocaleString().split(' ')[0];
+	getMyEventsForDay(date: Date): Observable<CalEvent[]>{
+		const startOfDay = new Date(date.getTime()).setHours(0,0,0,0);
+		const endOfDay = new Date(date.getTime()).setHours(23,59,59,999);
+		const dayString = startOfDay.toLocaleString().split(' ')[0];
 
-    if (!this._myEventsForDay[dayString]){
-      this._myEventsForDay[dayString] = this.getMyEvents().pipe(
-        map((events: CalEvent[]) => events.filter(
+		if (!this._myEventsForDay[dayString]){
+			this._myEventsForDay[dayString] = this.getMyEvents().pipe(
+				map((events: CalEvent[]) => events.filter(
 					(event: CalEvent) => event.start <= endOfDay && event.end >= startOfDay)
 				),
-        shareReplay(1)
+				shareReplay(1)
 			);
-    }
-    return this._myEventsForDay[dayString]
-  }
+		}
+		return this._myEventsForDay[dayString]
+	}
 
-  getCalFromAde(resources: string): Observable<string> {
-    if (!this._calFromAde){
-      this._calFromAde = this.tools.enableCache(
-        this.http.get(
+	getCalFromAde(resources: string): Observable<string> {
+		if (!this._calFromAde){
+			this._calFromAde = this.tools.enableCache(
+				this.http.get(
 					this.getCoursesURL(resources), { responseType: 'text' }
 				).pipe(
 					mergeMap(ade => {
@@ -338,20 +350,20 @@ export class CalService {
 						}
 					})
 				),
-        'cal-ICSFromADE',
-        false
+				'cal-ICSFromADE',
+				false
 			).pipe(
 				shareReplay(1)
 			);
-    }
-    return this._calFromAde;
-  }
+		}
+		return this._calFromAde;
+	}
 
-  getSettings() {
-    if (!this._settings){
-      this._settings = this.tools.enableCache(
+	getSettings(): Observable<Settings> {
+		if (!this._settings){
+			this._settings = this.tools.enableCache(
 				this.auth.getLoggedUser().pipe(
-	        mergeMap(
+					mergeMap(
 						user => this.db.object<Settings>(
 							'calendar/users/'+user.uid+'/settings'
 						).valueChanges()
@@ -362,120 +374,141 @@ export class CalService {
 				shareReplay(1)
 			);
 			// TODO: return EMPTY if the same is produced before sharereplay
-    }
-    return this._settings;
-  }
+		}
+		return this._settings;
+	}
 
-  setSettings(settings: Settings) {
-    return this.auth.getLoggedUser().pipe(
-      first(),
-      mergeMap(user => from(
-        this.db.object<Settings>('calendar/users/'+user.uid+'/settings').set(settings)
-      ))
+	getKey(): Observable<string> {
+		if (!this._keyObs) {
+			console.log("coucou");
+			this._keyObs = this.getSettings().pipe(
+				map(settings => {
+					const key = this.tools.loadKey();
+					if (key && settings) {
+						const keyHash = this.tools.generateKey(key)
+						if (keyHash == settings.keyHash) {
+							return key;
+						}
+					} else {
+						return null;
+					}
+
+				}),
+				shareReplay(1)
+			);
+		}
+		return this._keyObs;
+	}
+
+	setSettings(settings: Settings) {
+		return this.auth.getLoggedUser().pipe(
+			first(),
+			mergeMap(user => from(
+				this.db.object<Settings>('calendar/users/'+user.uid+'/settings').set(settings)
+			))
 		).toPromise();
-  }
+	}
 
-  getEvent(eventId: string) {
-    if (!this._event[eventId]){
-      this._event[eventId] = this.auth.getLoggedUser().pipe(
-        mergeMap(
+	getEvent(eventId: string) {
+		if (!this._event[eventId]){
+			this._event[eventId] = this.auth.getLoggedUser().pipe(
+				mergeMap(
 					user => this.db.object<CalEvent>(
 						'calendar/users/'+user.uid+'/perso/'+eventId
 					).valueChanges()
 				),
-        shareReplay(1)
+				shareReplay(1)
 			);
-    }
-    return this._event[eventId];
-  }
+		}
+		return this._event[eventId];
+	}
 
-  getEventId(): Observable<string> {
-    return this.auth.getLoggedUser().pipe(
-      first(),
-      map(
+	getEventId(): Observable<string> {
+		return this.auth.getLoggedUser().pipe(
+			first(),
+			map(
 				user => this.db.list<CalEvent>(
 					'calendar/users/'+user.uid+'/perso/'
 				).push(null).key
 			)
 		);
-  }
+	}
 
-  setEvent(event: CalEvent) {
-    return this.auth.getLoggedUser().pipe(
-      first(),
-      mergeMap(
+	setEvent(event: CalEvent) {
+		return this.auth.getLoggedUser().pipe(
+			first(),
+			mergeMap(
 				user => from(
-        	this.db.object<CalEvent>(
+					this.db.object<CalEvent>(
 						'calendar/users/'+user.uid+'/perso/'+event.id
 					).set(event)
-      	)
-			)
-		).toPromise();
-  }
-
-  removeEvent(eventId: string) {
-    return this.auth.getLoggedUser().pipe(
-      first(),
-      mergeMap(
-				user => from(
-	        this.db.object<CalEvent>(
-						'calendar/users/'+user.uid+'/perso/'+eventId
-					).remove()
-	      )
-			)
-		).toPromise();
-  }
-
-  getCoursesURL(resources: string) {
-    if (resources == null || resources === '') {
-      return null;
-    }
-    return environment.proxy.domain + "action=fetch_edt&resources=" + resources;
-  }
-
-  resourcesValidator(control: FormControl) {
-    if (!control.value.match(/^[0-9]*(,[0-9]+)*$/)) {
-      return { error: true };
-    }
-    return null;
-  }
-
-	getEventIdsIParticipateWithNoEvents(): Observable<string[]> {
-    if (!this._eventIdsWithNoEvents) {
-      this._eventIdsWithNoEvents = combineLatest(
-        this.events.getAssosEventsIdsIParticipate(),
-        this.getAssosEvents().pipe(
-					map(events => events.map(event => event.id))
 				)
 			)
-      .pipe(
-        map(
+		).toPromise();
+	}
+
+	removeEvent(eventId: string) {
+		return this.auth.getLoggedUser().pipe(
+			first(),
+			mergeMap(
+				user => from(
+					this.db.object<CalEvent>(
+						'calendar/users/'+user.uid+'/perso/'+eventId
+					).remove()
+				)
+			)
+		).toPromise();
+	}
+
+	getCoursesURL(resources: string) {
+		if (resources == null || resources === '') {
+			return null;
+		}
+		return environment.proxy.domain + "action=fetch_edt&resources=" + resources;
+	}
+
+	resourcesValidator(control: FormControl) {
+		if (!control.value.match(/^[0-9]*(,[0-9]+)*$/)) {
+			return { error: true };
+		}
+		return null;
+	}
+
+	getEventIdsIParticipateWithNoEvents(): Observable<string[]> {
+		if (!this._eventIdsWithNoEvents) {
+			this._eventIdsWithNoEvents = combineLatest(
+				this.events.getAssosEventsIdsIParticipate(),
+				this.getAssosEvents().pipe(
+					map(events => events.map(event => event.id))
+				)
+			).pipe(
+				map(
 					([ids, eventIds]: [string[], string[]]): string[] =>
 					ids.filter((id: string): boolean => !eventIds.includes(id))
 				),
-        shareReplay(1)
+				shareReplay(1)
 			);
-    }
-    return this._eventIdsWithNoEvents;
+		}
+		return this._eventIdsWithNoEvents;
 	}
 
 	getEventIdsIDontWantWithNoEvents(): Observable<string[]> {
-    if (!this._eventIdsWithNoEvents) {
-      this._eventIdsWithNoEvents = combineLatest(
-        this.events.getAssosEventsIdsIDontWant(),
-        this.getAssosEvents().pipe(
+		if (!this._eventIdsWithNoEvents) {
+			this._eventIdsWithNoEvents = combineLatest(
+				this.events.getAssosEventsIdsIDontWant(),
+				this.getAssosEvents().pipe(
 					map(events => events.map(event => event.id))
 				)
 			)
-      .pipe(
-        map(
+			.pipe(
+				map(
 					([ids, eventIds]: [string[], string[]]): string[] =>
 					ids.filter((id: string): boolean => !eventIds.includes(id))
 				),
-        shareReplay(1)
+				shareReplay(1)
 			);
-    }
-    return this._eventIdsWithNoEvents;
+		}
+		return this._eventIdsWithNoEvents;
 	}
 
 	removeEventsIParticipate(eventIds: string[]) {

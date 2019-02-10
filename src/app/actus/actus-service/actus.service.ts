@@ -8,66 +8,66 @@ import {combineLatest, Observable} from 'rxjs';
 import {map, mergeMap, shareReplay} from 'rxjs/operators';
 
 export class Actu {
-  id: string;
-  title: string;
-  description: string;
-  image: string;
-  pdfLink: string;
-  date: string;
-  author: string;
+	id: string;
+	title: string;
+	description: string;
+	image: string;
+	pdfLink: string;
+	date: string;
+	author: string;
 	groupId1: string;
 }
 
 export class Journalist {
-  emailId: string;
+	emailId: string;
 	groupId1: string;
 	groupId2: string;
 }
 
 export class Group {
-  groupId: string;
-  displayName: string;
+	groupId: string;
+	displayName: string;
 }
 
 @Injectable()
 export class ActusService {
-  private _actus: Observable<Actu[]>;
-  private _journalists: Observable<Journalist[]>;
-  private _actu: { [$actuId: string]: Observable<Actu> } = {};
+	private _actus: Observable<Actu[]>;
+	private _journalists: Observable<Journalist[]>;
+	private _actu: { [$actuId: string]: Observable<Actu> } = {};
 	private _groups: Observable<Group[]>;
 
-  constructor(
-    private db: AngularFireDatabase,
+	constructor(
+		private db: AngularFireDatabase,
 		private tools: ToolsService,
 		private auth: AuthService
-  ) { }
+	) { }
 
-  getActus() {
-    if (!this._actus){
-      this._actus = this.tools.enableCache(
-        this.auth.getLoggedUser().pipe(
+	getActus(): Observable<Actu[]> {
+		if (!this._actus){
+			this._actus = this.tools.enableCache(
+				this.auth.getLoggedUser().pipe(
 					mergeMap(() => this.db.list<Actu>('actus/actus').valueChanges().pipe(
-	          map(actus => actus.reverse())
+						map(actus => actus.reverse())
 					))
 				),
 				'actus'
 			).pipe(
 				shareReplay(1)
 			);
-    }
-    return this._actus;
-  }
+		}
+		return this._actus;
+	}
 
-  getActusImRespoOf(): Observable<Actu[]> {
-    return combineLatest(
-      this.getActus(),
-      this.auth.getJournalistIds()
-    ).pipe(
-      map(([actus, journalistIds]: [Actu[], string[]]) => {
+	getActusImRespoOf(): Observable<Actu[]> {
+		return combineLatest(
+			this.getActus(),
+			this.auth.getJournalistIds()
+		).pipe(
+			map(([actus, journalistIds]: [Actu[], string[]]) => {
 				return actus.filter(actu => this.imRespoOf(actu, journalistIds))
 			})
 		).pipe(shareReplay(1));
-  }
+	}
 
 	imRespoOf(actu: Actu, journalistIds: string[]): boolean {
 		for (let actuGroupId of this.getActuGroupIds(actu)) {
@@ -78,15 +78,15 @@ export class ActusService {
 		return false;
 	}
 
-  getActu(actuId: string) {
-    if (!this._actu[actuId]){
-      this._actu[actuId] = this.getActus().pipe(
+	getActu(actuId: string) {
+		if (!this._actu[actuId]){
+			this._actu[actuId] = this.getActus().pipe(
 				map(actus => actus.find(actu => actu.id == actuId)),
 				shareReplay(1)
 			);
-    }
-    return this._actu[actuId];
-  }
+		}
+		return this._actu[actuId];
+	}
 
 	getActuGroupIds(actu: Actu): string[] {
 		let ids = [];
@@ -98,44 +98,44 @@ export class ActusService {
 		return ids;
 	}
 
-  getActuId() {
-    return this.db.list<Actu>('actus/actus/').push(null).key;
-  }
+	getActuId() {
+		return this.db.list<Actu>('actus/actus/').push(null).key;
+	}
 
-  setActu(actu: Actu) {
-    return this.db.object<Actu>('actus/actus/'+actu.id).set(actu);
-  }
+	setActu(actu: Actu) {
+		return this.db.object<Actu>('actus/actus/'+actu.id).set(actu);
+	}
 
-  deleteActu(actuId: string) {
-    return this.db.object<Actu>('actus/actus/'+actuId).set(null);
-  }
+	deleteActu(actuId: string) {
+		return this.db.object<Actu>('actus/actus/'+actuId).set(null);
+	}
 
-  getJournalists() {
-    if (!this._journalists){
-      this._journalists = this.db.list<Journalist>(
+	getJournalists() {
+		if (!this._journalists){
+			this._journalists = this.db.list<Journalist>(
 				'actus/journalists/users'
 			).valueChanges().pipe(
 				shareReplay(1)
 			);
-    }
-    return this._journalists;
-  }
+		}
+		return this._journalists;
+	}
 
-  removeJournalist(emailId: string) {
-    return this.db.object<Journalist>('actus/journalists/users/'+emailId).remove();
-  }
+	removeJournalist(emailId: string) {
+		return this.db.object<Journalist>('actus/journalists/users/'+emailId).remove();
+	}
 
 	setGroup(group: Group) {
-    return this.db.object<Group>('actus/journalists/groups/' + group.groupId).set(group);
+		return this.db.object<Group>('actus/journalists/groups/' + group.groupId).set(group);
 	}
 
 	removeGroup(groupId: string) {
 		return this.db.object<Group>('actus/journalists/groups/' + groupId).remove();
 	}
 
-  getGroupId(): string {
-    return this.db.list<Actu>('actus/journalists/groups').push(null).key;
-  }
+	getGroupId(): string {
+		return this.db.list<Actu>('actus/journalists/groups').push(null).key;
+	}
 
 	getGroups(): Observable<Group[]> {
 		if (!this._groups) {
@@ -178,7 +178,7 @@ export class ActusService {
 		return ids;
 	}
 
-  addJournalist(email: string, groupId1: string, groupId2: string) {
+	addJournalist(email: string, groupId1: string, groupId2: string) {
 		let emailId = this.tools.getEmailIdFromEmail(email);
 		return this.db.object<Journalist>('actus/journalists/users/' + emailId).set({
 			emailId: emailId,

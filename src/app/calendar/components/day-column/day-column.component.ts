@@ -1,27 +1,58 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {CalService} from '../../cal-service/cal.service';
+import {CalService, CalEvent} from '../../cal-service/cal.service';
 import {DicoService} from '../../../language/dico.service';
+import {ToolsService} from '../../../providers/tools.service';
 import {DeviceSizeService} from '../../../providers/device-size.service';
 import {DeleteDialogComponent} from '../../../shared-components/delete-dialog/delete-dialog.component';
 import {MatDialog, MatSnackBar} from '@angular/material';
+import {Subject, pipe} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 
 @Component({
-  selector: 'app-day-column',
-  templateUrl: './day-column.component.html',
-  styleUrls: ['./day-column.component.css']
+	selector: 'app-day-column',
+	templateUrl: './day-column.component.html',
+	styleUrls: ['./day-column.component.css']
 })
 export class DayColumnComponent implements OnInit {
-  @Input() date: Date = new Date();
+	@Input() date: Date = new Date();
 
-  constructor(
-    private dialog: MatDialog,
-    private snackBar: MatSnackBar,
+	private unsubscribe: Subject<void> = new Subject();
+	private key: string;
 
-    public media: DeviceSizeService,
-    public cal: CalService,
-    public d: DicoService
-  ) { }
+	constructor(
+		private dialog: MatDialog,
+		private snackBar: MatSnackBar,
+		private tools: ToolsService,
 
-  ngOnInit() { }
+		public media: DeviceSizeService,
+		public cal: CalService,
+		public d: DicoService
+	) { }
+
+	ngOnInit() {
+		this.cal.getKey().pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe(key => this.key = key);
+	}
+
+	getCipheredField(cipher: boolean, field: string): string {
+		if (!cipher) {
+			return field;
+		}
+		if (this.key) {
+			return this.tools.decipher(field, this.key) || "********";
+		} else {
+			return "********";
+		}
+	}
+
+	getTitle(event: CalEvent): string {
+		return this.getCipheredField(event.cipher, event.title);
+	}
+
+	getLocation(event: CalEvent): string {
+		return this.getCipheredField(event.cipher, event.location);
+
+	}
 
 }

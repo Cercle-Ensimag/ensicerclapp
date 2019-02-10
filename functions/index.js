@@ -102,7 +102,7 @@ exports.onCreateAccount = functions.auth.user().onCreate((user, context) => {
   } else {
 		// valid email
 		const emailId = getEmailId(user.email);
-		
+
     return db.ref("/users/"+emailId).once("value").then(function(snapshot) {
 			const updates = {};
 
@@ -166,7 +166,7 @@ exports.updateList = functions.database.ref('/list/update').onWrite(() => {
 /**
  * Lists the users which did'nt verified their emails
  */
-exports.getVerifiedEmails = functions.database.ref('/list/getVerifiedEmails').onWrite(() => {
+exports.getNotVerifiedEmails = functions.database.ref('/list/getNotVerifiedEmails').onWrite(() => {
 	return admin.auth().listUsers().then(res => {
 		res.users.forEach((user) => {
 			if (!user.emailVerified) {

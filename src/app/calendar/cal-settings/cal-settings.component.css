@@ -1,8 +1,12 @@
 mat-card {
-  margin: 5px;
+	margin: 5px;
 }
 
 button {
-  margin-top: 2em;
-  max-width: 200px;
+	margin-top: 2em;
+	max-width: 200px;
+}
+
+mat-form-field {
+	width: 100%;
 }
