@@ -118,10 +118,10 @@ export class CalSettingsComponent implements OnInit, OnDestroy {
 			let snackBarRef = this.snackBar.open(this.d.l.waitZenithConnectionInfo);
 			this.http.post(environment.proxy.domain + 'action=fetch_ade', credentials, { responseType: 'text'}).subscribe(
 				(text: string) => {
+					snackBarRef.dismiss();
 					if (text.startsWith('invalid')) return this.snackBar.open(this.d.l.invalidZenithCredentialsError, this.d.l.okLabel, {duration: 2000});
 					if (text.startsWith('dangerous')) return this.snackBar.open(this.d.l.dangerousZenithCredentialsError, this.d.l.okLabel, {duration: 2000});
 					this.formGroup.get('resources').setValue(text);
-					this.submit();
 				},
 				(error) => {
 					snackBarRef.dismiss();

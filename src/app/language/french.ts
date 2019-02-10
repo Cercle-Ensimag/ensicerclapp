@@ -225,7 +225,8 @@ export class French {
 	public static readonly displayICSDownloadInfo = "Afficher le bouton de téléchargement au format ICS";
 	public static readonly eventsByDefaultInfo = "Ajouter par défaut les événements associatifs au calendier";
 	public static readonly eventsCipherInfo = "<b>Chiffrement</b><br><br>Renseigne le mot de passe pour encoder et décoder les informations relatives à tes événements personnels (optionnel).<br>Ce mot de passe ne pourra (pour l'instant) pas être changé et devra être renseigné sur chaque appareil utilisant l'application.";
-	public static readonly passwordOkInfo = "Mot de passe déjà renseigné et correct : {0}";
+	public static readonly keyHashOkInfo = "Mot de passe déjà créé : {0}";
+	public static readonly passwordOkInfo = "Mot de passe renseigné sur cet appareil : {0}";
 	public static readonly keyNotConfiguredError = "Aucun mot de passe n'est configuré pour chiffrer";
 	public static readonly cipherLabel = "Chiffrer";
 	public static readonly cipherError = "Mauvais mot de passe"; // FIXME: dialog insted
