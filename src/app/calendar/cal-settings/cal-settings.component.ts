@@ -76,7 +76,6 @@ export class CalSettingsComponent implements OnInit, OnDestroy {
 		const password = this.formGroup.get('password').value;
 
 		if (password) {
-			console.log(password);
 			// generates and stores localy the password hash
 			const key = this.tools.generateKey(password);
 			this.tools.storeKey(key);

@@ -380,7 +380,6 @@ export class CalService {
 
 	getKey(): Observable<string> {
 		if (!this._keyObs) {
-			console.log("coucou");
 			this._keyObs = this.getSettings().pipe(
 				map(settings => {
 					const key = this.tools.loadKey();
