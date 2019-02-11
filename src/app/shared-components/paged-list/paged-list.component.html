@@ -1,16 +1,16 @@
 <app-loading [loading]="list"></app-loading>
 <div *ngIf="list">
-  <div *ngIf="list.length">
-    <ng-content></ng-content>
-    <mat-paginator *ngIf="list.length > pageSize"
-                   [length]="list.length"
-									 [pageIndex]="pageIndex"
-                   [pageSize]="pageSize"
-                   (page)="updateList($event)">
-    </mat-paginator>
-  </div>
+	<div *ngIf="list.length">
+		<ng-content></ng-content>
+		<mat-paginator *ngIf="list.length > pageSize"
+						 [length]="list.length"
+						 [pageIndex]="pageIndex"
+						 [pageSize]="pageSize"
+						 (page)="updateList($event)">
+		</mat-paginator>
+	</div>
 
-  <p *ngIf="!list.length" class="center">
-    {{ emptyMessage }} <img src="assets/img/icons/empty.png">
-  </p>
+	<p *ngIf="!list.length" class="center">
+		{{ emptyMessage }} <img src="assets/img/icons/empty.png">
+	</p>
 </div>

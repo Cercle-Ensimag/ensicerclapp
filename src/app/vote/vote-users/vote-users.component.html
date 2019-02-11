@@ -3,27 +3,27 @@
 
 <!-- Users display -->
 <div *ngIf="filteredUsers() | async as users">
-  <mat-card class="item">
-    <h3>{{ d.format(d.l.nbVoteUsersLabel, users.length) }}</h3>
-    <mat-form-field [class.large]="!media.mobileSize">
-      <input matInput placeholder="{{ d.l.search }}" [formControl]="emailCtrl" autocomplete="off">
-      <button mat-icon-button matSuffix><mat-icon>search</mat-icon></button>
-    </mat-form-field>
-  </mat-card>
+	<mat-card class="item">
+		<h3>{{ d.format(d.l.nbVoteUsersLabel, users.length) }}</h3>
+		<mat-form-field [class.large]="!media.mobileSize">
+			<input matInput placeholder="{{ d.l.search }}" [formControl]="emailCtrl" autocomplete="off">
+			<button mat-icon-button matSuffix><mat-icon>search</mat-icon></button>
+		</mat-form-field>
+	</mat-card>
 
-  <mat-card class="item">
-    <mat-nav-list>
-      <app-paged-list [list]="users" emptyMessage="{{ d.l.noUserMatchInfo }}" #page>
-        <a mat-list-item *ngFor="let user of page.truncatedList()">
-          {{ tools.getNameFromEmailId(user.emailId) }}
-        </a>
-      </app-paged-list>
-    </mat-nav-list>
-  </mat-card>
+	<mat-card class="item">
+		<mat-nav-list>
+			<app-paged-list [list]="users" emptyMessage="{{ d.l.noUserMatchInfo }}" #page>
+				<a mat-list-item *ngFor="let user of page.truncatedList()">
+					{{ tools.getNameFromEmailId(user.emailId) }}
+				</a>
+			</app-paged-list>
+		</mat-nav-list>
+	</mat-card>
 </div>
 
 <div class="mat-fab-bottom-right">
-  <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
+	<button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
 </div>
 
 <div class="fab-btn-placeholder"></div>

@@ -13,39 +13,40 @@ import {DicoService} from '../../language/dico.service';
 import {Observable} from 'rxjs';
 
 export class VoteUser {
-  emailId: string;
-  voted: boolean;
+	emailId: string;
+	voted: boolean;
 }
 @Component({
-  selector: 'app-vote-users',
-  templateUrl: './vote-users.component.html',
-  styleUrls: ['./vote-users.component.css']
+	selector: 'app-vote-users',
+	templateUrl: './vote-users.component.html',
+	styleUrls: ['./vote-users.component.css']
 })
 export class VoteUsersComponent implements OnInit {
-  private emailCtrl = new FormControl('', [this.auth.emailDomainValidator, Validators.email]);
-  private id: string;
+	private emailCtrl = new FormControl('', [this.auth.emailDomainValidator, Validators.email]);
+	private id: string;
 
-  constructor(
-    private route: ActivatedRoute,
-    private vote: VoteService,
-    private auth: AuthService,
+	constructor(
+		private route: ActivatedRoute,
+		private vote: VoteService,
+		private auth: AuthService,
 
-    public location: Location,
-    public media: DeviceSizeService,
-    public tools: ToolsService,
-    public d: DicoService
-  ) {}
+		public location: Location,
+		public media: DeviceSizeService,
+		public tools: ToolsService,
+		public d: DicoService
+	) {}
 
-  ngOnInit() {
-    this.id = this.route.snapshot.paramMap.get('id');
-  }
+	ngOnInit() {
+		this.id = this.route.snapshot.paramMap.get('id');
+	}
 
-  filteredUsers(): Observable<VoteUser[]> {
-    let emailId = this.tools.getEmailIdFromEmail(this.emailCtrl.value);
-    return this.vote.getUsers(this.id).pipe(
-      map(users => users.filter(
-        user => user.emailId.includes(emailId)
-      )));
-  }
+	filteredUsers(): Observable<VoteUser[]> {
+		let emailId = this.tools.getEmailIdFromEmail(this.emailCtrl.value);
+		return this.vote.getUsers(this.id).pipe(
+			map(users => users.filter(
+				user => user.emailId.includes(emailId)
+			))
+		);
+	}
 
 }
