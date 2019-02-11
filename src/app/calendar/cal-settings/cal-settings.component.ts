@@ -62,7 +62,7 @@ export class CalSettingsComponent implements OnInit, OnDestroy {
 				assosEventsByDefault: [settings.assosEventsByDefault || false, []],
 				password: ['', []]
 			});
-			this.keyHash = settings.keyHash;
+			this.keyHash = settings.keyHash || null;
 			this.passwordOk = this.tools.generateKey(key) == this.keyHash;
 		});
 	}
