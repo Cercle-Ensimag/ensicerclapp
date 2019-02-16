@@ -4,69 +4,69 @@
 <div class="thin-container">
 	<!-- Event display -->
 	<mat-card *ngIf="formGroup">
-	  <form [formGroup]="formGroup">
+		<form [formGroup]="formGroup">
 
-	    <mat-form-field>
-	      <input matInput placeholder="{{ d.l.eventTitleLabel }}" formControlName="title" autocomplete="off">
-	      <mat-error *ngIf="formGroup.get('title').invalid">{{ d.l.eventTitleError }}</mat-error>
-	    </mat-form-field>
+			<mat-form-field>
+				<input matInput placeholder="{{ d.l.eventTitleLabel }}" formControlName="title" autocomplete="off">
+				<mat-error *ngIf="formGroup.get('title').invalid">{{ d.l.eventTitleError }}</mat-error>
+			</mat-form-field>
 
-	    <mat-form-field>
-	      <textarea matInput placeholder="{{ d.l.eventDescriptionLabel }}" formControlName="description"></textarea>
+			<mat-form-field>
+				<textarea matInput placeholder="{{ d.l.eventDescriptionLabel }}" formControlName="description"></textarea>
 				<mat-error *ngIf="formGroup.get('description').invalid">{{ d.l.eventDescriptionError }}</mat-error>
 				<button mat-icon-button matSuffix (click)="mkdPreview = !mkdPreview"><mat-icon>search</mat-icon></button>
-	    </mat-form-field>
+			</mat-form-field>
 
-	    <markdown *ngIf="mkdPreview" [data]="formGroup.get('description').value"></markdown>
+			<markdown *ngIf="mkdPreview" [data]="formGroup.get('description').value"></markdown>
 
-	    <mat-form-field>
-	      <input matInput placeholder="{{ d.l.eventImageLabel }}" formControlName="image" autocomplete="off">
-	      <mat-error *ngIf="formGroup.get('image').invalid">{{ d.l.eventImageError }}</mat-error>
+			<mat-form-field>
+				<input matInput placeholder="{{ d.l.eventImageLabel }}" formControlName="image" autocomplete="off">
+				<mat-error *ngIf="formGroup.get('image').invalid">{{ d.l.eventImageError }}</mat-error>
 				<button mat-icon-button matSuffix (click)="imgPreview = !imgPreview"><mat-icon>search</mat-icon></button>
-	    </mat-form-field>
+			</mat-form-field>
 
-		  <img *ngIf="formGroup.get('image').value && imgPreview" mat-card-image [src]="formGroup.get('image').value">
+			<img *ngIf="formGroup.get('image').value && imgPreview" mat-card-image [src]="formGroup.get('image').value">
 
 			<br>
 
-	    <div class="grid-container">
+			<div class="grid-container">
 				<div class="wrapper">
-	        <mat-form-field>
-	          <input matInput [matDatepicker]="picker1" placeholder="{{ d.l.eventStartLabel }}" formControlName="start" autocomplete="off">
-	          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-	          <mat-datepicker #picker1></mat-datepicker>
-	          <mat-error *ngIf="formGroup.get('start').invalid">{{ d.l.eventStartError }}</mat-error>
-	        </mat-form-field>
-				</div>
-
-				<div class="wrapper">
-	        <mat-form-field>
-	          <input matInput type='time' placeholder="{{ d.l.eventStartTimeLabel }}" formControlName="startTime" autocomplete="off">
-	          <mat-error *ngIf="formGroup.get('startTime').invalid">{{ d.l.eventStartTimeError }}</mat-error>
-	        </mat-form-field>
-				</div>
-
-				<div class="wrapper">
-	        <mat-form-field>
-	          <input matInput [matDatepicker]="picker2" placeholder="{{ d.l.eventEndLabel }}" formControlName="end" autocomplete="off">
-	          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-	          <mat-datepicker #picker2></mat-datepicker>
-	          <mat-error *ngIf="formGroup.get('end').invalid">{{ d.l.eventEndError }}</mat-error>
-	        </mat-form-field>
-				</div>
-
-				<div class="wrapper">
-	        <mat-form-field>
-	          <input matInput type='time' placeholder="{{ d.l.eventEndTimeLabel }}" formControlName="endTime" autocomplete="off">
-	          <mat-error *ngIf="formGroup.get('endTime').invalid">{{ d.l.eventEndTimeError }}</mat-error>
+					<mat-form-field>
+						<input matInput [matDatepicker]="picker1" placeholder="{{ d.l.eventStartLabel }}" formControlName="start" autocomplete="off">
+						<mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+						<mat-datepicker #picker1></mat-datepicker>
+						<mat-error *ngIf="formGroup.get('start').invalid">{{ d.l.eventStartError }}</mat-error>
 					</mat-form-field>
 				</div>
-	    </div>
 
-	    <mat-form-field>
-	      <input matInput placeholder="{{ d.l.eventLocationLabel }}" formControlName="location" autocomplete="off">
-	      <mat-error *ngIf="formGroup.get('location').invalid">{{ d.l.eventLocationError }}</mat-error>
-	    </mat-form-field>
+				<div class="wrapper">
+					<mat-form-field>
+						<input matInput type='time' placeholder="{{ d.l.eventStartTimeLabel }}" formControlName="startTime" autocomplete="off">
+						<mat-error *ngIf="formGroup.get('startTime').invalid">{{ d.l.eventStartTimeError }}</mat-error>
+					</mat-form-field>
+				</div>
+
+				<div class="wrapper">
+					<mat-form-field>
+						<input matInput [matDatepicker]="picker2" placeholder="{{ d.l.eventEndLabel }}" formControlName="end" autocomplete="off">
+						<mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+						<mat-datepicker #picker2></mat-datepicker>
+						<mat-error *ngIf="formGroup.get('end').invalid">{{ d.l.eventEndError }}</mat-error>
+					</mat-form-field>
+				</div>
+
+				<div class="wrapper">
+					<mat-form-field>
+						<input matInput type='time' placeholder="{{ d.l.eventEndTimeLabel }}" formControlName="endTime" autocomplete="off">
+						<mat-error *ngIf="formGroup.get('endTime').invalid">{{ d.l.eventEndTimeError }}</mat-error>
+					</mat-form-field>
+				</div>
+			</div>
+
+			<mat-form-field>
+				<input matInput placeholder="{{ d.l.eventLocationLabel }}" formControlName="location" autocomplete="off">
+				<mat-error *ngIf="formGroup.get('location').invalid">{{ d.l.eventLocationError }}</mat-error>
+			</mat-form-field>
 
 			<mat-form-field>
 				<mat-select placeholder="{{ d.l.eventAssoLabel }} 1" formControlName="asso1">
@@ -89,21 +89,21 @@
 				<mat-error *ngIf="formGroup.get('asso3').invalid">{{ d.l.eventAssoError }}</mat-error>
 			</mat-form-field>
 
-	    <mat-form-field>
-	      <input matInput placeholder="{{ d.l.eventPriceLabel }}" formControlName="price" autocomplete="off">
-	      <mat-error *ngIf="formGroup.get('price').invalid">{{ d.l.eventPriceError }}</mat-error>
-	    </mat-form-field>
-	  </form>
+			<mat-form-field>
+				<input matInput placeholder="{{ d.l.eventPriceLabel }}" formControlName="price" autocomplete="off">
+				<mat-error *ngIf="formGroup.get('price').invalid">{{ d.l.eventPriceError }}</mat-error>
+			</mat-form-field>
+		</form>
 	</mat-card>
 </div>
 
 <div class="mat-fab-bottom-right">
-  <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
-  <button *ngIf="formGroup" mat-fab color="primary"
-          (click)="submit()"
-          [disabled]="formGroup.invalid || formGroup.pristine">
-    <mat-icon>save</mat-icon>
-  </button>
+	<button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
+	<button *ngIf="formGroup" mat-fab color="primary"
+					(click)="submit()"
+					[disabled]="formGroup.invalid || formGroup.pristine">
+		<mat-icon>save</mat-icon>
+	</button>
 </div>
 
 <div class="fab-btn-placeholder"></div>

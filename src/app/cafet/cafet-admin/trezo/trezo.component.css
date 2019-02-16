@@ -5,44 +5,44 @@ mat-card, .accordion-container {
 }
 
 mat-card button {
-  margin-left: 16px;
-  margin-right: 16px;
+	margin-left: 16px;
+	margin-right: 16px;
 }
 
 .client-large {
-  display: grid;
-  grid-template-columns: 20% 20% 30% 30%;
-  text-align: left;
-  vertical-align: middle;
+	display: grid;
+	grid-template-columns: 20% 20% 30% 30%;
+	text-align: left;
+	vertical-align: middle;
 }
 
 .client-small {
-  display: grid;
-  grid-template-columns: 40% 60%;
-  text-align: left;
-  vertical-align: middle;
+	display: grid;
+	grid-template-columns: 40% 60%;
+	text-align: left;
+	vertical-align: middle;
 }
 
 
 mat-form-field {
-  max-width: 100px;
+	max-width: 100px;
 }
 
 span {
-  margin-left: 4px;
-  margin-right: 4px;
-  margin-top: 0;
+	margin-left: 4px;
+	margin-right: 4px;
+	margin-top: 0;
 }
 
 .text {
-  margin-top: 18px;
+	margin-top: 18px;
 }
 
 button {
-  margin-left: 4px;
-  margin-right: 4px;
+	margin-left: 4px;
+	margin-right: 4px;
 }
 
 .history {
-  margin-top: 8px;
+	margin-top: 8px;
 }

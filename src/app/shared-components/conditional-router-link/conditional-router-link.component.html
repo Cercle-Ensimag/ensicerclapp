@@ -1,13 +1,13 @@
 <div class="wrapper">
 	<div *ngIf="enabled" class="click"
-	     [routerLink]="link">
-	  <ng-container *ngTemplateOutlet="content"></ng-container>
+		 [routerLink]="link">
+		<ng-container *ngTemplateOutlet="content"></ng-container>
 	</div>
 	<div *ngIf="!enabled">
-	  <ng-container *ngTemplateOutlet="content" ></ng-container>
+		<ng-container *ngTemplateOutlet="content" ></ng-container>
 	</div>
 </div>
 
 <ng-template #content>
-  <ng-content></ng-content>
+	<ng-content></ng-content>
 </ng-template>

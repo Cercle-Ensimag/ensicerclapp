@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {AngularFireDatabase} from '@angular/fire/database';
 
-import {ToolsService} from '../../providers/tools.service';
+import {Tools} from '../../providers/tools.service';
 import {AuthService} from '../../auth/auth-service/auth.service';
 import {CalEvent} from '../../calendar/cal-service/cal.service';
 
@@ -9,65 +9,64 @@ import {combineLatest, from, Observable, of} from 'rxjs';
 import {first, map, tap, mergeMap, shareReplay} from 'rxjs/operators';
 
 export class Event {
-  id: string;
-  title: string;
-  description: string;
-  image: string;
-  start: number;
-  end: number;
-  location: string;
-  price: string;
+	id: string;
+	title: string;
+	description: string;
+	image: string;
+	start: number;
+	end: number;
+	location: string;
+	price: string;
 	groupId1: string;
 	groupId2: string;
 	groupId3: string;
 }
 
 export class ComResp {
-  emailId: string;
+	emailId: string;
 	groupId1: string;
 	groupId2: string;
 }
 
 export class Group {
-  groupId: string;
-  displayName: string;
+	groupId: string;
+	displayName: string;
 }
 
 @Injectable()
 export class EventsService {
-  private _events: Observable<Event[]>;
-  private _activeEvents: Observable<Event[]>;
-  private _event: { [$eventId: string]: Observable<Event> } = {};
-  private _comResps: Observable<ComResp[]>;
+	private _events: Observable<Event[]>;
+	private _activeEvents: Observable<Event[]>;
+	private _event: { [$eventId: string]: Observable<Event> } = {};
+	private _comResps: Observable<ComResp[]>;
 	private _groups: Observable<Group[]>;
 	private _assosEventsIdsIParticipate: Observable<string[]>;
 	private _assosEventsIdsIDontWant: Observable<string[]>;
 	private _eventInCalendar: { [$eventId: string]: Observable<boolean> } = {};
 	private _eventNotInCalendar: { [$eventId: string]: Observable<boolean> } = {};
 
-  constructor(
-    private db: AngularFireDatabase,
-    private tools: ToolsService,
-    private auth: AuthService
-  ) {
-  }
+	constructor(
+		private db: AngularFireDatabase,
+		private auth: AuthService
+	) {
+	}
 
-  getEvents(): Observable<Event[]> {
-    if (!this._events) {
-      this._events = this.db.list<Event>(
+	getEvents(): Observable<Event[]> {
+		if (!this._events) {
+			this._events = this.db.list<Event>(
 				'events/events',
 				ref => ref.orderByChild('start')
 			).valueChanges().pipe(
 				map((events: Event[]) => events.reverse()),
 				shareReplay(1)
 			);
-    }
-    return this._events;
-  }
+		}
+		return this._events;
+	}
 
-  getActiveEvents(): Observable<Event[]> {
-    if (!this._activeEvents) {
-      this._activeEvents =  this.tools.enableCache(
+	getActiveEvents(): Observable<Event[]> {
+		if (!this._activeEvents) {
+			this._activeEvents = Tools.enableCache(
 				this.db.list<Event>(
 					'events/events',
 					ref => ref.orderByChild('end').startAt(Date.now(), "end")
@@ -82,22 +81,23 @@ export class EventsService {
 				),
 				'events-active'
 			).pipe(
-        shareReplay(1)
+				shareReplay(1)
 			);
-    }
-    return this._activeEvents;
-  }
+		}
+		return this._activeEvents;
+	}
 
-  getEventsImRespoOf(): Observable<Event[]> {
-    return combineLatest(
-      this.getEvents(),
-      this.auth.getComRespIds()
-    ).pipe(
-      map(([events, comRespIds]: [Event[], string[]]) => {
+	getEventsImRespoOf(): Observable<Event[]> {
+		return combineLatest(
+			this.getEvents(),
+			this.auth.getComRespIds()
+		).pipe(
+			map(([events, comRespIds]: [Event[], string[]]) => {
 				return events.filter(event => this.imRespoOf(event, comRespIds))
-			})
-		).pipe(shareReplay(1));
-  }
+			}),
+			shareReplay(1)
+		);
+	}
 
 	imRespoOf(event: Event, comRespIds: string[]): boolean {
 		for (let eventGroupId of this.getEventGroupIds(event)) {
@@ -108,9 +108,9 @@ export class EventsService {
 		return false;
 	}
 
-  getEvent(eventId: string): Observable<Event> {
-    if (!this._event[eventId]) {
-      this._event[eventId] = this.getActiveEvents().pipe(
+	getEvent(eventId: string): Observable<Event> {
+		if (!this._event[eventId]) {
+			this._event[eventId] = this.getActiveEvents().pipe(
 				map(events => events.find(event => event.id == eventId)),
 				mergeMap(event => {
 					if (event) {
@@ -135,9 +135,9 @@ export class EventsService {
 				}),
 				shareReplay(1)
 			);
-    }
-    return this._event[eventId];
-  }
+		}
+		return this._event[eventId];
+	}
 
 	getEventGroupIds(event: Event): string[] {
 		let ids = [];
@@ -149,48 +149,48 @@ export class EventsService {
 		return ids;
 	}
 
-  getEventId(): string {
-    return this.db.list<Event>('events/events/').push(null).key;
-  }
+	getEventId(): string {
+		return this.db.list<Event>('events/events/').push(null).key;
+	}
 
-  setEvent(event: Event) {
-    return this.db.object<Event>('events/events/' + event.id).set(event);
-  }
+	setEvent(event: Event) {
+		return this.db.object<Event>('events/events/' + event.id).set(event);
+	}
 
-  deleteEvent(eventId: string) {
-    return this.db.object<Event>('events/events/' + eventId).set(null);
-  }
+	deleteEvent(eventId: string) {
+		return this.db.object<Event>('events/events/' + eventId).set(null);
+	}
 
-  getComResps(): Observable<ComResp[]> {
-    if (!this._comResps) {
-      this._comResps = this.db.list<ComResp>(
+	getComResps(): Observable<ComResp[]> {
+		if (!this._comResps) {
+			this._comResps = this.db.list<ComResp>(
 				'events/com-resps/resps'
 			).valueChanges().pipe(
 				shareReplay(1)
 			);
-    }
-    return this._comResps;
-  }
+		}
+		return this._comResps;
+	}
 
-  removeComResp(emailId: string) {
-    return this.db.object<ComResp>('events/com-resps/resps/' + emailId).remove();
-  }
+	removeComResp(emailId: string) {
+		return this.db.object<ComResp>('events/com-resps/resps/' + emailId).remove();
+	}
 
 	setGroup(group: Group) {
-    return this.db.object<Group>('events/com-resps/groups/' + group.groupId).set(group);
+		return this.db.object<Group>('events/com-resps/groups/' + group.groupId).set(group);
 	}
 
 	removeGroup(groupId: string) {
 		return this.db.object<Group>('events/com-resps/groups/' + groupId).remove();
 	}
 
-  getGroupId(): string {
-    return this.db.list<Event>('events/com-resps/groups').push(null).key;
-  }
+	getGroupId(): string {
+		return this.db.list<Event>('events/com-resps/groups').push(null).key;
+	}
 
 	getGroups(): Observable<Group[]> {
 		if (!this._groups) {
-			this._groups = this.tools.enableCache(
+			this._groups = Tools.enableCache(
 				this.db.list<Group>('events/com-resps/groups').valueChanges(),
 				'events-groups'
 			).pipe(
@@ -230,7 +230,7 @@ export class EventsService {
 	}
 
 	addComResp(email: string, groupId1: string, groupId2: string) {
-		let emailId = this.tools.getEmailIdFromEmail(email);
+		let emailId = Tools.getEmailIdFromEmail(email);
 		return this.db.object<ComResp>('events/com-resps/resps/' + emailId).set({
 			emailId: emailId,
 			groupId1: groupId1,
@@ -238,61 +238,61 @@ export class EventsService {
 		});
 	}
 
-  addEventIParticipate(eventId: string) {
-    return this.auth.getUser().pipe(
-      first(),
-      mergeMap(
+	addEventIParticipate(eventId: string) {
+		return this.auth.getUser().pipe(
+			first(),
+			mergeMap(
 				user => from(
-	        this.db.object(
+					this.db.object(
 						'calendar/users/' + user.uid + '/assos/' + eventId
 					).set(eventId)
-	      )
+				)
 			)
 		).toPromise();
-  }
+	}
 
-  removeEventIParticipate(eventId: string) {
-    return this.auth.getUser().pipe(
-      first(),
-      mergeMap(
+	removeEventIParticipate(eventId: string) {
+		return this.auth.getUser().pipe(
+			first(),
+			mergeMap(
 				user => from(
-        	this.db.object(
+					this.db.object(
 						'calendar/users/' + user.uid + '/assos/' + eventId
 					).set(null)
-      	)
+				)
 			)
 		).toPromise();
-  }
+	}
 
-  addEventIDontWant(eventId: string) {
-    return this.auth.getUser().pipe(
-      first(),
-      mergeMap(
+	addEventIDontWant(eventId: string) {
+		return this.auth.getUser().pipe(
+			first(),
+			mergeMap(
 				user => from(
-	        this.db.object(
+					this.db.object(
 						'calendar/users/' + user.uid + '/notAssos/' + eventId
 					).set(eventId)
-	      )
+				)
 			)
 		).toPromise();
-  }
+	}
 
-  removeEventIDontWant(eventId: string) {
-    return this.auth.getUser().pipe(
-      first(),
-      mergeMap(
+	removeEventIDontWant(eventId: string) {
+		return this.auth.getUser().pipe(
+			first(),
+			mergeMap(
 				user => from(
-        	this.db.object(
+					this.db.object(
 						'calendar/users/' + user.uid + '/notAssos/' + eventId
 					).set(null)
-      	)
+				)
 			)
 		).toPromise();
-  }
+	}
 
 	getAssosEventsIdsIParticipate(): Observable<string[]> {
 		if (!this._assosEventsIdsIParticipate) {
-      this._assosEventsIdsIParticipate = this.tools.enableCache(
+			this._assosEventsIdsIParticipate = Tools.enableCache(
 				this.auth.getUser().pipe(mergeMap(
 					user => this.db.list<string>(
 						'calendar/users/'+user.uid+'/assos'
@@ -306,19 +306,19 @@ export class EventsService {
 		return this._assosEventsIdsIParticipate;
 	}
 
-  getEventIParticipate(eventId: string): Observable<boolean> {
-    if (!this._eventInCalendar[eventId]) {
-      this._eventInCalendar[eventId] = this.getAssosEventsIdsIParticipate().pipe(
+	getEventIParticipate(eventId: string): Observable<boolean> {
+		if (!this._eventInCalendar[eventId]) {
+			this._eventInCalendar[eventId] = this.getAssosEventsIdsIParticipate().pipe(
 				map(ids => ids.includes(eventId)),
 				shareReplay(1)
 			);
-    }
-    return this._eventInCalendar[eventId];
-  }
+		}
+		return this._eventInCalendar[eventId];
+	}
 
 	getAssosEventsIdsIDontWant(): Observable<string[]> {
 		if (!this._assosEventsIdsIDontWant) {
-      this._assosEventsIdsIDontWant = this.tools.enableCache(
+			this._assosEventsIdsIDontWant = Tools.enableCache(
 				this.auth.getUser().pipe(mergeMap(
 					user => this.db.list<string>(
 						'calendar/users/'+user.uid+'/notAssos'
@@ -332,14 +332,14 @@ export class EventsService {
 		return this._assosEventsIdsIDontWant;
 	}
 
-  getEventIDontWant(eventId: string): Observable<boolean> {
-    if (!this._eventNotInCalendar[eventId]) {
-      this._eventNotInCalendar[eventId] = this.getAssosEventsIdsIDontWant().pipe(
+	getEventIDontWant(eventId: string): Observable<boolean> {
+		if (!this._eventNotInCalendar[eventId]) {
+			this._eventNotInCalendar[eventId] = this.getAssosEventsIdsIDontWant().pipe(
 				map(ids => !ids.includes(eventId)),
 				shareReplay(1)
 			);
-    }
-    return this._eventNotInCalendar[eventId];
-  }
+		}
+		return this._eventNotInCalendar[eventId];
+	}
 
 }

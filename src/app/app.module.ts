@@ -33,6 +33,7 @@ import {CafetAdminRespsComponent} from './cafet/cafet-admin/cafet-admin-resps/ca
 import {TrezoComponent} from './cafet/cafet-admin/trezo/trezo.component';
 import {CafetHistoryComponent} from './cafet/cafet-history/cafet-history.component';
 import {EditCafetUserComponent} from './cafet/cafet-admin/edit-cafet-user/edit-cafet-user.component';
+import {CafetRespComponent} from './cafet/cafet-resp/cafet-resp.component';
 
 import {VoteComponent} from './vote/vote-all/vote.component';
 import {PollComponent} from './vote/poll/poll.component';
@@ -41,25 +42,49 @@ import {EditPollComponent} from './vote/edit-poll/edit-poll.component';
 import {ResultsComponent} from './vote/results/results.component';
 import {VoteUsersComponent} from './vote/vote-users/vote-users.component';
 import {AssessorComponent} from './vote/assessor/assessor.component';
+import {VoteCardComponent} from './vote/components/vote-card/vote-card.component';
 
 import {EventsHomeComponent} from './events/events-home/events-home.component';
 import {EventComponent} from './events/event/event.component';
 import {EventAdminComponent} from './events/event-admin/event-admin.component';
 import {ComRespComponent} from './events/com-resp/com-resp.component';
 import {EditEventsComponent} from './events/edit-events/edit-events.component';
+import {EventCardComponent} from './events/components/event-card/event-card.component';
 
 import {ActusHomeComponent} from './actus/actus-home/actus-home.component';
 import {ActuComponent} from './actus/actu/actu.component';
 import {ActuAdminComponent} from './actus/actu-admin/actu-admin.component';
 import {JournalistComponent} from './actus/journalist/journalist.component';
 import {EditActusComponent} from './actus/edit-actus/edit-actus.component';
+import {ActuCardComponent} from './actus/components/actu-card/actu-card.component';
 
 import {CalendarComponent} from './calendar/cal-home/calendar.component';
 import {EditCalComponent} from './calendar/edit-cal/edit-cal.component';
 import {CalSettingsComponent} from './calendar/cal-settings/cal-settings.component';
 import {CalEditAllComponent} from './calendar/cal-edit-all/cal-edit-all.component';
+import {DayColumnComponent} from './calendar/components/day-column/day-column.component';
+
+import {JobAdsHomeComponent} from './jobads/jobads-home/jobads-home.component';
+import {JobAdsAdminComponent} from './jobads/jobads-admin/jobads-admin.component';
+import {JobAdsJobAdComponent} from './jobads/jobads-jobad/jobads-jobad.component';
+import {JobAdsEditComponent} from './jobads/jobads-edit/jobads-edit.component';
+import {JobAdCardComponent} from './jobads/components/jobad-card/jobad-card.component';
+
+import {NsigmaHomeComponent} from './nsigma/nsigma-home/nsigma-home.component';
+import {NsigmaJobAdComponent} from './nsigma/nsigma-jobad/nsigma-jobad.component';
+import {NsigmaAdminComponent} from './nsigma/nsigma-admin/nsigma-admin.component';
+import {NsigmaEditComponent} from './nsigma/nsigma-edit/nsigma-edit.component';
+import {NsigmaJobAdCardComponent} from './nsigma/components/nsigma-jobad-card/nsigma-jobad-card.component';
 
 import {AccountComponent} from './account/account.component';
+
+import {DeleteDialogComponent} from './shared-components/delete-dialog/delete-dialog.component';
+import {LoginDialogComponent} from './shared-components/login-dialog/login-dialog.component';
+import {PagedGridComponent} from './shared-components/paged-grid/paged-grid.component';
+import {PagedListComponent} from './shared-components/paged-list/paged-list.component';
+import {LoadingComponent} from './shared-components/loading/loading.component';
+import {ConditionalRouterLinkComponent} from './shared-components/conditional-router-link/conditional-router-link.component';
+import {UpdatePasswordDialogComponent} from './account/components/update-password-dialog/update-password-dialog.component';
 
 import {InfoComponent} from './info/info.component';
 import {LegalNoticeComponent} from './info/legal-notice/legal-notice.component';
@@ -78,7 +103,6 @@ import {CalService} from './calendar/cal-service/cal.service';
 import {AppModulesService} from './providers/app-modules.service';
 import {DeviceSizeService} from './providers/device-size.service';
 import {ListService} from './providers/list.service';
-import {ToolsService} from './providers/tools.service';
 
 import {CanActivateHome} from './home/home-guard/home.guard';
 import {CanActivateVoteAdmin} from './vote/vote-guard/vote-admin.guard';
@@ -93,6 +117,8 @@ import {CanActivateAdmin} from './admin/admin-guard/admin-guard';
 import {CanActivateCafetAdmin} from './cafet/cafet-guard/cafet-admin.guard';
 import {CanActivateCafetResp} from './cafet/cafet-guard/cafet-resp.guard';
 import {EmailVerifGuard} from './auth/email-verif/email-verif-guard/email-verif.guard';
+import {NsigmaGuard} from './nsigma/nsigma.guard';
+import {JobAdsGuard} from './jobads/jobads.guard';
 
 import {DicoService} from './language/dico.service';
 // angular materials
@@ -118,110 +144,71 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatTableModule} from '@angular/material/table';
 
 import {environment} from '../environments/environment';
-import {JobAdsHomeComponent} from './jobads/jobads-home/jobads-home.component';
-import {JobAdsAdminComponent} from './jobads/jobads-admin/jobads-admin.component';
-import {JobAdsJobAdComponent} from './jobads/jobads-jobad/jobads-jobad.component';
-import {NsigmaHomeComponent} from './nsigma/nsigma-home/nsigma-home.component';
-import {NsigmaJobAdComponent} from './nsigma/nsigma-jobad/nsigma-jobad.component';
-import {NsigmaAdminComponent} from './nsigma/nsigma-admin/nsigma-admin.component';
-import {NsigmaEditComponent} from './nsigma/nsigma-edit/nsigma-edit.component';
-import {NsigmaGuard} from './nsigma/nsigma.guard';
-import {JobAdsGuard} from './jobads/jobads.guard';
-import {DeleteDialogComponent} from './shared-components/delete-dialog/delete-dialog.component';
-import {LoginDialogComponent} from './shared-components/login-dialog/login-dialog.component';
-import {PagedGridComponent} from './shared-components/paged-grid/paged-grid.component';
-import {JobAdsEditComponent} from './jobads/jobads-edit/jobads-edit.component';
-import {LoadingComponent} from './shared-components/loading/loading.component';
-import {ConditionalRouterLinkComponent} from './shared-components/conditional-router-link/conditional-router-link.component';
-import {JobAdCardComponent} from './jobads/components/jobad-card/jobad-card.component';
-import {VoteCardComponent} from './vote/components/vote-card/vote-card.component';
-import {EventCardComponent} from './events/components/event-card/event-card.component';
-import {ActuCardComponent} from './actus/components/actu-card/actu-card.component';
-import {NsigmaJobAdCardComponent} from './nsigma/components/nsigma-jobad-card/nsigma-jobad-card.component';
-import {PagedListComponent} from './shared-components/paged-list/paged-list.component';
-import {UpdatePasswordDialogComponent} from './account/components/update-password-dialog/update-password-dialog.component';
-import {DayColumnComponent} from './calendar/components/day-column/day-column.component';
-import {CafetRespComponent} from './cafet/cafet-resp/cafet-resp.component';
 
 import 'hammerjs';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import {HammerFix} from '../HammerFix';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    AdminUsersComponent,
-    HomeComponent, DashboardComponent,
-    LoginComponent, SignUpComponent, EmailVerifComponent, PasswordResetComponent,
-    CafetComponent, CafetInfoComponent, CafetAdminComponent, CafetAdminUsersComponent, CafetAdminAccountsComponent, CafetAdminArchivesComponent, CafetAdminRespsComponent, TrezoComponent, CafetHistoryComponent, EditCafetUserComponent,
-    VoteComponent, PollComponent, VoteAdminComponent, EditPollComponent, ResultsComponent, VoteUsersComponent, AssessorComponent,
-    CalendarComponent, EditCalComponent, CalSettingsComponent,
-    EventsHomeComponent, EventComponent, EventAdminComponent, ComRespComponent, EditEventsComponent,
-    ActusHomeComponent, ActuComponent, ActuAdminComponent, JournalistComponent, EditActusComponent,
-    InfoComponent, ReadmeComponent, LegalNoticeComponent,
-    AccountComponent,
-    JobAdsHomeComponent,
-    JobAdsAdminComponent,
-    NsigmaAdminComponent,
-    NsigmaHomeComponent,
-    NsigmaJobAdComponent,
-    NsigmaEditComponent,
-    DeleteDialogComponent,
-    LoginDialogComponent,
-    JobAdsJobAdComponent,
-    JobAdsEditComponent,
-    LoadingComponent,
-    ConditionalRouterLinkComponent,
-    JobAdCardComponent,
-    NsigmaJobAdCardComponent,
-    VoteCardComponent,
-    EventCardComponent,
-    ActuCardComponent,
-    PagedGridComponent,
-    PagedListComponent,
-    UpdatePasswordDialogComponent,
-    DayColumnComponent,
-    CafetRespComponent,
-    CalEditAllComponent,
-  ],
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    AppRoutingModule,
-    FormsModule, ReactiveFormsModule,
-    AngularFireModule.initializeApp(environment.firebase), AngularFireAuthModule, AngularFireDatabaseModule, AngularFireStorageModule,
-    MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule, MatToolbarModule, MatSidenavModule, MatListModule, MatCardModule, MatSnackBarModule, MatSlideToggleModule, MatTabsModule, MatExpansionModule, MatCheckboxModule, MatPaginatorModule, MatDatepickerModule, MatNativeDateModule, MatSelectModule, MatDialogModule, MatProgressSpinnerModule, MatTableModule,
-    FlexLayoutModule,
-    MarkdownModule.forRoot({
-      markedOptions: {
-        provide: MarkedOptions,
-        useValue: {
-          sanitize: true
-        }
-      }
-    }),
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
-  ],
-  providers: [
-    AuthService, VoteService, AdminService, CafetService, EventsService, ActusService, NsigmaService, NsigmaGuard, JobAdsService, JobAdsGuard, CalService,
-    AppModulesService, DeviceSizeService, ListService, ToolsService,
-    CanActivateHome, CanActivateVoteAdmin, CanActivateAssessor, CanActivateEventsAdmin, CanActivateComResp, CanActivateEventsEdit, CanActivateActusAdmin, CanActivateJournalist, CanActivateCafetResp, CanActivateActusEdit, CanActivateAdmin, CanActivateCafetAdmin, EmailVerifGuard,
-    DicoService, DatePipe,
-    {
-      // hammer instantion with custom config for scroll fix
-      provide: HAMMER_GESTURE_CONFIG,
-      useClass: HammerFix,
-    }
-  ],
-  entryComponents: [
-    CafetHistoryComponent,
+	declarations: [
+		AppComponent,
+		AdminUsersComponent,
+		HomeComponent, DashboardComponent,
+		LoginComponent, SignUpComponent, EmailVerifComponent, PasswordResetComponent,
+		CafetComponent, CafetInfoComponent, CafetAdminComponent, CafetAdminUsersComponent, CafetAdminAccountsComponent, CafetAdminArchivesComponent, CafetAdminRespsComponent, TrezoComponent, CafetHistoryComponent, EditCafetUserComponent, CafetRespComponent,
+		VoteComponent, PollComponent, VoteAdminComponent, EditPollComponent, ResultsComponent, VoteUsersComponent, AssessorComponent, VoteCardComponent,
+		CalendarComponent, EditCalComponent, CalSettingsComponent, DayColumnComponent, CalEditAllComponent,
+		EventsHomeComponent, EventComponent, EventAdminComponent, ComRespComponent, EditEventsComponent, EventCardComponent,
+		ActusHomeComponent, ActuComponent, ActuAdminComponent, JournalistComponent, EditActusComponent, ActuCardComponent,
+		InfoComponent, ReadmeComponent, LegalNoticeComponent,
+		AccountComponent,
+		JobAdsHomeComponent, JobAdsAdminComponent, JobAdsJobAdComponent, JobAdsEditComponent, JobAdCardComponent,
+		NsigmaAdminComponent, NsigmaHomeComponent, NsigmaJobAdComponent, NsigmaEditComponent, NsigmaJobAdCardComponent,
+		DeleteDialogComponent,
+		LoginDialogComponent,
+		LoadingComponent,
+		ConditionalRouterLinkComponent,
+		PagedGridComponent, PagedListComponent,
+		UpdatePasswordDialogComponent,
+	],
+	imports: [
+		BrowserModule,
+		HttpClientModule,
+		BrowserAnimationsModule,
+		AppRoutingModule,
+		FormsModule, ReactiveFormsModule,
+		AngularFireModule.initializeApp(environment.firebase), AngularFireAuthModule, AngularFireDatabaseModule, AngularFireStorageModule,
+		MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule, MatToolbarModule, MatSidenavModule, MatListModule, MatCardModule, MatSnackBarModule, MatSlideToggleModule, MatTabsModule, MatExpansionModule, MatCheckboxModule, MatPaginatorModule, MatDatepickerModule, MatNativeDateModule, MatSelectModule, MatDialogModule, MatProgressSpinnerModule, MatTableModule,
+		FlexLayoutModule,
+		MarkdownModule.forRoot({
+			markedOptions: {
+				provide: MarkedOptions,
+				useValue: {
+					sanitize: true
+				}
+			}
+		}),
+		ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+	],
+	providers: [
+		AuthService, VoteService, AdminService, CafetService, EventsService, ActusService, NsigmaService, NsigmaGuard, JobAdsService, JobAdsGuard, CalService,
+		AppModulesService, DeviceSizeService, ListService,
+		CanActivateHome, CanActivateVoteAdmin, CanActivateAssessor, CanActivateEventsAdmin, CanActivateComResp, CanActivateEventsEdit, CanActivateActusAdmin, CanActivateJournalist, CanActivateCafetResp, CanActivateActusEdit, CanActivateAdmin, CanActivateCafetAdmin, EmailVerifGuard,
+		DicoService, DatePipe,
+		{
+			// hammer instantion with custom config for scroll fix
+			provide: HAMMER_GESTURE_CONFIG,
+			useClass: HammerFix,
+		}
+	],
+	entryComponents: [
+		CafetHistoryComponent,
 		EditCalComponent,
-    EditCafetUserComponent,
-    DeleteDialogComponent,
-    LoginDialogComponent,
-    UpdatePasswordDialogComponent
-  ],
-  bootstrap: [AppComponent]
+		EditCafetUserComponent,
+		DeleteDialogComponent,
+		LoginDialogComponent,
+		UpdatePasswordDialogComponent
+	],
+	bootstrap: [AppComponent]
 })
 export class AppModule { }

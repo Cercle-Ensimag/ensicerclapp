@@ -1,44 +1,44 @@
 <div class="container">
-  <div>
-    <mat-card>
-      <form [formGroup]="formGroup" (ngSubmit)="submit()" class="container">
-        <h2 [innerHTML]="d.l.signUpPageTitle"></h2>
-				
-        <span *ngIf="auth.error" class="error">{{ auth.error }}</span>
+	<div>
+		<mat-card>
+			<form [formGroup]="formGroup" (ngSubmit)="submit()" class="container">
+				<h2 [innerHTML]="d.l.signUpPageTitle"></h2>
 
-        <mat-form-field>
-          <input matInput placeholder="{{ d.l.firstNameLabel }}" formControlName="firstName" autocomplete="off">
-          <mat-error *ngIf="formGroup.get('firstName').invalid">{{ d.l.firstNameError }}</mat-error>
-        </mat-form-field>
+				<span *ngIf="auth.error" class="error">{{ auth.error }}</span>
 
-        <mat-form-field>
-          <input matInput placeholder="{{ d.l.lastNameLabel }}" formControlName="lastName" autocomplete="off">
-          <mat-error *ngIf="formGroup.get('lastName').invalid">{{ d.l.lastNameError }}</mat-error>
-        </mat-form-field>
+				<mat-form-field>
+					<input matInput placeholder="{{ d.l.firstNameLabel }}" formControlName="firstName" autocomplete="off">
+					<mat-error *ngIf="formGroup.get('firstName').invalid">{{ d.l.firstNameError }}</mat-error>
+				</mat-form-field>
 
-        <mat-form-field>
-          <input matInput type="email" placeholder="{{ d.l.emailLabel }}" formControlName="email" autocomplete="off">
-          <mat-error *ngIf="formGroup.get('email').invalid">{{ auth.getEmailErrorMessage(formGroup.get('email')) }}</mat-error>
-        </mat-form-field>
+				<mat-form-field>
+					<input matInput placeholder="{{ d.l.lastNameLabel }}" formControlName="lastName" autocomplete="off">
+					<mat-error *ngIf="formGroup.get('lastName').invalid">{{ d.l.lastNameError }}</mat-error>
+				</mat-form-field>
 
-        <mat-form-field>
-          <input matInput placeholder="{{ d.l.passwordlLabel }}" formControlName="password" [type]="hidePassword ? 'password' : 'text'" autocomplete="off">
-          <mat-icon matSuffix (click)="hidePassword = !hidePassword">{{hidePassword ? 'visibility' : 'visibility_off'}}</mat-icon>
-          <mat-error *ngIf="formGroup.get('password').invalid">{{ d.l.passwordError }}</mat-error>
-        </mat-form-field>
+				<mat-form-field>
+					<input matInput type="email" placeholder="{{ d.l.emailLabel }}" formControlName="email" autocomplete="off">
+					<mat-error *ngIf="formGroup.get('email').invalid">{{ auth.getEmailErrorMessage(formGroup.get('email')) }}</mat-error>
+				</mat-form-field>
 
-      </form>
-    </mat-card>
-  </div>
+				<mat-form-field>
+					<input matInput placeholder="{{ d.l.passwordlLabel }}" formControlName="password" [type]="hidePassword ? 'password' : 'text'" autocomplete="off">
+					<mat-icon matSuffix (click)="hidePassword = !hidePassword">{{hidePassword ? 'visibility' : 'visibility_off'}}</mat-icon>
+					<mat-error *ngIf="formGroup.get('password').invalid">{{ d.l.passwordError }}</mat-error>
+				</mat-form-field>
+
+			</form>
+		</mat-card>
+	</div>
 </div>
 
 <div class="mat-fab-bottom-right">
-  <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
-  <button mat-fab color="primary"
-          (click)="submit()"
-          [disabled]="formGroup.invalid">
-    <mat-icon>send</mat-icon>
-  </button>
+	<button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
+	<button mat-fab color="primary"
+					(click)="submit()"
+					[disabled]="formGroup.invalid">
+		<mat-icon>send</mat-icon>
+	</button>
 </div>
 
 <div class="fab-btn-placeholder"></div>

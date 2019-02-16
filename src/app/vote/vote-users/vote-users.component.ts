@@ -1,5 +1,3 @@
-
-import {map} from 'rxjs/operators';
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
@@ -8,9 +6,10 @@ import {FormControl, Validators} from '@angular/forms';
 import {DeviceSizeService} from '../../providers/device-size.service';
 import {AuthService} from '../../auth/auth-service/auth.service';
 import {VoteService} from '../vote-service/vote.service';
-import {ToolsService} from '../../providers/tools.service';
+import {Tools} from '../../providers/tools.service';
 import {DicoService} from '../../language/dico.service';
 import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 export class VoteUser {
 	emailId: string;
@@ -32,7 +31,6 @@ export class VoteUsersComponent implements OnInit {
 
 		public location: Location,
 		public media: DeviceSizeService,
-		public tools: ToolsService,
 		public d: DicoService
 	) {}
 
@@ -41,12 +39,16 @@ export class VoteUsersComponent implements OnInit {
 	}
 
 	filteredUsers(): Observable<VoteUser[]> {
-		let emailId = this.tools.getEmailIdFromEmail(this.emailCtrl.value);
+		let emailId = Tools.getEmailIdFromEmail(this.emailCtrl.value);
 		return this.vote.getUsers(this.id).pipe(
 			map(users => users.filter(
 				user => user.emailId.includes(emailId)
 			))
 		);
+	}
+
+	getUserName(user: VoteUser): string {
+		return Tools.getNameFromEmailId(user.emailId);
 	}
 
 }

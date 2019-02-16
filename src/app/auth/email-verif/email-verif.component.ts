@@ -10,24 +10,24 @@ import {Observable} from 'rxjs';
 import {first, tap} from 'rxjs/operators';
 
 @Component({
-  selector: 'app-email-verif',
-  templateUrl: './email-verif.component.html',
-  styleUrls: ['./email-verif.component.css']
+	selector: 'app-email-verif',
+	templateUrl: './email-verif.component.html',
+	styleUrls: ['./email-verif.component.css']
 })
 export class EmailVerifComponent {
 
 	private _user: User;
 	private _userObs: Observable<User>;
 
-  constructor(
-    private auth: AuthService,
-    public location: Location,
-    public d: DicoService,
-    private snackBar: MatSnackBar
-  ) { }
+	constructor(
+		private auth: AuthService,
+		public location: Location,
+		public d: DicoService,
+		private snackBar: MatSnackBar
+	) { }
 
-  ngOnInit() {
-    this.auth.getUser().pipe(
+	ngOnInit() {
+		this.auth.getUser().pipe(
 			first()
 		).toPromise().then(
 			user => {
@@ -43,7 +43,7 @@ export class EmailVerifComponent {
 				this._user = user;
 			}
 		);
-  }
+	}
 
 	getInfoMessage() {
 		return this.d.format(
@@ -52,15 +52,15 @@ export class EmailVerifComponent {
 		);
 	}
 
-  sendEmail() {
-    this.auth.sendEmailVerification(this._user).then(
+	sendEmail() {
+		this.auth.sendEmailVerification(this._user).then(
 			() => this.snackBar.open(
 				this.d.format(this.d.l.emailSentToInfo, this._user.email),
 				this.d.l.okLabel,
 				{duration: 2000}
 			)
 		);
-  }
+	}
 
 	goToLogin() {
 		this.auth.goToLogin();

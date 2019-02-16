@@ -1,125 +1,125 @@
 <div>
-  Salut !<br>
-  <br>
-  Petite astuce : ajoute ce site à l'écran d'accueil de ton téléphone, cela te permettra d'y revenir plus facilement et de profiter d'une meilleure ergonomie !<br>
+	Salut !<br>
+	<br>
+	Petite astuce : ajoute ce site à l'écran d'accueil de ton téléphone, cela te permettra d'y revenir plus facilement et de profiter d'une meilleure ergonomie !<br>
 	De même, ajoute le à la barre de favoris de ton navigateur sur ordinateur ;)<br>
-  <br>
-  J'espère que tu apprécies le fait de pouvoir consulter ton emploi du temps, ton solde cafet, les événements des associations et voter en ligne grâce à cette application web.<br>
-  Comme tu peux le constater, tout n'est pas fini !<br>
-  <br>
-  Il sera bientôt possible de :<br>
-   - commander via l'application<br>
-   - recevoir des notifications<br>
-  <br>
-  Si tu veux participer à ce projet, contacte Hans Imag et deviens codeur-développeur bénévole pour le Cercle !<br>
-  <br>
+	<br>
+	J'espère que tu apprécies le fait de pouvoir consulter ton emploi du temps, ton solde cafet, les événements des associations et voter en ligne grâce à cette application web.<br>
+	Comme tu peux le constater, tout n'est pas fini !<br>
+	<br>
+	Il sera bientôt possible de :<br>
+	 - commander via l'application<br>
+	 - recevoir des notifications<br>
+	<br>
+	Si tu veux participer à ce projet, contacte Hans Imag et deviens codeur-développeur bénévole pour le Cercle !<br>
+	<br>
 
 
-  <h2>Fonctionnalités</h2>
+	<h2>Fonctionnalités</h2>
 
-  <h3>Actualités</h3>
-  Consulte les actualités publiées par les différentes associations, notamment par le Pole Com'.
+	<h3>Actualités</h3>
+	Consulte les actualités publiées par les différentes associations, notamment par le Pole Com'.
 
-  <h3>Cafet</h3>
-  Consulte ton solde cafet.<br>
+	<h3>Cafet</h3>
+	Consulte ton solde cafet.<br>
 
-  <h3>Calendrier</h3>
-  Ce calendrier regroupe tes cours, les événements associatif que tu y as ajouté, et tes événements personnels.<br>
-  Un événement en cours est affiché en vert<br>
-  <br>
-  Pour ajouter ou retirer un événement associatif, réfère-toi à la Fonctionnalité 'Evénements'.<br>
-  <br>
-  Les cours sont téléchargés en fonction des sessources données dans le champ 'Ressources ADE' des paramètres du calendrier <mat-icon>settings</mat-icon>.<br>
-  Pour obtenir ces ressources, connecte-toi à ADE depuis Zenith et copie les ressources présentes dans l'URL.<br>
-  Il faudra mettre à jour ces ressources à chaque fois que tu t'incrit à un nouveau cours, c'est-à-dire en général au début de chaque semestre.<br>
-  <br>
-  Pour créer un événement personnel, utilise l'icone <mat-icon>add_circle</mat-icon> et utilise <mat-icon>edit</mat-icon> pour accéder à la page d'édition.<br>
+	<h3>Calendrier</h3>
+	Ce calendrier regroupe tes cours, les événements associatif que tu y as ajouté, et tes événements personnels.<br>
+	Un événement en cours est affiché en vert<br>
+	<br>
+	Pour ajouter ou retirer un événement associatif, réfère-toi à la Fonctionnalité 'Evénements'.<br>
+	<br>
+	Les cours sont téléchargés en fonction des sessources données dans le champ 'Ressources ADE' des paramètres du calendrier <mat-icon>settings</mat-icon>.<br>
+	Pour obtenir ces ressources, connecte-toi à ADE depuis Zenith et copie les ressources présentes dans l'URL.<br>
+	Il faudra mettre à jour ces ressources à chaque fois que tu t'incrit à un nouveau cours, c'est-à-dire en général au début de chaque semestre.<br>
+	<br>
+	Pour créer un événement personnel, utilise l'icone <mat-icon>add_circle</mat-icon> et utilise <mat-icon>edit</mat-icon> pour accéder à la page d'édition.<br>
 	<br>
 	Une fois sur la page d'édition, tu peux modifier <mat-icon>edit</mat-icon> ou supprimer <mat-icon>delete</mat-icon> tes événements personnels et consulter les événements d'associations auxquelles tu es abonné.
 
-  <h3>Evénements</h3>
-  Consulte les événements créés par les associations de l'Ensimag<br>
-  Pour ajouter un événement à ton calendrier, clique sur <mat-icon>event_available</mat-icon>, et clique sur <mat-icon>event_busy</mat-icon> pour l'en retirer.
+	<h3>Evénements</h3>
+	Consulte les événements créés par les associations de l'Ensimag<br>
+	Pour ajouter un événement à ton calendrier, clique sur <mat-icon>event_available</mat-icon>, et clique sur <mat-icon>event_busy</mat-icon> pour l'en retirer.
 
-  <h3>Vote</h3>
-  Vote pour une élection ou un sondage. Ton vote est totalement anonyme en base de donnée.
+	<h3>Vote</h3>
+	Vote pour une élection ou un sondage. Ton vote est totalement anonyme en base de donnée.
 
-  <div *ngIf="auth.isAdmin() | async">
-    <h3>Administrateur</h3>
-    Accède à la liste des utilisateurs et accorde leur des droits.<br>
-    Tape le nom d'un membre dans la barre de recherche pour y accéder plus rapidement.
-  </div>
+	<div *ngIf="auth.isAdmin() | async">
+		<h3>Administrateur</h3>
+		Accède à la liste des utilisateurs et accorde leur des droits.<br>
+		Tape le nom d'un membre dans la barre de recherche pour y accéder plus rapidement.
+	</div>
 
-  <div *ngIf="canReadVotes() | async">
-    <h3 >Administrateurs des votes</h3>
-    Crée des srcutins et nomme les assesseurs.<br>
-    <br>
-    Un scrutin n'est pas disponible pour les utilisateurs et les assesseurs tant qu'il n'est pas activé.<br>
-    <br>
-    Chaque srutin dispose des fonctionnalités suivantes:<br>
-    - éditer <mat-icon>edit</mat-icon><br>
-    - avoir un aperçu <mat-icon>search</mat-icon><br>
-    - consulter les resultats <mat-icon>poll</mat-icon><br>
-    - accéder à la liste des votants en ligne et en face-à-face <mat-icon>face</mat-icon><br>
-    - le supprimer <mat-icon>delete</mat-icon><br>
-    <br>
-    Lorsqu'un srutin est actif, tu ne peux qu'accéder à l'aperçu et aux votants.<br>
-  </div>
+	<div *ngIf="canReadVotes() | async">
+		<h3 >Administrateurs des votes</h3>
+		Crée des srcutins et nomme les assesseurs.<br>
+		<br>
+		Un scrutin n'est pas disponible pour les utilisateurs et les assesseurs tant qu'il n'est pas activé.<br>
+		<br>
+		Chaque srutin dispose des fonctionnalités suivantes:<br>
+		- éditer <mat-icon>edit</mat-icon><br>
+		- avoir un aperçu <mat-icon>search</mat-icon><br>
+		- consulter les resultats <mat-icon>poll</mat-icon><br>
+		- accéder à la liste des votants en ligne et en face-à-face <mat-icon>face</mat-icon><br>
+		- le supprimer <mat-icon>delete</mat-icon><br>
+		<br>
+		Lorsqu'un srutin est actif, tu ne peux qu'accéder à l'aperçu et aux votants.<br>
+	</div>
 
-  <div *ngIf="canReadVotesResults() | async">
-    <h3>Assesseur</h3>
-    Selectionne les scrutins pour lesquels tu dois assesser et ajoute des votants en face-à-face.<br>
-    <br>
-    Un votant en face-à-face est ajouté à partir de son adresse email. Le nom de domaine est par defaut sur '@ensimag.fr'.<br>
-    <br>
-    Un étudiant présent dans la liste a déjà voté et ne peut donc pas être ajouté.<br>
-    Il peut être dans cette liste s'il a voté en ligne ou en face-à-face.
-  </div>
+	<div *ngIf="canReadVotesResults() | async">
+		<h3>Assesseur</h3>
+		Selectionne les scrutins pour lesquels tu dois assesser et ajoute des votants en face-à-face.<br>
+		<br>
+		Un votant en face-à-face est ajouté à partir de son adresse email. Le nom de domaine est par defaut sur '@ensimag.fr'.<br>
+		<br>
+		Un étudiant présent dans la liste a déjà voté et ne peut donc pas être ajouté.<br>
+		Il peut être dans cette liste s'il a voté en ligne ou en face-à-face.
+	</div>
 
-  <div *ngIf="canReadEventsAdmin() | async">
-    <h3 >Administrateurs des événements</h3>
-    Consulte les événements et nomme les respos com'.<br>
-    <br>
-    Chaque événement dispose des fonctionnalités suivantes:<br>
-    - avoir un aperçu <mat-icon>search</mat-icon><br>
-    - le supprimer <mat-icon>delete</mat-icon><br>
-  </div>
+	<div *ngIf="canReadEventsAdmin() | async">
+		<h3 >Administrateurs des événements</h3>
+		Consulte les événements et nomme les respos com'.<br>
+		<br>
+		Chaque événement dispose des fonctionnalités suivantes:<br>
+		- avoir un aperçu <mat-icon>search</mat-icon><br>
+		- le supprimer <mat-icon>delete</mat-icon><br>
+	</div>
 
-  <div *ngIf="canReadEvents() | async">
-    <h3>Responsable communication</h3>
-    Crée des événements.<br>
-    Un événement n'est éditable que par celui qui l'a créé.<br>
-    <br>
-    Chaque événement dispose des fonctionnalités suivantes:<br>
-    - éditer <mat-icon>edit</mat-icon><br>
-    - avoir un aperçu <mat-icon>search</mat-icon><br>
-    - le supprimer <mat-icon>delete</mat-icon><br>
-  </div>
+	<div *ngIf="canReadEvents() | async">
+		<h3>Responsable communication</h3>
+		Crée des événements.<br>
+		Un événement n'est éditable que par celui qui l'a créé.<br>
+		<br>
+		Chaque événement dispose des fonctionnalités suivantes:<br>
+		- éditer <mat-icon>edit</mat-icon><br>
+		- avoir un aperçu <mat-icon>search</mat-icon><br>
+		- le supprimer <mat-icon>delete</mat-icon><br>
+	</div>
 
-  <div *ngIf="canReadActusAdmin() | async">
-    <h3>Administrateurs des actualités</h3>
-    Consulte les articles et nomme les journalistes.<br>
-    <br>
-    Chaque article dispose des fonctionnalités suivantes:<br>
-    - avoir un aperçu <mat-icon>search</mat-icon><br>
-    - le supprimer <mat-icon>delete</mat-icon><br>
-  </div>
+	<div *ngIf="canReadActusAdmin() | async">
+		<h3>Administrateurs des actualités</h3>
+		Consulte les articles et nomme les journalistes.<br>
+		<br>
+		Chaque article dispose des fonctionnalités suivantes:<br>
+		- avoir un aperçu <mat-icon>search</mat-icon><br>
+		- le supprimer <mat-icon>delete</mat-icon><br>
+	</div>
 
-  <div *ngIf="canReadActus() | async">
-    <h3>Journaliste</h3>
-    Crée des articles.<br>
-    Un article n'est éditable que par celui qui l'a créé.<br>
-    <br>
-    Chaque article dispose des fonctionnalités suivantes:<br>
-    - éditer <mat-icon>edit</mat-icon><br>
-    - avoir un aperçu <mat-icon>search</mat-icon><br>
-    - le supprimer <mat-icon>delete</mat-icon><br>
-  </div>
+	<div *ngIf="canReadActus() | async">
+		<h3>Journaliste</h3>
+		Crée des articles.<br>
+		Un article n'est éditable que par celui qui l'a créé.<br>
+		<br>
+		Chaque article dispose des fonctionnalités suivantes:<br>
+		- éditer <mat-icon>edit</mat-icon><br>
+		- avoir un aperçu <mat-icon>search</mat-icon><br>
+		- le supprimer <mat-icon>delete</mat-icon><br>
+	</div>
 
-  <div *ngIf="canReadCafetAdmin() | async">
-    <h3>Master cafet'</h3>
-    Gère tout ce qui est en relation avec la cafet<br>
-  </div>
+	<div *ngIf="canReadCafetAdmin() | async">
+		<h3>Master cafet'</h3>
+		Gère tout ce qui est en relation avec la cafet<br>
+	</div>
 
 
 </div>

@@ -7,17 +7,16 @@ import {first, tap} from 'rxjs/operators';
 @Injectable()
 export class CanActivateJournalist implements CanActivate {
 
-  constructor(private auth: AuthService) { }
+	constructor(private auth: AuthService) { }
 
-  canActivate(
-    ) {
-    return this.auth.isJournalist().pipe(
-      first(),
-      tap(is => {
-        if (!is) {
-          this.auth.goToHome();
-        }
-      })
+	canActivate() {
+		return this.auth.isJournalist().pipe(
+			first(),
+			tap(is => {
+				if (!is) {
+					this.auth.goToHome();
+				}
+			})
 		);
-  }
+	}
 }

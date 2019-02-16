@@ -1,20 +1,20 @@
 .history {
-  max-height: 50vh !important;
+	max-height: 50vh !important;
 }
 
 mat-paginator {
-  margin-top: 8px;
-  margin-bottom: 8px;
+	margin-top: 8px;
+	margin-bottom: 8px;
 }
 
 .plus {
-  color: green;
+	color: green;
 }
 
 .minus {
-  color: red;
+	color: red;
 }
 
 .mat-column-date {
-  min-width: 120px;
+	min-width: 120px;
 }

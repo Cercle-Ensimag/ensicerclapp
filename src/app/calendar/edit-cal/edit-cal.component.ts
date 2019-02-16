@@ -3,7 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
-import {ToolsService} from '../../providers/tools.service';
+import {Tools} from '../../providers/tools.service';
 import {CalEvent, CalService, PERSOS} from '../cal-service/cal.service';
 import {DicoService} from '../../language/dico.service';
 import {MAT_DIALOG_DATA, MatSnackBar} from '@angular/material';
@@ -30,7 +30,6 @@ export class EditCalComponent implements OnInit, OnDestroy {
 		private fb: FormBuilder,
 		private snackBar: MatSnackBar,
 
-		public tools: ToolsService,
 		public location: Location,
 		public d: DicoService
 	) {}
@@ -45,7 +44,7 @@ export class EditCalComponent implements OnInit, OnDestroy {
 			return field;
 		}
 		if (this.key) {
-			return this.tools.decipher(field, this.key) || "********";
+			return Tools.decipher(field, this.key) || "********";
 		} else {
 			return "********";
 		}
@@ -83,12 +82,12 @@ export class EditCalComponent implements OnInit, OnDestroy {
 			this.key = key;
 			this.formGroup = this.fb.group({
 				title: [this.getTitle(event) || '', [Validators.required, Validators.maxLength(80)]],
-				start: [this.data.day || new Date(event.start) || '', [Validators.required, this.tools.dateValidator]],
-				startTime: [this.tools.getTimeFromDate(event.start), [Validators.required, this.tools.timeValidator]],
-				end: [this.data.day || new Date(event.end) || '', [Validators.required, this.tools.dateValidator]],
+				start: [this.data.day || new Date(event.start) || '', [Validators.required, Tools.dateValidator]],
+				startTime: [Tools.getTimeFromDate(event.start), [Validators.required, Tools.timeValidator]],
+				end: [this.data.day || new Date(event.end) || '', [Validators.required, Tools.dateValidator]],
 				cipher: [event.cipher, [Validators.required]],
 				occurences: [event.occurences || 1, [Validators.required, Validators.min(1), Validators.max(42)]],
-				endTime: [this.tools.getTimeFromDate(event.end), [Validators.required, this.tools.timeValidator]],
+				endTime: [Tools.getTimeFromDate(event.end), [Validators.required, Tools.timeValidator]],
 				location: [this.getLocation(event) || '', [Validators.maxLength(300)]]
 			});
 			this.formGroup.get('start').valueChanges.pipe(
@@ -106,15 +105,15 @@ export class EditCalComponent implements OnInit, OnDestroy {
 
 	getStart(): number {
 		let time = this.formGroup.get('startTime').value;
-		return this.tools.setDayTime(this.formGroup.get('start').value.getTime(), time + ':00');
+		return Tools.setDayTime(this.formGroup.get('start').value.getTime(), time + ':00');
 	}
 	getEnd(): number {
 		let time = this.formGroup.get('endTime').value;
-		return this.tools.setDayTime(this.formGroup.get('end').value.getTime(), time + ':00');
+		return Tools.setDayTime(this.formGroup.get('end').value.getTime(), time + ':00');
 	}
 
 	submit() {
-		const key = this.tools.loadKey();
+		const key = Tools.loadKey();
 		const cipher = this.formGroup.get('cipher').value
 		if (!key && cipher) {
 			this.snackBar.open(this.d.l.keyNotConfiguredError, this.d.l.okLabel, {duration: 2000});
@@ -125,12 +124,12 @@ export class EditCalComponent implements OnInit, OnDestroy {
 		this.cal.setEvent(
 			new CalEvent(
 				this.id,
-				cipher ? this.tools.cipher(title, key) : title,
+				cipher ? Tools.cipher(title, key) : title,
 				this.getStart(),
 				this.getEnd(),
 				cipher,
 				this.formGroup.get('occurences').value,
-				cipher ? this.tools.cipher(location, key) : location,
+				cipher ? Tools.cipher(location, key) : location,
 				PERSOS
 			)
 		).then(() => {

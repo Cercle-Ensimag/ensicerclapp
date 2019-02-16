@@ -1,6 +1,6 @@
 <div class="tab-group-container">
 	<mat-tab-group>
-	  <mat-tab label="{{ d.l.events }}">
+		<mat-tab label="{{ d.l.events }}">
 			<div class="tab-content-container">
 
 				<div *ngIf="eventsFormGroup" class="item">
@@ -20,29 +20,29 @@
 					</mat-expansion-panel>
 				</div>
 
-		    <app-paged-grid [list]="getEvents() | async" #pages>
-		      <app-event-card *ngFor="let event of pages.truncatedList()"
-		                               [event]="event"
-		                               [admin]="true">
-		      </app-event-card>
-		    </app-paged-grid>
+				<app-paged-grid [list]="getEvents() | async" #pages>
+					<app-event-card *ngFor="let event of pages.truncatedList()"
+									[event]="event"
+									[admin]="true">
+					</app-event-card>
+				</app-paged-grid>
 			</div>
-	  </mat-tab>
+		</mat-tab>
 
-	  <mat-tab label="{{ d.l.comRespPlLabel }}">
+		<mat-tab label="{{ d.l.comRespPlLabel }}">
 
-	    <!-- Loading -->
-	    <app-loading [loading]="filteredUsers() | async"></app-loading>
+			<!-- Loading -->
+			<app-loading [loading]="filteredUsers() | async"></app-loading>
 
 			<div class="tab-content-container">
-		    <ng-container *ngIf="filteredUsers() | async as users">
+				<ng-container *ngIf="filteredUsers() | async as users">
 					<!-- Header display -->
-		      <mat-card *ngIf="respsFormGroup">
+					<mat-card *ngIf="respsFormGroup">
 						<form [formGroup]="respsFormGroup">
-			        <mat-form-field [class.large]="!media.mobileSize">
-			          <input matInput placeholder="{{ d.l.addComRespInfo }}" formControlName="email" autocomplete="off">
-			          <button mat-icon-button matSuffix><mat-icon>search</mat-icon></button>
-			        </mat-form-field>
+							<mat-form-field [class.large]="!media.mobileSize">
+								<input matInput placeholder="{{ d.l.addComRespInfo }}" formControlName="email" autocomplete="off">
+								<button mat-icon-button matSuffix><mat-icon>search</mat-icon></button>
+							</mat-form-field>
 							<mat-form-field>
 								<mat-select placeholder="{{ d.l.eventAssoLabel }} 1" formControlName="asso1">
 									<mat-option *ngFor="let group of getComRespGroups() | async" [value]="group.groupId">{{ group.displayName }}</mat-option>
@@ -56,61 +56,61 @@
 								</mat-select>
 								<mat-error *ngIf="respsFormGroup.get('asso2').invalid">{{ d.l.eventAssoError }}</mat-error>
 							</mat-form-field>
-			        <button mat-raised-button
-			                (click)="addComResp()"
-			                [disabled]="respsFormGroup.invalid || users.length !== 0"
-			                color="primary"
-			        >{{ d.l.addComRespButtonLabel }}</button>
-					  </form>
-		      </mat-card>
+							<button mat-raised-button
+											(click)="addComResp()"
+											[disabled]="respsFormGroup.invalid || users.length !== 0"
+											color="primary"
+							>{{ d.l.addComRespButtonLabel }}</button>
+						</form>
+					</mat-card>
 
-		      <!-- Users display -->
-		      <mat-card *ngIf="users.length">
-		        <mat-nav-list>
-		          <a mat-list-item *ngFor="let user of users">
-		            {{ tools.titleCase(user.emailId.split('|').join(' ')) }}
+					<!-- Users display -->
+					<mat-card *ngIf="users.length">
+						<mat-nav-list>
+							<a mat-list-item *ngFor="let user of users">
+								{{ getUserName(user) }}
 								<label *ngFor="let groupId of getUserGroupIds(user)" class="asso">{{ getGroupName(groupId) | async }}</label>
-		            <button mat-icon-button matSuffix (click)="events.removeComResp(user.emailId)"><mat-icon>delete</mat-icon></button>
-		          </a>
-		        </mat-nav-list>
-		      </mat-card>
-		    </ng-container>
+								<button mat-icon-button matSuffix (click)="events.removeComResp(user.emailId)"><mat-icon>delete</mat-icon></button>
+							</a>
+						</mat-nav-list>
+					</mat-card>
+				</ng-container>
 			</div>
-	  </mat-tab>
+		</mat-tab>
 
-	  <mat-tab label="{{ d.l.groupsLabel }}">
+		<mat-tab label="{{ d.l.groupsLabel }}">
 			<div class="tab-content-container">
-		    <ng-container *ngIf="filteredGroups() | async as groups">
+				<ng-container *ngIf="filteredGroups() | async as groups">
 					<!-- Header display -->
-		      <mat-card *ngIf="groupCtrl">
-		        <mat-form-field [class.large]="!media.mobileSize">
-		          <input matInput placeholder="{{ d.l.addGroupInfo }}" [formControl]="groupCtrl" autocomplete="off">
-		          <button mat-icon-button matSuffix><mat-icon>search</mat-icon></button>
-		        </mat-form-field>
-		        <button mat-raised-button
-		                (click)="addGroup()"
-		                [disabled]="groupCtrl.invalid || groups.length !== 0"
-		                color="primary"
-		        >{{ d.l.addGroupButtonLabel }}</button>
-		      </mat-card>
+					<mat-card *ngIf="groupCtrl">
+						<mat-form-field [class.large]="!media.mobileSize">
+							<input matInput placeholder="{{ d.l.addGroupInfo }}" [formControl]="groupCtrl" autocomplete="off">
+							<button mat-icon-button matSuffix><mat-icon>search</mat-icon></button>
+						</mat-form-field>
+						<button mat-raised-button
+								(click)="addGroup()"
+								[disabled]="groupCtrl.invalid || groups.length !== 0"
+								color="primary"
+						>{{ d.l.addGroupButtonLabel }}</button>
+					</mat-card>
 
-		      <!-- Users display -->
-		      <mat-card *ngIf="groups.length">
-		        <mat-nav-list>
-		          <a mat-list-item *ngFor="let group of groups">
-		            {{ group.displayName }}
-		            <button mat-icon-button matSuffix (click)="removeGroup(group.groupId)"><mat-icon>delete</mat-icon></button>
-		          </a>
-		        </mat-nav-list>
-		      </mat-card>
-		    </ng-container>
+					<!-- Users display -->
+					<mat-card *ngIf="groups.length">
+						<mat-nav-list>
+							<a mat-list-item *ngFor="let group of groups">
+								{{ group.displayName }}
+								<button mat-icon-button matSuffix (click)="removeGroup(group.groupId)"><mat-icon>delete</mat-icon></button>
+							</a>
+						</mat-nav-list>
+					</mat-card>
+				</ng-container>
 			</div>
-	  </mat-tab>
+		</mat-tab>
 	</mat-tab-group>
 </div>
 
 <div class="mat-fab-bottom-right">
-  <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
+	<button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
 </div>
 
 <div class="fab-btn-placeholder"></div>

@@ -8,22 +8,22 @@ import {first, map, tap} from 'rxjs/operators';
 @Injectable()
 export class CanActivateActusEdit implements CanActivate {
 
-  constructor(private auth: AuthService) {
-  }
+	constructor(private auth: AuthService) {
+	}
 
-  canActivate(
-    ) {
-    return zip(
-      this.auth.isAdminOf('actus'),
-      this.auth.isJournalist()
-    ).pipe(
-      first(),
-      map(([admin, journalist]) => admin || journalist),
-      tap(is => {
-        if (!is) {
-          this.auth.goToHome();
-        }
-      })
+	canActivate(
+		) {
+		return zip(
+			this.auth.isAdminOf('actus'),
+			this.auth.isJournalist()
+		).pipe(
+			first(),
+			map(([admin, journalist]) => admin || journalist),
+			tap(is => {
+				if (!is) {
+					this.auth.goToHome();
+				}
+			})
 		);
-  }
+	}
 }

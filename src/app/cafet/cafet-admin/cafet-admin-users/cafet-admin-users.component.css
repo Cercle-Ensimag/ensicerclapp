@@ -1,5 +1,5 @@
 mat-form-field {
-  width: 100%;
+	width: 100%;
 }
 
 mat-panel-title {
@@ -7,14 +7,14 @@ mat-panel-title {
 }
 
 mat-checkbox {
-  margin-left: 12px;
-  margin-right: 12px;
+	margin-left: 12px;
+	margin-right: 12px;
 }
 
 .search-box {
-  display: grid;
-  grid-template-columns: auto 40px;
-  margin: 0;
+	display: grid;
+	grid-template-columns: auto 40px;
+	margin: 0;
 }
 
 .accounts-search, .accordion-container {
@@ -24,65 +24,65 @@ mat-checkbox {
 }
 
 .accounts-search-lg {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-gap: 12px;
-  grid-template-areas:
-    "e e e e"
-    "a b c d";
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	grid-gap: 12px;
+	grid-template-areas:
+		"e e e e"
+		"a b c d";
 }
 
 .accounts-search-md {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-gap: 12px;
-  grid-template-areas:
-    "e e"
-    "a b"
-    "c d";
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	grid-gap: 12px;
+	grid-template-areas:
+		"e e"
+		"a b"
+		"c d";
 }
 
 .accounts-search-sm {
-  display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  grid-gap: 12px;
-  grid-template-areas:
-    "e"
-    "a"
-    "b"
-    "c"
-    "d";
+	display: grid;
+	grid-template-columns: repeat(1, 1fr);
+	grid-gap: 12px;
+	grid-template-areas:
+		"e"
+		"a"
+		"b"
+		"c"
+		"d";
 }
 
 .accounts-search .item0 {
-  grid-area: e;
+	grid-area: e;
 }
 
 .accounts-search .item1 {
-  grid-area: a;
+	grid-area: a;
 }
 
 .accounts-search .item2 {
-  grid-area: b;
+	grid-area: b;
 }
 
 .accounts-search .item3 {
-  grid-area: c;
-  align-self: center;
+	grid-area: c;
+	align-self: center;
 }
 
 .accounts-search .item4 {
-  grid-area: d;
-  align-self: center;
+	grid-area: d;
+	align-self: center;
 }
 
 .accounts-search span {
-  margin-left: 24px;
-  margin-right: 24px;
+	margin-left: 24px;
+	margin-right: 24px;
 }
 
 .accounts-search button {
-  margin-top: 12px;
+	margin-top: 12px;
 }
 
 
@@ -90,40 +90,40 @@ mat-checkbox {
 }
 
 .client-group button {
-  margin-left: 16px;
-  margin-right: 16px;
+	margin-left: 16px;
+	margin-right: 16px;
 }
 
 .client-group mat-form-field {
-  max-width: 100px;
+	max-width: 100px;
 }
 
 .client-large {
-  display: grid;
-  grid-template-columns: 30% 20% 25% 25%;
-  text-align: left;
-  vertical-align: middle;
+	display: grid;
+	grid-template-columns: 30% 20% 25% 25%;
+	text-align: left;
+	vertical-align: middle;
 }
 
 .client-large mat-form-field {
-  max-width: 100px;
+	max-width: 100px;
 }
 
 .client-large span {
-  margin-left: 4px;
-  margin-right: 4px;
-  margin-top: 0;
+	margin-left: 4px;
+	margin-right: 4px;
+	margin-top: 0;
 }
 
 .client-large .text {
-  margin-top: 18px;
+	margin-top: 18px;
 }
 
 .client-large button {
-  margin-left: 4px;
-  margin-right: 4px;
+	margin-left: 4px;
+	margin-right: 4px;
 }
 
 .client-large .history {
-  margin-top: 8px;
+	margin-top: 8px;
 }

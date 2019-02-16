@@ -1,110 +1,110 @@
 <div class="home-container" [class.is-mobile]="media.mobileSize">
 
-  <mat-toolbar color="primary" class="toolbar" [class.is-offline]="auth.isOffline() | async">
-    <button mat-icon-button (click)="snav.toggle()" *ngIf="auth.isLoggedAndHasEmailVerified() | async"><mat-icon>menu</mat-icon></button>
+	<mat-toolbar color="primary" class="toolbar" [class.is-offline]="auth.isOffline() | async">
+		<button mat-icon-button (click)="snav.toggle()" *ngIf="auth.isLoggedAndHasEmailVerified() | async"><mat-icon>menu</mat-icon></button>
 		<div class="click">
 			<h1 class="app-name" routerLink='/home'>
-	      <img src="/assets/img/logo.svg">
-	      <span>{{ d.l.appName }}</span>
-	    </h1>
+				<img src="/assets/img/logo.svg">
+				<span>{{ d.l.appName }}</span>
+			</h1>
 		</div>
-    <div class="right-btns">
-      <button *ngIf="this.location.path() !== '/infos'" mat-icon-button routerLink="/infos">
-        <mat-icon>info</mat-icon>
-      </button>
-      <button *ngIf="this.location.path() === '/infos'" mat-icon-button (click)="location.back()">
-        <mat-icon style="color: #ffffff4f;">info</mat-icon>
-      </button>
-      <ng-container *ngIf="auth.isLogged() | async">
-        <button *ngIf="this.location.path() !== '/account'" mat-icon-button routerLink="/account">
-          <mat-icon>account_circle</mat-icon>
-        </button>
-        <button *ngIf="this.location.path() === '/account' " mat-icon-button (click)="location.back()">
-          <mat-icon style="color: #ffffff4f;">account_circle</mat-icon>
-        </button>
-      </ng-container>
-    </div>
-  </mat-toolbar>
+		<div class="right-btns">
+			<button *ngIf="this.location.path() !== '/infos'" mat-icon-button routerLink="/infos">
+				<mat-icon>info</mat-icon>
+			</button>
+			<button *ngIf="this.location.path() === '/infos'" mat-icon-button (click)="location.back()">
+				<mat-icon style="color: #ffffff4f;">info</mat-icon>
+			</button>
+			<ng-container *ngIf="auth.isLogged() | async">
+				<button *ngIf="this.location.path() !== '/account'" mat-icon-button routerLink="/account">
+					<mat-icon>account_circle</mat-icon>
+				</button>
+				<button *ngIf="this.location.path() === '/account' " mat-icon-button (click)="location.back()">
+					<mat-icon style="color: #ffffff4f;">account_circle</mat-icon>
+				</button>
+			</ng-container>
+		</div>
+	</mat-toolbar>
 
-  <!-- Side navigation bar & content -->
-  <mat-sidenav-container class="sidenav-container" [style.marginTop.px]="media.mobileSize ? 56 : 0">
+	<!-- Side navigation bar & content -->
+	<mat-sidenav-container class="sidenav-container" [style.marginTop.px]="media.mobileSize ? 56 : 0">
 
-    <!-- Side bar -->
-    <mat-sidenav #snav [mode]="media.mobileSize ? 'over' : 'side'" [fixedInViewport]="media.mobileSize" fixedTopGap="56">
-      <ng-container *ngIf="auth.isLoggedAndHasEmailVerified() | async">
-        <ng-container *ngIf="modules.getAppModules() | async as appModules">
-          <mat-nav-list>
-            <div *ngFor="let module of appModules">
-              <a mat-list-item (click)="snav.close()"
-                 *ngIf="!module.disabled"
-                 routerLink="/{{ module.name }}"><img mat-list-avatar src="assets/img/icons/{{module.name}}.png">{{ module.displayName }}</a>
-            </div>
-            <a mat-list-item (click)="snav.close()"
-               *ngIf="auth.isAdmin() | async"
-               routerLink="/admin"
-            > <img mat-list-avatar src="assets/img/icons/admin.png"> {{ d.l.adminLabel }}</a>
-            <a mat-list-item (click)="snav.close()"
-               *ngIf="auth.isAdminOf('actus') | async"
-               routerLink="/actus/admin"
-            > <img mat-list-avatar src="assets/img/icons/admin.png"> {{ d.l.actusAdminLabel }}</a>
-            <a mat-list-item (click)="snav.close()"
-               *ngIf="auth.isJournalist() | async"
-               routerLink="/actus/journalist"
-            > <img mat-list-avatar src="assets/img/icons/admin.png">{{ d.l.journalistLabel }}</a>
-            <a mat-list-item (click)="snav.close()"
-               *ngIf="auth.isAdminOf('jobads') | async"
-               routerLink="/jobads/admin"
-            > <img mat-list-avatar src="assets/img/icons/admin.png">{{ d.l.jobadsAdminLabel }}</a>
-            <a mat-list-item (click)="snav.close()"
-               *ngIf="auth.isAdminOf('cafet') | async"
-               routerLink="/cafet/admin"
-            > <img mat-list-avatar src="assets/img/icons/admin.png">{{ d.l.cafetAdminLabel }}</a>
-            <a mat-list-item (click)="snav.close()"
-               *ngIf="auth.isCafetResp() | async"
-               routerLink="/cafet/resp"
-            > <img mat-list-avatar src="assets/img/icons/admin.png">{{ d.l.cafetRespLabel }}</a>
-            <a mat-list-item (click)="snav.close()"
-               *ngIf="auth.isAdminOf('events') | async"
-               routerLink="/events/admin"
-            > <img mat-list-avatar src="assets/img/icons/admin.png"> {{ d.l.eventsAdminLabel }}</a>
-            <a mat-list-item (click)="snav.close()"
-               *ngIf="auth.isRespCom() | async"
-               routerLink="/events/com-resp"
-            > <img mat-list-avatar src="assets/img/icons/admin.png"> {{ d.l.comRespLabel }}</a>
-            <a mat-list-item (click)="snav.close()"
-               *ngIf="auth.isAdminOf('nsigma') | async"
-               routerLink="/nsigma/admin"
-            > <img mat-list-avatar src="assets/img/icons/admin.png">{{ d.l.nsigmaAdminLabel }}</a>
-            <a mat-list-item (click)="snav.close()"
-               *ngIf="auth.isAdminOf('vote') | async"
-               routerLink="/votes/admin"
-            > <img mat-list-avatar src="assets/img/icons/admin.png"> {{ d.l.voteAdminLabel }}</a>
-            <a mat-list-item (click)="snav.close()"
-               *ngIf="auth.isAssessor() | async"
-               routerLink="/votes/assessor"
-            > <img mat-list-avatar src="assets/img/icons/admin.png"> {{ d.l.assessorLabel }}</a>
-            <a mat-list-item (click)="snav.close()"
-               (click)="snav.close(); auth.logout()"
-            > <img mat-list-avatar src="assets/img/icons/logout.png"> {{ d.l.logOutLabel }}</a>
-          </mat-nav-list>
-        </ng-container>
-      </ng-container>
-    </mat-sidenav>
+		<!-- Side bar -->
+		<mat-sidenav #snav [mode]="media.mobileSize ? 'over' : 'side'" [fixedInViewport]="media.mobileSize" fixedTopGap="56">
+			<ng-container *ngIf="auth.isLoggedAndHasEmailVerified() | async">
+				<ng-container *ngIf="modules.getAppModules() | async as appModules">
+					<mat-nav-list>
+						<div *ngFor="let module of appModules">
+							<a mat-list-item (click)="snav.close()"
+								 *ngIf="!module.disabled"
+								 routerLink="/{{ module.name }}"><img mat-list-avatar src="assets/img/icons/{{module.name}}.png">{{ module.displayName }}</a>
+						</div>
+						<a mat-list-item (click)="snav.close()"
+							 *ngIf="auth.isAdmin() | async"
+							 routerLink="/admin"
+						> <img mat-list-avatar src="assets/img/icons/admin.png"> {{ d.l.adminLabel }}</a>
+						<a mat-list-item (click)="snav.close()"
+							 *ngIf="auth.isAdminOf('actus') | async"
+							 routerLink="/actus/admin"
+						> <img mat-list-avatar src="assets/img/icons/admin.png"> {{ d.l.actusAdminLabel }}</a>
+						<a mat-list-item (click)="snav.close()"
+							 *ngIf="auth.isJournalist() | async"
+							 routerLink="/actus/journalist"
+						> <img mat-list-avatar src="assets/img/icons/admin.png">{{ d.l.journalistLabel }}</a>
+						<a mat-list-item (click)="snav.close()"
+							 *ngIf="auth.isAdminOf('jobads') | async"
+							 routerLink="/jobads/admin"
+						> <img mat-list-avatar src="assets/img/icons/admin.png">{{ d.l.jobadsAdminLabel }}</a>
+						<a mat-list-item (click)="snav.close()"
+							 *ngIf="auth.isAdminOf('cafet') | async"
+							 routerLink="/cafet/admin"
+						> <img mat-list-avatar src="assets/img/icons/admin.png">{{ d.l.cafetAdminLabel }}</a>
+						<a mat-list-item (click)="snav.close()"
+							 *ngIf="auth.isCafetResp() | async"
+							 routerLink="/cafet/resp"
+						> <img mat-list-avatar src="assets/img/icons/admin.png">{{ d.l.cafetRespLabel }}</a>
+						<a mat-list-item (click)="snav.close()"
+							 *ngIf="auth.isAdminOf('events') | async"
+							 routerLink="/events/admin"
+						> <img mat-list-avatar src="assets/img/icons/admin.png"> {{ d.l.eventsAdminLabel }}</a>
+						<a mat-list-item (click)="snav.close()"
+							 *ngIf="auth.isRespCom() | async"
+							 routerLink="/events/com-resp"
+						> <img mat-list-avatar src="assets/img/icons/admin.png"> {{ d.l.comRespLabel }}</a>
+						<a mat-list-item (click)="snav.close()"
+							 *ngIf="auth.isAdminOf('nsigma') | async"
+							 routerLink="/nsigma/admin"
+						> <img mat-list-avatar src="assets/img/icons/admin.png">{{ d.l.nsigmaAdminLabel }}</a>
+						<a mat-list-item (click)="snav.close()"
+							 *ngIf="auth.isAdminOf('vote') | async"
+							 routerLink="/votes/admin"
+						> <img mat-list-avatar src="assets/img/icons/admin.png"> {{ d.l.voteAdminLabel }}</a>
+						<a mat-list-item (click)="snav.close()"
+							 *ngIf="auth.isAssessor() | async"
+							 routerLink="/votes/assessor"
+						> <img mat-list-avatar src="assets/img/icons/admin.png"> {{ d.l.assessorLabel }}</a>
+						<a mat-list-item (click)="snav.close()"
+							 (click)="snav.close(); auth.logout()"
+						> <img mat-list-avatar src="assets/img/icons/logout.png"> {{ d.l.logOutLabel }}</a>
+					</mat-nav-list>
+				</ng-container>
+			</ng-container>
+		</mat-sidenav>
 
-    <!-- Content -->
-    <mat-sidenav-content (swiperight)="openSnav()" (swipeleft)="snav.close()">
-      <div class="container" [class.withCalendar]="location.path() === '/calendar'">
-        <div>
+		<!-- Content -->
+		<mat-sidenav-content (swiperight)="openSnav()" (swipeleft)="snav.close()">
+			<div class="container" [class.withCalendar]="location.path() === '/calendar'">
+				<div>
 					<!-- loading while waiting for id -->
 					<app-loading [loading]="activatedOutlet"></app-loading>
-          <!-- Navigate from the different modules of the app (cafet, vote, calendar, ...) -->
-          <router-outlet
+					<!-- Navigate from the different modules of the app (cafet, vote, calendar, ...) -->
+					<router-outlet
 						(activate)='activatedOutlet=$event'
 						(deactivate)='activatedOutlet=$event'
 					></router-outlet>
-        </div>
-      </div>
-    </mat-sidenav-content>
+				</div>
+			</div>
+		</mat-sidenav-content>
 
-  </mat-sidenav-container>
+	</mat-sidenav-container>
 </div>

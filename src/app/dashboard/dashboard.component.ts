@@ -12,26 +12,27 @@ import { Observable, pipe, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+	selector: 'app-dashboard',
+	templateUrl: './dashboard.component.html',
+	styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
 
 	private _contentObs: { [modName: string]: Observable<string[]> } = {};
 
-  constructor(
+	constructor(
 		private events: EventsService,
 		private cal: CalService,
 		private actus: ActusService,
 		private jobads: JobAdsService,
 		private nsigma: NsigmaService,
 		private votes: VoteService,
-    public modules: AppModulesService,
-    public media: DeviceSizeService
-  ) {}
+		
+		public modules: AppModulesService,
+		public media: DeviceSizeService
+	) {}
 
-  ngOnInit() {
+	ngOnInit() {
 	}
 
 	getContent(modName: string): Observable<string[]>{

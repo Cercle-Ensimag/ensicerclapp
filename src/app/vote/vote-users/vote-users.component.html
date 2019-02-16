@@ -15,7 +15,7 @@
 		<mat-nav-list>
 			<app-paged-list [list]="users" emptyMessage="{{ d.l.noUserMatchInfo }}" #page>
 				<a mat-list-item *ngFor="let user of page.truncatedList()">
-					{{ tools.getNameFromEmailId(user.emailId) }}
+					{{ getUserName(user) }}
 				</a>
 			</app-paged-list>
 		</mat-nav-list>

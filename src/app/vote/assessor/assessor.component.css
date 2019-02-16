@@ -1,18 +1,18 @@
 button {
-  margin-left: 8px;
-  margin-right: 8px;
+	margin-left: 8px;
+	margin-right: 8px;
 }
 
 mat-form-field {
-  width: 100%;
+	width: 100%;
 }
 
 .large {
-  width: 300px;
+	width: 300px;
 }
 
 .domain {
-  max-width: 150px;
+	max-width: 150px;
 }
 
 .item {
@@ -20,6 +20,6 @@ mat-form-field {
 }
 
 mat-card img {
-  vertical-align: middle;
-  margin: 20px !important;
+	vertical-align: middle;
+	margin: 20px !important;
 }

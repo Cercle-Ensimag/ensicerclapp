@@ -1,17 +1,15 @@
-import {Injectable} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {Observable, merge, of, EMPTY} from 'rxjs';
 import {map, tap} from 'rxjs/operators';
 
 import * as CryptoJS from 'crypto-js';
 
-@Injectable()
-export class ToolsService {
+export class Tools {
 
 	constructor() { }
 
 	// Turn an observable into a cached observable (use only if results can be stored as JSON)
-	enableCache(toCache: Observable<any>, identifier: string, json: boolean = true, mapTo: Function = null) {
+	static enableCache(toCache: Observable<any>, identifier: string, json: boolean = true, mapTo: Function = null) {
 		return merge(
 			toCache.pipe(
 				tap(result => {
@@ -31,15 +29,16 @@ export class ToolsService {
 	}
 
 
-	getEmailIdFromEmail(email: string) {
+	static getEmailIdFromEmail(email: string) {
 		return email.toLowerCase().split("@")[0].replace('.', '|');
 	}
 
-	getNameFromEmailId(emailId: string): string {
+	static getNameFromEmailId(emailId: string): string {
+		// TODO: handle number in email ?
 		return this.titleCase(emailId.replace('|', ' ').replace('	', ' '));
 	}
 
-	titleCase(str) {
+	static titleCase(str) {
 		str = str.toLowerCase().split(' ');
 		for (let i = 0; i < str.length; i++) {
 			str[i] = str[i].charAt(0).toUpperCase() + str[i].slice(1);
@@ -47,21 +46,21 @@ export class ToolsService {
 		return str.join(' ');
 	}
 
-	urlValidator(control: FormControl) {
+	static urlValidator(control: FormControl) {
 		if (!control.value.match(/^http(s)?:\/\//)){
 			return { error: true };
 		}
 		return null;
 	}
 
-	timeValidator(control: FormControl) {
+	static timeValidator(control: FormControl) {
 		if (!control.value.match(/^[0-9][0-9]:[0-9][0-9]$/)){
 			return { error: true };
 		}
 		return null;
 	}
 
-	dateValidator() {
+	static dateValidator() {
 		/*
 		if (!control.value.toString().match(/^(Mon|Tue|Wed|Thu|Fri|Sat|Sun) (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) ([0-2][0-9]|3[0-2]) 20[1-9][0-9]/)){
 			return { error: true };
@@ -70,70 +69,55 @@ export class ToolsService {
 		return null;
 	}
 
-	getTimeFromDate(date: any) {
+	static getTimeFromDate(date: any) {
 		if (!date) {
 			return '';
 		}
 		return (new Date(date)).toString().split(' ')[4].substring(0, 5);
 	}
 
-	setDayTime(date: number, time: string) {
+	static setDayTime(date: number, time: string) {
 		let daySp = (new Date(date)).toString().split(" ");
 		daySp[4] = time;
 		return (new Date(daySp.join(" "))).getTime();
 	}
 
-	round(number: number, precision: number) {
+	static round(number: number, precision: number) {
 		const factor = Math.pow(10, precision);
 		const tempNumber = number * factor;
 		const roundedTempNumber = Math.round(tempNumber);
 		return roundedTempNumber / factor;
 	}
 
-	// TODO: Transformer en pipe.
-	truncate(sentence: string, maxLength: number = 100): string{
+	// TODO: Transform to pipe.
+	static truncate(sentence: string, maxLength: number = 100): string {
 		return sentence.slice(0, maxLength) + (sentence.length > 100 ? '...' : '');
 	}
 
-	djb2(str: string){
-		let hash = 5381;
-		for (let i = 0; i < str.length; i++) {
-			hash = ((hash << 5) + hash) + str.charCodeAt(i); /* hash * 33 + c */
-		}
-		return hash;
+	// TODO: use color in calendar view ?
+	static getRGB(str: string): string {
+		var hash = CryptoJS.MD5(str).toString();
+		var rgb = '#' + hash.substring(0,2) + hash.substring(2,4) + hash.substring(4,6);
+		return rgb;
 	}
 
-	hashStringToColor(str: string) {
-		const hash = this.djb2(str);
-		const r = (hash & 0xFF0000) >> 16;
-		const g = (hash & 0x00FF00) >> 8;
-		const b = hash & 0x0000FF;
-		return "#" + ("0" + r.toString(16)).substr(-2) + ("0" + g.toString(16)).substr(-2) + ("0" + b.toString(16)).substr(-2);
-	}
-
-	// getRGB(str: string){
-	//	 var hash = $.md5(str);
-	//	 var rgb = '#' + hash.substring(0,2) + hash.substring(2,4) + hash.substring(4,6);
-	//	 return rgb;
-	// }
-
-	cipher(message: string, key: string): string {
+	static cipher(message: string, key: string): string {
 		return CryptoJS.AES.encrypt(message, key).toString();
 	}
 
-	decipher(code: string, key: string): string {
+	static decipher(code: string, key: string): string {
 		return CryptoJS.AES.decrypt(code, key).toString(CryptoJS.enc.Utf8);
 	}
 
-	generateKey(passwd: string): string {
+	static generateKey(passwd: string): string {
 		return CryptoJS.SHA256(passwd).toString();
 	}
 
-	storeKey(key: string) {
+	static storeKey(key: string) {
 		localStorage.setItem("key", key);
 	}
 
-	loadKey(): string {
+	static loadKey(): string {
 		return localStorage.getItem("key");
 	}
 

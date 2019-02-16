@@ -1,30 +1,30 @@
 mat-card, .item {
-  margin: 5px;
+	margin: 5px;
 	margin-left: 0;
 	margin-right: 0;
 }
 
 mat-card button {
-  margin-left: 16px;
-  margin-right: 16px;
+	margin-left: 16px;
+	margin-right: 16px;
 }
 
 mat-slide-toggle {
-  margin-left: 16px;
-  margin-right: 16px;
+	margin-left: 16px;
+	margin-right: 16px;
 }
 
 .message {
-  max-width: 500px;
-  margin: auto;
+	max-width: 500px;
+	margin: auto;
 }
 
 mat-form-field {
-  width: 100%;
+	width: 100%;
 }
 
 .large {
-  width: 400px;
+	width: 400px;
 }
 
 .asso {

@@ -14,56 +14,56 @@ import {Subject, Observable} from 'rxjs';
 
 
 @Component({
-  selector: 'app-edit-actus',
-  templateUrl: './edit-actus.component.html',
-  styleUrls: ['./edit-actus.component.css']
+	selector: 'app-edit-actus',
+	templateUrl: './edit-actus.component.html',
+	styleUrls: ['./edit-actus.component.css']
 })
 export class EditActusComponent implements OnInit, OnDestroy {
-  private unsubscribe: Subject<void> = new Subject();
+	private unsubscribe: Subject<void> = new Subject();
 
-  public formGroup: FormGroup;
-  public id: string;
+	public formGroup: FormGroup;
+	public id: string;
 
-  constructor(
-    private auth: AuthService,
-    private actus: ActusService,
-    private route: ActivatedRoute,
-    private fb: FormBuilder,
-    private snackBar: MatSnackBar,
+	constructor(
+		private auth: AuthService,
+		private actus: ActusService,
+		private route: ActivatedRoute,
+		private fb: FormBuilder,
+		private snackBar: MatSnackBar,
 
-    public location: Location,
-    public d: DicoService,
-  ) {}
+		public location: Location,
+		public d: DicoService,
+	) {}
 
-  ngOnInit() {
-    this.id = this.route.snapshot.paramMap.get('id');
-    this.initFormGroup();
-  }
+	ngOnInit() {
+		this.id = this.route.snapshot.paramMap.get('id');
+		this.initFormGroup();
+	}
 
-  ngOnDestroy() {
-    this.unsubscribe.next();
-    this.unsubscribe.complete();
-  }
+	ngOnDestroy() {
+		this.unsubscribe.next();
+		this.unsubscribe.complete();
+	}
 
-  initFormGroup() {
-    this.actus.getActu(this.id).pipe(
-      takeUntil(this.unsubscribe))
-      .subscribe((actu) => {
-        if (!actu) {
-          actu = new Actu();
-          this.id = this.actus.getActuId();
-        }
-        this.formGroup = this.fb.group({
-          title: [actu.title || '', [Validators.required, Validators.maxLength(30)]],
-          description: [actu.description || '', [Validators.maxLength(2000)]],
-          image: [actu.image || '', [Validators.maxLength(500)]],
-          pdfLink: [actu.pdfLink || '', [Validators.maxLength(500)]],
-          date: [new Date(actu.date) || '', [Validators.required]],
-          author: [actu.author || '', [Validators.required, Validators.maxLength(50)]],
-          asso1: [actu.groupId1 || null, [Validators.required, Validators.maxLength(30)]]
-        });
-      });
-  }
+	initFormGroup() {
+		this.actus.getActu(this.id).pipe(
+			takeUntil(this.unsubscribe))
+			.subscribe((actu) => {
+				if (!actu) {
+					actu = new Actu();
+					this.id = this.actus.getActuId();
+				}
+				this.formGroup = this.fb.group({
+					title: [actu.title || '', [Validators.required, Validators.maxLength(30)]],
+					description: [actu.description || '', [Validators.maxLength(2000)]],
+					image: [actu.image || '', [Validators.maxLength(500)]],
+					pdfLink: [actu.pdfLink || '', [Validators.maxLength(500)]],
+					date: [new Date(actu.date) || '', [Validators.required]],
+					author: [actu.author || '', [Validators.required, Validators.maxLength(50)]],
+					asso1: [actu.groupId1 || null, [Validators.required, Validators.maxLength(30)]]
+				});
+			});
+	}
 
 	getJournalistGroups(): Observable<Group[]> {
 		return this.actus.getJournalistGroups();
@@ -73,22 +73,22 @@ export class EditActusComponent implements OnInit, OnDestroy {
 		return this.actus.getGroups();
 	}
 
-  submit() {
+	submit() {
 		const actu = {
-      id: this.id,
-      title: this.formGroup.get('title').value,
-      description: this.formGroup.get('description').value,
-      image: this.formGroup.get('image').value,
-      pdfLink: this.formGroup.get('pdfLink').value,
-      date: this.formGroup.get('date').value.getTime(),
-      author: this.formGroup.get('author').value,
+			id: this.id,
+			title: this.formGroup.get('title').value,
+			description: this.formGroup.get('description').value,
+			image: this.formGroup.get('image').value,
+			pdfLink: this.formGroup.get('pdfLink').value,
+			date: this.formGroup.get('date').value.getTime(),
+			author: this.formGroup.get('author').value,
 			groupId1: this.formGroup.get('asso1').value || null
-    };
-    this.actus.setActu(actu).then(() => {
-      this.snackBar.open(this.d.l.changesApplied, this.d.l.okLabel, {duration: 2000});
-      this.initFormGroup();
-    }).catch(reason => {
-      this.snackBar.open(reason, this.d.l.okLabel, {duration: 2000});
-    });
-  }
+		};
+		this.actus.setActu(actu).then(() => {
+			this.snackBar.open(this.d.l.changesApplied, this.d.l.okLabel, {duration: 2000});
+			this.initFormGroup();
+		}).catch(reason => {
+			this.snackBar.open(reason, this.d.l.okLabel, {duration: 2000});
+		});
+	}
 }

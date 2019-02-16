@@ -4,18 +4,18 @@ import {AuthService} from '../auth/auth-service/auth.service';
 import {Location} from '@angular/common';
 
 @Component({
-  selector: 'app-info',
-  templateUrl: './info.component.html',
-  styleUrls: ['./info.component.css']
+	selector: 'app-info',
+	templateUrl: './info.component.html',
+	styleUrls: ['./info.component.css']
 })
 export class InfoComponent implements OnInit {
 
-  constructor(
-      public d: DicoService,
-      public location: Location,
-      public auth: AuthService
-  ) { }
+	constructor(
+		public d: DicoService,
+		public location: Location,
+		public auth: AuthService
+	) { }
 
-  ngOnInit() { }
+	ngOnInit() { }
 
 }

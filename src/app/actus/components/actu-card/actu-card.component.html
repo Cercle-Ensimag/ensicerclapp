@@ -1,17 +1,17 @@
 <app-conditional-router-link link="/actus/actu/{{ actu.id }}" [enabled]="!admin">
-  <mat-card>
-    <mat-card-header>
-      <img mat-card-avatar src="assets/img/icons/actus.png">
-      <mat-card-title>{{ actu.title }}</mat-card-title>
-      <mat-card-subtitle> {{ actu.date | date:'fullDate':'':d.l.locale }}<label *ngFor="let groupId of getActuGroupIds(actu)"> - <i>{{ getGroupName(groupId) | async }}</i></label></mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <p>{{ tools.truncate(actu.description) }}</p>
-    </mat-card-content>
-    <mat-card-actions *ngIf="admin">
-      <button mat-icon-button routerLink="/actus/actu/{{ actu.id }}"><mat-icon>search</mat-icon></button>
-      <button mat-icon-button routerLink="/actus/actu/{{ actu.id }}/edit"><mat-icon>edit</mat-icon></button>
-      <button mat-icon-button (click)="delete()"><mat-icon>delete</mat-icon></button>
-    </mat-card-actions>
-  </mat-card>
+	<mat-card>
+		<mat-card-header>
+			<img mat-card-avatar src="assets/img/icons/actus.png">
+			<mat-card-title>{{ actu.title }}</mat-card-title>
+			<mat-card-subtitle> {{ actu.date | date:'fullDate':'':d.l.locale }}<label *ngFor="let groupId of getActuGroupIds(actu)"> - <i>{{ getGroupName(groupId) | async }}</i></label></mat-card-subtitle>
+		</mat-card-header>
+		<mat-card-content>
+			<p>{{ getDescriptionPreview(actu) }}</p>
+		</mat-card-content>
+		<mat-card-actions *ngIf="admin">
+			<button mat-icon-button routerLink="/actus/actu/{{ actu.id }}"><mat-icon>search</mat-icon></button>
+			<button mat-icon-button routerLink="/actus/actu/{{ actu.id }}/edit"><mat-icon>edit</mat-icon></button>
+			<button mat-icon-button (click)="delete()"><mat-icon>delete</mat-icon></button>
+		</mat-card-actions>
+	</mat-card>
 </app-conditional-router-link>

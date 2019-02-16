@@ -7,15 +7,15 @@ import {DeviceSizeService} from '../../providers/device-size.service';
 import {EventsService, Event, Group, ComResp} from '../events-service/events.service';
 import {AuthService} from '../../auth/auth-service/auth.service';
 import {ListService} from '../../providers/list.service';
-import {ToolsService} from '../../providers/tools.service';
+import {Tools} from '../../providers/tools.service';
 import {DicoService} from '../../language/dico.service';
 import {Subject, Observable} from 'rxjs';
 import {first, map, takeUntil} from 'rxjs/operators';
 
 @Component({
-  selector: 'app-event-admin',
-  templateUrl: './event-admin.component.html',
-  styleUrls: ['./event-admin.component.css']
+	selector: 'app-event-admin',
+	templateUrl: './event-admin.component.html',
+	styleUrls: ['./event-admin.component.css']
 })
 export class EventAdminComponent implements OnInit, OnDestroy {
 	private unsubscribe: Subject<void> = new Subject();
@@ -24,37 +24,39 @@ export class EventAdminComponent implements OnInit, OnDestroy {
 	public groups: Group[];
 	public eventsFormGroup: FormGroup;
 	public respsFormGroup: FormGroup;
-  public groupCtrl = new FormControl('', [Validators.minLength(2), Validators.maxLength(30)]);
+	public groupCtrl = new FormControl('', [Validators.minLength(2), Validators.maxLength(30)]);
 
-  constructor(
-    private auth: AuthService,
-    private snackBar: MatSnackBar,
-    private list: ListService,
-    private fb: FormBuilder,
+	constructor(
+		private auth: AuthService,
+		private snackBar: MatSnackBar,
+		private list: ListService,
+		private fb: FormBuilder,
 
 		public location: Location,
-    public events: EventsService,
-    public media: DeviceSizeService,
-    public tools: ToolsService,
-    public d: DicoService
-  ) {  }
+		public events: EventsService,
+		public media: DeviceSizeService,
+		public d: DicoService
+	) {	}
 
-  ngOnInit () {
+	ngOnInit () {
 		this.respsFormGroup = this.fb.group({
 			email: ['', [this.auth.emailDomainValidator, Validators.email]],
 			asso1: [null, [Validators.required, Validators.maxLength(30)]],
 			asso2: [null, [Validators.maxLength(30)]]
 		});
-		this.events.getGroups().pipe(takeUntil(this.unsubscribe))
-    .subscribe(groups => {
+		this.events.getGroups().pipe(
+			takeUntil(this.unsubscribe)
+		).subscribe(groups => {
 			this.groups = groups;
 			let filters = {};
 			groups.forEach(group => {
-				filters[group.groupId] = [true,  []]
+				filters[group.groupId] = [true,	[]]
 			});
-      this.eventsFormGroup = this.fb.group(filters);
-			this.eventsFormGroup.valueChanges.subscribe(() => this.hasChanged = true);
-    });
+			this.eventsFormGroup = this.fb.group(filters);
+			this.eventsFormGroup.valueChanges.subscribe(
+				() => this.hasChanged = true
+			);
+		});
 	}
 
 	ngOnDestroy() {
@@ -64,7 +66,9 @@ export class EventAdminComponent implements OnInit, OnDestroy {
 
 	getEvents(): Observable<Event[]> {
 		if (!this.eventsObs || this.hasChanged) {
-			this.eventsObs = this.events.getEvents().pipe(map(events => this.filteredEvents(events)));
+			this.eventsObs = this.events.getEvents().pipe(
+				map(events => this.filteredEvents(events))
+			);
 			this.hasChanged = false;
 		}
 		return this.eventsObs;
@@ -86,35 +90,36 @@ export class EventAdminComponent implements OnInit, OnDestroy {
 		);
 	}
 
-  filteredUsers(): Observable<ComResp[]> {
-    let emailId = this.tools.getEmailIdFromEmail(this.respsFormGroup.get('email').value);
-    return this.events.getComResps().pipe(
-      map(users => users.filter(
-        user => user.emailId.includes(emailId)
-      )));
-  }
+	filteredUsers(): Observable<ComResp[]> {
+		let emailId = Tools.getEmailIdFromEmail(this.respsFormGroup.get('email').value);
+		return this.events.getComResps().pipe(
+			map(users => users.filter(
+				user => user.emailId.includes(emailId)
+			))
+		);
+	}
 
-  addComResp() {
+	addComResp() {
 		let email = this.respsFormGroup.get('email').value;
-    let emailId = this.tools.getEmailIdFromEmail(email);
-    this.list.isInList(email)
-      .pipe(first())
-      .subscribe(inList => {
-        if (!inList) {
-          let name = this.tools.getNameFromEmailId(emailId);
-          this.snackBar.open(this.d.format(this.d.l.notOnTheList, name), this.d.l.okLabel, {duration: 2000});
-        } else {
-          this.events.addComResp(
-						email,
-						this.respsFormGroup.get('asso1').value,
-						this.respsFormGroup.get('asso2').value
-					);
-          this.respsFormGroup.get('email').setValue('');
-          this.respsFormGroup.get('asso1').reset();
-          this.respsFormGroup.get('asso2').reset();
-        }
-      });
-  }
+		let emailId = Tools.getEmailIdFromEmail(email);
+		this.list.isInList(email).pipe(
+			first()
+		).subscribe(inList => {
+			if (!inList) {
+				let name = Tools.getNameFromEmailId(emailId);
+				this.snackBar.open(this.d.format(this.d.l.notOnTheList, name), this.d.l.okLabel, {duration: 2000});
+			} else {
+				this.events.addComResp(
+					email,
+					this.respsFormGroup.get('asso1').value,
+					this.respsFormGroup.get('asso2').value
+				);
+				this.respsFormGroup.get('email').setValue('');
+				this.respsFormGroup.get('asso1').reset();
+				this.respsFormGroup.get('asso2').reset();
+			}
+		});
+	}
 
 	getComRespGroups(): Observable<Group[]> {
 		return this.events.getComRespGroups();
@@ -145,6 +150,10 @@ export class EventAdminComponent implements OnInit, OnDestroy {
 
 	getGroupName(groupId: string): Observable<string> {
 		return this.events.getGroupName(groupId);
+	}
+
+	getUserName(user: ComResp): string {
+		return Tools.getNameFromEmailId(user.emailId);
 	}
 
 }

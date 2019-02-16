@@ -1,18 +1,18 @@
 button {
-    margin-top: 2em;
-    max-width: 200px;
+		margin-top: 2em;
+		max-width: 200px;
 }
 
 .border {
-  border-width: 1px;
-  border-color: #333;
-  border-style: dashed;
-  padding: 1em;
+	border-width: 1px;
+	border-color: #333;
+	border-style: dashed;
+	padding: 1em;
 	margin: 2px;
 }
 
 mat-icon {
-  cursor: pointer;
+	cursor: pointer;
 }
 
 mat-card {

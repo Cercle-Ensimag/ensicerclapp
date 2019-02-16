@@ -5,17 +5,17 @@ import {Location} from '@angular/common';
 
 
 @Component({
-  selector: 'app-vote',
-  templateUrl: './vote.component.html',
-  styleUrls: ['./vote.component.css']
+	selector: 'app-vote',
+	templateUrl: './vote.component.html',
+	styleUrls: ['./vote.component.css']
 })
 export class VoteComponent implements OnInit {
-  constructor(
-    public vote: VoteService,
-    public d: DicoService,
-    public location: Location
-  ) { }
+	constructor(
+		public vote: VoteService,
+		public d: DicoService,
+		public location: Location
+	) { }
 
-  ngOnInit() {}
+	ngOnInit() {}
 
 }

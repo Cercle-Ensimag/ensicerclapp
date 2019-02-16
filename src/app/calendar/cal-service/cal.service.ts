@@ -15,7 +15,7 @@ import {environment} from '../../../environments/environment';
 
 import {combineLatest, merge, of, from, EMPTY, Observable, Subject} from 'rxjs';
 import {first, map, catchError, mergeMap, shareReplay, tap, skip} from 'rxjs/operators';
-import {ToolsService} from '../../providers/tools.service';
+import {Tools} from '../../providers/tools.service';
 
 export const COURSE = "course";
 export const PERSOS = "persos";
@@ -121,11 +121,11 @@ export class CalService {
 	constructor(
 		private auth: AuthService,
 		private db: AngularFireDatabase,
-		public d: DicoService,
-		public datepipe: DatePipe,
 		private events: EventsService,
-		private tools: ToolsService,
-		private http: HttpClient
+		private http: HttpClient,
+		
+		public d: DicoService,
+		public datepipe: DatePipe
 	) { }
 
 	getErrorNotifier(): Subject<string> {
@@ -161,7 +161,7 @@ export class CalService {
 
 	getCoursesEvents(): Observable<CalEvent[]> {
 		if (!this._coursesEvents) {
-			this._coursesEvents = this.tools.enableCache(
+			this._coursesEvents = Tools.enableCache(
 				merge(
 					this.getSettings(),
 					this._ADErefresh
@@ -266,7 +266,7 @@ export class CalService {
 
 	getPersosEvents(): Observable<CalEvent[]> {
 		if (!this._persosEvents) {
-			this._persosEvents = this.tools.enableCache(
+			this._persosEvents = Tools.enableCache(
 				this.auth.getUser().pipe(
 					mergeMap(
 						user =>
@@ -339,7 +339,7 @@ export class CalService {
 
 	getCalFromAde(resources: string): Observable<string> {
 		if (!this._calFromAde){
-			this._calFromAde = this.tools.enableCache(
+			this._calFromAde = Tools.enableCache(
 				this.http.get(
 					this.getCoursesURL(resources), { responseType: 'text' }
 				).pipe(
@@ -362,7 +362,7 @@ export class CalService {
 
 	getSettings(): Observable<Settings> {
 		if (!this._settings){
-			this._settings = this.tools.enableCache(
+			this._settings = Tools.enableCache(
 				this.auth.getLoggedUser().pipe(
 					mergeMap(
 						user => this.db.object<Settings>(
@@ -380,7 +380,7 @@ export class CalService {
 	}
 
 	setKey(key: string) {
-		this.tools.storeKey(key);
+		Tools.storeKey(key);
 
 		this.getSettings().pipe(
 			first()
@@ -396,9 +396,9 @@ export class CalService {
 				this._keyRefresh
 			).pipe(
 				map(settings => {
-					const key = this.tools.loadKey();
+					const key = Tools.loadKey();
 					if (key && settings) {
-						const keyHash = this.tools.generateKey(key)
+						const keyHash = Tools.generateKey(key)
 						if (keyHash == settings.keyHash) {
 							return key;
 						}

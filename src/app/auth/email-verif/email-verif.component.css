@@ -1,9 +1,9 @@
 mat-card {
-  max-width: 500px;
-  margin: auto;
+	max-width: 500px;
+	margin: auto;
 }
 
 button {
-  max-width: 200px;
-  margin: 8px;
+	max-width: 200px;
+	margin: 8px;
 }

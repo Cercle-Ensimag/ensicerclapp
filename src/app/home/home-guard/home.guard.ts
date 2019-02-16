@@ -8,24 +8,23 @@ import {AuthService, SimpleUser} from '../../auth/auth-service/auth.service';
 @Injectable()
 export class CanActivateHome implements CanActivate {
 
-  constructor(
-    private auth: AuthService
+	constructor(
+		private auth: AuthService
 	) { }
 
-  canActivate(
-    ) {
-    return this.auth.getSimpleUser().pipe(
-      tap((user: SimpleUser) => {
-        if (!user) {
-          this.auth.goToLogin();
+	canActivate() {
+		return this.auth.getSimpleUser().pipe(
+			tap((user: SimpleUser) => {
+				if (!user) {
+					this.auth.goToLogin();
 					return;
-        }
+				}
 				if (!user.emailVerified) {
-          this.auth.goToEmailVerif();
+					this.auth.goToEmailVerif();
 					return;
-        }
-      }),
-      map(user => !!user)
+				}
+			}),
+			map(user => !!user)
 		);
-  }
+	}
 }

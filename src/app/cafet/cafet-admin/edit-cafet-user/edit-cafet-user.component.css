@@ -1,9 +1,9 @@
 button {
-  max-width: 200px;
+	max-width: 200px;
 }
 
 .button {
-  display: inline-block;
-  margin: 8px;
-  margin-top: 0;
+	display: inline-block;
+	margin: 8px;
+	margin-top: 0;
 }

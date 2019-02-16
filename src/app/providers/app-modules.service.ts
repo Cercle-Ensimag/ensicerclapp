@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {AngularFireDatabase} from '@angular/fire/database';
-import {ToolsService} from './tools.service';
+import {Tools} from './tools.service';
 import {DicoService} from '../language/dico.service';
 import {ListService} from '../providers/list.service';
 import {EventsService, Event} from '../events/events-service/events.service';
@@ -20,11 +20,11 @@ const index = {
 };
 
 export class AppModule {
-  name: string;
-  displayName: string;
+	name: string;
+	displayName: string;
 	fullName: string;
 	description: string;
-  disabled: boolean;
+	disabled: boolean;
 	restricted: boolean;
 	content: boolean;
 	order: number;
@@ -52,14 +52,13 @@ export class AppModulesService {
 	private _hasChanged: boolean = false;
 	private _modulesObs: Observable<AppModule[]>;
 
-  constructor(
-    private db: AngularFireDatabase,
-    private tools: ToolsService,
+	constructor(
+		private db: AngularFireDatabase,
 		private d: DicoService,
 		private list: ListService,
 		private events: EventsService,
 		private votes: VoteService
-  ) {
+	) {
 		for (let mod of Object.getOwnPropertyNames(index)) {
 			this.modules.push(
 				new AppModule(
@@ -83,7 +82,7 @@ export class AppModulesService {
 			this._isPolls = polls.length > 0;
 			this._hasChanged = this._isPolls != isPolls;
 		});
-  }
+	}
 
 	getAppModules(): Observable<AppModule[]> {
 		if (!this._modulesObs || this._hasChanged) {

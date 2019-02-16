@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {CalService, CalEvent} from '../../cal-service/cal.service';
 import {DicoService} from '../../../language/dico.service';
-import {ToolsService} from '../../../providers/tools.service';
+import {Tools} from '../../../providers/tools.service';
 import {DeviceSizeService} from '../../../providers/device-size.service';
 import {DeleteDialogComponent} from '../../../shared-components/delete-dialog/delete-dialog.component';
 import {MatDialog, MatSnackBar} from '@angular/material';
@@ -22,7 +22,6 @@ export class DayColumnComponent implements OnInit {
 	constructor(
 		private dialog: MatDialog,
 		private snackBar: MatSnackBar,
-		private tools: ToolsService,
 
 		public media: DeviceSizeService,
 		public cal: CalService,
@@ -40,7 +39,7 @@ export class DayColumnComponent implements OnInit {
 			return field;
 		}
 		if (this.key) {
-			return this.tools.decipher(field, this.key) || "********";
+			return Tools.decipher(field, this.key) || "********";
 		} else {
 			return "********";
 		}

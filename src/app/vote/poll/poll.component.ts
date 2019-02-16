@@ -11,46 +11,46 @@ import {DicoService} from '../../language/dico.service';
 import {DeleteDialogComponent} from '../../shared-components/delete-dialog/delete-dialog.component';
 
 @Component({
-  selector: 'app-poll',
-  templateUrl: './poll.component.html',
-  styleUrls: ['./poll.component.css']
+	selector: 'app-poll',
+	templateUrl: './poll.component.html',
+	styleUrls: ['./poll.component.css']
 })
 export class PollComponent implements OnInit {
-  public id: string;
+	public id: string;
 
-  constructor(
-    private dialog: MatDialog,
-    private route: ActivatedRoute,
-    private snackBar: MatSnackBar,
+	constructor(
+		private dialog: MatDialog,
+		private route: ActivatedRoute,
+		private snackBar: MatSnackBar,
 
-    public vote: VoteService,
-    public d: DicoService,
-    public location: Location,
+		public vote: VoteService,
+		public d: DicoService,
+		public location: Location,
 
-  ) { }
+	) { }
 
-  ngOnInit() {
-    this.id = this.route.snapshot.paramMap.get('id');
-  }
+	ngOnInit() {
+		this.id = this.route.snapshot.paramMap.get('id');
+	}
 
-  choose(choice: Choice){
-    this.dialog.open(DeleteDialogComponent, {
-      data: {
-        title: this.d.l.confirmVoteDialogTitle,
-        content: this.d.format(this.d.l.confirmVoteDialogContent, choice.label)
-      }
-    }).afterClosed().pipe(
-      first()
+	choose(choice: Choice){
+		this.dialog.open(DeleteDialogComponent, {
+			data: {
+				title: this.d.l.confirmVoteDialogTitle,
+				content: this.d.format(this.d.l.confirmVoteDialogContent, choice.label)
+			}
+		}).afterClosed().pipe(
+			first()
 		).subscribe(result => {
-      if (result) {
-        this.vote.sendVote(this.id, choice.id).then(
+			if (result) {
+				this.vote.sendVote(this.id, choice.id).then(
 					() => {
-	          this.snackBar.open(this.d.format(this.d.l.voteComfirmationMessage, choice.label), this.d.l.okLabel, {duration: 2000});
+						this.snackBar.open(this.d.format(this.d.l.voteComfirmationMessage, choice.label), this.d.l.okLabel, {duration: 2000});
 						this.location.back();
-	        },
+					},
 					(reason) => this.snackBar.open(reason, this.d.l.okLabel, {duration: 2000})
 				);
-      }
-    });
-  }
+			}
+		});
+	}
 }

@@ -7,18 +7,18 @@ import {first, tap} from 'rxjs/operators';
 @Injectable()
 export class NsigmaGuard implements CanActivate {
 
-  constructor(private auth: AuthService) {
-  }
+	constructor(
+		private auth: AuthService
+	) { }
 
-  canActivate(
-    ) {
-    return this.auth.isAdminOf('nsigma').pipe(
-      first(),
-      tap(is => {
-        if (!is) {
-          this.auth.goToHome();
-        }
-      })
+	canActivate() {
+		return this.auth.isAdminOf('nsigma').pipe(
+			first(),
+			tap(is => {
+				if (!is) {
+					this.auth.goToHome();
+				}
+			})
 		);
-  }
+	}
 }

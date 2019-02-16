@@ -2,29 +2,29 @@
 
 <!-- Compte -->
 <div *ngIf="cafet.getMe() | async as me" class="thin-container">
-  <div *ngIf="me.activated" class="center">
-    <!-- Credit -->
-    <mat-card>
-      <h2>{{ d.l.creditLabel }} : {{ me.credit.toFixed(2) }}€</h2>
-      <div><mat-error *ngIf="me.credit < 0" [innerHTML]="d.l.negativeCreditError"></mat-error></div>
-      <button mat-icon-button (click)="openHistory(me)"><mat-icon>history</mat-icon></button>
-    </mat-card>
-    <!-- Week ingredient -->
-    <!-- <mat-card *ngIf="ingredients">
-      <small>{{ d.l.weekIngredientLabel }}:</small>
-      <h2 *ngFor="let ingredient of weekIngredients">{{ ingredient.name }}</h2>
-    </mat-card> -->
-    <!-- Order -->
-    <!-- <mat-card>
-      C'est ici qu'on commandera !
-    </mat-card> -->
-  </div>
+	<div *ngIf="me.activated" class="center">
+		<!-- Credit -->
+		<mat-card>
+			<h2>{{ d.l.creditLabel }} : {{ me.credit.toFixed(2) }}€</h2>
+			<div><mat-error *ngIf="me.credit < 0" [innerHTML]="d.l.negativeCreditError"></mat-error></div>
+			<button mat-icon-button (click)="openHistory(me)"><mat-icon>history</mat-icon></button>
+		</mat-card>
+		<!-- Week ingredient -->
+		<!-- <mat-card *ngIf="ingredients">
+			<small>{{ d.l.weekIngredientLabel }}:</small>
+			<h2 *ngFor="let ingredient of weekIngredients">{{ ingredient.name }}</h2>
+		</mat-card> -->
+		<!-- Order -->
+		<!-- <mat-card>
+			C'est ici qu'on commandera !
+		</mat-card> -->
+	</div>
 
-  <app-cafet-info *ngIf="!me.activated"></app-cafet-info>
+	<app-cafet-info *ngIf="!me.activated"></app-cafet-info>
 </div>
 
 <div class="mat-fab-bottom-right">
-  <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
+	<button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
 </div>
 
 <div class="fab-btn-placeholder"></div>

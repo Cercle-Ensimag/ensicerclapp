@@ -3,117 +3,117 @@
 <app-loading [loading]="filteredUsers() | async"></app-loading>
 
 <div *ngIf="filteredUsers() | async as users">
-  <!-- Header -->
-  <mat-card class="accounts-search">
+	<!-- Header -->
+	<mat-card class="accounts-search">
 
-    <!-- Search account -->
-    <form [formGroup]="formGroup">
+		<!-- Search account -->
+		<form [formGroup]="formGroup">
 
-      <div [class.accounts-search-lg]="media.largeSize" [class.accounts-search-md]="!media.largeSize && ! media.mobileSize" [class.accounts-search-sm]="media.mobileSize">
+			<div [class.accounts-search-lg]="media.largeSize" [class.accounts-search-md]="!media.largeSize && ! media.mobileSize" [class.accounts-search-sm]="media.mobileSize">
 
-        <div class="item0 center">
-          <span class="search-box">
-            <mat-form-field>
-              <input matInput placeholder="{{ d.l.emailLabel }}" formControlName="email" autocomplete="off">
-              <mat-hint *ngIf="formGroup.get('email').valid && users.length > 0">{{ d.format(d.l.cafetAccountsMatch, users.length) }}</mat-hint>
-            </mat-form-field>
-          </span>
-          <mat-checkbox color="primary" formControlName="byCredit">{{ d.l.orderByCreditLabel }}</mat-checkbox>
-          <mat-checkbox color="primary" formControlName="byDate">{{ d.l.orderByLastTransactionDateLabel }}</mat-checkbox>
+				<div class="item0 center">
+					<span class="search-box">
+						<mat-form-field>
+							<input matInput placeholder="{{ d.l.emailLabel }}" formControlName="email" autocomplete="off">
+							<mat-hint *ngIf="formGroup.get('email').valid && users.length > 0">{{ d.format(d.l.cafetAccountsMatch, users.length) }}</mat-hint>
+						</mat-form-field>
+					</span>
+					<mat-checkbox color="primary" formControlName="byCredit">{{ d.l.orderByCreditLabel }}</mat-checkbox>
+					<mat-checkbox color="primary" formControlName="byDate">{{ d.l.orderByLastTransactionDateLabel }}</mat-checkbox>
 
-        </div>
-      </div>
-    </form>
+				</div>
+			</div>
+		</form>
 
-  </mat-card>
+	</mat-card>
 
 	<div class="accordion-container">
-	  <app-paged-list [list]="users" #page>
-	    <!-- Users display, small screens -->
-	    <mat-accordion *ngIf="!media.largeSize" class="client-group">
-	      <mat-expansion-panel *ngFor="let user of page.truncatedList()">
-	        <mat-expansion-panel-header>
-	          <mat-panel-title>
-	            {{ cafet.getUserName(user) }}
-	          </mat-panel-title>
-	          <mat-panel-description>
-	            {{ getUserCredit(user) | async }}€
-	          </mat-panel-description>
-	        </mat-expansion-panel-header>
+		<app-paged-list [list]="users" #page>
+			<!-- Users display, small screens -->
+			<mat-accordion *ngIf="!media.largeSize" class="client-group">
+				<mat-expansion-panel *ngFor="let user of page.truncatedList()">
+					<mat-expansion-panel-header>
+						<mat-panel-title>
+							{{ cafet.getUserName(user) }}
+						</mat-panel-title>
+						<mat-panel-description>
+							{{ getUserCredit(user) | async }}€
+						</mat-panel-description>
+					</mat-expansion-panel-header>
 
-	        <form (ngSubmit)="transaction(user, false)">
-	          <span>
-	            <mat-form-field>
-	              <input type='number' matInput placeholder="{{ d.l.substractButtonLabel }}" [formControl]="controls[user.emailId].sub" autocomplete="off">
-	            </mat-form-field>
-	            <button mat-button
-	                    type="submit"
-	                    [disabled]="controls[user.emailId].sub.invalid"
-	                    color="primary"
-	            >{{ d.l.substractButtonLabel }}</button>
-	          </span>
-	        </form>
-	        <form (ngSubmit)="transaction(user, true)">
-	          <span>
-	            <mat-form-field>
-	              <input type='number' matInput placeholder="{{ d.l.addButtonLabel }}" [formControl]="controls[user.emailId].add" autocomplete="off">
-	            </mat-form-field>
-	            <button mat-button
-	                    type="submit"
-	                    [disabled]="controls[user.emailId].add.invalid"
-	                    color="primary"
-	            >{{ d.l.addButtonLabel }}</button>
-	          </span>
-	        </form>
-	        <button mat-icon-button [disabled]="hasNoDayTransactions(user) | async" (click)="openHistory(user)" matSuffix><mat-icon>history</mat-icon></button>
-	      </mat-expansion-panel>
-	    </mat-accordion>
+					<form (ngSubmit)="transaction(user, false)">
+						<span>
+							<mat-form-field>
+								<input type='number' matInput placeholder="{{ d.l.substractButtonLabel }}" [formControl]="controls[user.emailId].sub" autocomplete="off">
+							</mat-form-field>
+							<button mat-button
+									type="submit"
+									[disabled]="controls[user.emailId].sub.invalid"
+									color="primary"
+							>{{ d.l.substractButtonLabel }}</button>
+						</span>
+					</form>
+					<form (ngSubmit)="transaction(user, true)">
+						<span>
+							<mat-form-field>
+								<input type='number' matInput placeholder="{{ d.l.addButtonLabel }}" [formControl]="controls[user.emailId].add" autocomplete="off">
+							</mat-form-field>
+							<button mat-button
+									type="submit"
+									[disabled]="controls[user.emailId].add.invalid"
+									color="primary"
+							>{{ d.l.addButtonLabel }}</button>
+						</span>
+					</form>
+					<button mat-icon-button [disabled]="hasNoDayTransactions(user) | async" (click)="openHistory(user)" matSuffix><mat-icon>history</mat-icon></button>
+				</mat-expansion-panel>
+			</mat-accordion>
 
-	    <!-- Users display, large screens -->
-	    <div *ngIf="media.largeSize" class="client-group">
-	      <mat-card *ngFor="let user of page.truncatedList()">
-	        <div class="client-large">
-	        <span class="text">
-	          <span>{{ cafet.getUserName(user) }}</span>
-	        </span>
-	          <span>
-	            <button mat-icon-button [disabled]="hasNoDayTransactions(user) | async" (click)="openHistory(user)" class="history" matSuffix><mat-icon>history</mat-icon></button>
-	          <span>{{ getUserCredit(user) | async }}€</span>
-	        </span>
-	          <span>
-	          <form (ngSubmit)="transaction(user, false)">
-	            <mat-form-field>
-	              <input type='number' matInput placeholder="{{ d.l.substractButtonLabel }}" [formControl]="controls[user.emailId].sub" autocomplete="off">
-	            </mat-form-field>
-	            <button mat-button
-	                    type="submit"
-	                    [disabled]="controls[user.emailId].sub.invalid"
-	                    color="primary"
-	            >{{ d.l.substractButtonLabel }}</button>
-	          </form>
-	        </span>
+			<!-- Users display, large screens -->
+			<div *ngIf="media.largeSize" class="client-group">
+				<mat-card *ngFor="let user of page.truncatedList()">
+					<div class="client-large">
+					<span class="text">
+						<span>{{ cafet.getUserName(user) }}</span>
+					</span>
+						<span>
+							<button mat-icon-button [disabled]="hasNoDayTransactions(user) | async" (click)="openHistory(user)" class="history" matSuffix><mat-icon>history</mat-icon></button>
+						<span>{{ getUserCredit(user) | async }}€</span>
+					</span>
+						<span>
+						<form (ngSubmit)="transaction(user, false)">
+							<mat-form-field>
+								<input type='number' matInput placeholder="{{ d.l.substractButtonLabel }}" [formControl]="controls[user.emailId].sub" autocomplete="off">
+							</mat-form-field>
+							<button mat-button
+									type="submit"
+									[disabled]="controls[user.emailId].sub.invalid"
+									color="primary"
+							>{{ d.l.substractButtonLabel }}</button>
+						</form>
+					</span>
 
-	          <span>
-	          <form (ngSubmit)="transaction(user, true)">
-	            <mat-form-field>
-	              <input type='number' matInput placeholder="{{ d.l.addButtonLabel }}" [formControl]="controls[user.emailId].add" autocomplete="off">
-	            </mat-form-field>
-	            <button mat-button
-	                    type="submit"
-	                    [disabled]="controls[user.emailId].add.invalid"
-	                    color="primary"
-	            >{{ d.l.addButtonLabel }}</button>
-	          </form>
-	        </span>
-	        </div>
-	      </mat-card>
-	    </div>
-	  </app-paged-list>
+						<span>
+						<form (ngSubmit)="transaction(user, true)">
+							<mat-form-field>
+								<input type='number' matInput placeholder="{{ d.l.addButtonLabel }}" [formControl]="controls[user.emailId].add" autocomplete="off">
+							</mat-form-field>
+							<button mat-button
+									type="submit"
+									[disabled]="controls[user.emailId].add.invalid"
+									color="primary"
+							>{{ d.l.addButtonLabel }}</button>
+						</form>
+					</span>
+					</div>
+				</mat-card>
+			</div>
+		</app-paged-list>
 	</div>
 </div>
 
 <div class="mat-fab-bottom-right">
-  <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
+	<button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
 </div>
 
 <div class="fab-btn-placeholder"></div>

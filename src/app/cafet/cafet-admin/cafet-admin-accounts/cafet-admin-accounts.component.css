@@ -1,33 +1,33 @@
 mat-form-field {
-  width: 100%;
+	width: 100%;
 }
 
 mat-card {
-  margin: 5px;
+	margin: 5px;
 	margin-left: 0px;
 	margin-right: 0px;
 }
 
 .accounts-card button {
-  margin: 4px;
+	margin: 4px;
 }
 
 .accounts-card iframe {
-  margin-top: 12px;
+	margin-top: 12px;
 }
 
 .accounts-card mat-list {
-  margin-top: 12px;
+	margin-top: 12px;
 }
 
 .accounts-card label {
-  margin-right: 30px;
+	margin-right: 30px;
 }
 
 .plus {
-  color: green;
+	color: green;
 }
 
 .minus {
-  color: red;
+	color: red;
 }

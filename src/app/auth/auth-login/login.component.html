@@ -1,32 +1,32 @@
 <app-loading [loading]="!loading"></app-loading>
 
 <div class="container">
-  <div>
-    <mat-card>
-      <div class="center">
-        <img src="/assets/img/logo.svg" style="max-width: 200px">
-      </div>
-      <form [formGroup]="formGroup" (ngSubmit)="submit()" class="container center">
-        <h2 [innerHTML]="d.l.signInPageTitle"></h2>
+	<div>
+		<mat-card>
+			<div class="center">
+				<img src="/assets/img/logo.svg" style="max-width: 200px">
+			</div>
+			<form [formGroup]="formGroup" (ngSubmit)="submit()" class="container center">
+				<h2 [innerHTML]="d.l.signInPageTitle"></h2>
 
-        <span *ngIf="auth.error" class="error">{{ auth.error }}</span>
+				<span *ngIf="auth.error" class="error">{{ auth.error }}</span>
 
-        <mat-form-field>
-          <input matInput type="email" placeholder="{{ d.l.askForExistingEmailLabel }}" formControlName="email" autocomplete="off">
-          <mat-error *ngIf="formGroup.get('email').invalid">{{ auth.getEmailErrorMessage(formGroup.get('email')) }}</mat-error>
-        </mat-form-field>
+				<mat-form-field>
+					<input matInput type="email" placeholder="{{ d.l.askForExistingEmailLabel }}" formControlName="email" autocomplete="off">
+					<mat-error *ngIf="formGroup.get('email').invalid">{{ auth.getEmailErrorMessage(formGroup.get('email')) }}</mat-error>
+				</mat-form-field>
 
-        <mat-form-field>
-          <input matInput placeholder="{{ d.l.askForExistingPwdLabel }}" formControlName="password" [type]="hide ? 'password' : 'text'" autocomplete="off">
-          <mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
-          <mat-error *ngIf="formGroup.get('password').invalid">{{ d.l.passwordError }}</mat-error>
-        </mat-form-field>
+				<mat-form-field>
+					<input matInput placeholder="{{ d.l.askForExistingPwdLabel }}" formControlName="password" [type]="hide ? 'password' : 'text'" autocomplete="off">
+					<mat-icon matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+					<mat-error *ngIf="formGroup.get('password').invalid">{{ d.l.passwordError }}</mat-error>
+				</mat-form-field>
 
-        <button mat-raised-button type="submit" [disabled]="formGroup.invalid" color="primary">{{ d.l.signInButtonLabel }}</button>
+				<button mat-raised-button type="submit" [disabled]="formGroup.invalid" color="primary">{{ d.l.signInButtonLabel }}</button>
 
-        <a routerLink="/signup" class="alc">{{ d.l.toSignInLabel }}</a>
-        <a routerLink="/password_reset" class="alc">{{ d.l.passwordForgottenLabel }}</a>
-      </form>
-    </mat-card>
-  </div>
+				<a routerLink="/signup" class="alc">{{ d.l.toSignInLabel }}</a>
+				<a routerLink="/password_reset" class="alc">{{ d.l.passwordForgottenLabel }}</a>
+			</form>
+		</mat-card>
+	</div>
 </div>

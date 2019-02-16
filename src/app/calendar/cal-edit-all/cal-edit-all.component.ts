@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Location} from '@angular/common';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {DicoService} from '../../language/dico.service';
-import {ToolsService} from '../../providers/tools.service';
+import {Tools} from '../../providers/tools.service';
 import {CalService, CalEvent} from '../cal-service/cal.service';
 import {DeleteDialogComponent} from '../../shared-components/delete-dialog/delete-dialog.component';
 import {EditCalComponent} from '../edit-cal/edit-cal.component';
@@ -26,8 +26,7 @@ export class CalEditAllComponent implements OnInit {
 		public cal: CalService,
 		public location: Location,
 		private dialog: MatDialog,
-		private snackBar: MatSnackBar,
-		private tools: ToolsService
+		private snackBar: MatSnackBar
 	) { }
 
 	ngOnInit() {
@@ -41,7 +40,7 @@ export class CalEditAllComponent implements OnInit {
 			return field;
 		}
 		if (this.key) {
-			return this.tools.decipher(field, this.key) || "********";
+			return Tools.decipher(field, this.key) || "********";
 		} else {
 			return "********";
 		}

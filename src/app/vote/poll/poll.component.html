@@ -2,11 +2,11 @@
 
 <div *ngIf="vote.getPoll(this.id) | async as poll">
 	<mat-card class="item">
-	  <div>
-	    <h1>{{ poll.title }}</h1>
-	    <mat-error *ngIf="!poll.started">{{ d.l.notStartedInfo }}</mat-error>
-	    <markdown [data]="poll.description"></markdown>
-	  </div>
+		<div>
+			<h1>{{ poll.title }}</h1>
+			<mat-error *ngIf="!poll.started">{{ d.l.notStartedInfo }}</mat-error>
+			<markdown [data]="poll.description"></markdown>
+		</div>
 	</mat-card>
 
 	<div class="grid-container-wrapper">
@@ -25,7 +25,7 @@
 </div>
 
 <div class="mat-fab-bottom-right">
-  <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
+	<button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
 </div>
 
 <div class="fab-btn-placeholder"></div>

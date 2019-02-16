@@ -8,41 +8,41 @@
 			{{ d.l.outdatedAccountInfo }}
 		</div>
 
-	  <!-- Profile form -->
-	  <form [formGroup]="formGroup" class="container">
-	    <mat-form-field>
-	      <input matInput placeholder="{{ d.l.firstNameLabel }}" formControlName="firstname" autocomplete="off">
-	      <mat-error *ngIf="formGroup.get('firstname').invalid">{{ d.l.firstNameError }}</mat-error>
-	    </mat-form-field>
+		<!-- Profile form -->
+		<form [formGroup]="formGroup" class="container">
+			<mat-form-field>
+				<input matInput placeholder="{{ d.l.firstNameLabel }}" formControlName="firstname" autocomplete="off">
+				<mat-error *ngIf="formGroup.get('firstname').invalid">{{ d.l.firstNameError }}</mat-error>
+			</mat-form-field>
 
-	    <mat-form-field>
-	      <input matInput placeholder="{{ d.l.lastNameLabel }}" formControlName="lastname" autocomplete="off">
-	      <mat-error *ngIf="formGroup.get('lastname').invalid">{{ d.l.lastNameError }}</mat-error>
-	    </mat-form-field>
+			<mat-form-field>
+				<input matInput placeholder="{{ d.l.lastNameLabel }}" formControlName="lastname" autocomplete="off">
+				<mat-error *ngIf="formGroup.get('lastname').invalid">{{ d.l.lastNameError }}</mat-error>
+			</mat-form-field>
 
-	    <mat-form-field>
-	      <input matInput placeholder="{{ d.l.nicknameLabel }}" formControlName="login" autocomplete="off">
-	    </mat-form-field>
+			<mat-form-field>
+				<input matInput placeholder="{{ d.l.nicknameLabel }}" formControlName="login" autocomplete="off">
+			</mat-form-field>
 
-	    <mat-form-field>
-	      <input matInput placeholder="{{ d.l.emailLabel }}" formControlName="email" autocomplete="off">
-	    </mat-form-field>
-	  </form>
+			<mat-form-field>
+				<input matInput placeholder="{{ d.l.emailLabel }}" formControlName="email" autocomplete="off">
+			</mat-form-field>
+		</form>
 
-	  <div class="center">
-	    <button mat-raised-button (click)="newPassword()" color="primary">{{ d.l.changePasswordButtonLabel }}</button><br>
-	    <button mat-raised-button (click)="deleteAccount()" color="warn">{{ d.l.deleteAccountButtonLabel }}</button>
-	  </div>
+		<div class="center">
+			<button mat-raised-button (click)="newPassword()" color="primary">{{ d.l.changePasswordButtonLabel }}</button><br>
+			<button mat-raised-button (click)="deleteAccount()" color="warn">{{ d.l.deleteAccountButtonLabel }}</button>
+		</div>
 	</mat-card>
 </div>
 
 <div class="mat-fab-bottom-right">
-  <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
-  <button mat-fab color="primary" *ngIf="formGroup"
-          (click)="updateProfile()"
-          [disabled]="formGroup.invalid || formGroup.pristine">
-    <mat-icon>save</mat-icon>
-  </button>
+	<button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
+	<button mat-fab color="primary" *ngIf="formGroup"
+			(click)="updateProfile()"
+			[disabled]="formGroup.invalid || formGroup.pristine">
+		<mat-icon>save</mat-icon>
+	</button>
 </div>
 
 <div class="fab-btn-placeholder"></div>

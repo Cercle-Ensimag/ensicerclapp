@@ -1,47 +1,47 @@
 <app-loading [loading]="admin.getUsers() | async"></app-loading>
 
 <div>
-  <!-- Header display -->
-  <mat-card *ngIf="admin.getUsers() | async as users" class="item">
-    <h3>{{ d.format(d.l.nbMembersLabel, users.length) }}</h3>
-    <form [formGroup]="formGroup">
-      <mat-form-field class="search">
-        <input matInput placeholder="{{ d.l.search }}" formControlName="search" autocomplete="off">
-        <button mat-icon-button matSuffix><mat-icon>search</mat-icon></button>
-      </mat-form-field>
-      <div class="center">
-       <mat-checkbox *ngFor="let adminString of adminsStrings" [formControlName]="adminString + 'Admins'" color="primary">{{ d.l[adminString + 'AdminPlLabel'] }}</mat-checkbox>
-      </div>
-    </form>
-  </mat-card>
+	<!-- Header display -->
+	<mat-card *ngIf="admin.getUsers() | async as users" class="item">
+		<h3>{{ d.format(d.l.nbMembersLabel, users.length) }}</h3>
+		<form [formGroup]="formGroup">
+			<mat-form-field class="search">
+				<input matInput placeholder="{{ d.l.search }}" formControlName="search" autocomplete="off">
+				<button mat-icon-button matSuffix><mat-icon>search</mat-icon></button>
+			</mat-form-field>
+			<div class="center">
+			 <mat-checkbox *ngFor="let adminString of adminsStrings" [formControlName]="adminString + 'Admins'" color="primary">{{ d.l[adminString + 'AdminPlLabel'] }}</mat-checkbox>
+			</div>
+		</form>
+	</mat-card>
 
-  <!-- Users display -->
+	<!-- Users display -->
 	<div class="item">
-	  <app-paged-list [list]="getUsers() | async" emptyMessage="Aucun utilisateur ne correspond aux filtres." #pagedList>
-	    <mat-accordion>
-	      <div *ngFor="let user of pagedList.truncatedList()">
-	        <mat-expansion-panel *ngIf="user[user.uid]" [expanded]="user.uid == expandedUserUid" (opened)="setExpanded(user.uid)">
-	          <mat-expansion-panel-header>
-	            <mat-panel-title>
-	              {{ getName(user) }}
-	            </mat-panel-title>
-	            <mat-panel-description *ngIf="!media.mobileSize">
-	              {{ user[user.uid].admin.email }}
-	            </mat-panel-description>
-	          </mat-expansion-panel-header>
+		<app-paged-list [list]="getUsers() | async" emptyMessage="Aucun utilisateur ne correspond aux filtres." #pagedList>
+			<mat-accordion>
+				<div *ngFor="let user of pagedList.truncatedList()">
+					<mat-expansion-panel *ngIf="user[user.uid]" [expanded]="user.uid == expandedUserUid" (opened)="setExpanded(user.uid)">
+						<mat-expansion-panel-header>
+							<mat-panel-title>
+								{{ getUserName(user) }}
+							</mat-panel-title>
+							<mat-panel-description *ngIf="!media.mobileSize">
+								{{ user[user.uid].admin.email }}
+							</mat-panel-description>
+						</mat-expansion-panel-header>
 
-	          <div style="text-align: center">
-	            <mat-slide-toggle *ngFor="let adminString of adminsStrings" [checked]="isUserAdminOf(user, adminString)" (change)="setUserAdminOf(user[user.uid].admin.email, user.uid, adminString, $event.checked)" color="primary">{{ d.l[adminString + 'AdminLabel'] }}</mat-slide-toggle>
-	           </div>
-	        </mat-expansion-panel>
-	      </div>
-	    </mat-accordion>
-	  </app-paged-list>
+						<div style="text-align: center">
+							<mat-slide-toggle *ngFor="let adminString of adminsStrings" [checked]="isUserAdminOf(user, adminString)" (change)="setUserAdminOf(user[user.uid].admin.email, user.uid, adminString, $event.checked)" color="primary">{{ d.l[adminString + 'AdminLabel'] }}</mat-slide-toggle>
+						 </div>
+					</mat-expansion-panel>
+				</div>
+			</mat-accordion>
+		</app-paged-list>
 	</div>
 </div>
 
 <div class="mat-fab-bottom-right">
-  <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
+	<button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
 </div>
 
 <div class="fab-btn-placeholder"></div>

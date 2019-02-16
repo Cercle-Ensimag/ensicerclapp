@@ -7,20 +7,18 @@ import {first, tap} from 'rxjs/operators';
 @Injectable()
 export class CanActivateAdmin implements CanActivate {
 
-  constructor(
-    private auth: AuthService,
-  ) {
-  }
+	constructor(
+		private auth: AuthService,
+	) { }
 
-  canActivate(
-    ) {
-    return this.auth.isAdmin().pipe(
+	canActivate() {
+		return this.auth.isAdmin().pipe(
 			first(),
-      tap(is => {
-        if (!is) {
-          this.auth.goToHome();
-        }
-      })
+			tap(is => {
+				if (!is) {
+					this.auth.goToHome();
+				}
+			})
 		);
-  }
+	}
 }

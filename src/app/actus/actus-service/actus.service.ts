@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {AngularFireDatabase} from '@angular/fire/database';
 
-import {ToolsService} from '../../providers/tools.service';
+import {Tools} from '../../providers/tools.service';
 import {AuthService} from '../../auth/auth-service/auth.service';
 
 import {combineLatest, Observable} from 'rxjs';
@@ -38,13 +38,12 @@ export class ActusService {
 
 	constructor(
 		private db: AngularFireDatabase,
-		private tools: ToolsService,
 		private auth: AuthService
 	) { }
 
 	getActus(): Observable<Actu[]> {
 		if (!this._actus){
-			this._actus = this.tools.enableCache(
+			this._actus = Tools.enableCache(
 				this.auth.getLoggedUser().pipe(
 					mergeMap(() => this.db.list<Actu>('actus/actus').valueChanges().pipe(
 						map(actus => actus.reverse())
@@ -139,7 +138,7 @@ export class ActusService {
 
 	getGroups(): Observable<Group[]> {
 		if (!this._groups) {
-			this._groups = this.tools.enableCache(
+			this._groups = Tools.enableCache(
 				this.db.list<Group>('actus/journalists/groups').valueChanges(),
 				'actus-groups'
 			).pipe(
@@ -179,7 +178,7 @@ export class ActusService {
 	}
 
 	addJournalist(email: string, groupId1: string, groupId2: string) {
-		let emailId = this.tools.getEmailIdFromEmail(email);
+		let emailId = Tools.getEmailIdFromEmail(email);
 		return this.db.object<Journalist>('actus/journalists/users/' + emailId).set({
 			emailId: emailId,
 			groupId1: groupId1,

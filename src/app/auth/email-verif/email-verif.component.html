@@ -1,14 +1,14 @@
 <div class="container">
-  <div>
-    <mat-card>
-      <div class="container">
-        <h2>{{ d.l.verificationEmailSentTitle }}</h2>
-        <p [innerHTML]="getInfoMessage()"></p>
-        <div class="center">
-          <button mat-raised-button (click)="sendEmail()" color='primary'>{{ d.l.sendEmailAgainButtonLabel }}</button>
-          <button mat-raised-button (click)="goToLogin()" color='primary'>{{ d.l.signInButtonLabel }}</button>
-        </div>
-      </div>
-    </mat-card>
-  </div>
+	<div>
+		<mat-card>
+			<div class="container">
+				<h2>{{ d.l.verificationEmailSentTitle }}</h2>
+				<p [innerHTML]="getInfoMessage()"></p>
+				<div class="center">
+					<button mat-raised-button (click)="sendEmail()" color='primary'>{{ d.l.sendEmailAgainButtonLabel }}</button>
+					<button mat-raised-button (click)="goToLogin()" color='primary'>{{ d.l.signInButtonLabel }}</button>
+				</div>
+			</div>
+		</mat-card>
+	</div>
 </div>

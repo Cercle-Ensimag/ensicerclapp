@@ -4,7 +4,7 @@ import {AngularFireDatabase} from '@angular/fire/database';
 import {from, Observable, of, combineLatest, EMPTY} from 'rxjs';
 import {map, mergeMap, catchError, first, shareReplay, tap} from 'rxjs/operators';
 
-import {ToolsService} from '../../providers/tools.service';
+import {Tools} from '../../providers/tools.service';
 import {AuthService} from '../../auth/auth-service/auth.service';
 import {Assessor} from '../vote-admin/vote-admin.component';
 import {VoteUser} from '../vote-users/vote-users.component';
@@ -39,14 +39,13 @@ export class VoteService {
 
 	constructor(
 		private db: AngularFireDatabase,
-		private auth: AuthService,
-		private tools: ToolsService
+		private auth: AuthService
 	) {
 	}
 
 	getPolls(): Observable<Poll[]> {
 		if (!this._polls) {
-			this._polls = this.tools.enableCache(
+			this._polls = Tools.enableCache(
 				this.auth.getLoggedUser().pipe(
 					mergeMap(
 						() => this.db.list<Poll>('vote/polls').valueChanges()
@@ -83,7 +82,7 @@ export class VoteService {
 				return toReturn;
 			}),
 			shareReplay(1)
-		)
+		);
 	}
 
 	getPoll(pollId: string): Observable<Poll> {
@@ -102,7 +101,7 @@ export class VoteService {
 
 	getVotes(): Observable<{ [pollId: string]: boolean }> {
 		if (!this._votes) {
-			this._votes = this.tools.enableCache(
+			this._votes = Tools.enableCache(
 				this.auth.getEmailId().pipe(
 					mergeMap(
 						(emailId: string) => this.db.object<{ [pollId: string]: boolean }>(
@@ -228,7 +227,6 @@ export class VoteService {
 		return Promise.all(promises);
 	}
 
-	// TODO
 	sendVote(pollId: string, choiceId: string) {
 		return this.auth.getEmailId().pipe(
 			mergeMap((emailId: string) => this.db.object(
@@ -240,9 +238,8 @@ export class VoteService {
 		).toPromise();
 	}
 
-	// TODO
 	markAsVoted(pollId: string, email: string) {
-		const emailId = this.tools.getEmailIdFromEmail(email);
+		const emailId = Tools.getEmailIdFromEmail(email);
 		const refs = {
 			emailId: emailId,
 			voted: true
@@ -270,7 +267,7 @@ export class VoteService {
 	}
 
 	addAssessor(email: string) {
-		let emailId = this.tools.getEmailIdFromEmail(email);
+		let emailId = Tools.getEmailIdFromEmail(email);
 		return this.db.object<Assessor>('vote/assessors/' + emailId).set({emailId: emailId});
 	}
 }

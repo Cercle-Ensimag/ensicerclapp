@@ -1,25 +1,25 @@
 .loading-background {
-  position: fixed;
-  width: 100vW;
-  height: 100vh;
-  background-color: rgba(0,0,0,0.05);
-  z-index: 10;
-  top: 0;
-  left: 0;
+	position: fixed;
+	width: 100vW;
+	height: 100vh;
+	background-color: rgba(0,0,0,0.05);
+	z-index: 10;
+	top: 0;
+	left: 0;
 }
 
 /* Absolute Center Spinner */
 .loading-indicator.fullPage {
-  position: fixed;
-  z-index: 999;
-  height: 2em;
-  width: 2em;
-  margin: auto;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  transform: translateX(-100%);
+	position: fixed;
+	z-index: 999;
+	height: 2em;
+	width: 2em;
+	margin: auto;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	transform: translateX(-100%);
 }
 
 mat-progress-spinner {

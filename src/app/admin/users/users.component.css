@@ -1,22 +1,22 @@
 mat-slide-toggle {
-  margin-left: 12px;
-  margin-right: 12px;
-  margin-bottom: 8px;
+	margin-left: 12px;
+	margin-right: 12px;
+	margin-bottom: 8px;
 }
 
 .item {
-  margin: 5px;
+	margin: 5px;
 }
 
 .search {
-  width: 100%;
+	width: 100%;
 }
 
 mat-checkbox {
-  margin-left: 12px;
-  margin-right: 12px;
+	margin-left: 12px;
+	margin-right: 12px;
 }
 
 mat-panel-title {
-  width: 250px;
+	width: 250px;
 }

@@ -9,28 +9,28 @@ import {Observable, pipe} from 'rxjs';
 import {map, tap, mergeMap, first} from 'rxjs/operators';
 
 @Component({
-  selector: 'app-event',
-  templateUrl: './event.component.html',
-  styleUrls: ['./event.component.css']
+	selector: 'app-event',
+	templateUrl: './event.component.html',
+	styleUrls: ['./event.component.css']
 })
 export class EventComponent implements OnInit {
-  public id: string;
+	public id: string;
 	private _inCalendar: Observable<boolean>;
 
-  constructor(
-    private route: ActivatedRoute,
+	constructor(
+		private route: ActivatedRoute,
 		private cal: CalService,
 
-    public events: EventsService,
-    public location: Location,
-    public d: DicoService
-  ) { }
+		public events: EventsService,
+		public location: Location,
+		public d: DicoService
+	) { }
 
-  ngOnInit() {
-    this.id = this.route.snapshot.paramMap.get('id');
-  }
+	ngOnInit() {
+		this.id = this.route.snapshot.paramMap.get('id');
+	}
 
-  isInCalendar(): Observable<boolean> {
+	isInCalendar(): Observable<boolean> {
 		if (!this._inCalendar) {
 			this._inCalendar = this.cal.getSettings().pipe(
 				mergeMap(settings => {
@@ -43,7 +43,7 @@ export class EventComponent implements OnInit {
 			);
 		}
 		return this._inCalendar;
-  }
+	}
 
 	removeEvent(eventId: string): Promise<any> {
 		return this.cal.getSettings().pipe(

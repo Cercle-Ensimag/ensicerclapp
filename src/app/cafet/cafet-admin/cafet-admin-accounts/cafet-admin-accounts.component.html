@@ -1,11 +1,11 @@
 <!-- Accounts management -->
 <!-- Print accounts -->
 <mat-card class="accounts-card center">
-  <button *ngIf="!pdf" mat-raised-button (click)="printAccountsPdf()" color="primary">{{ d.l.printAccountsToPdf }}</button>
-  <button *ngIf="pdf" mat-raised-button (click)="pdf = null">{{ d.l.leaveAccountsToPdfPreview }}</button>
-  <button mat-raised-button (click)="saveAccountsPdf()" color="primary">{{ d.l.saveAccountsToPdf }}</button>
+	<button *ngIf="!pdf" mat-raised-button (click)="printAccountsPdf()" color="primary">{{ d.l.printAccountsToPdf }}</button>
+	<button *ngIf="pdf" mat-raised-button (click)="pdf = null">{{ d.l.leaveAccountsToPdfPreview }}</button>
+	<button mat-raised-button (click)="saveAccountsPdf()" color="primary">{{ d.l.saveAccountsToPdf }}</button>
 
-  <iframe *ngIf="pdf" width='100%' height='50vh'  style="height: 60vh;" type="application/pdf" [name]="pdf.name" [src]="pdf.src"></iframe>
+	<iframe *ngIf="pdf" width='100%' height='50vh'	style="height: 60vh;" type="application/pdf" [name]="pdf.name" [src]="pdf.src"></iframe>
 </mat-card>
 
 <!-- Loading -->
@@ -13,35 +13,35 @@
 
 <!-- Day transactions -->
 <div *ngIf="getDayTransactions() | async as dayTransactions">
-  <mat-card *ngIf="!pdf" class="accounts-card">
-    
-    <div *ngIf="dayTransactions.length" class="center">
-      <button *ngIf="!reviewing" mat-raised-button (click)="reviewing=true" color="primary">{{ d.l.displayDayAccountsPreview }}</button>
-      <button *ngIf="reviewing" mat-raised-button (click)="reviewing=false; editing=false">{{ d.l.leaveDayAccountsPreview }}</button>
-      <button *ngIf="reviewing && !editing" mat-raised-button (click)="editing=true">{{ d.l.modifyLabel }}</button>
-      <button *ngIf="reviewing && editing" mat-raised-button (click)="editing=false">{{ d.l.backLabel }}</button>
-      <button *ngIf="reviewing && !editing" mat-raised-button (click)="validateDayTransactions()" color="primary">{{ d.l.validateDayTransactionsButtonLabel }}</button>
+	<mat-card *ngIf="!pdf" class="accounts-card">
 
-      <!-- Preview -->
-      <div *ngIf="reviewing">
-        <mat-list>
-          <div *ngFor="let dayUser of dayTransactions">
-            <div *ngFor="let trans of dayUser.transactions">
-              <mat-list-item>
-                <label>{{ cafet.getUserName(dayUser.user) }}</label>
-                <label [class.plus]="trans.value > 0" [class.minus]="trans.value < 0">{{ trans.value.toFixed(2) }}€</label>
-                <label>par {{ cafet.getUserName({ emailId: trans.resp }) }}</label>
-                <button *ngIf="editing" mat-icon-button (click)="deleteDayTransaction(dayUser.user.emailId, trans.id)"><mat-icon>delete</mat-icon></button>
-              </mat-list-item>
-            </div>
-          </div>
-        </mat-list>
-      </div>
-    </div>
+		<div *ngIf="dayTransactions.length" class="center">
+			<button *ngIf="!reviewing" mat-raised-button (click)="reviewing=true" color="primary">{{ d.l.displayDayAccountsPreview }}</button>
+			<button *ngIf="reviewing" mat-raised-button (click)="reviewing=false; editing=false">{{ d.l.leaveDayAccountsPreview }}</button>
+			<button *ngIf="reviewing && !editing" mat-raised-button (click)="editing=true">{{ d.l.modifyLabel }}</button>
+			<button *ngIf="reviewing && editing" mat-raised-button (click)="editing=false">{{ d.l.backLabel }}</button>
+			<button *ngIf="reviewing && !editing" mat-raised-button (click)="validateDayTransactions()" color="primary">{{ d.l.validateDayTransactionsButtonLabel }}</button>
 
-    <div *ngIf="!dayTransactions.length">
-      {{ d.l.noDayTransactions }}
-    </div>
+			<!-- Preview -->
+			<div *ngIf="reviewing">
+				<mat-list>
+					<div *ngFor="let dayUser of dayTransactions">
+						<div *ngFor="let trans of dayUser.transactions">
+							<mat-list-item>
+								<label>{{ cafet.getUserName(dayUser.user) }}</label>
+								<label [class.plus]="trans.value > 0" [class.minus]="trans.value < 0">{{ trans.value.toFixed(2) }}€</label>
+								<label>par {{ cafet.getUserName({ emailId: trans.resp }) }}</label>
+								<button *ngIf="editing" mat-icon-button (click)="deleteDayTransaction(dayUser.user.emailId, trans.id)"><mat-icon>delete</mat-icon></button>
+							</mat-list-item>
+						</div>
+					</div>
+				</mat-list>
+			</div>
+		</div>
 
-  </mat-card>
+		<div *ngIf="!dayTransactions.length">
+			{{ d.l.noDayTransactions }}
+		</div>
+
+	</mat-card>
 </div>

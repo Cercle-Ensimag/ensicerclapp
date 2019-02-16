@@ -1,20 +1,20 @@
 mat-card {
-  max-width: 400px;
-  margin: auto;
+	max-width: 400px;
+	margin: auto;
 }
 
 button {
-  margin-top: 2em;
+	margin-top: 2em;
 }
 
 mat-form-field {
-  margin-top: 0.3em;
-  margin-bottom: 0.3em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
 }
 
 .alc {
-  color: #00c44c;
-  text-align:center;
-  display:block;
-  margin-top: 1em;
+	color: #00c44c;
+	text-align:center;
+	display:block;
+	margin-top: 1em;
 }

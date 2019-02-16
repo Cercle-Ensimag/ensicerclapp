@@ -13,71 +13,71 @@ import {map} from 'rxjs/operators';
 const DAY_LENGTH = 24 * 60 * 60* 1000;
 
 @Component({
-  selector: 'app-calendar',
-  templateUrl: './calendar.component.html',
-  styleUrls: ['./calendar.component.css']
+	selector: 'app-calendar',
+	templateUrl: './calendar.component.html',
+	styleUrls: ['./calendar.component.css']
 })
 export class CalendarComponent implements OnInit {
-  public daysOfTheWeek = [];
-  public selectedDay: Date = new Date();
+	public daysOfTheWeek = [];
+	public selectedDay: Date = new Date();
 
-  constructor(
+	constructor(
 		private cal: CalService,
-    private dialog: MatDialog,
+		private dialog: MatDialog,
 		private snackBar: MatSnackBar,
-    public media: DeviceSizeService,
-    public location: Location,
-    public d: DicoService
-  ) {
+		public media: DeviceSizeService,
+		public location: Location,
+		public d: DicoService
+	) {
 	}
 
-  ngOnInit() {
+	ngOnInit() {
 		this.cal.getErrorNotifier().subscribe(
 			message => this.snackBar.open(message, this.d.l.okLabel, {duration: 2000})
 		);
-    this.selectedDay = new Date();
-    this.updateDaysOfTheWeek();
-  }
+		this.selectedDay = new Date();
+		this.updateDaysOfTheWeek();
+	}
 
-  updateDaysOfTheWeek() {
-    let monday = new Date(this.selectedDay);
-    while (monday.getDay()!== 1){
-      monday = new Date(monday.getTime() - DAY_LENGTH);
-    }
-    this.daysOfTheWeek = [
-      monday,
-      new Date(monday.getTime() + DAY_LENGTH),
-      new Date(monday.getTime() + DAY_LENGTH * 2),
-      new Date(monday.getTime() + DAY_LENGTH * 3),
-      new Date(monday.getTime() + DAY_LENGTH * 4),
-      new Date(monday.getTime() + DAY_LENGTH * 5),
-      new Date(monday.getTime() + DAY_LENGTH * 6)
-    ];
-  }
+	updateDaysOfTheWeek() {
+		let monday = new Date(this.selectedDay);
+		while (monday.getDay()!== 1){
+			monday = new Date(monday.getTime() - DAY_LENGTH);
+		}
+		this.daysOfTheWeek = [
+			monday,
+			new Date(monday.getTime() + DAY_LENGTH),
+			new Date(monday.getTime() + DAY_LENGTH * 2),
+			new Date(monday.getTime() + DAY_LENGTH * 3),
+			new Date(monday.getTime() + DAY_LENGTH * 4),
+			new Date(monday.getTime() + DAY_LENGTH * 5),
+			new Date(monday.getTime() + DAY_LENGTH * 6)
+		];
+	}
 
-  previousDay() {
-    this.selectedDay = new Date(this.selectedDay.getTime() - DAY_LENGTH);
-  }
+	previousDay() {
+		this.selectedDay = new Date(this.selectedDay.getTime() - DAY_LENGTH);
+	}
 
-  nextDay() {
-    this.selectedDay = new Date(this.selectedDay.getTime() + DAY_LENGTH);
-  }
+	nextDay() {
+		this.selectedDay = new Date(this.selectedDay.getTime() + DAY_LENGTH);
+	}
 
-  previousWeek() {
-    this.selectedDay = new Date(this.selectedDay.getTime() - DAY_LENGTH * 7);
-    this.updateDaysOfTheWeek();
-  }
+	previousWeek() {
+		this.selectedDay = new Date(this.selectedDay.getTime() - DAY_LENGTH * 7);
+		this.updateDaysOfTheWeek();
+	}
 
-  nextWeek() {
-    this.selectedDay = new Date(this.selectedDay.getTime() + DAY_LENGTH * 7);
-    this.updateDaysOfTheWeek();
-  }
+	nextWeek() {
+		this.selectedDay = new Date(this.selectedDay.getTime() + DAY_LENGTH * 7);
+		this.updateDaysOfTheWeek();
+	}
 
 	openCreateEvent(): void {
-    this.dialog.open(EditCalComponent, {
-      data: {day: this.selectedDay, id: "-"},
-      width: '450px'
-    });
+		this.dialog.open(EditCalComponent, {
+			data: {day: this.selectedDay, id: "-"},
+			width: '450px'
+		});
 	}
 
 	refreshADE() {

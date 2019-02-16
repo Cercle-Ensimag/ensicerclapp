@@ -4,78 +4,78 @@
 <div class="thin-container">
 	<!-- Nsigma jobad display -->
 	<mat-card *ngIf="formGroup">
-	  <form [formGroup]="formGroup" class="container">
+		<form [formGroup]="formGroup" class="container">
 
-	    <mat-form-field>
-	      <input matInput placeholder="{{ d.l.nsigmaTitleLabel }}" formControlName="title" autocomplete="off">
-	      <mat-error *ngIf="formGroup.get('title').invalid">{{ d.l.nsigmaTitleError }}</mat-error>
-	    </mat-form-field>
+			<mat-form-field>
+				<input matInput placeholder="{{ d.l.nsigmaTitleLabel }}" formControlName="title" autocomplete="off">
+				<mat-error *ngIf="formGroup.get('title').invalid">{{ d.l.nsigmaTitleError }}</mat-error>
+			</mat-form-field>
 
-	    <mat-form-field>
-	      <textarea matInput placeholder="{{ d.l.nsigmaDescriptionLabel }}" formControlName="description"></textarea>
-	      <mat-error *ngIf="formGroup.get('description').invalid">{{ d.l.nsigmaDescriptionError }}</mat-error>
-	    </mat-form-field>
+			<mat-form-field>
+				<textarea matInput placeholder="{{ d.l.nsigmaDescriptionLabel }}" formControlName="description"></textarea>
+				<mat-error *ngIf="formGroup.get('description').invalid">{{ d.l.nsigmaDescriptionError }}</mat-error>
+			</mat-form-field>
 
-	    <markdown [data]="formGroup.get('description').value"></markdown>
+			<markdown [data]="formGroup.get('description').value"></markdown>
 
-	    <mat-form-field>
-	      <mat-select placeholder="{{ d.l.nsigmaTypeLabel }}" formControlName="type">
-	        <mat-option *ngFor="let i of [0, 1, 2, 3, 4, 5, 6]" [value]="i">{{ d.l['nsigmaType' + i] }}</mat-option>
-	      </mat-select>
-	      <mat-error *ngIf="formGroup.get('type').invalid">{{ d.l.nsigmaTypeError }}</mat-error>
-	    </mat-form-field>
+			<mat-form-field>
+				<mat-select placeholder="{{ d.l.nsigmaTypeLabel }}" formControlName="type">
+					<mat-option *ngFor="let i of [0, 1, 2, 3, 4, 5, 6]" [value]="i">{{ d.l['nsigmaType' + i] }}</mat-option>
+				</mat-select>
+				<mat-error *ngIf="formGroup.get('type').invalid">{{ d.l.nsigmaTypeError }}</mat-error>
+			</mat-form-field>
 
-	    <div class="grid-container">
-	      <mat-form-field style="max-width: 200px">
-	        <input matInput [matDatepicker]="picker1" placeholder="{{ d.l.nsigmaStartLabel }}" formControlName="start" autocomplete="off">
-	        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-	        <mat-datepicker #picker1></mat-datepicker>
-	        <mat-error *ngIf="formGroup.get('start').invalid">{{ d.l.nsigmaStartError }}</mat-error>
-	      </mat-form-field>
+			<div class="grid-container">
+				<mat-form-field style="max-width: 200px">
+					<input matInput [matDatepicker]="picker1" placeholder="{{ d.l.nsigmaStartLabel }}" formControlName="start" autocomplete="off">
+					<mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+					<mat-datepicker #picker1></mat-datepicker>
+					<mat-error *ngIf="formGroup.get('start').invalid">{{ d.l.nsigmaStartError }}</mat-error>
+				</mat-form-field>
 
-	      <mat-form-field style="max-width: 200px">
-	        <input matInput [matDatepicker]="picker2" placeholder="{{ d.l.nsigmaEndLabel }}" formControlName="end" autocomplete="off">
-	        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-	        <mat-datepicker #picker2></mat-datepicker>
-	        <mat-error *ngIf="formGroup.get('end').invalid">{{ d.l.nsigmaEndError }}</mat-error>
-	      </mat-form-field>
-	    </div>
+				<mat-form-field style="max-width: 200px">
+					<input matInput [matDatepicker]="picker2" placeholder="{{ d.l.nsigmaEndLabel }}" formControlName="end" autocomplete="off">
+					<mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+					<mat-datepicker #picker2></mat-datepicker>
+					<mat-error *ngIf="formGroup.get('end').invalid">{{ d.l.nsigmaEndError }}</mat-error>
+				</mat-form-field>
+			</div>
 
-	    <mat-form-field>
-	      <input matInput placeholder="{{ d.l.nsigmaTechnologiesLabel }}" formControlName="technologies" autocomplete="off">
-	      <mat-error *ngIf="formGroup.get('technologies').invalid">{{ d.l.nsigmaTechnologiesError }}</mat-error>
-	    </mat-form-field>
+			<mat-form-field>
+				<input matInput placeholder="{{ d.l.nsigmaTechnologiesLabel }}" formControlName="technologies" autocomplete="off">
+				<mat-error *ngIf="formGroup.get('technologies').invalid">{{ d.l.nsigmaTechnologiesError }}</mat-error>
+			</mat-form-field>
 
-	    <mat-form-field>
-	      <input matInput placeholder="{{ d.l.nsigmaDifficultyLabel }}" formControlName="difficulty" autocomplete="off">
-	      <mat-error *ngIf="formGroup.get('difficulty').invalid">{{ d.l.nsigmaDifficultyError }}</mat-error>
-	    </mat-form-field>
+			<mat-form-field>
+				<input matInput placeholder="{{ d.l.nsigmaDifficultyLabel }}" formControlName="difficulty" autocomplete="off">
+				<mat-error *ngIf="formGroup.get('difficulty').invalid">{{ d.l.nsigmaDifficultyError }}</mat-error>
+			</mat-form-field>
 
-	    <mat-form-field>
-	      <input type="number" matInput placeholder="{{ d.l.nsigmaRemunerationLabel }}" formControlName="remuneration" autocomplete="off">
-	      <mat-error *ngIf="formGroup.get('remuneration').invalid">{{ d.l.nsigmaRemunerationError }}</mat-error>
-	    </mat-form-field>
+			<mat-form-field>
+				<input type="number" matInput placeholder="{{ d.l.nsigmaRemunerationLabel }}" formControlName="remuneration" autocomplete="off">
+				<mat-error *ngIf="formGroup.get('remuneration').invalid">{{ d.l.nsigmaRemunerationError }}</mat-error>
+			</mat-form-field>
 
-	    <mat-form-field>
-	      <input matInput placeholder="{{ d.l.nsigmaFormLabel }}" formControlName="form" autocomplete="off">
-	      <mat-error *ngIf="formGroup.get('form').invalid">{{ d.l.nsigmaFormError }}</mat-error>
-	    </mat-form-field>
+			<mat-form-field>
+				<input matInput placeholder="{{ d.l.nsigmaFormLabel }}" formControlName="form" autocomplete="off">
+				<mat-error *ngIf="formGroup.get('form').invalid">{{ d.l.nsigmaFormError }}</mat-error>
+			</mat-form-field>
 
-	    <mat-slide-toggle formControlName="done" color="primary">
-	      <span *ngIf="!formGroup.get('done').value">{{ d.l.nsigmaJobAdsOngoing }}</span>
-	      <span *ngIf="formGroup.get('done').value">{{ d.l.nsigmaJobAdsDone }}</span>
-	    </mat-slide-toggle>
-	  </form>
+			<mat-slide-toggle formControlName="done" color="primary">
+				<span *ngIf="!formGroup.get('done').value">{{ d.l.nsigmaJobAdsOngoing }}</span>
+				<span *ngIf="formGroup.get('done').value">{{ d.l.nsigmaJobAdsDone }}</span>
+			</mat-slide-toggle>
+		</form>
 	</mat-card>
 </div>
 
 <div class="mat-fab-bottom-right">
-  <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
-  <button *ngIf="formGroup" mat-fab color="primary"
-          (click)="submit()"
-          [disabled]="formGroup.invalid || formGroup.pristine">
-    <mat-icon>save</mat-icon>
-  </button>
+	<button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
+	<button *ngIf="formGroup" mat-fab color="primary"
+			(click)="submit()"
+			[disabled]="formGroup.invalid || formGroup.pristine">
+		<mat-icon>save</mat-icon>
+	</button>
 </div>
 
 <div class="fab-btn-placeholder"></div>

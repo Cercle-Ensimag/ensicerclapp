@@ -3,22 +3,22 @@
 <div class="thin-container">
 	<!-- JobAd display -->
 	<mat-card *ngIf="jobads.getJobAd(id) | async as jobad">
-	  <mat-card-header>
-	    <img mat-card-avatar src="assets/img/jobads-types/{{ jobad.type }}.png">
-	    <mat-card-title>{{ jobad.done ? '[' + d.l.jobadDone + '] ' : ''}}{{ jobad.title }}</mat-card-title>
-	    <mat-card-subtitle> {{ jobad.author }} - {{ jobad.contact }} </mat-card-subtitle>
-	  </mat-card-header>
-	  <mat-card-content>
-	    <p><b>{{ d.l.technologiesIntro }}</b>{{ jobad.technologies}}</p>
-	    <p><b>{{ d.l.jobadDurationIntro }}</b>{{ jobad.length }}</p>
-	    <p><b>{{ d.format(jobad.start | date:d.l.longDateFormat:'':d.l.locale) }}</b></p>
-	    <markdown [data]="jobad.description"></markdown>
-	  </mat-card-content>
+		<mat-card-header>
+			<img mat-card-avatar src="assets/img/jobads-types/{{ jobad.type }}.png">
+			<mat-card-title>{{ jobad.done ? '[' + d.l.jobadDone + '] ' : ''}}{{ jobad.title }}</mat-card-title>
+			<mat-card-subtitle> {{ jobad.author }} - {{ jobad.contact }} </mat-card-subtitle>
+		</mat-card-header>
+		<mat-card-content>
+			<p><b>{{ d.l.technologiesIntro }}</b>{{ jobad.technologies}}</p>
+			<p><b>{{ d.l.jobadDurationIntro }}</b>{{ jobad.length }}</p>
+			<p><b>{{ d.format(jobad.start | date:d.l.longDateFormat:'':d.l.locale) }}</b></p>
+			<markdown [data]="jobad.description"></markdown>
+		</mat-card-content>
 	</mat-card>
 </div>
 
 <div class="mat-fab-bottom-right">
-  <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
+	<button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
 </div>
 
 <div class="fab-btn-placeholder"></div>

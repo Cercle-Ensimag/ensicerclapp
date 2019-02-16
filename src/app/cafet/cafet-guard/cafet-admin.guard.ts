@@ -7,17 +7,17 @@ import {first, tap} from 'rxjs/operators';
 @Injectable()
 export class CanActivateCafetAdmin implements CanActivate {
 
-  constructor(private auth: AuthService) { }
+	constructor(private auth: AuthService) { }
 
-  canActivate(
-    ) {
-    return this.auth.isAdminOf('cafet').pipe(
+	canActivate(
+		) {
+		return this.auth.isAdminOf('cafet').pipe(
 			first(),
-      tap(is => {
-        if (!is) {
-          this.auth.goToHome();
-        }
-      })
+			tap(is => {
+				if (!is) {
+					this.auth.goToHome();
+				}
+			})
 		);
-  }
+	}
 }

@@ -3,15 +3,15 @@
 <!-- Modules display -->
 <div class="grid-container-wrapper">
 	<div *ngIf="getModules() | async as appModules" class="grid-container">
-	  <div *ngFor="let module of appModules" class="wrapper">
-	    <mat-card routerLink="/{{ module.name }}" class="click">
-	      <mat-card-header>
-	        <img mat-card-avatar src="assets/img/icons/{{ module.name }}.png">
-	        <mat-card-title>{{ module.displayName }}</mat-card-title>
-	        <mat-card-subtitle> {{ module.fullName }} </mat-card-subtitle>
-	      </mat-card-header>
-	      <mat-card-content>
-	        <div *ngIf="getContent(module.name) | async | slice:0:2 as lines">
+		<div *ngFor="let module of appModules" class="wrapper">
+			<mat-card routerLink="/{{ module.name }}" class="click">
+				<mat-card-header>
+					<img mat-card-avatar src="assets/img/icons/{{ module.name }}.png">
+					<mat-card-title>{{ module.displayName }}</mat-card-title>
+					<mat-card-subtitle> {{ module.fullName }} </mat-card-subtitle>
+				</mat-card-header>
+				<mat-card-content>
+					<div *ngIf="getContent(module.name) | async | slice:0:2 as lines">
 						<p *ngIf="!lines || lines.length == 0">{{ module.description }}</p>
 						<div *ngIf="lines && lines.length > 0" class="events-card">
 							<div *ngFor="let line of lines" class="wrapper center">
@@ -21,8 +21,8 @@
 							</div>
 						</div>
 					</div>
-	      </mat-card-content>
-	    </mat-card>
-	  </div>
+				</mat-card-content>
+			</mat-card>
+		</div>
 	</div>
 </div>

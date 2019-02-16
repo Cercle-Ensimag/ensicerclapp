@@ -1,18 +1,18 @@
 <h2 mat-dialog-title>{{ data.title }}</h2>
 <mat-dialog-content>
-  {{ data.content }}<br>
-  <form>
-    <mat-form-field>
-      <input matInput placeholder="{{ d.l.loginLabel }}" #username>
-    </mat-form-field><br>
-    <mat-form-field>
-      <input matInput [type]="hidePwd ? 'password' : 'text'" placeholder="{{ d.l.passwordlLabel }}" #password>
-      <mat-icon matSuffix (click)="hidePwd = !hidePwd">{{hidePwd ? 'visibility' : 'visibility_off'}}</mat-icon>
-    </mat-form-field>
-  </form>
+	{{ data.content }}<br>
+	<form>
+		<mat-form-field>
+			<input matInput placeholder="{{ d.l.loginLabel }}" #username>
+		</mat-form-field><br>
+		<mat-form-field>
+			<input matInput [type]="hidePwd ? 'password' : 'text'" placeholder="{{ d.l.passwordlLabel }}" #password>
+			<mat-icon matSuffix (click)="hidePwd = !hidePwd">{{hidePwd ? 'visibility' : 'visibility_off'}}</mat-icon>
+		</mat-form-field>
+	</form>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-button mat-dialog-close>{{ d.l.cancelLabel }}</button>
-  <!-- The mat-dialog-close directive optionally accepts a value as a result for the dialog. -->
-  <button mat-button [mat-dialog-close]="{username: username.value, password: password.value}" color="primary">{{ d.l.sendLabel }}</button>
+	<button mat-button mat-dialog-close>{{ d.l.cancelLabel }}</button>
+	<!-- The mat-dialog-close directive optionally accepts a value as a result for the dialog. -->
+	<button mat-button [mat-dialog-close]="{username: username.value, password: password.value}" color="primary">{{ d.l.sendLabel }}</button>
 </mat-dialog-actions>

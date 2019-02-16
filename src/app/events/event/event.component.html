@@ -4,39 +4,39 @@
 <div class="thin-container">
 	<!-- Event display -->
 	<mat-card *ngIf="events.getEvent(id) | async as event">
-	  <h2>{{ event.title }}</h2>
-	  <mat-card-content class="description">
-	    <h4>
-	      {{ d.format(d.l.eventStart, event.start | date:d.l.longDateTimeFormat:'':d.l.locale) }}<br>
-	      {{ d.format(d.l.eventEnd, event.end | date:d.l.longDateTimeFormat:'':d.l.locale) }}<br>
+		<h2>{{ event.title }}</h2>
+		<mat-card-content class="description">
+			<h4>
+				{{ d.format(d.l.eventStart, event.start | date:d.l.longDateTimeFormat:'':d.l.locale) }}<br>
+				{{ d.format(d.l.eventEnd, event.end | date:d.l.longDateTimeFormat:'':d.l.locale) }}<br>
 				<div>
 					{{ d.format(d.l.eventOrganizer, "") }}
 					<label *ngFor="let groupId of getEventGroupIds(event)" class="asso">{{ getGroupName(groupId) | async }}</label>
 					<br>
 				</div>
-	      {{ d.format(d.l.eventLocation, event.location || "") }}<br>
-	      {{ d.format(d.l.eventPrice, event.price || d.l.free) }}
-	    </h4>
-	    <hr>
-	    <div *ngIf="isInCalendar() | async; else notInCalendar">
-	      <button mat-icon-button disabled color="primary" ><mat-icon>event_available</mat-icon></button>
-	      <button mat-icon-button (click)="removeEvent(event.id)"><mat-icon>event_busy</mat-icon></button>
-	      {{ d.l.participate }}
-	    </div>
-	    <ng-template #notInCalendar>
-	      <button mat-icon-button (click)="addEvent(event.id)"><mat-icon>event_available</mat-icon></button>
-	      <button mat-icon-button disabled color="primary"><mat-icon>event_busy</mat-icon></button>
-	      {{ d.l.doNotParticipate }}
-	    </ng-template>
-	    <hr>
-	    <markdown [data]="event.description"></markdown>
-	  </mat-card-content>
-	  <img *ngIf="event.image !== ''" mat-card-image src="{{ event.image }}">
+				{{ d.format(d.l.eventLocation, event.location || "") }}<br>
+				{{ d.format(d.l.eventPrice, event.price || d.l.free) }}
+			</h4>
+			<hr>
+			<div *ngIf="isInCalendar() | async; else notInCalendar">
+				<button mat-icon-button disabled color="primary" ><mat-icon>event_available</mat-icon></button>
+				<button mat-icon-button (click)="removeEvent(event.id)"><mat-icon>event_busy</mat-icon></button>
+				{{ d.l.participate }}
+			</div>
+			<ng-template #notInCalendar>
+				<button mat-icon-button (click)="addEvent(event.id)"><mat-icon>event_available</mat-icon></button>
+				<button mat-icon-button disabled color="primary"><mat-icon>event_busy</mat-icon></button>
+				{{ d.l.doNotParticipate }}
+			</ng-template>
+			<hr>
+			<markdown [data]="event.description"></markdown>
+		</mat-card-content>
+		<img *ngIf="event.image !== ''" mat-card-image src="{{ event.image }}">
 	</mat-card>
 </div>
 
 <div class="mat-fab-bottom-right">
-  <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
+	<button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
 </div>
 
 <div class="fab-btn-placeholder"></div>

@@ -1,25 +1,25 @@
 <app-conditional-router-link *ngIf="isNotPassed() || admin" link="/events/event/{{ event.id }}" [enabled]="!admin">
-  <mat-card>
-    <mat-card-header>
-      <img mat-card-avatar src="assets/img/icons/events.png">
-      <mat-card-title>{{ isNow() ? '[' + d.l.isNowLabel + '] ' : '' }}{{ !isNotPassed() ? '[' + d.l.isPasssedLabel + '] ' : '' }}{{ event.title }}</mat-card-title>
-      <mat-card-subtitle>
-        <div *ngIf="singleDay()">
-          {{ event.start | date:d.l.shortDateFormat:'':d.l.locale }}, {{ event.start | date:d.l.timeFormat:'':d.l.locale }} - {{ event.end | date:d.l.timeFormat:'':d.l.locale }}
-        </div>
-        <div *ngIf="!singleDay()">
-          {{ event.start | date:d.l.shortDateTimeFormat:'':d.l.locale }} - {{ event.end | date:d.l.shortDateTimeFormat:'':d.l.locale }}
-        </div>
+	<mat-card>
+		<mat-card-header>
+			<img mat-card-avatar src="assets/img/icons/events.png">
+			<mat-card-title>{{ isNow() ? '[' + d.l.isNowLabel + '] ' : '' }}{{ !isNotPassed() ? '[' + d.l.isPasssedLabel + '] ' : '' }}{{ event.title }}</mat-card-title>
+			<mat-card-subtitle>
+				<div *ngIf="singleDay()">
+					{{ event.start | date:d.l.shortDateFormat:'':d.l.locale }}, {{ event.start | date:d.l.timeFormat:'':d.l.locale }} - {{ event.end | date:d.l.timeFormat:'':d.l.locale }}
+				</div>
+				<div *ngIf="!singleDay()">
+					{{ event.start | date:d.l.shortDateTimeFormat:'':d.l.locale }} - {{ event.end | date:d.l.shortDateTimeFormat:'':d.l.locale }}
+				</div>
 				<label *ngFor="let groupId of getEventGroupIds(event)" class="asso">{{ getGroupName(groupId) | async }}</label>
-      </mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <p>{{ tools.truncate(event.description) }}</p>
-    </mat-card-content>
-    <mat-card-actions *ngIf="admin">
-      <button mat-icon-button routerLink="/events/event/{{ event.id }}"><mat-icon>search</mat-icon></button>
-      <button mat-icon-button routerLink="/events/event/{{ event.id }}/edit"><mat-icon>edit</mat-icon></button>
-      <button mat-icon-button (click)="delete()"><mat-icon>delete</mat-icon></button>
-    </mat-card-actions>
-  </mat-card>
+			</mat-card-subtitle>
+		</mat-card-header>
+		<mat-card-content>
+			<p>{{ getDescriptionPreview(event) }}</p>
+		</mat-card-content>
+		<mat-card-actions *ngIf="admin">
+			<button mat-icon-button routerLink="/events/event/{{ event.id }}"><mat-icon>search</mat-icon></button>
+			<button mat-icon-button routerLink="/events/event/{{ event.id }}/edit"><mat-icon>edit</mat-icon></button>
+			<button mat-icon-button (click)="delete()"><mat-icon>delete</mat-icon></button>
+		</mat-card-actions>
+	</mat-card>
 </app-conditional-router-link>

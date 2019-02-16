@@ -4,7 +4,7 @@ import {Location} from '@angular/common';
 import {FormBuilder, FormGroup} from '@angular/forms';
 
 import {CalService, Settings} from '../cal-service/cal.service';
-import {ToolsService} from '../../providers/tools.service';
+import {Tools} from '../../providers/tools.service';
 import {DicoService} from '../../language/dico.service';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {LoginDialogComponent} from '../../shared-components/login-dialog/login-dialog.component';
@@ -26,7 +26,7 @@ export class CalSettingsComponent implements OnInit, OnDestroy {
 	private keyHash: string;
 	private passwordOk: boolean;
 	public formGroup: FormGroup;
-    public hide: boolean = true;
+	public hide: boolean = true;
 
 	constructor(
 		private fb: FormBuilder,
@@ -38,8 +38,7 @@ export class CalSettingsComponent implements OnInit, OnDestroy {
 
 		public d: DicoService,
 		public cal: CalService,
-		public location: Location,
-		public tools: ToolsService
+		public location: Location
 	) { }
 
 	ngOnInit() {
@@ -63,7 +62,7 @@ export class CalSettingsComponent implements OnInit, OnDestroy {
 				password: ['', []]
 			});
 			this.keyHash = settings.keyHash || null;
-			this.passwordOk = this.tools.generateKey(key) == this.keyHash;
+			this.passwordOk = Tools.generateKey(key) == this.keyHash;
 		});
 	}
 
@@ -77,17 +76,17 @@ export class CalSettingsComponent implements OnInit, OnDestroy {
 
 		if (password) {
 			// generates the password hash to use as key
-			const key = this.tools.generateKey(password);
+			const key = Tools.generateKey(password);
 
 			// verify key hash from the database
 			if (this.keyHash) {
-				if (this.tools.generateKey(key) != this.keyHash) {
+				if (Tools.generateKey(key) != this.keyHash) {
 					this.snackBar.open(this.d.l.cipherError, this.d.l.okLabel, {duration: 2000});
 					// FIXME: use dialog insted to allow changing password
 					return;
 				}
 			} else {
-				this.keyHash = this.tools.generateKey(key);
+				this.keyHash = Tools.generateKey(key);
 			}
 
 			// store the key locally
@@ -116,7 +115,12 @@ export class CalSettingsComponent implements OnInit, OnDestroy {
 		}).afterClosed().subscribe(credentials => {
 			if (!credentials) return;
 			let snackBarRef = this.snackBar.open(this.d.l.waitZenithConnectionInfo);
-			this.http.post(environment.proxy.domain + 'action=fetch_ade', credentials, { responseType: 'text'}).subscribe(
+
+			this.http.post(
+				environment.proxy.domain + 'action=fetch_ade',
+				credentials,
+				{ responseType: 'text'}
+			).subscribe(
 				(text: string) => {
 					snackBarRef.dismiss();
 					if (text.startsWith('invalid')) return this.snackBar.open(this.d.l.invalidZenithCredentialsError, this.d.l.okLabel, {duration: 2000});

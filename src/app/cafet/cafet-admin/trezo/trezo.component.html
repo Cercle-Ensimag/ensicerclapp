@@ -2,105 +2,105 @@
 <app-loading [loading]="nbOfAllAccounts | async"></app-loading>
 
 <div *ngIf="nbOfAllAccounts | async">
-  <mat-card>
-    <div>{{ this.d.format(this.d.l.nbOfRegisteredCafetAccountsLabel, nbOfAllAccounts | async) }}</div>
-    <div>{{ this.d.format(this.d.l.totalOnRegisteredCafetAccountsLAbel, totalOnAccounts | async) }}€</div>
-  </mat-card>
+	<mat-card>
+		<div>{{ this.d.format(this.d.l.nbOfRegisteredCafetAccountsLabel, nbOfAllAccounts | async) }}</div>
+		<div>{{ this.d.format(this.d.l.totalOnRegisteredCafetAccountsLAbel, totalOnAccounts | async) }}€</div>
+	</mat-card>
 
-  <mat-card>
-    <div>{{ this.d.format(this.d.l.nbOfPositiveCafetAccountsLabel, nbOfPosAccounts | async) }}</div>
-    <div>{{ this.d.format(this.d.l.totalOnPositiveCafetAccountsLabel, totalOfPositive | async) }}€</div>
-  </mat-card>
+	<mat-card>
+		<div>{{ this.d.format(this.d.l.nbOfPositiveCafetAccountsLabel, nbOfPosAccounts | async) }}</div>
+		<div>{{ this.d.format(this.d.l.totalOnPositiveCafetAccountsLabel, totalOfPositive | async) }}€</div>
+	</mat-card>
 
-  <mat-card>
-    <div>{{ this.d.format(this.d.l.nbOfNegativeCafetAccountsLabel, nbOfNegAccounts | async) }}</div>
-    <div>{{ this.d.format(this.d.l.totalOnNegativeCafetAccountsLabel, totalOfNegative | async) }}€</div>
-  </mat-card>
+	<mat-card>
+		<div>{{ this.d.format(this.d.l.nbOfNegativeCafetAccountsLabel, nbOfNegAccounts | async) }}</div>
+		<div>{{ this.d.format(this.d.l.totalOnNegativeCafetAccountsLabel, totalOfNegative | async) }}€</div>
+	</mat-card>
 </div>
 
 <!-- Loading -->
 <app-loading [loading]="cafet.getTrezAccounts() | async"></app-loading>
 
 <div *ngIf="cafet.getTrezAccounts() | async as users" class="accordion-container">
-  <!-- Users display, small screens -->
-  <mat-accordion *ngIf="!media.largeSize" class="client-group">
-    <mat-expansion-panel *ngFor="let user of users">
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          {{ cafet.getUserName(user) }}
-        </mat-panel-title>
-        <mat-panel-description>
-          {{ user.credit.toFixed(2) }}€
-        </mat-panel-description>
-      </mat-expansion-panel-header>
+	<!-- Users display, small screens -->
+	<mat-accordion *ngIf="!media.largeSize" class="client-group">
+		<mat-expansion-panel *ngFor="let user of users">
+			<mat-expansion-panel-header>
+				<mat-panel-title>
+					{{ cafet.getUserName(user) }}
+				</mat-panel-title>
+				<mat-panel-description>
+					{{ user.credit.toFixed(2) }}€
+				</mat-panel-description>
+			</mat-expansion-panel-header>
 
-      <form (ngSubmit)="transaction(user, false)">
-        <span>
-          <mat-form-field>
-            <input type='number' matInput placeholder="{{ d.l.substractButtonLabel }}" [formControl]="controls[user.emailId].sub" autocomplete="off">
-          </mat-form-field>
-          <button mat-button
-                  type="submit"
-                  [disabled]="controls[user.emailId].sub.invalid"
-                  color="primary"
-          >{{ d.l.substractButtonLabel }}</button>
-        </span>
-      </form>
-      <form (ngSubmit)="transaction(user, true)">
-        <span>
-          <mat-form-field>
-            <input type='number' matInput placeholder="{{ d.l.addButtonLabel }}" [formControl]="controls[user.emailId].add" autocomplete="off">
-          </mat-form-field>
-          <button mat-button
-                  type="submit"
-                  [disabled]="controls[user.emailId].add.invalid"
-                  color="primary"
-          >{{ d.l.addButtonLabel }}</button>
-        </span>
-      </form>
-      <button *ngIf="editing" mat-icon-button (click)="openEditor(user)" matSuffix><mat-icon>edit</mat-icon></button>
-      <button mat-icon-button (click)="openHistory(user)" matSuffix><mat-icon>history</mat-icon></button>
-    </mat-expansion-panel>
-  </mat-accordion>
+			<form (ngSubmit)="transaction(user, false)">
+				<span>
+					<mat-form-field>
+						<input type='number' matInput placeholder="{{ d.l.substractButtonLabel }}" [formControl]="controls[user.emailId].sub" autocomplete="off">
+					</mat-form-field>
+					<button mat-button
+							type="submit"
+							[disabled]="controls[user.emailId].sub.invalid"
+							color="primary"
+					>{{ d.l.substractButtonLabel }}</button>
+				</span>
+			</form>
+			<form (ngSubmit)="transaction(user, true)">
+				<span>
+					<mat-form-field>
+						<input type='number' matInput placeholder="{{ d.l.addButtonLabel }}" [formControl]="controls[user.emailId].add" autocomplete="off">
+					</mat-form-field>
+					<button mat-button
+							type="submit"
+							[disabled]="controls[user.emailId].add.invalid"
+							color="primary"
+					>{{ d.l.addButtonLabel }}</button>
+				</span>
+			</form>
+			<button *ngIf="editing" mat-icon-button (click)="openEditor(user)" matSuffix><mat-icon>edit</mat-icon></button>
+			<button mat-icon-button (click)="openHistory(user)" matSuffix><mat-icon>history</mat-icon></button>
+		</mat-expansion-panel>
+	</mat-accordion>
 
-  <!-- Users display, large screens -->
-  <div *ngIf="media.largeSize" class="client-group">
-    <mat-card *ngFor="let user of users">
-      <div class="client-large">
-      <span class="text">
-        <span>{{ cafet.getUserName(user) }}</span>
-      </span>
-        <span>
-          <button *ngIf="editing" mat-icon-button (click)="openEditor(user)" matSuffix><mat-icon>edit</mat-icon></button>
-          <button mat-icon-button (click)="openHistory(user)" class="history" matSuffix><mat-icon>history</mat-icon></button>
-        <span>{{ user.credit.toFixed(2) }}€</span>
-      </span>
-        <span>
-        <form (ngSubmit)="transaction(user, false)">
-          <mat-form-field>
-            <input type='number' matInput placeholder="{{ d.l.substractButtonLabel }}" [formControl]="controls[user.emailId].sub" autocomplete="off">
-          </mat-form-field>
-          <button mat-button
-                  type="submit"
-                  [disabled]="controls[user.emailId].sub.invalid"
-                  color="primary"
-          >{{ d.l.substractButtonLabel }}</button>
-        </form>
-      </span>
+	<!-- Users display, large screens -->
+	<div *ngIf="media.largeSize" class="client-group">
+		<mat-card *ngFor="let user of users">
+			<div class="client-large">
+			<span class="text">
+				<span>{{ cafet.getUserName(user) }}</span>
+			</span>
+				<span>
+					<button *ngIf="editing" mat-icon-button (click)="openEditor(user)" matSuffix><mat-icon>edit</mat-icon></button>
+					<button mat-icon-button (click)="openHistory(user)" class="history" matSuffix><mat-icon>history</mat-icon></button>
+				<span>{{ user.credit.toFixed(2) }}€</span>
+			</span>
+				<span>
+				<form (ngSubmit)="transaction(user, false)">
+					<mat-form-field>
+						<input type='number' matInput placeholder="{{ d.l.substractButtonLabel }}" [formControl]="controls[user.emailId].sub" autocomplete="off">
+					</mat-form-field>
+					<button mat-button
+							type="submit"
+							[disabled]="controls[user.emailId].sub.invalid"
+							color="primary"
+					>{{ d.l.substractButtonLabel }}</button>
+				</form>
+			</span>
 
-        <span>
-        <form (ngSubmit)="transaction(user, true)">
-          <mat-form-field>
-            <input type='number' matInput placeholder="{{ d.l.addButtonLabel }}" [formControl]="controls[user.emailId].add" autocomplete="off">
-          </mat-form-field>
-          <button mat-button
-                  type="submit"
-                  [disabled]="controls[user.emailId].add.invalid"
-                  color="primary"
-          >{{ d.l.addButtonLabel }}</button>
-        </form>
-      </span>
-      </div>
-    </mat-card>
-  </div>
+				<span>
+				<form (ngSubmit)="transaction(user, true)">
+					<mat-form-field>
+						<input type='number' matInput placeholder="{{ d.l.addButtonLabel }}" [formControl]="controls[user.emailId].add" autocomplete="off">
+					</mat-form-field>
+					<button mat-button
+							type="submit"
+							[disabled]="controls[user.emailId].add.invalid"
+							color="primary"
+					>{{ d.l.addButtonLabel }}</button>
+				</form>
+			</span>
+			</div>
+		</mat-card>
+	</div>
 </div>

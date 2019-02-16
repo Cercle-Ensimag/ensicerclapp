@@ -8,33 +8,33 @@ import {Actu, ActusService} from '../actus-service/actus.service';
 import {Observable} from 'rxjs';
 
 @Component({
-  selector: 'app-actu',
-  templateUrl: './actu.component.html',
-  styleUrls: ['./actu.component.css']
+	selector: 'app-actu',
+	templateUrl: './actu.component.html',
+	styleUrls: ['./actu.component.css']
 })
 export class ActuComponent implements OnInit {
-  public id: string;
+	public id: string;
 	private _safeURL: SafeResourceUrl;
 
-  constructor(
-    private route: ActivatedRoute,
-	  private sanitizer: DomSanitizer,
+	constructor(
+		private route: ActivatedRoute,
+		private sanitizer: DomSanitizer,
 
-    public location: Location,
-    public actus: ActusService,
-    public d: DicoService
-  ) { }
+		public location: Location,
+		public actus: ActusService,
+		public d: DicoService
+	) { }
 
-  ngOnInit() {
-    this.id = this.route.snapshot.paramMap.get('id');
-  }
+	ngOnInit() {
+		this.id = this.route.snapshot.paramMap.get('id');
+	}
 
-  safeUrl(actu: Actu): SafeResourceUrl {
+	safeUrl(actu: Actu): SafeResourceUrl {
 		if (!this._safeURL) {
 			this._safeURL = this.sanitizer.bypassSecurityTrustResourceUrl(actu.pdfLink);
 		}
-    return this._safeURL;
-  }
+		return this._safeURL;
+	}
 
 	getGroupName(groupId: string): Observable<string> {
 		return this.actus.getGroupName(groupId);

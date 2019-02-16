@@ -199,7 +199,8 @@ export class French {
 	// -> cafet-service
 	public static readonly cafetUserNoLonguerExists = "Erreur : le compte de {0} n'existe plus";
 
-	// TODO : public static readonly achiveUserPermissionDenied = "Action refusée, le client a des transactions non validées";
+	// TODO: do not allow changing cafet profile if day transactions
+	// public static readonly achiveUserPermissionDenied = "Action refusée, le client a des transactions non validées";
 	// public static readonly weekIngredientLabel = "Ingrédient de la semaine";
 
 	// Calendar

@@ -4,70 +4,70 @@
 <!-- Assessor -->
 <div *ngIf="vote.getStartedPolls() | async as polls">
 
-  <ng-container *ngIf="polls.length" class="content">
-    <!-- Header -->
-    <mat-card class="item">
-      <form [formGroup]="formGroup">
+	<ng-container *ngIf="polls.length" class="content">
+		<!-- Header -->
+		<mat-card class="item">
+			<form [formGroup]="formGroup">
 
-			   <span *ngIf="error" class="error">{{ error }}</span>
+				 <span *ngIf="error" class="error">{{ error }}</span>
 
-	      <span>
-	        <mat-form-field [class.large]="!media.mobileSize">
-	          <input matInput placeholder="{{ d.l.markAsVotedEmailInfo }}" formControlName="email" autocomplete="off">
-	        </mat-form-field>
+				<span>
+					<mat-form-field [class.large]="!media.mobileSize">
+						<input matInput placeholder="{{ d.l.markAsVotedEmailInfo }}" formControlName="email" autocomplete="off">
+					</mat-form-field>
 
-	        <mat-form-field class="domain">
-	          <mat-select placeholder="{{ d.l.markAsVotedDomainInfo }}" formControlName="domain">
-	            <mat-option *ngFor="let dom of domains" [value]="dom">{{ dom }}</mat-option>
-	          </mat-select>
-	        </mat-form-field>
+					<mat-form-field class="domain">
+						<mat-select placeholder="{{ d.l.markAsVotedDomainInfo }}" formControlName="domain">
+							<mat-option *ngFor="let dom of domains" [value]="dom">{{ dom }}</mat-option>
+						</mat-select>
+					</mat-form-field>
 
-	        <button mat-raised-button
-	                type="submit"
-	                (click)="markAsVoted()"
-	                [disabled]="buttonDisabled() | async"
-	                color="primary"
-	        >{{ d.l.votedButtonLabel }}</button>
-	      </span>
-      </form>
-    </mat-card>
+					<button mat-raised-button
+							type="submit"
+							(click)="markAsVoted()"
+							[disabled]="buttonDisabled() | async"
+							color="primary"
+					>{{ d.l.votedButtonLabel }}</button>
+				</span>
+			</form>
+		</mat-card>
 
-    <!-- Options -->
+		<!-- Options -->
 		<div class="item">
-	    <mat-expansion-panel *ngIf="polls" [expanded]="true">
-	      <mat-expansion-panel-header>
-	        <mat-panel-title>{{ d.l.pollChoiceLabel }}</mat-panel-title>
-	      </mat-expansion-panel-header>
+			<mat-expansion-panel *ngIf="polls" [expanded]="true">
+				<mat-expansion-panel-header>
+					<mat-panel-title>{{ d.l.pollChoiceLabel }}</mat-panel-title>
+				</mat-expansion-panel-header>
 
-	      <mat-nav-list style="text-align: right">
-	        <div *ngFor="let poll of polls">
-	          <a mat-list-item *ngIf="poll.started">
-	            <mat-checkbox (change)="change(poll.id, $event.checked)" color="primary">{{ poll.title }}</mat-checkbox>
-	          </a>
-	        </div>
-	      </mat-nav-list>
-	    </mat-expansion-panel>
+				<mat-nav-list style="text-align: right">
+					<div *ngFor="let poll of polls">
+						<a mat-list-item *ngIf="poll.started">
+							<mat-checkbox (change)="change(poll.id, $event.checked)" color="primary">{{ poll.title }}</mat-checkbox>
+						</a>
+					</div>
+				</mat-nav-list>
+			</mat-expansion-panel>
 		</div>
 
-    <!-- Users -->
-    <mat-card class="item">
-      <app-paged-list [list]="filteredUsers() | async" emptyMessage="Aucun utilisateur ne correspond. aux filtres" #page>
-        <mat-nav-list>
-          <a mat-list-item *ngFor="let user of page.truncatedList()">
-            {{ user.userName }} &#8226;<small>{{ user.pollName }}</small>
-          </a>
-        </mat-nav-list>
-      </app-paged-list>
-    </mat-card>
-  </ng-container>
+		<!-- Users -->
+		<mat-card class="item">
+			<app-paged-list [list]="filteredUsers() | async" emptyMessage="Aucun utilisateur ne correspond. aux filtres" #page>
+				<mat-nav-list>
+					<a mat-list-item *ngFor="let user of page.truncatedList()">
+						{{ user.userName }} &#8226;<small>{{ user.pollName }}</small>
+					</a>
+				</mat-nav-list>
+			</app-paged-list>
+		</mat-card>
+	</ng-container>
 
-  <mat-card *ngIf="!polls.length" class="item center">
-    {{ d.l.noPoll }} <img src="assets/img/icons/empty.png">
-  </mat-card>
+	<mat-card *ngIf="!polls.length" class="item center">
+		{{ d.l.noPoll }} <img src="assets/img/icons/empty.png">
+	</mat-card>
 </div>
 
 <div class="mat-fab-bottom-right">
-  <button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
+	<button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
 </div>
 
 <div class="fab-btn-placeholder"></div>
