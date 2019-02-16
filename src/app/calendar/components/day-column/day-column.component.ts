@@ -34,23 +34,12 @@ export class DayColumnComponent implements OnInit {
 		).subscribe(key => this.key = key);
 	}
 
-	getCipheredField(cipher: boolean, field: string): string {
-		if (!cipher) {
-			return field;
-		}
-		if (this.key) {
-			return Tools.decipher(field, this.key) || "********";
-		} else {
-			return "********";
-		}
-	}
-
 	getTitle(event: CalEvent): string {
-		return this.getCipheredField(event.cipher, event.title);
+		return event.getTitle(this.key);
 	}
 
 	getLocation(event: CalEvent): string {
-		return this.getCipheredField(event.cipher, event.location);
+		return event.getLocation(this.key);
 
 	}
 

@@ -70,6 +70,25 @@ export class CalEvent {
 	isCourse() {
 		return this.type === COURSE;
 	}
+
+	getCipheredField(field: string, key: string): string {
+		if (!this.cipher) {
+			return field;
+		}
+		if (key) {
+			return Tools.decipher(field, key) || "********";
+		} else {
+			return "********";
+		}
+	}
+
+	getTitle(key: string): string {
+		return this.getCipheredField(this.title, key);
+	}
+
+	getLocation(key: string): string {
+		return this.getCipheredField(this.location, key);
+	}
 }
 
 export class Settings {
@@ -123,7 +142,7 @@ export class CalService {
 		private db: AngularFireDatabase,
 		private events: EventsService,
 		private http: HttpClient,
-		
+
 		public d: DicoService,
 		public datepipe: DatePipe
 	) { }
@@ -276,7 +295,7 @@ export class CalService {
 				),
 				"cal-persoEvents"
 			).pipe(
-				// Duplicate events with multiple occurrences
+				// Duplicate events with multiple occurences
 				map(events => {
 					const toReturn = [];
 					events.forEach(event => {
@@ -422,14 +441,10 @@ export class CalService {
 		).toPromise();
 	}
 
-	getEvent(eventId: string) {
+	getEvent(eventId: string): Observable<CalEvent> {
 		if (!this._event[eventId]){
-			this._event[eventId] = this.auth.getLoggedUser().pipe(
-				mergeMap(
-					user => this.db.object<CalEvent>(
-						'calendar/users/'+user.uid+'/perso/'+eventId
-					).valueChanges()
-				),
+			this._event[eventId] = this.getPersosEvents().pipe(
+				map(events => events.find(event => event.id == eventId)),
 				shareReplay(1)
 			);
 		}
