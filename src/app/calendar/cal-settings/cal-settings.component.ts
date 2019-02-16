@@ -126,6 +126,8 @@ export class CalSettingsComponent implements OnInit, OnDestroy {
 					if (text.startsWith('invalid')) return this.snackBar.open(this.d.l.invalidZenithCredentialsError, this.d.l.okLabel, {duration: 2000});
 					if (text.startsWith('dangerous')) return this.snackBar.open(this.d.l.dangerousZenithCredentialsError, this.d.l.okLabel, {duration: 2000});
 					this.formGroup.get('resources').setValue(text);
+					this.formGroup.get('resources').markAsDirty();
+					this.snackBar.open(this.d.l.ZenithConnectionOk, this.d.l.okLabel, {duration: 2000});
 				},
 				(error) => {
 					snackBarRef.dismiss();

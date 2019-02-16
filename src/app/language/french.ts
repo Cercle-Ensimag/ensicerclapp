@@ -223,6 +223,7 @@ export class French {
 	public static readonly invalidZenithCredentialsError = "Identifiants incorrects";
 	public static readonly dangerousZenithCredentialsError = "Caractère dangereux, désolé";
 	public static readonly ZenithConnectionError = "Echec de la connexion";
+	public static readonly ZenithConnectionOk = "Ressources récupérées. Enregistre";
 	public static readonly displayICSDownloadInfo = "Afficher le bouton de téléchargement au format ICS";
 	public static readonly eventsByDefaultInfo = "Ajouter par défaut les événements associatifs au calendier";
 	public static readonly eventsCipherInfo = "<b>Chiffrement</b><br><br>Renseigne le mot de passe pour encoder et décoder les informations relatives à tes événements personnels (optionnel).<br>Ce mot de passe ne pourra (pour l'instant) pas être changé et devra être renseigné sur chaque appareil utilisant l'application.";
