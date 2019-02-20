@@ -96,16 +96,18 @@ export class Settings {
 	icsDownload: boolean;
 	assosEventsByDefault: boolean;
 	keyHash: string;
+	salt: string;
 
 	constructor(
 		resources: string, icsDownload: boolean,
 		assosEventsByDefault: boolean,
-		keyHash: string
+		keyHash: string, salt: string
 	) {
 		this.resources = resources;
 		this.icsDownload = icsDownload;
 		this.assosEventsByDefault = assosEventsByDefault;
 		this.keyHash = keyHash;
+		this.salt = salt;
 	}
 }
 

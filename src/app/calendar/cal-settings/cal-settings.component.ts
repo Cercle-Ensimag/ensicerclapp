@@ -135,7 +135,7 @@ export class CalSettingsComponent implements OnInit, OnDestroy {
 				this.formGroup.get('resources').value,
 				this.formGroup.get('icsDownload').value,
 				this.formGroup.get('assosEventsByDefault').value,
-				this.keyHash
+				this.keyHash,
 				this.salt
 			)
 		).then(() => {
