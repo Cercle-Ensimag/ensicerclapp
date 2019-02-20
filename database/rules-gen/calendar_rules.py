@@ -36,6 +36,7 @@ class SettingsRules (UserRules):
 		self.add(BooleanRules("icsDownload"))
 		self.add(BooleanRules("assosEventsByDefault"))
 		self.add(StringRules("keyHash", 64))
+		self.add(StringRules("salt", 64))
 		self.add(OtherRules())
 
 class ResourcesRules (SettingsRules):

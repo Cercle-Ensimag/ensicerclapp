@@ -231,7 +231,8 @@ export class French {
 	public static readonly passwordOkInfo = "Mot de passe renseigné sur cet appareil : {0}";
 	public static readonly keyNotConfiguredError = "Aucun mot de passe n'est configuré pour chiffrer";
 	public static readonly cipherLabel = "Chiffrer";
-	public static readonly cipherError = "Mauvais mot de passe"; // FIXME: dialog insted
+	public static readonly cipherChangePasswordTitle = "Mot de passe de chiffrement différent";
+	public static readonly cipherChangePasswordInfo = "Le mot de passe de chiffrement n'est pas celui attendu. Changer le mot de passe maintenant rendra tous les champs chiffrés avec illisibles.<br><br>Est-tu sûr de vouloir changer le mot de passe ?";
 	// -> day-column
 	public static readonly noCalEvent = "Rien de prévu";
 	// -> edit-cal

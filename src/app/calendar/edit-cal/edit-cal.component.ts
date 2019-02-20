@@ -101,24 +101,34 @@ export class EditCalComponent implements OnInit, OnDestroy {
 	}
 
 	submit() {
-		const key = Tools.loadKey();
 		const cipher = this.formGroup.get('cipher').value
-		if (!key && cipher) {
-			this.snackBar.open(this.d.l.keyNotConfiguredError, this.d.l.okLabel, {duration: 2000});
-			return;
+		if (cipher) {
+			this.cal.getKey().pipe(first()).toPromise().then(
+				(key: string) => {
+					if (!key) {
+						this.snackBar.open(this.d.l.keyNotConfiguredError, this.d.l.okLabel, {duration: 2000});
+						return;
+					}
+					this.saveEvent(key);
+				}
+			);
+		} else {
+			this.saveEvent();
 		}
-		const title = this.formGroup.get('title').value;
-		const location = this.formGroup.get('location').value;
+	}
+
+	saveEvent(key: string = null) {
 		this.cal.setEvent(
 			new CalEvent(
 				this.id,
-				cipher ? Tools.cipher(title, key) : title,
+				this.formGroup.get('title').value,
 				this.getStart(),
 				this.getEnd(),
-				cipher,
+				this.formGroup.get('cipher').value,
 				this.formGroup.get('occurences').value,
-				cipher ? Tools.cipher(location, key) : location,
-				PERSOS
+				this.formGroup.get('location').value,
+				PERSOS,
+				key
 			)
 		).then(() => {
 			this.snackBar.open(this.d.l.changesApplied, this.d.l.okLabel, {duration: 2000});

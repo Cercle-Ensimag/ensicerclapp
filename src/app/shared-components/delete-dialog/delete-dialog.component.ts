@@ -1,5 +1,6 @@
-import {MAT_DIALOG_DATA} from '@angular/material';
 import {Component, Inject, OnInit} from '@angular/core';
+import {MAT_DIALOG_DATA} from '@angular/material';
+import {DicoService} from '../../language/dico.service';
 
 @Component({
 	selector: 'app-delete-dialog',
@@ -9,7 +10,8 @@ import {Component, Inject, OnInit} from '@angular/core';
 export class DeleteDialogComponent implements OnInit {
 
 	constructor(
-		@Inject(MAT_DIALOG_DATA) public data: any
+		@Inject(MAT_DIALOG_DATA) public data: any,
+		public d: DicoService
 	) {}
 
 	ngOnInit() { }

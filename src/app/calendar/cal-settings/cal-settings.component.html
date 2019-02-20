@@ -14,7 +14,7 @@
 					<textarea matInput placeholder="{{ d.l.calSettingsResourcesLabel }}" formControlName="resources"></textarea>
 					<mat-error *ngIf="formGroup.get('resources').invalid">{{ d.l.calSettingsResourcesError }}</mat-error>
 				</mat-form-field>
-				<button mat-raised-button color="primary" (click)="gatherFromZenith()">{{ d.l.gatherFromZenithButtonLabel }}</button>
+				<button mat-raised-button type="button" color="primary" (click)="gatherFromZenith()">{{ d.l.gatherFromZenithButtonLabel }}</button>
 			</div>
 
 			<br>

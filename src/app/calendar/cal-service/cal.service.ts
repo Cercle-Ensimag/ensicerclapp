@@ -35,17 +35,17 @@ export class CalEvent {
 	type: string;
 
 	constructor(
-		id: string, name: string, start: any, end: any,
+		id: string, title: string, start: any, end: any,
 		cipher: boolean, occurences: number,
-		loc: string, type: string
+		loc: string, type: string, key: string = null
 	) {
 		this.id = id;
-		this.title = name;
+		this.title = (cipher && key) ? Tools.cipher(title, key) : title;
 		this.start = (new Date(start)).getTime();
 		this.end = (new Date(end)).getTime();
 		this.cipher = cipher
 		this.occurences = occurences;
-		this.location = loc;
+		this.location = (cipher && key) ? Tools.cipher(loc, key) : loc;
 		this.type = type;
 	}
 
@@ -417,7 +417,7 @@ export class CalService {
 				map(settings => {
 					const key = Tools.loadKey();
 					if (key && settings) {
-						const keyHash = Tools.generateKey(key)
+						const keyHash = Tools.hashKey(key);
 						if (keyHash == settings.keyHash) {
 							return key;
 						}

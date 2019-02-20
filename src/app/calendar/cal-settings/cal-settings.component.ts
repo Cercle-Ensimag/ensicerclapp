@@ -2,15 +2,16 @@ import {takeUntil} from 'rxjs/operators';
 import {Component, NgZone, OnDestroy, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
 import {FormBuilder, FormGroup} from '@angular/forms';
+import {Router} from '@angular/router';
+import {HttpClient} from '@angular/common/http';
+import {MatDialog, MatSnackBar} from '@angular/material';
 
 import {CalService, Settings} from '../cal-service/cal.service';
 import {Tools} from '../../providers/tools.service';
 import {DicoService} from '../../language/dico.service';
-import {MatDialog, MatSnackBar} from '@angular/material';
 import {LoginDialogComponent} from '../../shared-components/login-dialog/login-dialog.component';
-import {HttpClient} from '@angular/common/http';
+import {DeleteDialogComponent} from '../../shared-components/delete-dialog/delete-dialog.component';
 import {environment} from '../../../environments/environment';
-import {Router} from '@angular/router';
 
 import {Subject, combineLatest} from 'rxjs';
 
@@ -24,6 +25,7 @@ import {Subject, combineLatest} from 'rxjs';
 export class CalSettingsComponent implements OnInit, OnDestroy {
 	private unsubscribe: Subject<void> = new Subject();
 	private keyHash: string;
+	private salt: string;
 	private passwordOk: boolean;
 	public formGroup: FormGroup;
 	public hide: boolean = true;
@@ -53,7 +55,8 @@ export class CalSettingsComponent implements OnInit, OnDestroy {
 					resources: '',
 					icsDownload: false,
 					assosEventsByDefault: true,
-					keyHash: null
+					keyHash: null,
+					salt: null
 				};
 			this.formGroup = this.fb.group({
 				resources: [settings.resources || '', [this.cal.resourcesValidator]],
@@ -62,7 +65,8 @@ export class CalSettingsComponent implements OnInit, OnDestroy {
 				password: ['', []]
 			});
 			this.keyHash = settings.keyHash || null;
-			this.passwordOk = Tools.generateKey(key) == this.keyHash;
+			this.salt = settings.salt || null;
+			this.passwordOk = Tools.hashKey(key) == this.keyHash;
 		});
 	}
 
@@ -75,20 +79,53 @@ export class CalSettingsComponent implements OnInit, OnDestroy {
 		const password = this.formGroup.get('password').value;
 
 		if (password) {
-			// generates the password hash to use as key
-			const key = Tools.generateKey(password);
-
-			// verify key hash from the database
-			if (this.keyHash) {
-				if (Tools.generateKey(key) != this.keyHash) {
-					this.snackBar.open(this.d.l.cipherError, this.d.l.okLabel, {duration: 2000});
-					// FIXME: use dialog insted to allow changing password
-					return;
+			if (this.keyHash && this.salt) {
+				// A key was configured before
+				var key = Tools.generateKey(password, this.salt);
+				if (Tools.hashKey(key) != this.keyHash) {
+					// The key is different
+					this.openChangePasswdDialog(password);
+				} else {
+					// the key is the same as other devices
+					this.saveSettings(key);
 				}
 			} else {
-				this.keyHash = Tools.generateKey(key);
+				// Create a key
+				this.saveSettingsWithNewKey(password);
 			}
+		} else {
+			this.saveSettings();
+		}
+	}
 
+	openChangePasswdDialog(password: string) {
+		this.dialog.open(DeleteDialogComponent, {
+			data: {
+				title: this.d.l.cipherChangePasswordTitle,
+				content: this.d.l.cipherChangePasswordInfo
+			},
+			width: '450px'
+		}).afterClosed().subscribe(result => {
+			if (result) {
+				// Change key
+				this.saveSettingsWithNewKey(password);
+			}
+		});
+	}
+
+	saveSettingsWithNewKey(password: string) {
+		// new salt
+		this.salt = Tools.generateSalt();
+		// new key
+		this.saveSettings(
+			Tools.generateKey(password, this.salt)
+		);
+	}
+
+	saveSettings(key: string = null) {
+		if (key) {
+			// compute the key hash (can overwrite)
+			this.keyHash = Tools.hashKey(key);
 			// store the key locally
 			this.cal.setKey(key);
 		}
@@ -99,6 +136,7 @@ export class CalSettingsComponent implements OnInit, OnDestroy {
 				this.formGroup.get('icsDownload').value,
 				this.formGroup.get('assosEventsByDefault').value,
 				this.keyHash
+				this.salt
 			)
 		).then(() => {
 			this.snackBar.open(this.d.l.updatedResourcesInfo, this.d.l.okLabel, {duration: 2000});

@@ -106,19 +106,35 @@ export class Tools {
 	}
 
 	static decipher(code: string, key: string): string {
-		return CryptoJS.AES.decrypt(code, key).toString(CryptoJS.enc.Utf8);
+		try {
+			return CryptoJS.AES.decrypt(code, key).toString(CryptoJS.enc.Utf8);
+		} catch {
+			return null;
+		}
 	}
 
-	static generateKey(passwd: string): string {
-		return CryptoJS.SHA256(passwd).toString();
+	static generateKey(passwd: string, salt: string): string {
+		return CryptoJS.PBKDF2(passwd, salt, {
+			keySize: 256/32,
+			hasher: CryptoJS.algo.SHA256,
+			iterations: 12042
+		}).toString();
+	}
+
+	static generateSalt(): string {
+		return CryptoJS.lib.WordArray.random(256/8).toString();
+	}
+
+	static hashKey(key: string): string {
+		return CryptoJS.SHA256(key).toString();
 	}
 
 	static storeKey(key: string) {
-		localStorage.setItem("key", key);
+		localStorage.setItem("cal-key", key);
 	}
 
 	static loadKey(): string {
-		return localStorage.getItem("key");
+		return localStorage.getItem("cal-key");
 	}
 
 }
