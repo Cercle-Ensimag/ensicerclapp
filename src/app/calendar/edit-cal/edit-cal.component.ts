@@ -106,7 +106,7 @@ export class EditCalComponent implements OnInit, OnDestroy {
 			this.cal.getKey().pipe(first()).toPromise().then(
 				(key: string) => {
 					if (!key) {
-						this.snackBar.open(this.d.l.keyNotConfiguredError, this.d.l.okLabel, {duration: 2000});
+						this.snackBar.open(this.d.l.keyNotConfiguredError, this.d.l.ok, {duration: 2000});
 						return;
 					}
 					this.saveEvent(key);
@@ -131,7 +131,7 @@ export class EditCalComponent implements OnInit, OnDestroy {
 				key
 			)
 		).then(() => {
-			this.snackBar.open(this.d.l.changesApplied, this.d.l.okLabel, {duration: 2000});
+			this.snackBar.open(this.d.l.changesApplied, this.d.l.ok, {duration: 2000});
 			this.initFormGroup();
 		});
 	}

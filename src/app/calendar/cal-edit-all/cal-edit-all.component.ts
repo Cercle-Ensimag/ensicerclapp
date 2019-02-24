@@ -53,7 +53,7 @@ export class CalEditAllComponent implements OnInit {
 		}).afterClosed().subscribe(result => {
 			if (result) {
 				this.cal.removeEvent(event.id).then(() =>
-					this.snackBar.open(this.d.l.deletedPersoEventInfo, this.d.l.okLabel, {duration: 2000})
+					this.snackBar.open(this.d.l.deletedPersoEventInfo, this.d.l.ok, {duration: 2000})
 				)
 			}
 		});

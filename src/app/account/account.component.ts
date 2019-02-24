@@ -65,7 +65,7 @@ export class AccountComponent implements OnInit, OnDestroy {
 			''
 		))
 		.then(() => {
-			this.snackBar.open(this.d.l.changesApplied, this.d.l.okLabel, {duration: 2000});
+			this.snackBar.open(this.d.l.changesApplied, this.d.l.ok, {duration: 2000});
 		});
 	}
 
@@ -79,7 +79,7 @@ export class AccountComponent implements OnInit, OnDestroy {
 			if (result){
 				this.auth.deleteAccount()
 				.then(() => {
-					this.snackBar.open(this.d.l.deletedAccountInfo, this.d.l.okLabel, {duration: 2000});
+					this.snackBar.open(this.d.l.deletedAccountInfo, this.d.l.ok, {duration: 2000});
 					this.auth.setError(this.d.l.deletedAccountInfo, true);
 				})
 				.catch(err => {
@@ -97,11 +97,11 @@ export class AccountComponent implements OnInit, OnDestroy {
 		).afterClosed().subscribe(result => {
 			if (result){
 				this.auth.updatePassword(result.password).then(() => {
-					this.snackBar.open(this.d.l.changesApplied, this.d.l.okLabel, {duration: 2000});
+					this.snackBar.open(this.d.l.changesApplied, this.d.l.ok, {duration: 2000});
 					this.auth.setError(this.d.l.passwordChangedInfo, true);
 					this.auth.logout();
 				}).catch(() => {
-					this.snackBar.open(this.d.l.errorLabel, this.d.l.okLabel, {duration: 2000});
+					this.snackBar.open(this.d.l.errorLabel, this.d.l.ok, {duration: 2000});
 					this.auth.setError(this.d.l.refreshTokenInfo, true);
 					this.auth.goToLogin();
 				})

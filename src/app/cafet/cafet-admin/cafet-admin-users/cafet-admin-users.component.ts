@@ -136,10 +136,10 @@ export class CafetAdminUsersComponent implements OnInit {
 					credit: 0
 				});
 				this.snackBar.open(this.d.format(this.d.l.informAboutCafetCreation, this.cafet.getUserName(user), credit.toFixed(2)),
-					this.d.l.okLabel, {duration: 2000});
+					this.d.l.ok, {duration: 2000});
 			}
 		).catch(
-			err => this.snackBar.open(err, this.d.l.okLabel, {duration: 2000})
+			err => this.snackBar.open(err, this.d.l.ok, {duration: 2000})
 		);
 	}
 
@@ -188,10 +188,10 @@ export class CafetAdminUsersComponent implements OnInit {
 		this.controls[user.emailId].sub.setValue('');
 		this.cafet.newTransaction(user, value).then(
 			() => {
-				this.snackBar.open(this.d.format(this.d.l.informAboutTransaction, this.cafet.getUserName(user), value.toFixed(2)), this.d.l.okLabel, {duration: 2000});
+				this.snackBar.open(this.d.format(this.d.l.informAboutTransaction, this.cafet.getUserName(user), value.toFixed(2)), this.d.l.ok, {duration: 2000});
 			}
 		).catch(
-			err => this.snackBar.open(err, this.d.l.okLabel, {duration: 2000})
+			err => this.snackBar.open(err, this.d.l.ok, {duration: 2000})
 		);
 	}
 

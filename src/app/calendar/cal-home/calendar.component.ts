@@ -33,7 +33,7 @@ export class CalendarComponent implements OnInit {
 
 	ngOnInit() {
 		this.cal.getErrorNotifier().subscribe(
-			message => this.snackBar.open(message, this.d.l.okLabel, {duration: 2000})
+			message => this.snackBar.open(message, this.d.l.ok, {duration: 2000})
 		);
 		this.selectedDay = new Date();
 		this.updateDaysOfTheWeek();

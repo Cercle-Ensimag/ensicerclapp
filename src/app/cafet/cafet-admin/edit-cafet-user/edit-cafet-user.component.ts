@@ -57,7 +57,7 @@ export class EditCafetUserComponent {
 					this.user.activated
 				).then(
 					() => this.dialogRef.close(),
-					(err) => this.snackBar.open(err, this.d.l.okLabel, {duration: 2000})
+					(err) => this.snackBar.open(err, this.d.l.ok, {duration: 2000})
 				);
 			});
 	}
@@ -65,21 +65,21 @@ export class EditCafetUserComponent {
 	archive() {
 		this.cafet.archiveUser(this.user).then(
 			() => this.dialogRef.close(),
-			(err) => this.snackBar.open(err, this.d.l.okLabel, {duration: 2000})
+			(err) => this.snackBar.open(err, this.d.l.ok, {duration: 2000})
 		);
 	}
 
 	restore() {
 		this.cafet.restoreUser(this.user).then(
 			() => this.dialogRef.close(),
-			(err) => this.snackBar.open(err, this.d.l.okLabel, {duration: 2000})
+			(err) => this.snackBar.open(err, this.d.l.ok, {duration: 2000})
 		);
 	}
 
 	delete() {
 		this.cafet.deleteUser(this.user).then(
 			() => this.dialogRef.close(),
-			(err) => this.snackBar.open(err, this.d.l.okLabel, {duration: 2000})
+			(err) => this.snackBar.open(err, this.d.l.ok, {duration: 2000})
 		);
 	}
 

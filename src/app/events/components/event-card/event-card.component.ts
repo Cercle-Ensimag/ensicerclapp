@@ -35,7 +35,7 @@ export class EventCardComponent implements OnInit {
 		}).afterClosed().subscribe(result => {
 			if (result) {
 				this.events.deleteEvent(this.event.id).then(() =>
-					this.snackBar.open(this.d.l.deletedEventInfo, this.d.l.okLabel, {duration: 2000})
+					this.snackBar.open(this.d.l.deletedEventInfo, this.d.l.ok, {duration: 2000})
 				);
 			}
 		});

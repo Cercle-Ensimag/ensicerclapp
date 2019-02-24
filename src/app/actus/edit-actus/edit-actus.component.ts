@@ -85,10 +85,10 @@ export class EditActusComponent implements OnInit, OnDestroy {
 			groupId1: this.formGroup.get('asso1').value || null
 		};
 		this.actus.setActu(actu).then(() => {
-			this.snackBar.open(this.d.l.changesApplied, this.d.l.okLabel, {duration: 2000});
+			this.snackBar.open(this.d.l.changesApplied, this.d.l.ok, {duration: 2000});
 			this.initFormGroup();
 		}).catch(reason => {
-			this.snackBar.open(reason, this.d.l.okLabel, {duration: 2000});
+			this.snackBar.open(reason, this.d.l.ok, {duration: 2000});
 		});
 	}
 }

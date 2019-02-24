@@ -121,7 +121,7 @@ export class AssessorComponent implements OnInit, OnDestroy {
 			first()
 		).subscribe(inList => {
 			if (!inList) {
-				this.snackBar.open(this.d.format(this.d.l.unknownUserInfo, email), this.d.l.okLabel);
+				this.snackBar.open(this.d.format(this.d.l.unknownUserInfo, email), this.d.l.ok);
 			} else {
 				for (let poll of this.polls) {
 					if (this.checked[poll.id]) {
@@ -130,7 +130,7 @@ export class AssessorComponent implements OnInit, OnDestroy {
 				}
 				this.formGroup.get('email').setValue('');
 				this.formGroup.get('domain').setValue(this.domains[0]);
-				this.snackBar.open(this.d.format(this.d.l.markedAsVoted, name), this.d.l.okLabel, {duration: 2000});
+				this.snackBar.open(this.d.format(this.d.l.markedAsVoted, name), this.d.l.ok, {duration: 2000});
 			}
 		});
 	}

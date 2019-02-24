@@ -56,7 +56,7 @@ export class EmailVerifComponent {
 		this.auth.sendEmailVerification(this._user).then(
 			() => this.snackBar.open(
 				this.d.format(this.d.l.emailSentToInfo, this._user.email),
-				this.d.l.okLabel,
+				this.d.l.ok,
 				{duration: 2000}
 			)
 		);

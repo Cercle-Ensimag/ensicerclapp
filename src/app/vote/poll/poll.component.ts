@@ -45,10 +45,10 @@ export class PollComponent implements OnInit {
 			if (result) {
 				this.vote.sendVote(this.id, choice.id).then(
 					() => {
-						this.snackBar.open(this.d.format(this.d.l.voteComfirmationMessage, choice.label), this.d.l.okLabel, {duration: 2000});
+						this.snackBar.open(this.d.format(this.d.l.voteComfirmationMessage, choice.label), this.d.l.ok, {duration: 2000});
 						this.location.back();
 					},
-					(reason) => this.snackBar.open(reason, this.d.l.okLabel, {duration: 2000})
+					(reason) => this.snackBar.open(reason, this.d.l.ok, {duration: 2000})
 				);
 			}
 		});

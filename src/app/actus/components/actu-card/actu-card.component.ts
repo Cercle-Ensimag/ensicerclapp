@@ -35,7 +35,7 @@ export class ActuCardComponent implements OnInit {
 		}).afterClosed().subscribe(result => {
 			if (result) {
 				this.actus.deleteActu(this.actu.id).then(() =>
-					this.snackBar.open(this.d.l.deletedActuInfo, this.d.l.okLabel, {duration: 2000})
+					this.snackBar.open(this.d.l.deletedActuInfo, this.d.l.ok, {duration: 2000})
 				);
 			}
 		});

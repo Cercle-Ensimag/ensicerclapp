@@ -127,12 +127,12 @@ export class CafetRespComponent implements OnInit {
 						this.cafet.getUserName(user),
 						value.toFixed(2)
 					),
-					this.d.l.okLabel,
+					this.d.l.ok,
 					{duration: 2000}
 				);
 			}
 		).catch(
-			err => this.snackBar.open(err, this.d.l.okLabel, {duration: 2000})
+			err => this.snackBar.open(err, this.d.l.ok, {duration: 2000})
 		);
 	}
 

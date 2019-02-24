@@ -139,7 +139,7 @@ export class CalSettingsComponent implements OnInit, OnDestroy {
 				this.salt
 			)
 		).then(() => {
-			this.snackBar.open(this.d.l.updatedResourcesInfo, this.d.l.okLabel, {duration: 2000});
+			this.snackBar.open(this.d.l.updatedResourcesInfo, this.d.l.ok, {duration: 2000});
 			this.ngZone.run(() => this.router.navigateByUrl('/calendar'));
 		});
 	}
@@ -161,15 +161,15 @@ export class CalSettingsComponent implements OnInit, OnDestroy {
 			).subscribe(
 				(text: string) => {
 					snackBarRef.dismiss();
-					if (text.startsWith('invalid')) return this.snackBar.open(this.d.l.invalidZenithCredentialsError, this.d.l.okLabel, {duration: 2000});
-					if (text.startsWith('dangerous')) return this.snackBar.open(this.d.l.dangerousZenithCredentialsError, this.d.l.okLabel, {duration: 2000});
+					if (text.startsWith('invalid')) return this.snackBar.open(this.d.l.invalidZenithCredentialsError, this.d.l.ok, {duration: 2000});
+					if (text.startsWith('dangerous')) return this.snackBar.open(this.d.l.dangerousZenithCredentialsError, this.d.l.ok, {duration: 2000});
 					this.formGroup.get('resources').setValue(text);
 					this.formGroup.get('resources').markAsDirty();
-					this.snackBar.open(this.d.l.ZenithConnectionOk, this.d.l.okLabel, {duration: 2000});
+					this.snackBar.open(this.d.l.ZenithConnectionOk, this.d.l.ok, {duration: 2000});
 				},
 				(error) => {
 					snackBarRef.dismiss();
-					this.snackBar.open(this.d.l.ZenithConnectionError, this.d.l.okLabel, {duration: 2000});
+					this.snackBar.open(this.d.l.ZenithConnectionError, this.d.l.ok, {duration: 2000});
 				}
 			);
 		});

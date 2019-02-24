@@ -36,7 +36,7 @@ export class VoteCardComponent implements OnInit {
 		}).afterClosed().subscribe(result => {
 			if (result) {
 				this.vote.deletePoll(this.poll.id).then(() =>
-					this.snackBar.open(this.d.l.deletedPollInfo, this.d.l.okLabel, {duration: 2000})
+					this.snackBar.open(this.d.l.deletedPollInfo, this.d.l.ok, {duration: 2000})
 				);
 			}
 		});

@@ -33,7 +33,7 @@ export class JobAdCardComponent implements OnInit {
 		}).afterClosed().subscribe(result => {
 			if (result) {
 				this.jobads.deleteJobAd(this.jobad.id).then(
-					() => this.snackBar.open(this.d.l.deletedJobAdsInfo, this.d.l.okLabel, {duration: 2000})
+					() => this.snackBar.open(this.d.l.deletedJobAdsInfo, this.d.l.ok, {duration: 2000})
 				);
 			}
 		});

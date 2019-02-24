@@ -123,7 +123,7 @@ export class EditPollComponent implements OnInit, OnDestroy {
 
 		this.vote.setPoll(poll).then(
 			() => {
-				this.snackBar.open("modifications enregistrées", this.d.l.okLabel, {duration: 2000});
+				this.snackBar.open("modifications enregistrées", this.d.l.ok, {duration: 2000});
 				this.initFormGroup();
 			}
 		);

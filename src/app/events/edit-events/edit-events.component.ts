@@ -110,10 +110,10 @@ export class EditEventsComponent implements OnInit, OnDestroy {
 			groupId3: this.formGroup.get('asso3').value || null
 		};
 		this.events.setEvent(event).then(() => {
-			this.snackBar.open(this.d.l.changesApplied, this.d.l.okLabel, {duration: 2000});
+			this.snackBar.open(this.d.l.changesApplied, this.d.l.ok, {duration: 2000});
 			this.initFormGroup();
 		}).catch(reason => {
-			this.snackBar.open(reason, this.d.l.okLabel, {duration: 2000});
+			this.snackBar.open(reason, this.d.l.ok, {duration: 2000});
 		});
 	}
 

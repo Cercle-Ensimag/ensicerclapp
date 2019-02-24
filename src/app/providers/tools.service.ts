@@ -137,4 +137,12 @@ export class Tools {
 		return localStorage.getItem("cal-key");
 	}
 
+	static storeLanguage(country: string) {
+		localStorage.setItem("language", country);
+	}
+
+	static loadLanguage(): string {
+		return localStorage.getItem("language");
+	}
+
 }

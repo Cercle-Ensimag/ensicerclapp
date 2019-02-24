@@ -49,7 +49,7 @@ export class CafetAdminRespsComponent implements OnInit {
 		).subscribe(inList => {
 			if (!inList) {
 				const name = Tools.getNameFromEmailId(emailId);
-				this.snackBar.open(this.d.format(this.d.l.notOnTheList, name), this.d.l.okLabel, {duration: 2000});
+				this.snackBar.open(this.d.format(this.d.l.notOnTheList, name), this.d.l.ok, {duration: 2000});
 			} else {
 				this.cafet.addCafetResp({
 					emailId: emailId
