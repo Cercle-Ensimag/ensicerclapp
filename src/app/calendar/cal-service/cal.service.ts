@@ -1,7 +1,8 @@
-import {Injectable} from '@angular/core';
+import {Injectable, NgZone} from '@angular/core';
 import {DatePipe} from '@angular/common';
+import {Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
-import {AngularFireDatabase} from '@angular/fire/database';
+import {AngularFireDatabase,} from '@angular/fire/database';
 import {FormControl} from '@angular/forms';
 
 import {DicoService} from '../../language/dico.service';
@@ -144,6 +145,8 @@ export class CalService {
 		private db: AngularFireDatabase,
 		private events: EventsService,
 		private http: HttpClient,
+		private router: Router,
+		private ngZone: NgZone,
 
 		public d: DicoService,
 		public datepipe: DatePipe
@@ -178,6 +181,14 @@ export class CalService {
 		).toPromise().then(
 			settings => this._ADErefresh.next(settings)
 		)
+	}
+
+	goToCalendarEditAll(): void {
+		this.ngZone.run(() => this.router.navigateByUrl('/calendar/edit'));
+	}
+
+	goToCalendarSettings(): void {
+		this.ngZone.run(() => this.router.navigateByUrl('/calendar/settings'));
 	}
 
 	getCoursesEvents(): Observable<CalEvent[]> {

@@ -14,8 +14,8 @@
 ensicerclapp-admin-sdk-credential.json
 users_emails.json
 users_emails_exte.json
-users_ensimag/
 calendar_dl/
+private/
 
 # python
 __pycache__

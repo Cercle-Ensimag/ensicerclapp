@@ -1,0 +1,83 @@
+<!-- Mobile -->
+<div *ngIf="!media.largeSize; then mobile else desktop"></div>
+
+<ng-template #mobile class="thin-container">
+	<mat-card class="item header center">
+		<button mat-icon-button (click)="date.previousDay()"><mat-icon>navigate_before</mat-icon></button>
+		<label>{{ date.getSelectedDay() | date:d.l.shortDateFormat:'':d.l.locale | uppercase }}</label>
+		<button mat-icon-button (click)="date.nextDay()"><mat-icon>navigate_next</mat-icon></button><br>
+		<button mat-icon-button (click)="date.goToCalendarEditEvent()"><mat-icon>add_circle</mat-icon></button>
+		<button mat-icon-button (click)="date.goToCalendarEditAll()"><mat-icon>edit</mat-icon></button>
+		<input [(ngModel)]="selectedDay" [matDatepicker]="picker" style="width: 0; height: 0; padding: 0; margin: 0; border: none; visibility: hidden;">
+		<mat-datepicker [touchUi]="true" #picker></mat-datepicker>
+		<mat-datepicker-toggle [for]="picker"></mat-datepicker-toggle>
+		<button mat-icon-button (click)="date.goToCalendarSettings()"><mat-icon>settings</mat-icon></button>
+	</mat-card>
+
+	<ng-container *ngTemplateOutlet="daycolumn; context: {$implicit: date.getSelectedDay()}"></ng-container>
+</ng-template>
+
+<!-- Desktop -->
+<ng-template #desktop>
+	<mat-card class="item header center">
+		<button mat-icon-button (click)="date.goToCalendarEditEvent()"><mat-icon>add_circle</mat-icon></button>
+		<button mat-icon-button (click)="date.goToCalendarEditAll()"><mat-icon>edit</mat-icon></button>
+		<button mat-icon-button (click)="date.previousWeek()"><mat-icon>navigate_before</mat-icon></button>
+		<label>{{ date.getDaysOfTheWeek()[0] | date:d.l.shortDateFormat:'':d.l.locale | uppercase }}
+			- {{ date.getDaysOfTheWeek()[6] | date:d.l.shortDateFormat:'':d.l.locale | uppercase }}</label>
+		<button mat-icon-button (click)="date.nextWeek()"><mat-icon>navigate_next</mat-icon></button>
+		<input [(ngModel)]="selectedDay" [matDatepicker]="picker2" style="width: 0; height: 0; padding: 0; margin: 0; border: none; visibility: hidden;">
+		<mat-datepicker #picker2></mat-datepicker>
+		<mat-datepicker-toggle [for]="picker2"></mat-datepicker-toggle>
+		<button mat-icon-button (click)="date.goToCalendarSettings()"><mat-icon>settings</mat-icon></button>
+	</mat-card>
+
+	<div class="columns">
+		<div *ngFor="let day of date.getDaysOfTheWeek()">
+			<ng-container *ngTemplateOutlet="daycolumn; context: {$implicit: day}"></ng-container>
+		</div>
+	</div>
+</ng-template>
+
+<!-- /////////////////////////////////////////////////////////////////////// -->
+<!-- Day column -->
+<ng-template #daycolumn let-day>
+	<app-loading [loading]="date.getMyEventsForDay(day) | async"></app-loading>
+
+	<div class="day-column">
+		<div *ngIf="media.largeSize" class="column-header">
+			<mat-card class="center">
+				<label>{{day | date:d.l.shortDateFormat:'':d.l.locale | uppercase }}</label>
+			</mat-card>
+		</div>
+		<div *ngIf="date.getMyEventsForDay(day) | async as events">
+			<div *ngIf="events.length; else noEvents">
+				<div *ngFor="let event of events" class="column-item">
+					<app-conditional-router-link [enabled]="event.isAssos()" link="/events/event/{{ event.id }}">
+						<mat-card class="event center"
+									[class.border]="event.isNow() && event.isCourse()"
+									[class.perso]="event.isPerso()" [class.assos]="event.isAssos()">
+							{{ date.getTitle(event) }}<br>
+							<div *ngIf="event.isSingleDay()">
+								{{ event.start | date:d.l.timeFormat:'':d.l.locale }} - {{ event.end | date:d.l.timeFormat:'':d.l.locale }}
+							</div>
+							<div *ngIf="!event.isSingleDay()">
+								{{ event.start | date:d.l.shortDateTimeFormat:'':d.l.locale }} - {{ event.end | date:d.l.shortDateTimeFormat:'':d.l.locale }}
+							</div>
+							{{ date.getLocation(event) }}<br>
+						</mat-card>
+					</app-conditional-router-link>
+				</div>
+			</div>
+			<ng-template #noEvents>
+				<div class="column-item">
+					<mat-card class="no-events center">
+						{{ d.l.noCalEvent }}
+					</mat-card>
+				</div>
+			</ng-template>
+		</div>
+
+	</div>
+<ng-template>
+<!-- /////////////////////////////////////////////////////////////////////// -->

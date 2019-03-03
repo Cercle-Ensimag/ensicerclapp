@@ -1,14 +1,17 @@
+/* ////////////////////////////////////////////////////////////////////////// */
+/* Day column */
+
 .day-column {
 	margin-left: 5px;
 	margin-right: 5px;
 }
 
-.header {
+.column-header {
 	padding-top: 5px;
 	padding-bottom: 5px;
 }
 
-.item {
+.column-item {
 	padding-bottom: 5px;
 }
 
@@ -33,4 +36,20 @@
 
 .no-events{
 	font: 500 20px/32px Roboto, "Helvetica Neue", sans-serif;
+}
+/* ////////////////////////////////////////////////////////////////////////// */
+
+.item {
+	margin: 5px;
+}
+
+.header button {
+	margin-left: 8px;
+	margin-right: 8px;
+}
+
+.columns {
+	display: grid;
+	grid-template-columns: 14.2857% 14.2857% 14.2857% 14.2857% 14.2857% 14.2857% 14.2857%;
+	margin:auto;
 }

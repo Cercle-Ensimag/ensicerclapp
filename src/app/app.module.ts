@@ -62,7 +62,9 @@ import {CalendarComponent} from './calendar/cal-home/calendar.component';
 import {EditCalComponent} from './calendar/edit-cal/edit-cal.component';
 import {CalSettingsComponent} from './calendar/cal-settings/cal-settings.component';
 import {CalEditAllComponent} from './calendar/cal-edit-all/cal-edit-all.component';
-import {DayColumnComponent} from './calendar/components/day-column/day-column.component';
+import {DateService} from './calendar/cal-home/views/date.service';
+import {View1} from './calendar/cal-home/views/view1/view1';
+import {View2} from './calendar/cal-home/views/view2/view2';
 
 import {JobAdsHomeComponent} from './jobads/jobads-home/jobads-home.component';
 import {JobAdsAdminComponent} from './jobads/jobads-admin/jobads-admin.component';
@@ -157,7 +159,8 @@ import {HammerFix} from '../HammerFix';
 		LoginComponent, SignUpComponent, EmailVerifComponent, PasswordResetComponent,
 		CafetComponent, CafetInfoComponent, CafetAdminComponent, CafetAdminUsersComponent, CafetAdminAccountsComponent, CafetAdminArchivesComponent, CafetAdminRespsComponent, TrezoComponent, CafetHistoryComponent, EditCafetUserComponent, CafetRespComponent,
 		VoteComponent, PollComponent, VoteAdminComponent, EditPollComponent, ResultsComponent, VoteUsersComponent, AssessorComponent, VoteCardComponent,
-		CalendarComponent, EditCalComponent, CalSettingsComponent, DayColumnComponent, CalEditAllComponent,
+		CalendarComponent, EditCalComponent, CalSettingsComponent, CalEditAllComponent,
+		View1, View2,
 		EventsHomeComponent, EventComponent, EventAdminComponent, ComRespComponent, EditEventsComponent, EventCardComponent,
 		ActusHomeComponent, ActuComponent, ActuAdminComponent, JournalistComponent, EditActusComponent, ActuCardComponent,
 		InfoComponent, ReadmeComponent, LegalNoticeComponent,
@@ -191,7 +194,7 @@ import {HammerFix} from '../HammerFix';
 		ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
 	],
 	providers: [
-		AuthService, VoteService, AdminService, CafetService, EventsService, ActusService, NsigmaService, NsigmaGuard, JobAdsService, JobAdsGuard, CalService,
+		AuthService, VoteService, AdminService, CafetService, EventsService, ActusService, NsigmaService, NsigmaGuard, JobAdsService, JobAdsGuard, CalService, DateService,
 		AppModulesService, DeviceSizeService, ListService,
 		CanActivateHome, CanActivateVoteAdmin, CanActivateAssessor, CanActivateEventsAdmin, CanActivateComResp, CanActivateEventsEdit, CanActivateActusAdmin, CanActivateJournalist, CanActivateCafetResp, CanActivateActusEdit, CanActivateAdmin, CanActivateCafetAdmin, EmailVerifGuard,
 		DicoService, DatePipe,
