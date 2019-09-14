@@ -7,12 +7,12 @@ export const environment = {
 	production: false,
 	hmr: false,
 	firebase: {
-		apiKey: "AIzaSyCiMXiQ2w5b7YWmW20j38PC2mrORsNVHMk",
-		authDomain: "ensicerclapp.firebaseapp.com",
-		databaseURL: "https://ensicerclapp.firebaseio.com",
-		projectId: "ensicerclapp",
-		storageBucket: "ensicerclapp.appspot.com",
-		messagingSenderId: "5656243105"
+	    apiKey: "AIzaSyC5HqCCmTSA5MYe7NAirTfS3Y6t0Arbyug",
+	    authDomain: "ensicerclapp-dev.firebaseapp.com",
+	    databaseURL: "https://ensicerclapp-dev.firebaseio.com",
+	    projectId: "ensicerclapp-dev",
+	    storageBucket: "ensicerclapp-dev.appspot.com",
+	    messagingSenderId: "944769944930",
 	},
 	proxy: {
 		domain: "http://localhost:8080/proxy.php?"
