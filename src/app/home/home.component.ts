@@ -18,7 +18,7 @@ import {first} from 'rxjs/operators';
 })
 
 export class HomeComponent implements OnInit, OnDestroy {
-	@ViewChild(MatSidenav) snav: MatSidenav;
+	@ViewChild(MatSidenav, { static : false }) snav: MatSidenav;
 
 	public activatedOutlet: boolean = false;
 

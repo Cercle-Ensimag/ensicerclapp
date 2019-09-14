@@ -18,7 +18,7 @@ class Log {
 	styleUrls: ['./cafet-history.component.css']
 })
 export class CafetHistoryComponent {
-	@ViewChild(MatPaginator) paginator: MatPaginator;
+	@ViewChild(MatPaginator, { static : false }) paginator: MatPaginator;
 	private _data: Observable<MatTableDataSource<Log>>;
 
 	constructor(

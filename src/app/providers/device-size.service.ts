@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 
 import {Subject, pipe} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
-import {MediaChange, ObservableMedia} from '@angular/flex-layout';
+import {MediaChange, MediaObserver} from '@angular/flex-layout';
 
 @Injectable()
 export class DeviceSizeService {
@@ -13,11 +13,11 @@ export class DeviceSizeService {
 	private unsubscribe: Subject<void> = new Subject();
 
 	constructor(
-		private media: ObservableMedia
+		private mediaObserver: MediaObserver
 	) { }
 
 	watchSizeChanges() {
-		this.media.asObservable().pipe(
+		this.mediaObserver.media$.pipe(
 			takeUntil(this.unsubscribe)
 		).subscribe((change: MediaChange) => {
 			this.currentSize = change.mqAlias;
