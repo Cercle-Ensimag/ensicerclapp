@@ -163,7 +163,7 @@
 			"users": {
 				".read" : "root.child('cafet/cafetResps/resps/'+auth.token.email.replace('@ensimag.fr', '').replace('@phelma.grenoble-inp.fr', '').replace('.', '|')).exists() && auth !== null && auth.token.email_verified == true",
 				"$emailId": {
-					".read" : "(auth !== null && auth.token.email_verified == true) && (root.child('users/'+$emailId+'/'+auth.uid).exists()) && (auth.token.email === root.child('list/users/'+$emailId).val())",
+					".read" : "(auth !== null && auth.token.email_verified == true) && ($emailId === auth.token.email.replace('@ensimag.fr', '').replace('@phelma.grenoble-inp.fr', '').replace('.', '|'))",
 					".validate" : "(data.exists() && (newData.exists() && newData.val() !== null)) || ((!data.exists()) && ((!root.child('cafet/history/'+$emailId).exists()) || ((root.child('cafet/archives/users/'+$emailId+'/credit').val() === newData.child('credit').val()) && (root.child('cafet/archives/users/'+$emailId+'/creationDate').val() === newData.child('creationDate').val())))) || (data.exists() && (!newData.exists() || newData.val() === null) && !root.child('cafet/cafetResps/dayTransactions/'+$emailId).exists())",
 					"emailId": { ".validate" : "newData.val() === $emailId" },
 					"activated": { ".validate" : "newData.isBoolean()" },
@@ -183,7 +183,7 @@
 			},
 			"history": {
 				"$emailId": {
-					".read" : "(auth !== null && auth.token.email_verified == true) && (root.child('users/'+$emailId+'/'+auth.uid).exists()) && (auth.token.email === root.child('list/users/'+$emailId).val())",
+					".read" : "(auth !== null && auth.token.email_verified == true) && ($emailId === auth.token.email.replace('@ensimag.fr', '').replace('@phelma.grenoble-inp.fr', '').replace('.', '|'))",
 					"$transaction": {
 						"value": { ".validate" : "newData.isNumber() && newData.val() >= -1000 && newData.val() <= 1000" },
 						"newCredit": { ".validate" : "newData.isNumber()" },
@@ -402,11 +402,11 @@
 						".write" : "(root.child('vote/assessors/'+auth.token.email.replace('@ensimag.fr', '').replace('@phelma.grenoble-inp.fr', '').replace('.', '|')).exists() && auth !== null && auth.token.email_verified == true) && (root.child('vote/polls/'+$poll_id+'/started').val() == true)",
 						".validate" : "newData.hasChildren(['emailId', 'voted'])",
 						"emailId": {
-							".write" : "((auth !== null && auth.token.email_verified == true) && (root.child('users/'+$emailId+'/'+auth.uid).exists()) && (auth.token.email === root.child('list/users/'+$emailId).val())) && (root.child('vote/polls/'+$poll_id+'/started').val() == true)",
+							".write" : "(((auth !== null && auth.token.email_verified == true) && ($emailId === auth.token.email.replace('@ensimag.fr', '').replace('@phelma.grenoble-inp.fr', '').replace('.', '|'))) && (root.child('users/'+$emailId+'/'+auth.uid).exists()) && (auth.token.email === root.child('list/users/'+$emailId).val())) && (root.child('vote/polls/'+$poll_id+'/started').val() == true)",
 							".validate" : "newData.val() === $emailId",
 						},
 						"voted": {
-							".write" : "((auth !== null && auth.token.email_verified == true) && (root.child('users/'+$emailId+'/'+auth.uid).exists()) && (auth.token.email === root.child('list/users/'+$emailId).val())) && (root.child('vote/polls/'+$poll_id+'/started').val() == true) && ((!data.exists() || data.val() != true) && newData.val() == true)",
+							".write" : "(((auth !== null && auth.token.email_verified == true) && ($emailId === auth.token.email.replace('@ensimag.fr', '').replace('@phelma.grenoble-inp.fr', '').replace('.', '|'))) && (root.child('users/'+$emailId+'/'+auth.uid).exists()) && (auth.token.email === root.child('list/users/'+$emailId).val())) && (root.child('vote/polls/'+$poll_id+'/started').val() == true) && ((!data.exists() || data.val() != true) && newData.val() == true)",
 							".validate" : "newData.isBoolean()",
 						},
 						"$other": { ".validate" : "false" },
@@ -419,7 +419,7 @@
 					".validate" : "root.child('vote/polls/'+$poll_id).exists()",
 					"buffer": {
 						"$emailId": {
-							".write" : "((auth !== null && auth.token.email_verified == true) && (root.child('users/'+$emailId+'/'+auth.uid).exists()) && (auth.token.email === root.child('list/users/'+$emailId).val())) && (root.child('vote/polls/'+$poll_id+'/started').val() == true) && (root.child('vote/users/'+$poll_id+'/'+$emailId+'/voted').val() != true) && (!data.exists())",
+							".write" : "(((auth !== null && auth.token.email_verified == true) && ($emailId === auth.token.email.replace('@ensimag.fr', '').replace('@phelma.grenoble-inp.fr', '').replace('.', '|'))) && (root.child('users/'+$emailId+'/'+auth.uid).exists()) && (auth.token.email === root.child('list/users/'+$emailId).val())) && (root.child('vote/polls/'+$poll_id+'/started').val() == true) && (root.child('vote/users/'+$poll_id+'/'+$emailId+'/voted').val() != true) && (!data.exists())",
 							".validate" : "root.child('vote/polls/'+$poll_id+'/choices/'+newData.val()).exists()",
 						},
 					},
@@ -436,9 +436,9 @@
 			"users": {
 				"$emailId": {
 					"votes": {
-						".read" : "(auth !== null && auth.token.email_verified == true) && (root.child('users/'+$emailId+'/'+auth.uid).exists()) && (auth.token.email === root.child('list/users/'+$emailId).val())",
+						".read" : "((auth !== null && auth.token.email_verified == true) && ($emailId === auth.token.email.replace('@ensimag.fr', '').replace('@phelma.grenoble-inp.fr', '').replace('.', '|'))) && (root.child('users/'+$emailId+'/'+auth.uid).exists()) && (auth.token.email === root.child('list/users/'+$emailId).val())",
 						"$poll_id": {
-							".write" : "(((auth !== null && auth.token.email_verified == true) && (root.child('users/'+$emailId+'/'+auth.uid).exists()) && (auth.token.email === root.child('list/users/'+$emailId).val())) || (root.child('vote/assessors/'+auth.token.email.replace('@ensimag.fr', '').replace('@phelma.grenoble-inp.fr', '').replace('.', '|')).exists() && auth !== null && auth.token.email_verified == true)) && (root.child('vote/polls/'+$poll_id+'/started').val() == true)",
+							".write" : "((((auth !== null && auth.token.email_verified == true) && ($emailId === auth.token.email.replace('@ensimag.fr', '').replace('@phelma.grenoble-inp.fr', '').replace('.', '|'))) && (root.child('users/'+$emailId+'/'+auth.uid).exists()) && (auth.token.email === root.child('list/users/'+$emailId).val())) || (root.child('vote/assessors/'+auth.token.email.replace('@ensimag.fr', '').replace('@phelma.grenoble-inp.fr', '').replace('.', '|')).exists() && auth !== null && auth.token.email_verified == true)) && (root.child('vote/polls/'+$poll_id+'/started').val() == true)",
 							".validate" : "(root.child('vote/polls/'+$poll_id).exists()) && (newData.isBoolean() && newData.val() == true)",
 						},
 					},

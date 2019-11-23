@@ -1,5 +1,5 @@
 from RulesPattern import RulesPattern
-from common import OtherRules, StringRules, NumberRules, BornedNumberRules, BooleanRules, IdRules, doAnd, doOr, isOneAdmin, isCafetResp, verifyEmailId, isMember
+from common import OtherRules, StringRules, NumberRules, BornedNumberRules, BooleanRules, IdRules, doAnd, doOr, isOneAdmin, isCafetResp, validateEmailId, isMember
 
 class CafetRules (RulesPattern):
     def build(self):
@@ -183,7 +183,7 @@ class ActiveUserRules (UserRules):
         deleteUser = "data.exists() && (!newData.exists() || newData.val() === null) && !root.child('cafet/cafetResps/dayTransactions/'+" + self.emailId + ").exists()"
 
         self.validate = doOr([modifUser, newUser, deleteUser])
-        self.read = verifyEmailId(self.emailId);
+        self.read = validateEmailId(self.emailId)
 
 
 # history node
@@ -195,7 +195,7 @@ class HistoryRules (CafetRules):
 class UserHistoryRules (HistoryRules):
     def build(self):
         self.label = "$emailId"
-        self.read = verifyEmailId(self.label)
+        self.read = validateEmailId(self.label)
         self.add(TransactionRules())
 
 class TransactionRules (UserHistoryRules):

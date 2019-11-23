@@ -103,13 +103,23 @@ def validateUid(uid):
 	"""
 	return uid + " === auth.uid"
 
+def validateEmailId(emailId):
+	"""
+	Returns a condition that is true if the given emailId is the same as
+	the one of user identified
+	"""
+	return doAnd([
+			isMember(),
+			emailId + " === " + computeEmailId()
+	])
+
 def verifyEmailId(emailId):
 	"""
 	Returns a condition that is true if the given emailId actually belong to
 	the user identified
 	"""
 	return doAnd([
-			isMember(),
+			validateEmailId(emailId),
 			"root.child('users/'+" + emailId + "+'/'+auth.uid).exists()",
 			verifyEmailInList(emailId, "auth.token.email")
 	])
