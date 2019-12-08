@@ -1,6 +1,7 @@
 import {takeUntil} from 'rxjs/operators';
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {MatSnackBar} from '@angular/material';
 
 import {AuthService} from '../auth-service/auth.service';
 import {DicoService} from '../../language/dico.service';
@@ -23,7 +24,8 @@ export class SignUpComponent implements OnInit {
 
 		public auth: AuthService,
 		public location: Location,
-		public d: DicoService
+		public d: DicoService,
+		private snackBar: MatSnackBar
 	) {
 		this.formGroup = this.fb.group({
 			firstName: ['', [Validators.required]],
@@ -64,25 +66,24 @@ export class SignUpComponent implements OnInit {
 			).then(
 				([user, emailp, authProfile, dbProfile]) => {
 					emailp.then(
-						() => {
-							this.auth.goToEmailVerif();
-						},
-						err => {
-							console.log(err);
-						}
-					);
-					authProfile.catch(err => {
-						console.log(err);
+						() => { this.auth.goToEmailVerif(); }
+					).catch(reason => {
+						this.snackBar.open(reason, this.d.l.ok, {duration: 2000});
+						console.log(reason);
 					});
-					dbProfile.catch(err => {
-						console.log(err);
-					})
+					authProfile.catch(reason => {
+						this.snackBar.open(reason, this.d.l.ok, {duration: 2000});
+						console.log(reason);
+					});
+					dbProfile.catch(reason => {
+						this.snackBar.open(reason, this.d.l.ok, {duration: 2000});
+						console.log(reason);
+					});
 				}
-			).catch(
-				(err) => {
-					this.auth.onAuthError(err);
-				}
-			);
+			).catch(reason => {
+				this.snackBar.open(reason, this.d.l.ok, {duration: 2000});
+				this.auth.onAuthError(reason);
+			});
 		}
 	}
 }

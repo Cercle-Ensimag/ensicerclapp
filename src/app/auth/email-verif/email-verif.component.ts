@@ -59,7 +59,9 @@ export class EmailVerifComponent {
 				this.d.l.ok,
 				{duration: 2000}
 			)
-		);
+		).catch(reason => {
+			this.snackBar.open(reason, this.d.l.ok, {duration: 2000});
+		});
 	}
 
 	goToLogin() {
