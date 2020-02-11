@@ -1,25 +1,8 @@
 {
   "admin" : {
-    "public" : {
+    "private" : {
       "admins" : {
-        "admin1" : "jose.maillard@ensimag.fr"
-      },
-      "modules" : {
-        "cafet" : {
-          "disabled" : true,
-          "displayName" : "cafet",
-          "name" : "cafet"
-        },
-        "calendar" : {
-          "disabled" : true,
-          "displayName" : "calendar",
-          "name" : "calendar"
-        },
-        "vote" : {
-          "disabled" : false,
-          "displayName" : "vote",
-          "name" : "vote"
-        }
+        "admin1" : "jose.maillard@grenoble-inp.org"
       }
     }
   }

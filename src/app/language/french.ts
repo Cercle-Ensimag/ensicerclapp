@@ -141,7 +141,7 @@ export class French extends Language {
 	// -> auth-service
 	public readonly noEmailError = "L'e-mail est exigé";
 	public readonly emailFormatError = "L'e-mail est incorrect";
-	public readonly emailDomainError = "L'e-mail doit appartenir au domaine '@ensimag.fr'";
+	public readonly emailDomainError = "L'e-mail doit appartenir au domaine '@grenoble-inp.org'";
 	// -> signup
 	public readonly signUpPageTitle = "Inscription";
 	// -> email-verif

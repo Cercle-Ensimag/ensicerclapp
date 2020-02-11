@@ -2,12 +2,14 @@ export const environment = {
 	production: true,
 	hmr: false,
 	firebase: {
-		apiKey: "AIzaSyCiMXiQ2w5b7YWmW20j38PC2mrORsNVHMk",
-		authDomain: "ensicerclapp.firebaseapp.com",
-		databaseURL: "https://ensicerclapp.firebaseio.com",
-		projectId: "ensicerclapp",
-		storageBucket: "ensicerclapp.appspot.com",
-		messagingSenderId: "5656243105"
+		apiKey: "AIzaSyCzy9RKUeWhYU0yApT3da5zBh1g6MbVTDU",
+		authDomain: "cercle-ensimag.firebaseapp.com",
+		databaseURL: "https://cercle-ensimag.firebaseio.com",
+		projectId: "cercle-ensimag",
+		storageBucket: "cercle-ensimag.appspot.com",
+		messagingSenderId: "263147966493",
+		appId: "1:263147966493:web:5f48b801710e47b587b6f4",
+		measurementId: "G-D400V199NZ"
 	},
 	proxy: {
 		domain: "https://cercle-ensimag.fr/proxy.php?"

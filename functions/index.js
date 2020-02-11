@@ -2,18 +2,22 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 
 // Fetch the service account key JSON file contents
-const serviceAccount = require("./ensicerclapp-admin-sdk-credential.json");
+// const serviceAccount = require("./ensicerclapp-firebase-adminsdk-ksnwq-6c676e9155.json");
+const serviceAccount = require("./cercle-ensimag-firebase-adminsdk-mrw8c-ac511b3e0e.json");
 
 // Initialize the app with a service account, granting admin privileges
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://ensicerclapp.firebaseio.com"
+  // databaseURL: "https://ensicerclapp.firebaseio.com"
+  // databaseURL: "https://ensicerclapp-dev.firebaseio.com"
+	databaseURL: "https://cercle-ensimag.firebaseio.com"
 });
 
 const db = admin.database();
 
-const usersEmailIds = require("./users_emails.json");
-const usersEmailExteIds = require("./users_emails_exte.json");
+// Electoral register
+// Contains the emails of the users allowed to vote and their associated email ID
+const electoralRegister = require("./electoral_register.json");
 
 /**
  * Local function that generates an ID from the email
@@ -26,7 +30,7 @@ function getEmailId(email) {
  * Local function that verifies that the email used is correct
  */
 function verifyEmail(email) {
-  return usersEmailIds[getEmailId(email)] === email || usersEmailExteIds[getEmailId(email)] === email;
+  return electoralRegister[getEmailId(email)] === email;
 }
 
 /**
@@ -44,15 +48,20 @@ exports.onVote = functions.database.ref(
 	'/vote/votes/{pollId}/{emailId}/voted'
 ).onWrite((data, context) => {
   if (!data.after.exists()) {
-    return null;
+		// Normally never here, else someone most likely cheated
+	  return db.ref('/logs/errors/vote/'+pollId).push().set('Alert on user '+emailId);
   }
   const voted = data.after.val();
   const pollId = context.params.pollId;
   const emailId = context.params.emailId;
 
+	// if the value of the "voted" flag just turned to true, vote must be processed
+	// User or assessor is responsible for setting the voted flag for the vote to be processed
   if (voted == true && data.before.val() != data.after.val()) {
     return db.ref("/vote/results/"+pollId+"/buffer/"+emailId)
     .once("value").then(function(snapshot) {
+			// If ballot (snapshot), add a vote to the user's choice, then remove from buffer
+			// Else, the vote occured in face to face
       if (snapshot.exists()) {
         return db.ref("/vote/results/"+pollId+"/ballot_box/"+snapshot.val()).push(true)
         .then(function() {
@@ -63,6 +72,7 @@ exports.onVote = functions.database.ref(
       }
     });
   } else {
+		// Normally never here, else someone may vote twice
     return db.ref('/logs/errors/vote/'+pollId).push().set('Error on user '+emailId);
   }
 });
@@ -160,7 +170,7 @@ exports.onDeleteAccount = functions.auth.user().onDelete((user, context) => {
  * Load or update the list of authorised users
  */
 exports.updateList = functions.database.ref('/list/update').onWrite(() => {
-  return db.ref("/list/users").set(Object.assign({}, usersEmailIds, usersEmailExteIds));
+  return db.ref("/list/users").set(electoralRegister);
 });
 
 /**

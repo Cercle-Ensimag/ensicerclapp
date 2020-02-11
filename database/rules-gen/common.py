@@ -74,8 +74,7 @@ def computeEmailId():
 	"""
 	return (
 			"auth.token.email"
-			+ ".replace('@ensimag.fr', '')"
-			+ ".replace('@phelma.grenoble-inp.fr', '')"
+			+ ".replace('@grenoble-inp.org', '')"
 			+ ".replace('.', '|')"
 	)
 
@@ -91,10 +90,7 @@ def hasAllowedEmail(email):
 	Returns a condition that is true if the given email is authorized to have an
 	account
 	"""
-	return doOr([
-			email + ".endsWith('@ensimag.fr')",
-			email + ".endsWith('@phelma.grenoble-inp.fr')"
-	])
+	return email + ".endsWith('@grenoble-inp.org')"
 
 def validateUid(uid):
 	"""

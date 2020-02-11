@@ -1,5 +1,4 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
-private
 
 # compiled output
 /dist
@@ -12,15 +11,12 @@ private
 /functions/node_modules
 
 # admin
-ensicerclapp-admin-sdk-credential.json
-users_emails.json
-users_emails_exte.json
-calendar_dl/
+*firebase-adminsdk*.json
+electoral_register.json
 private/
 
 # python
 __pycache__
-old_db_rules.json
 
 # IDEs and editors
 /.idea

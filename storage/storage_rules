@@ -1,7 +1,0 @@
-service firebase.storage {
-	match /b/{bucket}/o {
-		match /actus {
-			allow read: if request.auth != null && request.auth.token.email_verified == true;
-		}
-	}
-}

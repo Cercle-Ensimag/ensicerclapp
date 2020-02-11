@@ -20,7 +20,7 @@ import {CafetResp} from '../../cafet/cafet-service/cafet.service';
 
 import {environment} from '../../../environments/environment';
 
-export const DOMAINS = ['ensimag.fr', 'phelma.grenoble-inp.fr'];
+export const DOMAINS = ['grenoble-inp.org'];
 export const ADMINS = ['vote', 'events', 'actus', 'cafet', 'nsigma', 'jobads'];
 
 export class Profile {
