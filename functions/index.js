@@ -2,8 +2,8 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 
 // Fetch the service account key JSON file contents
-const serviceAccount = require("./ensicerclapp-firebase-adminsdk-ksnwq-6c676e9155.json");
-// const serviceAccount = require("./cercle-ensimag-firebase-adminsdk-mrw8c-ac511b3e0e.json");
+const serviceAccount = require("./ensicerclapp-firebase-adminsdk.json");
+// const serviceAccount = require("./cercle-ensimag-firebase-adminsdk.json");
 
 // Initialize the app with a service account, granting admin privileges
 admin.initializeApp({
