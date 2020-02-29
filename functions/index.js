@@ -2,15 +2,15 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 
 // Fetch the service account key JSON file contents
-// const serviceAccount = require("./ensicerclapp-firebase-adminsdk-ksnwq-6c676e9155.json");
-const serviceAccount = require("./cercle-ensimag-firebase-adminsdk-mrw8c-ac511b3e0e.json");
+const serviceAccount = require("./ensicerclapp-firebase-adminsdk-ksnwq-6c676e9155.json");
+// const serviceAccount = require("./cercle-ensimag-firebase-adminsdk-mrw8c-ac511b3e0e.json");
 
 // Initialize the app with a service account, granting admin privileges
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  // databaseURL: "https://ensicerclapp.firebaseio.com"
+  databaseURL: "https://ensicerclapp.firebaseio.com"
   // databaseURL: "https://ensicerclapp-dev.firebaseio.com"
-	databaseURL: "https://cercle-ensimag.firebaseio.com"
+	// databaseURL: "https://cercle-ensimag.firebaseio.com"
 });
 
 const db = admin.database();
