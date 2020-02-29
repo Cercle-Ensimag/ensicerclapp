@@ -146,7 +146,7 @@ export class French extends Language {
 	public readonly signUpPageTitle = "Inscription";
 	// -> email-verif
 	public readonly verificationEmailSentTitle = "Compte non confirmé";
-	public readonly verificationEmailSentInfo = "Un e-mail a été envoyé à l'adresse \"{0}\".<br>Valide ton compte en cliquant sur le lien de confirmation.<br><br><small>Si tu n'as reçu aucun e-mail : <br>(1) vérifie ton dossier spam<br>(2) vérifie ton adresse, en cas d'erreur tu devras recréer un compte<br>(3) renvoie l'e-mail (plusieurs fois)<br>(4) attends un peu, on ne sait jamais<br>(5) ...<br>(6) retourne à l'étape (1) si tu n'est pas sûr<br>(7) contacte ton Cercle préféré pour trouver une solution ;)<br><br>Si le lien a expiré immédiatement après avoir reçu l'e-mail :<br>(*) contacte ton Cercle préféré pour trouver une solution ;)</small>";
+	public readonly verificationEmailSentInfo = "Un e-mail a été envoyé à l'adresse \"{0}\".<br>Valide ton compte en cliquant sur le lien de confirmation.<br><br><small>Si tu n'as reçu aucun e-mail : <br>(1) vérifie ton dossier spam<br>(2) vérifie ton adresse, en cas d'erreur tu devras recréer un compte<br>(3) connecte-toi de nouveau, en cas d'erreur tu devras recréer un compte<br>(4) renvoie l'e-mail (plusieurs fois)<br>(5) attends un peu, on ne sait jamais<br>(6) suis la procédure de mot de passe oublié, changer le mot de passe te permettra de valider ton email et d'accéder au service<br><br>Si le lien a expiré immédiatement après avoir reçu l'e-mail, ton email n'as pas été accepté, contacte ton Cercle préféré pour trouver une solution ;)</small>";
 	public readonly sendEmailAgainButtonLabel = "Renvoyer l'email";
 	public readonly emailSentToInfo = "Email envoyé à {0}";
 	// -> password-reset
