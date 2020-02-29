@@ -56,19 +56,19 @@ export class AuthService {
 	error: any;
 	error_persist: boolean;
 
-	private _adminsRes: Observable<any> = null;
-	private _otherAdminsRes: Observable<any> = null;
-	private _assessorRes: Observable<any> = null;
-	private _cafetRespRes: Observable<any> = null;
-	private _journalistRes: Observable<any> = null;
-	private _comRespRes: Observable<any> = null;
+	private _adminsRes: Observable<string> = null;
+	private _otherAdminsRes: Observable<string> = null;
+	private _assessorRes: Observable<Assessor> = null;
+	private _cafetRespRes: Observable<CafetResp> = null;
+	private _journalistRes: Observable<Journalist> = null;
+	private _comRespRes: Observable<ComResp> = null;
 
 	private _user: Observable<firebase.User> = null;
 	private _loggedUser: Observable<firebase.User> = null;
 	private _simpleUser: Observable<SimpleUser> = null;
 	private _profile: Observable<Profile> = null;
 
-	private _isAdmin: Observable<any> = null;
+	private _isAdmin: Observable<boolean> = null;
 	private _isAdminOf: { [of: string]: Observable<boolean> } = {};
 	private _isAssessor: Observable<boolean>;
 	private _isCafetResp: Observable<boolean>;
