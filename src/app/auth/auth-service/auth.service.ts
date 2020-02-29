@@ -63,10 +63,10 @@ export class AuthService {
 	private _journalistRes: Observable<any> = null;
 	private _comRespRes: Observable<any> = null;
 
-	private _user: Observable<any> = null;
-	private _loggedUser: Observable<any> = null;
+	private _user: Observable<firebase.User> = null;
+	private _loggedUser: Observable<firebase.User> = null;
 	private _simpleUser: Observable<SimpleUser> = null;
-	private _profile: Observable<any> = null;
+	private _profile: Observable<Profile> = null;
 
 	private _isAdmin: Observable<any> = null;
 	private _isAdminOf: { [of: string]: Observable<boolean> } = {};
@@ -88,10 +88,10 @@ export class AuthService {
 		private ngZone: NgZone
 	) {
 		this.error_persist = false;
-		this.afAuth.auth.onIdTokenChanged((user: User) => this.redirectOnTokenChange(user));
+		this.afAuth.auth.onIdTokenChanged((user: firebase.User) => this.redirectOnTokenChange(user));
 	}
 
-	redirectOnTokenChange(user: any) {
+	redirectOnTokenChange(user: firebase.User) {
 		// Not logged
 		if (!user) {
 			if (this.location.path() !== '/email_verif') {
@@ -141,25 +141,25 @@ export class AuthService {
 	deleteAccount(): Promise<any> {
 		return this.getLoggedUser().pipe(
 			first(),
-			flatMap((user: User) => from(user.delete()))
+			flatMap((user: firebase.User) => from(user.delete()))
 		).toPromise();
 	}
 
 	updatePassword(password: string): Promise<any> {
 		return this.getLoggedUser().pipe(
 			first(),
-			flatMap((user: User) => from(user.updatePassword(password)))
+			flatMap((user: firebase.User) => from(user.updatePassword(password)))
 		).toPromise();
 	}
 
 	updateProfile(p: Profile): Promise<any> {
 		return this.getLoggedUser().pipe(
 			first(),
-			flatMap((user: User) => from(this.updateProfileFromUser(user, p)))
+			flatMap((user: firebase.User) => from(this.updateProfileFromUser(user, p)))
 		).toPromise();
 	}
 
-	setProfile(user: any, firstName: string, lastName: string) {
+	setProfile(user: firebase.User, firstName: string, lastName: string) {
 		return user.updateProfile({
 			displayName: firstName + ' ' + lastName,
 			photoURL: ''
@@ -181,12 +181,9 @@ export class AuthService {
 		}
 	}
 
-	sendEmailVerification(user: any) {
-		return user.sendEmailVerification(
-			{ url: environment.host.domain + 'login'}
-		).catch(
-			() => user.sendEmailVerification()
-		);
+	sendEmailVerification(user: firebase.User) {
+		return user.sendEmailVerification();
+		// return user.sendEmailVerification({ url: environment.host.domain + 'login'});
 	}
 
 	sendPasswordResetEmail(email: string) {
@@ -202,10 +199,10 @@ export class AuthService {
 	/**
 	 *	Returns the logged in firebase user
 	 */
-	getUser(): Observable<User> {
+	getUser(): Observable<firebase.User> {
 		if (!this._user) {
-			this._user = new Observable<User>((observer: Observer<User>) => {
-				this.afAuth.auth.onIdTokenChanged((user) => {
+			this._user = new Observable<firebase.User>((observer: Observer<firebase.User>) => {
+				this.afAuth.auth.onIdTokenChanged((user: firebase.User) => {
 					observer.next(user ? user : null);
 				});
 			}).pipe(
@@ -242,10 +239,10 @@ export class AuthService {
 	/**
 	 *	Returns the logged in firebase user only if its email is verified
 	 */
-	getLoggedUser(): Observable<User> {
+	getLoggedUser(): Observable<firebase.User> {
 		if (!this._loggedUser) {
 			this._loggedUser = this.getUser().pipe(
-				filter(user => !!user && user.emailVerified),
+				filter((user: firebase.User) => !!user && user.emailVerified),
 				shareReplay(1)
 			);
 		}
@@ -260,7 +257,7 @@ export class AuthService {
 		if (!this._simpleUser) {
 			this._simpleUser = Tools.enableCache(
 				this.getUser().pipe(
-					map(user => user ? { emailVerified: user.emailVerified } : null)
+					map((user: firebase.User) => user ? { emailVerified: user.emailVerified } : null)
 				),
 				"auth-me"
 			).pipe(
@@ -273,7 +270,7 @@ export class AuthService {
 	isLogged(): Observable<boolean> {
 		if (!this._isLogged) {
 			this._isLogged = this.getSimpleUser().pipe(
-				map(user => !!user),
+				map((user: SimpleUser) => !!user),
 				shareReplay(1)
 			);
 		}
@@ -283,7 +280,7 @@ export class AuthService {
 	isLoggedAndHasEmailVerified(): Observable<boolean> {
 		if (!this._isLoggedAndHasEmailVerified) {
 			this._isLoggedAndHasEmailVerified = this.getSimpleUser().pipe(
-				map(user => !!user && user.emailVerified),
+				map((user: SimpleUser) => !!user && user.emailVerified),
 				shareReplay(1)
 			);
 		}
@@ -293,7 +290,7 @@ export class AuthService {
 	getEmailId(): Observable<string> {
 		return this.getLoggedUser().pipe(
 			mergeMap(
-				(user: User) => user ? of(
+				(user: firebase.User) => user ? of(
 					Tools.getEmailIdFromEmail(user.email)
 				) : EMPTY
 			)
@@ -303,7 +300,7 @@ export class AuthService {
 	getUserAccountPath(): Observable<string> {
 		return this.getLoggedUser().pipe(
 			mergeMap(
-				(user: User) => user ? of(
+				(user: firebase.User) => user ? of(
 					this.getUserAccountPathFromUser(user)
 				) : EMPTY
 			)
@@ -331,7 +328,7 @@ export class AuthService {
 				this.getAdminsRes(),
 				this.getLoggedUser()
 			).pipe(
-				map(([admins, user]: [string, User]): boolean => Object.values(admins).includes(user.email)),
+				map(([admins, user]: [string, firebase.User]): boolean => Object.values(admins).includes(user.email)),
 				catchError(() => of(false)),
 				shareReplay(1)
 			);
@@ -355,7 +352,7 @@ export class AuthService {
 	isAssessor(): Observable<boolean> {
 		if (!this._isAssessor) {
 			this._isAssessor = this.getAssessorRes().pipe(
-				map(is => is != null),
+				map((user: Assessor) => user != null),
 				catchError(() => of(false)),
 				shareReplay(1)
 			);
@@ -377,7 +374,7 @@ export class AuthService {
 	getComRespIds(): Observable<string[]> {
 		if (!this._respComIds) {
 			this._respComIds = this.getComRespRes().pipe(
-				map(user => {
+				map((user: ComResp) => {
 					let ids = [];
 					if (user) {
 						for (let i of [1, 2]) {
@@ -404,7 +401,7 @@ export class AuthService {
 	getJournalistIds(): Observable<string[]> {
 		if (!this._journalistIds) {
 			this._journalistIds = this.getJournalistRes().pipe(
-				map(user => {
+				map((user: Journalist) => {
 					let ids = [];
 					if (user) {
 						for (let i of [1, 2]) {
@@ -525,7 +522,7 @@ export class AuthService {
 
 	// Form
 
-	updateProfileFromUser(user: User, p: Profile): Promise<any> {
+	updateProfileFromUser(user: firebase.User, p: Profile): Promise<any> {
 		return this.db.object<Profile>(
 			this.getUserAccountPathFromUser(user) + '/account'
 		).set(p);
@@ -533,7 +530,7 @@ export class AuthService {
 
 	// Helpers
 
-	getUserAccountPathFromUser(user: User) {
+	getUserAccountPathFromUser(user: firebase.User) {
 		return 'users/' + Tools.getEmailIdFromEmail(user.email) + '/' + user.uid;
 	}
 
