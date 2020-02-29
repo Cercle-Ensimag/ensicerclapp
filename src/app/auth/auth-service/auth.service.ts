@@ -91,7 +91,7 @@ export class AuthService {
 		this.afAuth.auth.onIdTokenChanged((user: firebase.User) => this.redirectOnTokenChange(user));
 	}
 
-	redirectOnTokenChange(user: firebase.User) {
+	redirectOnTokenChange(user: firebase.User): void {
 		// Not logged
 		if (!user) {
 			if (this.location.path() !== '/email_verif') {
@@ -115,17 +115,17 @@ export class AuthService {
 
 	// Methods
 
-	login(email: string, password: string) {
+	login(email: string, password: string): Promise<firebase.auth.UserCredential> {
 		return this.afAuth.auth.signInWithEmailAndPassword(email, password);
 	}
 
-	logout() {
+	logout(): Promise<void> {
 		return this.afAuth.auth.signOut();
 	}
 
 	createAccount(
 		email: string, password: string, firstName: string, lastName: string
-	) {
+	): Promise<[firebase.User, Promise<void>, Promise<void>, Promise<void>]> {
 		return this.afAuth.auth.createUserWithEmailAndPassword(email, password).then(
 			(uc: firebase.auth.UserCredential) => {
 				return [
@@ -138,28 +138,28 @@ export class AuthService {
 		);
 	}
 
-	deleteAccount(): Promise<any> {
+	deleteAccount(): Promise<void> {
 		return this.getLoggedUser().pipe(
 			first(),
 			flatMap((user: firebase.User) => from(user.delete()))
 		).toPromise();
 	}
 
-	updatePassword(password: string): Promise<any> {
+	updatePassword(password: string): Promise<void> {
 		return this.getLoggedUser().pipe(
 			first(),
 			flatMap((user: firebase.User) => from(user.updatePassword(password)))
 		).toPromise();
 	}
 
-	updateProfile(p: Profile): Promise<any> {
+	updateProfile(p: Profile): Promise<void> {
 		return this.getLoggedUser().pipe(
 			first(),
 			flatMap((user: firebase.User) => from(this.updateProfileFromUser(user, p)))
 		).toPromise();
 	}
 
-	setProfile(user: firebase.User, firstName: string, lastName: string) {
+	setProfile(user: firebase.User, firstName: string, lastName: string): Promise<void> {
 		return user.updateProfile({
 			displayName: firstName + ' ' + lastName,
 			photoURL: ''
@@ -168,12 +168,12 @@ export class AuthService {
 
 	// Errors
 
-	setError(message: string, persist: boolean) {
+	setError(message: string, persist: boolean): void {
 		this.error = message;
 		this.error_persist = persist;
 	}
 
-	resetError() {
+	resetError(): void {
 		if (this.error_persist) {
 			this.error_persist = false;
 		} else {
@@ -181,17 +181,17 @@ export class AuthService {
 		}
 	}
 
-	sendEmailVerification(user: firebase.User) {
+	sendEmailVerification(user: firebase.User): Promise<void> {
 		return user.sendEmailVerification();
 		// return user.sendEmailVerification({ url: environment.host.domain + 'login'});
 	}
 
-	sendPasswordResetEmail(email: string) {
-		this.afAuth.auth.sendPasswordResetEmail(email);
+	sendPasswordResetEmail(email: string): Promise<void> {
+		return this.afAuth.auth.sendPasswordResetEmail(email);
 	}
 
-	confirmPasswordReset(code: string, password: string) {
-		this.afAuth.auth.confirmPasswordReset(code, password);
+	confirmPasswordReset(code: string, password: string): Promise<void> {
+		return this.afAuth.auth.confirmPasswordReset(code, password);
 	}
 
 	// Getters
@@ -513,7 +513,7 @@ export class AuthService {
 		return this._comRespRes;
 	}
 
-	getEmailErrorMessage(email_ctrl: AbstractControl) {
+	getEmailErrorMessage(email_ctrl: AbstractControl): string {
 		return email_ctrl.hasError('required') ? this.d.l.noEmailError :
 			email_ctrl.hasError('email') ? this.d.l.emailFormatError :
 			email_ctrl.hasError('domain') ? this.d.l.emailDomainError :
@@ -522,7 +522,7 @@ export class AuthService {
 
 	// Form
 
-	updateProfileFromUser(user: firebase.User, p: Profile): Promise<any> {
+	updateProfileFromUser(user: firebase.User, p: Profile): Promise<void> {
 		return this.db.object<Profile>(
 			this.getUserAccountPathFromUser(user) + '/account'
 		).set(p);
@@ -530,11 +530,11 @@ export class AuthService {
 
 	// Helpers
 
-	getUserAccountPathFromUser(user: firebase.User) {
+	getUserAccountPathFromUser(user: firebase.User): string {
 		return 'users/' + Tools.getEmailIdFromEmail(user.email) + '/' + user.uid;
 	}
 
-	emailDomainValidator(control: FormControl) {
+	emailDomainValidator(control: FormControl): object {
 		let email = control.value;
 		if (email && email.indexOf('@') != -1) {
 			const domain = email.split('@')[1];
@@ -562,7 +562,7 @@ export class AuthService {
 		this.ngZone.run(() => this.router.navigateByUrl('/home'));
 	}
 
-	onAuthError(error: any) {
+	onAuthError(error: any): void {
 		console.log(error);
 		this.setError(error, false);
 	}
