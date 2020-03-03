@@ -9,7 +9,7 @@ import {DeviceSizeService} from '../../providers/device-size.service';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {DicoService} from '../../language/dico.service';
 import {CafetHistoryComponent} from '../cafet-history/cafet-history.component';
-import {map, takeUntil} from 'rxjs/operators';
+import {map, first, takeUntil} from 'rxjs/operators';
 
 @Component({
 	selector: 'app-cafet-resp',
@@ -26,6 +26,8 @@ export class CafetRespComponent implements OnInit {
 			sub: FormControl
 		}
 	};
+
+	public pdf = null;
 
 	constructor(
 		private snackBar: MatSnackBar,
@@ -140,6 +142,14 @@ export class CafetRespComponent implements OnInit {
 		this.dialog.open(CafetHistoryComponent, {
 			data: {user: user, day: true},
 			width: '450px'
+		});
+	}
+
+	printAccountsPdf() {
+		this.cafet.getUsers().pipe(
+			first()
+		).subscribe(users => {
+			this.pdf = this.cafet.printAccountsPdf(users);
 		});
 	}
 

@@ -1,5 +1,5 @@
 <!-- Loading -->
-<script src="../cafet-admin/cafet-admin-users/cafet-admin-users.component.ts"></script>
+<!-- <script src="../cafet-admin/cafet-admin-users/cafet-admin-users.component.ts"></script> -->
 <app-loading [loading]="filteredUsers() | async"></app-loading>
 
 <div *ngIf="filteredUsers() | async as users">
@@ -7,7 +7,7 @@
 	<mat-card class="accounts-search">
 
 		<!-- Search account -->
-		<form [formGroup]="formGroup">
+		<form *ngIf="!pdf" [formGroup]="formGroup">
 
 			<div [class.accounts-search-lg]="media.largeSize" [class.accounts-search-md]="!media.largeSize && ! media.mobileSize" [class.accounts-search-sm]="media.mobileSize">
 
@@ -25,9 +25,15 @@
 			</div>
 		</form>
 
+		<!-- <button *ngIf="!pdf" mat-raised-button (click)="printAccountsPdf()" color="primary">{{ d.l.printAccountsToPdf }}</button> -->
+		<div *ngIf="pdf" class="accounts-preview center">
+			<button mat-raised-button (click)="pdf = null">{{ d.l.leaveAccountsToPdfPreview }}</button>
+			<iframe width='100%' height='50vh'	style="height: 60vh;" type="application/pdf" [name]="pdf.name" [src]="pdf.src"></iframe>
+		</div>
+
 	</mat-card>
 
-	<div class="accordion-container">
+	<div *ngIf="!pdf" class="accordion-container">
 		<app-paged-list [list]="users" #page>
 			<!-- Users display, small screens -->
 			<mat-accordion *ngIf="!media.largeSize" class="client-group">
@@ -113,6 +119,7 @@
 </div>
 
 <div class="mat-fab-bottom-right">
+	<button *ngIf="!pdf" mat-fab color="primary" (click)="printAccountsPdf()"><mat-icon>print</mat-icon></button>
 	<button mat-fab color="primary" (click)="location.back()"><mat-icon>arrow_back</mat-icon></button>
 </div>
 

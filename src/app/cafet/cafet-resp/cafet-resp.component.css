@@ -7,6 +7,14 @@ mat-checkbox {
 	margin-right: 12px;
 }
 
+.accounts-preview button {
+	margin: 4px;
+}
+
+.accounts-preview iframe {
+	margin-top: 12px;
+}
+
 mat-panel-title {
 	width: 250px;
 }
