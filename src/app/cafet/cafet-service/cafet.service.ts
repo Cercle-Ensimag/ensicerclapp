@@ -366,7 +366,7 @@ export class CafetService {
 			{ title: "-", dataKey: "minus"},
 			{ title: "-", dataKey: "minus"},
 			{ title: "-", dataKey: "minus"},
-			{ title: '', dataKey: "div" },
+			// { title: '', dataKey: "div" }, # FIXME: not possible anymore to have column with to 1
 			{ title: "+", dataKey: "plus"},
 			{ title: "+", dataKey: "plus"}
 		];
@@ -412,8 +412,10 @@ export class CafetService {
 
 		};
 
-		pdf.autoTable(columns, rows, {
-			headerStyles: {
+		pdf.autoTable({
+			columns: columns,
+			body: rows,
+			headStyles: {
 				fillColor: 50,
 				textColor: 250,
 				lineWidth: 0.1,
@@ -427,14 +429,15 @@ export class CafetService {
 				fillColor: 245
 			},
 			columnStyles: {
-				credit: { columnWidth: 60, halign: 'right', cellPadding: { right: 15 } },
-				minus1: { columnWidth: 46 },
-				minus: { columnWidth: 46 },
-				div: { columnWidth: 1, fillColor: 50 },
-				plus: { columnWidth: 46 }
+				lastname: { cellWidth: 100, overflow: 'linebreak' },
+				credit: { cellWidth: 'wrap', halign: 'right', cellPadding: { right: 15 } },
+				minus1: { cellWidth: 46 },
+				minus: { cellWidth: 46 },
+				// div: { minCellWidth: 1, cellWidth: 1, fillColor: 50 },
+				plus: { cellWidth: 46 }
 			},
 			margin: { top: 60 },
-			addPageContent: pageContent
+			didDrawPage: pageContent
 		});
 
 		pdf.putTotalPages(totalPagesExp);
