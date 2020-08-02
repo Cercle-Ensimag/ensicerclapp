@@ -185,10 +185,14 @@ import { HammerFix } from '../HammerFix';
 		FlexLayoutModule,
 		MarkdownModule.forRoot({
 			markedOptions: {
-				provide: MarkedOptions,
-				useValue: {
-					sanitize: true
-				}
+				provide: MarkedOptions//,
+				// useValue: {
+				// 	// FIXME: marked(): sanitize and sanitizer parameters are deprecated since version 0.7.0, should not be used and will be removed in the future.
+				// 	//        Read more here: https://marked.js.org/#/USING_ADVANCED.md#options marked.js:371
+				// 	//        Warning: This feature is deprecated and it should NOT be used as it cannot be considered secure.
+				// 	//        Instead use a sanitize library, like DOMPurify (recommended), sanitize-html or insane on the output HTML!
+				// 	sanitize: true
+				// }
 			}
 		}),
 		ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
