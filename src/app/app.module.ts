@@ -204,14 +204,6 @@ import {HammerFix} from '../HammerFix';
 			useClass: HammerFix,
 		}
 	],
-	entryComponents: [
-		CafetHistoryComponent,
-		EditCalComponent,
-		EditCafetUserComponent,
-		DeleteDialogComponent,
-		LoginDialogComponent,
-		UpdatePasswordDialogComponent
-	],
 	bootstrap: [AppComponent]
 })
 export class AppModule { }
