@@ -1,10 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-import {ActivatedRoute} from '@angular/router';
-import {Location} from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 
-import {DicoService} from '../../language/dico.service';
-import {JobAdsService} from '../jobads.service';
+import { DicoService } from '../../language/dico.service';
+import { JobAdsService } from '../jobads.service';
 
 @Component({
 	selector: 'app-jobads-jobad',

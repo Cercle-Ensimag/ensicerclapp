@@ -1,12 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {MatDialog, MatSnackBar} from '@angular/material';
-import {Location} from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Location } from '@angular/common';
 
-import {DicoService} from '../../language/dico.service';
-import {CalService} from '../cal-service/cal.service';
+import { DicoService } from '../../language/dico.service';
+import { CalService } from '../cal-service/cal.service';
 
-import {Subject, Observable, pipe} from 'rxjs';
-import {takeUntil, map} from 'rxjs/operators';
+import { Subject, Observable, pipe } from 'rxjs';
+import { takeUntil, map } from 'rxjs/operators';
 
 const DAY_LENGTH = 24 * 60 * 60* 1000;
 

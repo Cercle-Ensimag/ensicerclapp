@@ -1,19 +1,20 @@
-import {takeUntil} from 'rxjs/operators';
-import {Component, NgZone, OnDestroy, OnInit} from '@angular/core';
-import {Location} from '@angular/common';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {Router} from '@angular/router';
-import {HttpClient} from '@angular/common/http';
-import {MatDialog, MatSnackBar} from '@angular/material';
+import { takeUntil } from 'rxjs/operators';
+import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
-import {CalService, Settings} from '../cal-service/cal.service';
-import {Tools} from '../../providers/tools.service';
-import {DicoService} from '../../language/dico.service';
-import {LoginDialogComponent} from '../../shared-components/login-dialog/login-dialog.component';
-import {DeleteDialogComponent} from '../../shared-components/delete-dialog/delete-dialog.component';
-import {environment} from '../../../environments/environment';
+import { CalService, Settings } from '../cal-service/cal.service';
+import { Tools } from '../../providers/tools.service';
+import { DicoService } from '../../language/dico.service';
+import { LoginDialogComponent } from '../../shared-components/login-dialog/login-dialog.component';
+import { DeleteDialogComponent } from '../../shared-components/delete-dialog/delete-dialog.component';
+import { environment } from '../../../environments/environment';
 
-import {Subject, combineLatest} from 'rxjs';
+import { Subject, combineLatest } from 'rxjs';
 
 @Component({
 	selector: 'app-cal-settings',

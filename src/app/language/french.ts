@@ -1,5 +1,5 @@
 import localeFr from '@angular/common/locales/fr';
-import {Language} from './language';
+import { Language } from './language';
 
 export class French extends Language {
 

@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-import {ActusService} from '../actus-service/actus.service';
-import {DicoService} from '../../language/dico.service';
-import {Location} from '@angular/common';
+import { ActusService } from '../actus-service/actus.service';
+import { DicoService } from '../../language/dico.service';
+import { Location } from '@angular/common';
 
 @Component({
 	selector: 'app-actus-home',

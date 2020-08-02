@@ -1,6 +1,6 @@
-import {inject, TestBed} from '@angular/core/testing';
+import { inject, TestBed } from '@angular/core/testing';
 
-import {CanActivateCafetResp} from './cafet-resp.guard';
+import { CanActivateCafetResp } from './cafet-resp.guard';
 
 describe('CanActivateCafetResp', () => {
   beforeEach(() => {

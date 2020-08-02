@@ -1,15 +1,15 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {Location} from '@angular/common';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Location } from '@angular/common';
 
-import {DeviceSizeService} from '../providers/device-size.service';
+import { DeviceSizeService } from '../providers/device-size.service';
 
-import {AuthService} from '../auth/auth-service/auth.service';
-import {AppModulesService} from '../providers/app-modules.service';
-import {DicoService} from '../language/dico.service';
+import { AuthService } from '../auth/auth-service/auth.service';
+import { AppModulesService } from '../providers/app-modules.service';
+import { DicoService } from '../language/dico.service';
 
-import {MatSidenav} from '@angular/material';
+import { MatSidenav } from '@angular/material/sidenav';
 
-import {first} from 'rxjs/operators';
+import { first } from 'rxjs/operators';
 
 @Component({
 	selector: 'home',

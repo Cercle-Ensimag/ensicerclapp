@@ -1,11 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import {AuthService} from '../auth-service/auth.service';
-import {DicoService} from '../../language/dico.service';
-import {first} from 'rxjs/operators';
+import { AuthService } from '../auth-service/auth.service';
+import { DicoService } from '../../language/dico.service';
+import { first } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-login',

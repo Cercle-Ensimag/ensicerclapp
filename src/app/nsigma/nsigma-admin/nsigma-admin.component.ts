@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {NsigmaService} from '../nsigma.service';
-import {DicoService} from '../../language/dico.service';
-import {Tools} from '../../providers/tools.service';
-import {Location} from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { NsigmaService } from '../nsigma.service';
+import { DicoService } from '../../language/dico.service';
+import { Tools } from '../../providers/tools.service';
+import { Location } from '@angular/common';
 
 @Component({
 	selector: 'app-nsigma-admin',

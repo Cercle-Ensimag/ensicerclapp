@@ -1,12 +1,12 @@
-import {Injectable, OnInit} from '@angular/core';
-import {MatDialog} from '@angular/material';
+import { Injectable, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 
-import {DicoService} from '../../../language/dico.service';
-import {CalService, CalEvent} from '../../cal-service/cal.service';
-import {EditCalComponent} from '../../edit-cal/edit-cal.component';
+import { DicoService } from '../../../language/dico.service';
+import { CalService, CalEvent } from '../../cal-service/cal.service';
+import { EditCalComponent } from '../../edit-cal/edit-cal.component';
 
-import {Subject, Observable, pipe} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import { Subject, Observable, pipe } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 const DAY_LENGTH = 24 * 60 * 60* 1000;
 

@@ -1,6 +1,6 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA} from '@angular/material';
-import {DicoService} from '../../language/dico.service';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { DicoService } from '../../language/dico.service';
 
 @Component({
 	selector: 'app-delete-dialog',

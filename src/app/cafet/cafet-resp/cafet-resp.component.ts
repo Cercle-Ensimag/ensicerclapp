@@ -1,15 +1,16 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Location} from '@angular/common';
-import {Subject, Observable} from 'rxjs';
-import {CafetService, CafetUser} from '../cafet-service/cafet.service';
-import {Tools} from '../../providers/tools.service';
-import {ListService} from '../../providers/list.service';
-import {DeviceSizeService} from '../../providers/device-size.service';
-import {MatDialog, MatSnackBar} from '@angular/material';
-import {DicoService} from '../../language/dico.service';
-import {CafetHistoryComponent} from '../cafet-history/cafet-history.component';
-import {map, first, takeUntil} from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Location } from '@angular/common';
+import { Subject, Observable } from 'rxjs';
+import { CafetService, CafetUser } from '../cafet-service/cafet.service';
+import { Tools } from '../../providers/tools.service';
+import { ListService } from '../../providers/list.service';
+import { DeviceSizeService } from '../../providers/device-size.service';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { DicoService } from '../../language/dico.service';
+import { CafetHistoryComponent } from '../cafet-history/cafet-history.component';
+import { map, first, takeUntil } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-cafet-resp',

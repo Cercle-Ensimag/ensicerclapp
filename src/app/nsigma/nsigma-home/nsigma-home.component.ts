@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {DicoService} from '../../language/dico.service';
-import {NsigmaService} from '../nsigma.service';
-import {Location} from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { DicoService } from '../../language/dico.service';
+import { NsigmaService } from '../nsigma.service';
+import { Location } from '@angular/common';
 
 @Component({
 	selector: 'app-nsigma-home',

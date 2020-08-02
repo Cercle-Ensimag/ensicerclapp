@@ -1,8 +1,8 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 
-import {DateService} from '../date.service';
-import {DeviceSizeService} from '../../../../providers/device-size.service';
-import {DicoService} from '../../../../language/dico.service';
+import { DateService } from '../date.service';
+import { DeviceSizeService } from '../../../../providers/device-size.service';
+import { DicoService } from '../../../../language/dico.service';
 
 
 @Component({

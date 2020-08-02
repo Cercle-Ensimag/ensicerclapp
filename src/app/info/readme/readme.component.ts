@@ -1,10 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-import {AuthService} from '../../auth/auth-service/auth.service';
-import {DicoService} from '../../language/dico.service';
+import { AuthService } from '../../auth/auth-service/auth.service';
+import { DicoService } from '../../language/dico.service';
 
-import {combineLatest} from 'rxjs';
-import {map} from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-readme',

@@ -1,11 +1,12 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {Tools} from '../../../providers/tools.service';
-import {DicoService} from '../../../language/dico.service';
-import {MatDialog, MatSnackBar} from '@angular/material';
-import {DeleteDialogComponent} from '../../../shared-components/delete-dialog/delete-dialog.component';
-import {VoteService, Poll} from '../../vote-service/vote.service';
-import {Observable, of} from 'rxjs';
-import {flatMap, map} from 'rxjs/operators';
+import { Component, Input, OnInit } from '@angular/core';
+import { Tools } from '../../../providers/tools.service';
+import { DicoService } from '../../../language/dico.service';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { DeleteDialogComponent } from '../../../shared-components/delete-dialog/delete-dialog.component';
+import { VoteService, Poll } from '../../vote-service/vote.service';
+import { Observable, of } from 'rxjs';
+import { flatMap, map } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-vote-card',

@@ -1,14 +1,15 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {Location} from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 
-import {MatDialog, MatSnackBar} from '@angular/material';
-import {first} from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { first } from 'rxjs/operators';
 
-import {VoteService, Poll, Choice} from '../vote-service/vote.service';
-import {DicoService} from '../../language/dico.service';
+import { VoteService, Poll, Choice } from '../vote-service/vote.service';
+import { DicoService } from '../../language/dico.service';
 
-import {DeleteDialogComponent} from '../../shared-components/delete-dialog/delete-dialog.component';
+import { DeleteDialogComponent } from '../../shared-components/delete-dialog/delete-dialog.component';
 
 @Component({
 	selector: 'app-poll',

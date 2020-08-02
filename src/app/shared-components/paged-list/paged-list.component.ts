@@ -1,5 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {DicoService} from '../../language/dico.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { DicoService } from '../../language/dico.service';
 
 @Component({
 	selector: 'app-paged-list',

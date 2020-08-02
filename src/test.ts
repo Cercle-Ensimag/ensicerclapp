@@ -7,10 +7,10 @@ import 'zone.js/dist/jasmine-patch';
 import 'zone.js/dist/async-test';
 import 'zone.js/dist/fake-async-test';
 import { getTestBed } from '@angular/core/testing';
-import {
+import { 
   BrowserDynamicTestingModule,
   platformBrowserDynamicTesting
-} from '@angular/platform-browser-dynamic/testing';
+ } from '@angular/platform-browser-dynamic/testing';
 
 // Unfortunately there's no typing for the `__karma__` variable. Just declare it as any.
 declare const __karma__: any;

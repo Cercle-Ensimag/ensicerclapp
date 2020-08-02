@@ -1,12 +1,12 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {Location} from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 
-import {DicoService} from '../../language/dico.service';
-import {EventsService, Event} from '../events-service/events.service';
-import {CalService, Settings} from '../../calendar/cal-service/cal.service';
-import {Observable, pipe} from 'rxjs';
-import {map, tap, mergeMap, first} from 'rxjs/operators';
+import { DicoService } from '../../language/dico.service';
+import { EventsService, Event } from '../events-service/events.service';
+import { CalService, Settings } from '../../calendar/cal-service/cal.service';
+import { Observable, pipe } from 'rxjs';
+import { map, tap, mergeMap, first } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-event',

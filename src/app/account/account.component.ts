@@ -1,17 +1,18 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import {AuthService, Profile} from '../auth/auth-service/auth.service';
-import {ListService} from '../providers/list.service';
-import {DicoService} from '../language/dico.service';
-import {DeleteDialogComponent} from '../shared-components/delete-dialog/delete-dialog.component';
-import {UpdatePasswordDialogComponent} from './components/update-password-dialog/update-password-dialog.component';
-import {MatDialog, MatSnackBar} from '@angular/material';
-import {Location} from '@angular/common';
-import {Subject, combineLatest} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import { AuthService, Profile } from '../auth/auth-service/auth.service';
+import { ListService } from '../providers/list.service';
+import { DicoService } from '../language/dico.service';
+import { DeleteDialogComponent } from '../shared-components/delete-dialog/delete-dialog.component';
+import { UpdatePasswordDialogComponent } from './components/update-password-dialog/update-password-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Location } from '@angular/common';
+import { Subject, combineLatest } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import {User} from 'firebase/app';
+import { User } from 'firebase/app';
 
 @Component({
 	selector: 'app-account',

@@ -1,16 +1,16 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {Location} from '@angular/common';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import {Actu, ActusService, Group} from '../actus-service/actus.service';
+import { Actu, ActusService, Group } from '../actus-service/actus.service';
 
-import {AuthService} from '../../auth/auth-service/auth.service';
-import {DicoService} from '../../language/dico.service';
-import {MatSnackBar} from '@angular/material';
+import { AuthService } from '../../auth/auth-service/auth.service';
+import { DicoService } from '../../language/dico.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
-import {first, takeUntil} from 'rxjs/operators';
-import {Subject, Observable} from 'rxjs';
+import { first, takeUntil } from 'rxjs/operators';
+import { Subject, Observable } from 'rxjs';
 
 
 @Component({

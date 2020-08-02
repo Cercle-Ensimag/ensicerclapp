@@ -1,11 +1,11 @@
-import {Injectable} from '@angular/core';
-import {AngularFireDatabase} from '@angular/fire/database';
-import {User} from 'firebase/app';
+import { Injectable } from '@angular/core';
+import { AngularFireDatabase } from '@angular/fire/database';
+import { User } from 'firebase/app';
 
-import {AuthService} from '../auth/auth-service/auth.service';
-import {Tools} from './tools.service';
-import {Observable, EMPTY} from 'rxjs';
-import {map, mergeMap, shareReplay, catchError} from 'rxjs/operators';
+import { AuthService } from '../auth/auth-service/auth.service';
+import { Tools } from './tools.service';
+import { Observable, EMPTY } from 'rxjs';
+import { map, mergeMap, shareReplay, catchError } from 'rxjs/operators';
 
 @Injectable()
 export class ListService {

@@ -1,13 +1,13 @@
-import {Component, OnDestroy} from '@angular/core';
-import {Location} from '@angular/common';
-import {User} from 'firebase/app';
-import {MatSnackBar} from '@angular/material';
+import { Component, OnDestroy } from '@angular/core';
+import { Location } from '@angular/common';
+import { User } from 'firebase/app';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
-import {AuthService} from '../auth-service/auth.service';
-import {DicoService} from '../../language/dico.service';
+import { AuthService } from '../auth-service/auth.service';
+import { DicoService } from '../../language/dico.service';
 
-import {Observable} from 'rxjs';
-import {first, tap} from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { first, tap } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-email-verif',

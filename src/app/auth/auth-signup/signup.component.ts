@@ -1,12 +1,12 @@
-import {takeUntil} from 'rxjs/operators';
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {MatSnackBar} from '@angular/material';
+import { takeUntil } from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
-import {AuthService} from '../auth-service/auth.service';
-import {DicoService} from '../../language/dico.service';
-import {Location} from '@angular/common';
-import {Subject} from 'rxjs';
+import { AuthService } from '../auth-service/auth.service';
+import { DicoService } from '../../language/dico.service';
+import { Location } from '@angular/common';
+import { Subject } from 'rxjs';
 
 @Component({
 	selector: 'app-signup',

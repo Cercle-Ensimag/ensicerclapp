@@ -1,24 +1,24 @@
-import {Injectable, NgZone} from '@angular/core';
-import {Location} from '@angular/common';
-import {Router} from '@angular/router';
-import {AbstractControl, FormControl} from '@angular/forms';
+import { Injectable, NgZone } from '@angular/core';
+import { Location } from '@angular/common';
+import { Router } from '@angular/router';
+import { AbstractControl, FormControl } from '@angular/forms';
 
-import {AngularFireAuth} from '@angular/fire/auth';
-import {AngularFireDatabase} from '@angular/fire/database';
-import {combineLatest, from, Observable, Observer, of, EMPTY} from 'rxjs';
-import {catchError, debounceTime, filter, first, flatMap, map, mergeMap, shareReplay, tap} from 'rxjs/operators';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { AngularFireDatabase } from '@angular/fire/database';
+import { combineLatest, from, Observable, Observer, of, EMPTY } from 'rxjs';
+import { catchError, debounceTime, filter, first, flatMap, map, mergeMap, shareReplay, tap } from 'rxjs/operators';
 import * as firebase from 'firebase';
-import {User} from 'firebase/app';
+import { User } from 'firebase/app';
 
-import {Tools} from '../../providers/tools.service';
-import {DicoService} from '../../language/dico.service';
+import { Tools } from '../../providers/tools.service';
+import { DicoService } from '../../language/dico.service';
 
-import {ComResp} from '../../events/events-service/events.service';
-import {Journalist} from '../../actus/actus-service/actus.service';
-import {Assessor} from '../../vote/vote-admin/vote-admin.component';
-import {CafetResp} from '../../cafet/cafet-service/cafet.service';
+import { ComResp } from '../../events/events-service/events.service';
+import { Journalist } from '../../actus/actus-service/actus.service';
+import { Assessor } from '../../vote/vote-admin/vote-admin.component';
+import { CafetResp } from '../../cafet/cafet-service/cafet.service';
 
-import {environment} from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
 
 export const DOMAINS = ['grenoble-inp.org'];
 export const ADMINS = ['vote', 'events', 'actus', 'cafet', 'nsigma', 'jobads'];

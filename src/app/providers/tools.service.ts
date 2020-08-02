@@ -1,6 +1,6 @@
-import {FormControl} from '@angular/forms';
-import {Observable, merge, of, EMPTY} from 'rxjs';
-import {map, tap} from 'rxjs/operators';
+import { FormControl } from '@angular/forms';
+import { Observable, merge, of, EMPTY } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 
 import * as CryptoJS from 'crypto-js';
 

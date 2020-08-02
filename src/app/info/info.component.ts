@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {DicoService} from '../language/dico.service';
-import {AuthService} from '../auth/auth-service/auth.service';
-import {Location} from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { DicoService } from '../language/dico.service';
+import { AuthService } from '../auth/auth-service/auth.service';
+import { Location } from '@angular/common';
 
 @Component({
 	selector: 'app-info',

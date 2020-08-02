@@ -1,10 +1,11 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {MatDialog, MatSnackBar} from '@angular/material';
-import {DeleteDialogComponent} from '../../../shared-components/delete-dialog/delete-dialog.component';
-import {Actu, ActusService} from '../../actus-service/actus.service';
-import {DicoService} from '../../../language/dico.service';
-import {Tools} from '../../../providers/tools.service';
-import {Observable} from 'rxjs';
+import { Component, Input, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { DeleteDialogComponent } from '../../../shared-components/delete-dialog/delete-dialog.component';
+import { Actu, ActusService } from '../../actus-service/actus.service';
+import { DicoService } from '../../../language/dico.service';
+import { Tools } from '../../../providers/tools.service';
+import { Observable } from 'rxjs';
 
 @Component({
 	selector: 'app-actu-card',

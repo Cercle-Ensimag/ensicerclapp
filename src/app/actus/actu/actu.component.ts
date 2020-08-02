@@ -1,11 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {Location} from '@angular/common';
-import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
-import {DicoService} from '../../language/dico.service';
-import {Actu, ActusService} from '../actus-service/actus.service';
-import {Observable} from 'rxjs';
+import { DicoService } from '../../language/dico.service';
+import { Actu, ActusService } from '../actus-service/actus.service';
+import { Observable } from 'rxjs';
 
 @Component({
 	selector: 'app-actu',

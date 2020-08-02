@@ -1,23 +1,23 @@
 
-import {first, map, takeUntil} from 'rxjs/operators';
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {Location} from '@angular/common';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import { first, map, takeUntil } from 'rxjs/operators';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
-import {DOMAINS} from '../../auth/auth-service/auth.service';
-import {DeviceSizeService} from '../../providers/device-size.service';
-import {VoteService, Poll} from '../vote-service/vote.service';
-import {ListService} from '../../providers/list.service';
-import {Tools} from '../../providers/tools.service';
-import {DicoService} from '../../language/dico.service';
+import { DOMAINS } from '../../auth/auth-service/auth.service';
+import { DeviceSizeService } from '../../providers/device-size.service';
+import { VoteService, Poll } from '../vote-service/vote.service';
+import { ListService } from '../../providers/list.service';
+import { Tools } from '../../providers/tools.service';
+import { DicoService } from '../../language/dico.service';
 
-import {VoteUser} from '../vote-users/vote-users.component';
-import {Observable, Subject} from 'rxjs';
+import { VoteUser } from '../vote-users/vote-users.component';
+import { Observable, Subject } from 'rxjs';
 
 
 
-import {MatSnackBar} from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
 	selector: 'app-assessor',

@@ -1,15 +1,15 @@
 
-import {takeUntil} from 'rxjs/operators';
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {JobAd, JobAdsService} from '../../jobads/jobads.service';
-import {AuthService} from '../../auth/auth-service/auth.service';
-import {Tools} from '../../providers/tools.service';
-import {ActivatedRoute} from '@angular/router';
-import {Location} from '@angular/common';
-import {DicoService} from '../../language/dico.service';
-import {MatSnackBar} from '@angular/material';
-import {Subject} from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { JobAd, JobAdsService } from '../../jobads/jobads.service';
+import { AuthService } from '../../auth/auth-service/auth.service';
+import { Tools } from '../../providers/tools.service';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
+import { DicoService } from '../../language/dico.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Subject } from 'rxjs';
 
 
 

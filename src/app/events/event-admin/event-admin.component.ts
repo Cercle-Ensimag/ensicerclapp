@@ -1,16 +1,16 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
-import {Location} from '@angular/common';
-import {FormBuilder, FormGroup, FormControl, Validators} from '@angular/forms';
-import {MatSnackBar} from '@angular/material';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Location } from '@angular/common';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
-import {DeviceSizeService} from '../../providers/device-size.service';
-import {EventsService, Event, Group, ComResp} from '../events-service/events.service';
-import {AuthService} from '../../auth/auth-service/auth.service';
-import {ListService} from '../../providers/list.service';
-import {Tools} from '../../providers/tools.service';
-import {DicoService} from '../../language/dico.service';
-import {Subject, Observable} from 'rxjs';
-import {first, map, takeUntil} from 'rxjs/operators';
+import { DeviceSizeService } from '../../providers/device-size.service';
+import { EventsService, Event, Group, ComResp } from '../events-service/events.service';
+import { AuthService } from '../../auth/auth-service/auth.service';
+import { ListService } from '../../providers/list.service';
+import { Tools } from '../../providers/tools.service';
+import { DicoService } from '../../language/dico.service';
+import { Subject, Observable } from 'rxjs';
+import { first, map, takeUntil } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-event-admin',

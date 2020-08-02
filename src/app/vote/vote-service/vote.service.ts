@@ -1,15 +1,15 @@
-import {Injectable} from '@angular/core';
-import {AngularFireDatabase} from '@angular/fire/database';
+import { Injectable } from '@angular/core';
+import { AngularFireDatabase } from '@angular/fire/database';
 
-import {from, Observable, of, combineLatest, EMPTY} from 'rxjs';
-import {map, mergeMap, catchError, first, shareReplay, tap} from 'rxjs/operators';
+import { from, Observable, of, combineLatest, EMPTY } from 'rxjs';
+import { map, mergeMap, catchError, first, shareReplay, tap } from 'rxjs/operators';
 
-import {Tools} from '../../providers/tools.service';
-import {AuthService} from '../../auth/auth-service/auth.service';
-import {Assessor} from '../vote-admin/vote-admin.component';
-import {VoteUser} from '../vote-users/vote-users.component';
+import { Tools } from '../../providers/tools.service';
+import { AuthService } from '../../auth/auth-service/auth.service';
+import { Assessor } from '../vote-admin/vote-admin.component';
+import { VoteUser } from '../vote-users/vote-users.component';
 
-import {User} from 'firebase/app';
+import { User } from 'firebase/app';
 
 export class Choice {
 	id: string;

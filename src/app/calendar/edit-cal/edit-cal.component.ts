@@ -1,15 +1,16 @@
-import {Component, OnDestroy, OnInit, Inject} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {Location} from '@angular/common';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { Component, OnDestroy, OnInit, Inject } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import {Tools} from '../../providers/tools.service';
-import {CalEvent, CalService, PERSOS} from '../cal-service/cal.service';
-import {DicoService} from '../../language/dico.service';
-import {MAT_DIALOG_DATA, MatSnackBar} from '@angular/material';
+import { Tools } from '../../providers/tools.service';
+import { CalEvent, CalService, PERSOS } from '../cal-service/cal.service';
+import { DicoService } from '../../language/dico.service';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
-import {of, Subject, combineLatest} from 'rxjs';
-import {first, flatMap, map, takeUntil, tap} from 'rxjs/operators';
+import { of, Subject, combineLatest } from 'rxjs';
+import { first, flatMap, map, takeUntil, tap } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-edit-cal',

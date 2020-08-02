@@ -1,9 +1,9 @@
-import {map, shareReplay} from 'rxjs/operators';
-import {Injectable} from '@angular/core';
-import {AngularFireDatabase} from '@angular/fire/database';
-import {Tools} from '../../providers/tools.service';
-import {Observable} from 'rxjs';
-import {User} from 'firebase';
+import { map, shareReplay } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { AngularFireDatabase } from '@angular/fire/database';
+import { Tools } from '../../providers/tools.service';
+import { Observable } from 'rxjs';
+import { User } from 'firebase';
 
 @Injectable()
 export class AdminService {

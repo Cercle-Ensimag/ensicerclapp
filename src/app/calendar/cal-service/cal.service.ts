@@ -1,22 +1,22 @@
-import {Injectable, NgZone} from '@angular/core';
-import {DatePipe} from '@angular/common';
-import {Router} from '@angular/router';
-import {HttpClient} from '@angular/common/http';
-import {AngularFireDatabase,} from '@angular/fire/database';
-import {FormControl} from '@angular/forms';
+import { Injectable, NgZone } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { AngularFireDatabase, } from '@angular/fire/database';
+import { FormControl } from '@angular/forms';
 
-import {DicoService} from '../../language/dico.service';
-import {AuthService} from '../../auth/auth-service/auth.service';
-import {EventsService} from '../../events/events-service/events.service';
+import { DicoService } from '../../language/dico.service';
+import { AuthService } from '../../auth/auth-service/auth.service';
+import { EventsService } from '../../events/events-service/events.service';
 
 import * as parseICS from 'ics-parser';
 import * as fileSaver from 'file-saver';
 
-import {environment} from '../../../environments/environment';
+import { environment } from '../../../environments/environment';
 
-import {combineLatest, merge, of, from, EMPTY, Observable, Subject} from 'rxjs';
-import {first, map, catchError, mergeMap, shareReplay, tap, skip} from 'rxjs/operators';
-import {Tools} from '../../providers/tools.service';
+import { combineLatest, merge, of, from, EMPTY, Observable, Subject } from 'rxjs';
+import { first, map, catchError, mergeMap, shareReplay, tap, skip } from 'rxjs/operators';
+import { Tools } from '../../providers/tools.service';
 
 export const COURSE = "course";
 export const PERSOS = "persos";

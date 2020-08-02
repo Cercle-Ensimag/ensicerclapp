@@ -1,7 +1,7 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { VoteService } from '../vote-service/vote.service';
 import { DicoService } from '../../language/dico.service';
-import {Location} from '@angular/common';
+import { Location } from '@angular/common';
 
 
 @Component({

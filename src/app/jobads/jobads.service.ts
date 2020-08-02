@@ -1,8 +1,8 @@
-import {Injectable} from '@angular/core';
-import {AngularFireDatabase} from '@angular/fire/database';
-import {Observable} from 'rxjs';
-import {map, shareReplay} from 'rxjs/operators';
-import {Tools} from '../providers/tools.service';
+import { Injectable } from '@angular/core';
+import { AngularFireDatabase } from '@angular/fire/database';
+import { Observable } from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
+import { Tools } from '../providers/tools.service';
 
 export class JobAd {
 	id: string;

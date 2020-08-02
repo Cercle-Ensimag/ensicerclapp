@@ -1,16 +1,16 @@
 
-import {takeUntil} from 'rxjs/operators';
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {Location} from '@angular/common';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { takeUntil } from 'rxjs/operators';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import {VoteService, Poll} from '../vote-service/vote.service';
-import {DicoService} from '../../language/dico.service';
-import {MatSnackBar} from '@angular/material';
+import { VoteService, Poll } from '../vote-service/vote.service';
+import { DicoService } from '../../language/dico.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
-import {Subject} from 'rxjs';
+import { Subject } from 'rxjs';
 
 @Component({
 	selector: 'app-edit-poll',

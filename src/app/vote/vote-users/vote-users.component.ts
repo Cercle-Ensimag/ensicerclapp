@@ -1,15 +1,15 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {Location} from '@angular/common';
-import {FormControl, Validators} from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
+import { FormControl, Validators } from '@angular/forms';
 
-import {DeviceSizeService} from '../../providers/device-size.service';
-import {AuthService} from '../../auth/auth-service/auth.service';
-import {VoteService} from '../vote-service/vote.service';
-import {Tools} from '../../providers/tools.service';
-import {DicoService} from '../../language/dico.service';
-import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import { DeviceSizeService } from '../../providers/device-size.service';
+import { AuthService } from '../../auth/auth-service/auth.service';
+import { VoteService } from '../vote-service/vote.service';
+import { Tools } from '../../providers/tools.service';
+import { DicoService } from '../../language/dico.service';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 export class VoteUser {
 	emailId: string;

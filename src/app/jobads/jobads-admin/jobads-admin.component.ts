@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {JobAdsService} from '../jobads.service';
-import {DicoService} from '../../language/dico.service';
-import {Location} from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { JobAdsService } from '../jobads.service';
+import { DicoService } from '../../language/dico.service';
+import { Location } from '@angular/common';
 
 @Component({
 	selector: 'app-jobads-admin',

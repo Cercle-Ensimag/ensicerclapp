@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
-import {CanActivate} from '@angular/router';
+import { Injectable } from '@angular/core';
+import { CanActivate } from '@angular/router';
 
-import {AuthService} from '../../auth/auth-service/auth.service';
-import {zip} from 'rxjs';
-import {first, map, tap} from 'rxjs/operators';
+import { AuthService } from '../../auth/auth-service/auth.service';
+import { zip } from 'rxjs';
+import { first, map, tap } from 'rxjs/operators';
 
 @Injectable()
 export class CanActivateActusEdit implements CanActivate {

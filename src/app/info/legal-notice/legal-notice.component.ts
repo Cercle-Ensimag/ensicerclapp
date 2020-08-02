@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {DicoService} from '../../language/dico.service'
+import { Component, OnInit } from '@angular/core';
+import { DicoService } from '../../language/dico.service'
 
 
 @Component({

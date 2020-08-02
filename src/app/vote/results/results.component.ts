@@ -1,12 +1,12 @@
-import {map, shareReplay} from 'rxjs/operators';
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {Location} from '@angular/common';
+import { map, shareReplay } from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 
-import {VoteService} from '../vote-service/vote.service';
+import { VoteService } from '../vote-service/vote.service';
 
-import {DicoService} from '../../language/dico.service';
-import {Observable, combineLatest} from 'rxjs';
+import { DicoService } from '../../language/dico.service';
+import { Observable, combineLatest } from 'rxjs';
 
 @Component({
 	selector: 'app-results',

@@ -1,9 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {DicoService} from '../../../language/dico.service';
-import {NsigmaJobAd, NsigmaService} from '../../nsigma.service';
-import {DeleteDialogComponent} from '../../../shared-components/delete-dialog/delete-dialog.component';
-import {MatDialog, MatSnackBar} from '@angular/material';
-import {Tools} from '../../../providers/tools.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { DicoService } from '../../../language/dico.service';
+import { NsigmaJobAd, NsigmaService } from '../../nsigma.service';
+import { DeleteDialogComponent } from '../../../shared-components/delete-dialog/delete-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Tools } from '../../../providers/tools.service';
 
 @Component({
 	selector: 'app-nsigma-jobad-card',

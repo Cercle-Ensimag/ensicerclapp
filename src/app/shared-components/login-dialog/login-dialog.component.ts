@@ -1,6 +1,6 @@
-import {MAT_DIALOG_DATA} from '@angular/material';
-import {Component, Inject, OnInit} from '@angular/core';
-import {DicoService} from "../../language/dico.service";
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, Inject, OnInit } from '@angular/core';
+import { DicoService } from "../../language/dico.service";
 
 @Component({
 	selector: 'app-login-dialog',

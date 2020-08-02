@@ -1,10 +1,11 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {MatDialog, MatSnackBar} from '@angular/material';
-import {DeleteDialogComponent} from '../../../shared-components/delete-dialog/delete-dialog.component';
-import {Event, EventsService} from '../../events-service/events.service';
-import {Tools} from '../../../providers/tools.service';
-import {DicoService} from '../../../language/dico.service';
-import {Observable} from 'rxjs';
+import { Component, Input, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { DeleteDialogComponent } from '../../../shared-components/delete-dialog/delete-dialog.component';
+import { Event, EventsService } from '../../events-service/events.service';
+import { Tools } from '../../../providers/tools.service';
+import { DicoService } from '../../../language/dico.service';
+import { Observable } from 'rxjs';
 
 @Component({
 	selector: 'app-event-card',

@@ -1,12 +1,12 @@
-import {Injectable} from '@angular/core';
-import {AngularFireDatabase} from '@angular/fire/database';
-import {Tools} from './tools.service';
-import {DicoService} from '../language/dico.service';
-import {ListService} from '../providers/list.service';
-import {EventsService, Event} from '../events/events-service/events.service';
-import {VoteService} from '../vote/vote-service/vote.service';
-import {Observable, pipe, of} from 'rxjs';
-import {map, shareReplay} from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { AngularFireDatabase } from '@angular/fire/database';
+import { Tools } from './tools.service';
+import { DicoService } from '../language/dico.service';
+import { ListService } from '../providers/list.service';
+import { EventsService, Event } from '../events/events-service/events.service';
+import { VoteService } from '../vote/vote-service/vote.service';
+import { Observable, pipe, of } from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
 
 const index = {
 	"events": -3,

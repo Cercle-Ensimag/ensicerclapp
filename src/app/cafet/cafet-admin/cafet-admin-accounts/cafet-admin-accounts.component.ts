@@ -1,11 +1,12 @@
 
-import {map, first, shareReplay} from 'rxjs/operators';
-import {Component, OnInit} from '@angular/core';
-import {MatDialog, MatSnackBar} from '@angular/material';
+import { map, first, shareReplay } from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
-import {CafetService, CafetUser} from '../../cafet-service/cafet.service';
-import {DicoService} from '../../../language/dico.service';
-import {Observable} from 'rxjs';
+import { CafetService, CafetUser } from '../../cafet-service/cafet.service';
+import { DicoService } from '../../../language/dico.service';
+import { Observable } from 'rxjs';
 
 export class DayUser {
 	user: CafetUser;

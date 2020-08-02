@@ -1,18 +1,19 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {MatDialog, MatSnackBar} from '@angular/material';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
-import {CafetService, CafetUser} from '../../cafet-service/cafet.service';
-import {Tools} from '../../../providers/tools.service';
-import {DeviceSizeService} from '../../../providers/device-size.service';
-import {DicoService} from '../../../language/dico.service';
-import {ListService} from '../../../providers/list.service';
+import { CafetService, CafetUser } from '../../cafet-service/cafet.service';
+import { Tools } from '../../../providers/tools.service';
+import { DeviceSizeService } from '../../../providers/device-size.service';
+import { DicoService } from '../../../language/dico.service';
+import { ListService } from '../../../providers/list.service';
 
-import {CafetHistoryComponent} from '../../cafet-history/cafet-history.component';
-import {EditCafetUserComponent} from '../edit-cafet-user/edit-cafet-user.component';
-import {Observable, Subject} from 'rxjs';
-import {DeleteDialogComponent} from '../../../shared-components/delete-dialog/delete-dialog.component';
-import {first, map, takeUntil} from 'rxjs/operators';
+import { CafetHistoryComponent } from '../../cafet-history/cafet-history.component';
+import { EditCafetUserComponent } from '../edit-cafet-user/edit-cafet-user.component';
+import { Observable, Subject } from 'rxjs';
+import { DeleteDialogComponent } from '../../../shared-components/delete-dialog/delete-dialog.component';
+import { first, map, takeUntil } from 'rxjs/operators';
 
 
 @Component({

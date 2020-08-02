@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {FormControl, Validators} from '@angular/forms';
-import {Location} from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
+import { Location } from '@angular/common';
 
-import {AuthService} from '../auth-service/auth.service';
-import {DicoService} from '../../language/dico.service';
+import { AuthService } from '../auth-service/auth.service';
+import { DicoService } from '../../language/dico.service';
 
 
 @Component({

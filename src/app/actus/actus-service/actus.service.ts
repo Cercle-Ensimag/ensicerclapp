@@ -1,11 +1,11 @@
-import {Injectable} from '@angular/core';
-import {AngularFireDatabase} from '@angular/fire/database';
+import { Injectable } from '@angular/core';
+import { AngularFireDatabase } from '@angular/fire/database';
 
-import {Tools} from '../../providers/tools.service';
-import {AuthService} from '../../auth/auth-service/auth.service';
+import { Tools } from '../../providers/tools.service';
+import { AuthService } from '../../auth/auth-service/auth.service';
 
-import {combineLatest, Observable} from 'rxjs';
-import {map, mergeMap, shareReplay} from 'rxjs/operators';
+import { combineLatest, Observable } from 'rxjs';
+import { map, mergeMap, shareReplay } from 'rxjs/operators';
 
 export class Actu {
 	id: string;

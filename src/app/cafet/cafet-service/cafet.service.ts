@@ -1,17 +1,17 @@
-import {Observable, zip, from} from 'rxjs';
-import {first, map, mergeMap, shareReplay} from 'rxjs/operators';
+import { Observable, zip, from } from 'rxjs';
+import { first, map, mergeMap, shareReplay } from 'rxjs/operators';
 
-import {Injectable} from '@angular/core';
-import {AngularFireDatabase} from '@angular/fire/database';
-import {DatePipe} from '@angular/common';
-import {DicoService} from '../../language/dico.service';
-import {DomSanitizer} from '@angular/platform-browser';
+import { Injectable } from '@angular/core';
+import { AngularFireDatabase } from '@angular/fire/database';
+import { DatePipe } from '@angular/common';
+import { DicoService } from '../../language/dico.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
-import {AuthService} from '../../auth/auth-service/auth.service';
-import {Tools} from '../../providers/tools.service';
+import { AuthService } from '../../auth/auth-service/auth.service';
+import { Tools } from '../../providers/tools.service';
 
 
-import {DayTransaction} from '../cafet-admin/cafet-admin-accounts/cafet-admin-accounts.component';
+import { DayTransaction } from '../cafet-admin/cafet-admin-accounts/cafet-admin-accounts.component';
 
 declare var jsPDF: any;
 

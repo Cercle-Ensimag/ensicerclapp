@@ -1,6 +1,6 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 
 import { CafetService, CafetUser } from '../../cafet-service/cafet.service';
 import { Tools } from '../../../providers/tools.service';
@@ -9,8 +9,8 @@ import { DicoService } from '../../../language/dico.service';
 
 import { CafetHistoryComponent } from '../../cafet-history/cafet-history.component';
 import { EditCafetUserComponent } from '../edit-cafet-user/edit-cafet-user.component';
-import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-cafet-admin-archives',

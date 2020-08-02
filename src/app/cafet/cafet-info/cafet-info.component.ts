@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
-import {CafetService} from '../cafet-service/cafet.service';
-import {DicoService} from '../../language/dico.service';
+import { CafetService } from '../cafet-service/cafet.service';
+import { DicoService } from '../../language/dico.service';
 
 @Component({
 	selector: 'app-cafet-info',

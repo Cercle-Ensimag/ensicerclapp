@@ -1,7 +1,7 @@
-import {MAT_DIALOG_DATA} from '@angular/material';
-import {Component, Inject, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {DicoService} from '../../../language/dico.service';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { DicoService } from '../../../language/dico.service';
 
 @Component({
 	selector: 'app-update-password-dialog',

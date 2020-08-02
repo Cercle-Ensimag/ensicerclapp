@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import {Location} from '@angular/common';
-import {MatDialog, MatSnackBar} from '@angular/material';
-import {DicoService} from '../../language/dico.service';
-import {Tools} from '../../providers/tools.service';
-import {CalService, CalEvent} from '../cal-service/cal.service';
-import {DeleteDialogComponent} from '../../shared-components/delete-dialog/delete-dialog.component';
-import {EditCalComponent} from '../edit-cal/edit-cal.component';
+import { Location } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { DicoService } from '../../language/dico.service';
+import { Tools } from '../../providers/tools.service';
+import { CalService, CalEvent } from '../cal-service/cal.service';
+import { DeleteDialogComponent } from '../../shared-components/delete-dialog/delete-dialog.component';
+import { EditCalComponent } from '../edit-cal/edit-cal.component';
 
-import {Subject, pipe} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
+import { Subject, pipe } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-cal-edit-all',

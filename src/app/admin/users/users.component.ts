@@ -1,15 +1,15 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {Location} from '@angular/common';
-import {User} from 'firebase/app';
-import {Observable} from 'rxjs';
-import {map, shareReplay} from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Location } from '@angular/common';
+import { User } from 'firebase/app';
+import { Observable } from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
 
-import {Tools} from '../../providers/tools.service';
-import {DeviceSizeService} from '../../providers/device-size.service';
-import {AdminService} from '../admin-service/admin.service';
-import {DicoService} from '../../language/dico.service';
-import {ADMINS} from '../../auth/auth-service/auth.service';
+import { Tools } from '../../providers/tools.service';
+import { DeviceSizeService } from '../../providers/device-size.service';
+import { AdminService } from '../admin-service/admin.service';
+import { DicoService } from '../../language/dico.service';
+import { ADMINS } from '../../auth/auth-service/auth.service';
 
 @Component({
 	selector: 'app-users',

@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {ActusService} from '../actus-service/actus.service';
-import {Location} from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { ActusService } from '../actus-service/actus.service';
+import { Location } from '@angular/common';
 
 @Component({
 	selector: 'app-journalist',

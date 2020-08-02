@@ -1,9 +1,10 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {JobAd, JobAdsService} from '../../jobads.service';
-import {MatDialog, MatSnackBar} from '@angular/material';
-import {DeleteDialogComponent} from '../../../shared-components/delete-dialog/delete-dialog.component';
-import {Tools} from '../../../providers/tools.service';
-import {DicoService} from '../../../language/dico.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { JobAd, JobAdsService } from '../../jobads.service';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { DeleteDialogComponent } from '../../../shared-components/delete-dialog/delete-dialog.component';
+import { Tools } from '../../../providers/tools.service';
+import { DicoService } from '../../../language/dico.service';
 
 @Component({
 	selector: 'app-jobad-card',

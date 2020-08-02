@@ -1,5 +1,5 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
-import {JournalistComponent} from './journalist.component';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { JournalistComponent } from './journalist.component';
 
 describe('JournalistComponent', () => {
   let component: JournalistComponent;

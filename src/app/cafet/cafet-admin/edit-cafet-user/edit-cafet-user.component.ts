@@ -1,11 +1,12 @@
-import {Component, Inject} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef, MatSnackBar} from '@angular/material';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import {CafetService, CafetUser} from '../../cafet-service/cafet.service';
-import {DicoService} from '../../../language/dico.service';
-import {ListService} from '../../../providers/list.service';
-import {first} from 'rxjs/operators';
+import { CafetService, CafetUser } from '../../cafet-service/cafet.service';
+import { DicoService } from '../../../language/dico.service';
+import { ListService } from '../../../providers/list.service';
+import { first } from 'rxjs/operators';
 
 @Component({
 	selector: 'app-edit-cafet-user',

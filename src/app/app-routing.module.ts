@@ -1,71 +1,71 @@
-import {NgModule} from '@angular/core';
-import {RouterModule, Routes} from '@angular/router';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 
-import {LoginComponent} from './auth/auth-login/login.component';
-import {SignUpComponent} from './auth/auth-signup/signup.component';
-import {EmailVerifComponent} from './auth/email-verif/email-verif.component';
-import {PasswordResetComponent} from './auth/password-reset/password-reset.component';
+import { LoginComponent } from './auth/auth-login/login.component';
+import { SignUpComponent } from './auth/auth-signup/signup.component';
+import { EmailVerifComponent } from './auth/email-verif/email-verif.component';
+import { PasswordResetComponent } from './auth/password-reset/password-reset.component';
 
-import {AdminUsersComponent} from './admin/users/users.component';
+import { AdminUsersComponent } from './admin/users/users.component';
 
-import {DashboardComponent} from './dashboard/dashboard.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
-import {CafetComponent} from './cafet/cafet-home/cafet.component';
-import {CafetAdminComponent} from './cafet/cafet-admin/cafet-admin.component';
+import { CafetComponent } from './cafet/cafet-home/cafet.component';
+import { CafetAdminComponent } from './cafet/cafet-admin/cafet-admin.component';
 
-import {VoteComponent} from './vote/vote-all/vote.component';
-import {PollComponent} from './vote/poll/poll.component';
-import {VoteAdminComponent} from './vote/vote-admin/vote-admin.component';
-import {EditPollComponent} from './vote/edit-poll/edit-poll.component';
-import {ResultsComponent} from './vote/results/results.component';
-import {VoteUsersComponent} from './vote/vote-users/vote-users.component';
-import {AssessorComponent} from './vote/assessor/assessor.component';
+import { VoteComponent } from './vote/vote-all/vote.component';
+import { PollComponent } from './vote/poll/poll.component';
+import { VoteAdminComponent } from './vote/vote-admin/vote-admin.component';
+import { EditPollComponent } from './vote/edit-poll/edit-poll.component';
+import { ResultsComponent } from './vote/results/results.component';
+import { VoteUsersComponent } from './vote/vote-users/vote-users.component';
+import { AssessorComponent } from './vote/assessor/assessor.component';
 
-import {EventsHomeComponent} from './events/events-home/events-home.component';
-import {EventComponent} from './events/event/event.component';
-import {EventAdminComponent} from './events/event-admin/event-admin.component';
-import {ComRespComponent} from './events/com-resp/com-resp.component';
-import {EditEventsComponent} from './events/edit-events/edit-events.component';
+import { EventsHomeComponent } from './events/events-home/events-home.component';
+import { EventComponent } from './events/event/event.component';
+import { EventAdminComponent } from './events/event-admin/event-admin.component';
+import { ComRespComponent } from './events/com-resp/com-resp.component';
+import { EditEventsComponent } from './events/edit-events/edit-events.component';
 
-import {ActusHomeComponent} from './actus/actus-home/actus-home.component';
-import {ActuComponent} from './actus/actu/actu.component';
-import {ActuAdminComponent} from './actus/actu-admin/actu-admin.component';
-import {JournalistComponent} from './actus/journalist/journalist.component';
-import {EditActusComponent} from './actus/edit-actus/edit-actus.component';
+import { ActusHomeComponent } from './actus/actus-home/actus-home.component';
+import { ActuComponent } from './actus/actu/actu.component';
+import { ActuAdminComponent } from './actus/actu-admin/actu-admin.component';
+import { JournalistComponent } from './actus/journalist/journalist.component';
+import { EditActusComponent } from './actus/edit-actus/edit-actus.component';
 
-import {CalendarComponent} from './calendar/cal-home/calendar.component';
-import {EditCalComponent} from './calendar/edit-cal/edit-cal.component';
-import {CalSettingsComponent} from './calendar/cal-settings/cal-settings.component';
-import {CalEditAllComponent} from './calendar/cal-edit-all/cal-edit-all.component';
+import { CalendarComponent } from './calendar/cal-home/calendar.component';
+import { EditCalComponent } from './calendar/edit-cal/edit-cal.component';
+import { CalSettingsComponent } from './calendar/cal-settings/cal-settings.component';
+import { CalEditAllComponent } from './calendar/cal-edit-all/cal-edit-all.component';
 
-import {AccountComponent} from './account/account.component';
+import { AccountComponent } from './account/account.component';
 
-import {InfoComponent} from './info/info.component';
+import { InfoComponent } from './info/info.component';
 
-import {CanActivateHome} from './home/home-guard/home.guard';
-import {CanActivateVoteAdmin} from './vote/vote-guard/vote-admin.guard';
-import {CanActivateAssessor} from './vote/vote-guard/assessor.guard';
-import {CanActivateEventsAdmin} from './events/events-guard/events-admin.guard';
-import {CanActivateComResp} from './events/events-guard/com-resp.guard';
-import {CanActivateEventsEdit} from './events/events-guard/events-edit.guard';
-import {CanActivateActusAdmin} from './actus/actus-guard/actus-admin.guard';
-import {CanActivateJournalist} from './actus/actus-guard/journalist.guard';
-import {CanActivateActusEdit} from './actus/actus-guard/actus-edit.guard';
-import {CanActivateAdmin} from './admin/admin-guard/admin-guard';
-import {CanActivateCafetAdmin} from './cafet/cafet-guard/cafet-admin.guard';
-import {CanActivateCafetResp} from './cafet/cafet-guard/cafet-resp.guard';
-import {EmailVerifGuard} from './auth/email-verif/email-verif-guard/email-verif.guard';
-import {NsigmaHomeComponent} from './nsigma/nsigma-home/nsigma-home.component';
-import {NsigmaAdminComponent} from './nsigma/nsigma-admin/nsigma-admin.component';
-import {NsigmaGuard} from './nsigma/nsigma.guard';
-import {JobAdsHomeComponent} from './jobads/jobads-home/jobads-home.component';
-import {JobAdsAdminComponent} from './jobads/jobads-admin/jobads-admin.component';
-import {JobAdsGuard} from './jobads/jobads.guard';
-import {NsigmaJobAdComponent} from './nsigma/nsigma-jobad/nsigma-jobad.component';
-import {NsigmaEditComponent} from './nsigma/nsigma-edit/nsigma-edit.component';
-import {JobAdsEditComponent} from './jobads/jobads-edit/jobads-edit.component';
-import {JobAdsJobAdComponent} from './jobads/jobads-jobad/jobads-jobad.component';
-import {CafetRespComponent} from './cafet/cafet-resp/cafet-resp.component';
+import { CanActivateHome } from './home/home-guard/home.guard';
+import { CanActivateVoteAdmin } from './vote/vote-guard/vote-admin.guard';
+import { CanActivateAssessor } from './vote/vote-guard/assessor.guard';
+import { CanActivateEventsAdmin } from './events/events-guard/events-admin.guard';
+import { CanActivateComResp } from './events/events-guard/com-resp.guard';
+import { CanActivateEventsEdit } from './events/events-guard/events-edit.guard';
+import { CanActivateActusAdmin } from './actus/actus-guard/actus-admin.guard';
+import { CanActivateJournalist } from './actus/actus-guard/journalist.guard';
+import { CanActivateActusEdit } from './actus/actus-guard/actus-edit.guard';
+import { CanActivateAdmin } from './admin/admin-guard/admin-guard';
+import { CanActivateCafetAdmin } from './cafet/cafet-guard/cafet-admin.guard';
+import { CanActivateCafetResp } from './cafet/cafet-guard/cafet-resp.guard';
+import { EmailVerifGuard } from './auth/email-verif/email-verif-guard/email-verif.guard';
+import { NsigmaHomeComponent } from './nsigma/nsigma-home/nsigma-home.component';
+import { NsigmaAdminComponent } from './nsigma/nsigma-admin/nsigma-admin.component';
+import { NsigmaGuard } from './nsigma/nsigma.guard';
+import { JobAdsHomeComponent } from './jobads/jobads-home/jobads-home.component';
+import { JobAdsAdminComponent } from './jobads/jobads-admin/jobads-admin.component';
+import { JobAdsGuard } from './jobads/jobads.guard';
+import { NsigmaJobAdComponent } from './nsigma/nsigma-jobad/nsigma-jobad.component';
+import { NsigmaEditComponent } from './nsigma/nsigma-edit/nsigma-edit.component';
+import { JobAdsEditComponent } from './jobads/jobads-edit/jobads-edit.component';
+import { JobAdsJobAdComponent } from './jobads/jobads-jobad/jobads-jobad.component';
+import { CafetRespComponent } from './cafet/cafet-resp/cafet-resp.component';
 
 const routes: Routes = [
 	{ path: '', redirectTo: '/home', pathMatch: 'full' },

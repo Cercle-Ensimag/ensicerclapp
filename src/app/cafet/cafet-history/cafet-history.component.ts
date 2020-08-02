@@ -1,11 +1,13 @@
-import {Component, Inject, ViewChild} from '@angular/core';
-import {MAT_DIALOG_DATA, MatPaginator, MatTableDataSource} from '@angular/material';
+import { Component, Inject, ViewChild } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
-import {map, shareReplay} from 'rxjs/operators';
+import { map, shareReplay } from 'rxjs/operators';
 
-import {CafetService, CafetUser} from '../cafet-service/cafet.service';
-import {DicoService} from '../../language/dico.service';
-import {Observable} from 'rxjs';
+import { CafetService, CafetUser } from '../cafet-service/cafet.service';
+import { DicoService } from '../../language/dico.service';
+import { Observable } from 'rxjs';
 
 class Log {
 	date: number;

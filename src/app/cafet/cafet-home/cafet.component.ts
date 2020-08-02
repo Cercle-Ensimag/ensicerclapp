@@ -1,10 +1,10 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Location} from '@angular/common';
-import {MatDialog} from '@angular/material';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
 
-import {CafetService, CafetUser} from '../cafet-service/cafet.service';
-import {DicoService} from '../../language/dico.service';
-import {CafetHistoryComponent} from '../cafet-history/cafet-history.component';
+import { CafetService, CafetUser } from '../cafet-service/cafet.service';
+import { DicoService } from '../../language/dico.service';
+import { CafetHistoryComponent } from '../cafet-history/cafet-history.component';
 
 @Component({
 	selector: 'app-cafet',
