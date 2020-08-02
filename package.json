@@ -70,5 +70,8 @@
     "ts-node": "~3.2.0",
     "tslint": "~6.1.0",
     "typescript": "~3.9.7"
-  }
+  },
+	"browser": {
+		"crypto": false
+	}
 }
