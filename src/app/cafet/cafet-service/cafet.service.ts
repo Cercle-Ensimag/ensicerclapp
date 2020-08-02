@@ -366,7 +366,7 @@ export class CafetService {
 			{ title: "-", dataKey: "minus"},
 			{ title: "-", dataKey: "minus"},
 			{ title: "-", dataKey: "minus"},
-			// { title: '', dataKey: "div" }, # FIXME: not possible anymore to have column with to 1
+			{ title: '', dataKey: "div" },
 			{ title: "+", dataKey: "plus"},
 			{ title: "+", dataKey: "plus"}
 		];
@@ -376,7 +376,7 @@ export class CafetService {
 			rows.push({
 				firstname: user.profile.firstName,
 				lastname: user.profile.lastName + (user.profile.exte ? " *": ''),
-				credit: user.credit.toFixed(2),
+				credit: user.credit.toFixed(2) + '€',
 				minus1: user.credit < 0 ? "*********" : ''
 			});
 		}
@@ -430,10 +430,10 @@ export class CafetService {
 			},
 			columnStyles: {
 				lastname: { cellWidth: 100, overflow: 'linebreak' },
-				credit: { cellWidth: 'wrap', halign: 'right', cellPadding: { right: 15 } },
+				credit: { cellWidth: 'wrap', halign: 'right' },
 				minus1: { cellWidth: 46 },
 				minus: { cellWidth: 46 },
-				// div: { minCellWidth: 1, cellWidth: 1, fillColor: 50 },
+				div: { cellWidth: 1, fillColor: 50, overflow: 'hidden' },
 				plus: { cellWidth: 46 }
 			},
 			margin: { top: 60 },
