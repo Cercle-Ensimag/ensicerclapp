@@ -88,7 +88,7 @@ export class AuthService {
 		private ngZone: NgZone
 	) {
 		this.error_persist = false;
-		this.afAuth.auth.onIdTokenChanged((user: firebase.User) => this.redirectOnTokenChange(user));
+		this.afAuth.onIdTokenChanged((user: firebase.User) => this.redirectOnTokenChange(user));
 	}
 
 	redirectOnTokenChange(user: firebase.User): void {
@@ -116,17 +116,17 @@ export class AuthService {
 	// Methods
 
 	login(email: string, password: string): Promise<firebase.auth.UserCredential> {
-		return this.afAuth.auth.signInWithEmailAndPassword(email, password);
+		return this.afAuth.signInWithEmailAndPassword(email, password);
 	}
 
 	logout(): Promise<void> {
-		return this.afAuth.auth.signOut();
+		return this.afAuth.signOut();
 	}
 
 	createAccount(
 		email: string, password: string, firstName: string, lastName: string
 	): Promise<[firebase.User, Promise<void>, Promise<void>, Promise<void>]> {
-		return this.afAuth.auth.createUserWithEmailAndPassword(email, password).then(
+		return this.afAuth.createUserWithEmailAndPassword(email, password).then(
 			(uc: firebase.auth.UserCredential) => {
 				return [
 					uc.user,
@@ -187,11 +187,11 @@ export class AuthService {
 	}
 
 	sendPasswordResetEmail(email: string): Promise<void> {
-		return this.afAuth.auth.sendPasswordResetEmail(email);
+		return this.afAuth.sendPasswordResetEmail(email);
 	}
 
 	confirmPasswordReset(code: string, password: string): Promise<void> {
-		return this.afAuth.auth.confirmPasswordReset(code, password);
+		return this.afAuth.confirmPasswordReset(code, password);
 	}
 
 	// Getters
@@ -202,7 +202,7 @@ export class AuthService {
 	getUser(): Observable<firebase.User> {
 		if (!this._user) {
 			this._user = new Observable<firebase.User>((observer: Observer<firebase.User>) => {
-				this.afAuth.auth.onIdTokenChanged((user: firebase.User) => {
+				this.afAuth.onIdTokenChanged((user: firebase.User) => {
 					observer.next(user ? user : null);
 				});
 			}).pipe(
