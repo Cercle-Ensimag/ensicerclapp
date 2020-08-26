@@ -30,7 +30,16 @@ function getEmailId(email) {
  * Local function that verifies that the email used is correct
  */
 function verifyEmail(email) {
-  return electoralRegister[getEmailId(email)] === email;
+	// // NB: Very secrure but too restrictive for 1A since the electoral register takes time to update
+	// return electoralRegister[getEmailId(email)] === email;
+
+	// // NB: Simple but there is better
+	// return email.endswith('@grenoble-inp.org');
+
+	// NB: Accepts all '@grenoble-inp.org' adresses.
+	// The email validation completes the security.
+	// See `deleteNotVerifiedEmails` to delete unwanted accounts.
+	return email.match(/^[a-z-]+\.[a-z-]+[1-9]{0,1}@grenoble-inp\.org$/) !== null;
 }
 
 /**
