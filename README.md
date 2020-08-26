@@ -1,3 +1,12 @@
+> ***
+> **This projet has been moved to https://gitlab.com/cercle-ensimag/ensicerclapp/ and is no longer maintained here**
+>
+> If your already cloned the project, you can update the remote origin with
+> ```
+> git remote set-url origin git@gitlab.com:cercle-ensimag/ensicerclapp.git
+> ```
+> ***
+
 # Ensicerclapp
 
 ## Angular project
